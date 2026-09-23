@@ -95,3 +95,26 @@
 .rc-row { background: #f1f5f4; border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
 .rc-row span { color: #435359; }
 
+/* ── One-shot vs always-on table ────────────────────────────────────── */
+.vs { width: 100%; border-collapse: collapse; font-size: 16px; }
+.vs th, .vs td { text-align: left; padding: 16px 16px 16px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+.vs thead th { font-family: var(--font-display); font-weight: 600; font-size: 17px; border-top: 2px solid var(--rule-strong); padding-top: 14px; }
+.vs thead th .sub { display: block; font-family: var(--font-text); font-weight: 400; font-size: var(--fs-note); color: var(--ink-500); margin-top: 2px; }
+.vs tbody th { font-weight: 600; width: 26%; color: var(--ink-900); }
+.vs td { color: var(--ink-700); width: 24.6%; }
+.vs .col-june { background: var(--accent-soft); padding-left: 16px; color: var(--ink-900); font-weight: 500; }
+.vs thead .col-june { color: var(--accent-strong); }
+.vs .col-june svg { width: 16px; height: 16px; display: inline; vertical-align: -3px; margin-right: 6px; color: var(--accent-strong); }
+.vs-foot { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-8); align-items: center; justify-content: space-between; }
+.vs-foot .note { max-width: 60ch; }
+@media (max-width: 760px) {
+  .vs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .vs, .vs tbody, .vs tr, .vs th, .vs td { display: block; width: auto; }
+  .vs tr { border-top: 1px solid var(--rule-strong); padding: var(--s-4) 0; }
+  .vs tbody th { width: auto; border: 0; padding: 0 0 var(--s-2); font-family: var(--font-display); font-size: 18px; }
+  .vs td { width: auto; border: 0; padding: 6px 0; display: grid; grid-template-columns: 12ch 1fr; gap: var(--s-3); }
+  .vs td::before { content: attr(data-label); font-size: var(--fs-note); font-weight: 600; color: var(--ink-500); }
+  .vs td.col-june { padding: 8px 10px; border-radius: 8px; margin-top: 4px; }
+  .vs td.col-june::before { color: var(--accent-strong); }
+}
+

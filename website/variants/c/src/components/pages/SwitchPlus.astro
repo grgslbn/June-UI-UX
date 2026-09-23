@@ -84,7 +84,7 @@ const sw = c.plans[0];
       </div>
       <figure class="report-fig">
         {L === 'nl'
-          ? <Image src={reportNl} alt={c.report.alt} widths={[292, 584]} sizes="(max-width: 760px) 80vw, 292px" loading="lazy" class="report-img" />
+          ? <Image src={reportNl} alt={c.report.alt} widths={[292, 584]} sizes="(max-width: 760px) 80vw, 292px" loading="eager" fetchpriority="low" class="report-img" />
           : (
             <div class="report-card" role="img" aria-label={`${c.report.card.title} : ${c.report.card.amount}, ${c.report.card.amountLabel.toLowerCase()}. ${c.report.card.row1}, ${c.report.card.row1b}. ${c.report.card.row2}, ${c.report.card.row2b}.`}>
               <p class="rc-title">{c.report.card.title}</p>

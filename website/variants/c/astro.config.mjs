@@ -8,6 +8,7 @@ export default defineConfig({
   output: 'static',
   base: process.env.BASE || '/',
   trailingSlash: 'always',
-  build: { format: 'directory', inlineStylesheets: 'always' },
-  vite: { resolve: { alias: { '@shared': shared } }, server: { fs: { allow: ['..', '../..'] } } },
+  build: { format: 'directory', inlineStylesheets: 'auto' },
+  // Page-specific CSS (< 10 KB) is inlined; the shared global sheet stays external and cached across pages.
+  vite: { build: { assetsInlineLimit: 10000 }, resolve: { alias: { '@shared': shared } }, server: { fs: { allow: ['..', '../..'] } } },
 });

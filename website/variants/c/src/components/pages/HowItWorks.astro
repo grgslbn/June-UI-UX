@@ -84,7 +84,7 @@ const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
           return (
             <li class="deep-step">
               <div class="ds-head">
-                <AnimIcon name={icons[i]} size={80} />
+                <AnimIcon name={icons[i]} size={80} eager />
                 <span class="n" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
               </div>
               <div class="ds-body">
@@ -102,7 +102,7 @@ const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
                 <ul>{note.list.map((x: string) => <li><Icon name="check" /><span>{x}</span></li>)}</ul>
                 {note.limit && (
                   <div class="tip">
-                    <Image src={pointing} alt="" widths={[88, 176]} sizes="88px" class="tip-char" loading="lazy" />
+                    <Image src={pointing} alt="" widths={[88, 176]} sizes="88px" class="tip-char" loading="eager" fetchpriority="low" />
                     <p class="honest-limit" set:html={note.limit} />
                   </div>
                 )}

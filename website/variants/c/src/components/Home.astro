@@ -4,6 +4,7 @@
 // → guarantee → reviews → 4 sceptic FAQs → summary + form. Depth lives on Hoe werkt het / Abonnementen / FAQ.
 import { Image } from 'astro:assets';
 import Site from '../layouts/Site.astro';
+import '../styles/home.css';
 import pointing from '@shared/assets/character/june-character-pointing.png';
 import MarketChart from './MarketChart.astro';
 import PostcodeForm from './PostcodeForm.astro';
@@ -71,7 +72,7 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
       </ol>
       <div class="section-foot">
         <div class="tip">
-          <Image src={pointing} alt="" widths={[96, 192]} sizes="96px" class="tip-char" loading="lazy" />
+          <Image src={pointing} alt="" widths={[96, 192]} sizes="96px" class="tip-char" loading="eager" fetchpriority="low" />
           <p class="honest-limit"><span set:html={c.how.limit} /></p>
         </div>
         <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.how.more}<Icon name="arrow-r" /></a>

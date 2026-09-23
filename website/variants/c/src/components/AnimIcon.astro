@@ -10,5 +10,5 @@ const still = pick('-static.png');
 ---
 <picture class:list={['anim-icon', cls]}>
   <source srcset={still} media="(prefers-reduced-motion: reduce)" />
-  <img src={anim} alt="" width={size} height={size} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  <img src={anim} alt="" width={size} height={size} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'low' : undefined} decoding="async" />
 </picture>

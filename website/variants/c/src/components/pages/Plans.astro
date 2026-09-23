@@ -119,8 +119,8 @@ const colNames = c.plans.map((p: any) => p.name);
         <a class="btn btn--ghost" href={`${signup}?plan=premium`} data-cta="dongle">{c.card.choose} Premium<Icon name="arrow-r" /></a>
       </div>
       <figure class="dongle-fig">
-        <Image src={dongle} alt={c.dongle.alt.dongle} widths={[220, 440]} sizes="(max-width: 760px) 40vw, 220px" class="dongle-img" loading="lazy" />
-        <Image src={L === 'fr' ? phoneFr : phoneNl} alt={c.dongle.alt.phone} widths={[200, 299]} sizes="(max-width: 760px) 44vw, 200px" class="phone-img" loading="lazy" />
+        <Image src={dongle} alt={c.dongle.alt.dongle} widths={[220, 440]} sizes="(max-width: 760px) 40vw, 220px" class="dongle-img" loading="eager" fetchpriority="low" />
+        <Image src={L === 'fr' ? phoneFr : phoneNl} alt={c.dongle.alt.phone} widths={[200, 299]} sizes="(max-width: 760px) 44vw, 200px" class="phone-img" loading="eager" fetchpriority="low" />
         <figcaption class="note">{c.dongle.app}</figcaption>
       </figure>
     </div>
