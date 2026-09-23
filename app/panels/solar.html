@@ -35,7 +35,7 @@
 [data-tab="solar"] .sl-dot.imp { background: var(--ink-400); box-shadow: inset 0 0 0 1.5px var(--ink-400); }
 
 /* Flow diagram — the live instrument. Nodes are HTML; lines are an SVG drawn at real size by the script below. */
-[data-tab="solar"] .sl-flow { position: relative; height: 296px; margin-top: var(--s-4); }
+[data-tab="solar"] .sl-flow { position: relative; height: 262px; margin-top: var(--s-4); }
 [data-tab="solar"] .sl-flow > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 [data-tab="solar"] .sl-track { fill: none; stroke-linecap: round; opacity: .38; }
 [data-tab="solar"] .sl-dash { fill: none; stroke-linecap: round; animation: sl-flow 1.4s linear infinite; }
@@ -118,7 +118,7 @@
     </div>
 
     <!-- Supporting: to and from the grid over time (Day / Week / Month / Year) -->
-    <article class="surface span-8" id="sl-chart-tile" aria-labelledby="sl-chart-title">
+    <article class="surface span-6" id="sl-chart-tile" aria-labelledby="sl-chart-title">
       <div class="sl-chart-head">
         <h2 class="card-title" id="sl-chart-title">To and from the grid</h2>
         <div class="sl-controls">
@@ -173,7 +173,7 @@
     </article>
 
     <!-- Supporting: seasonal production (absolute, stacked) -->
-    <article class="surface span-4 sl-season" aria-labelledby="sl-season-title">
+    <article class="surface span-6 sl-season" aria-labelledby="sl-season-title">
       <h2 class="card-title" id="sl-season-title">Seasonal production — last 12 months</h2>
       <p class="insight">Production peaks in July at <b>620 kWh</b> — over 9× December's 68 kWh, your quietest month.</p>
       <div id="sl-season"></div>
@@ -347,7 +347,7 @@
   JuneCharts.bars('#sl-season', {
     series: [{ name: 'Used at home', values: yHome, tone: 'accent' }, { name: 'Exported', values: yExp, tone: 'elec' }],
     labels: months, tipLabels: monthsLong, xTicks: [1, 3, 5, 7, 9, 11],
-    annotation: { index: 1, text: '620 kWh', tone: 'ink' }, current: 11, seriesLabels: 'direct',
+    annotation: { index: 1, text: '620 kWh', tone: 'ink' }, current: 11, seriesLabels: 'direct', seriesValues: true,
     yMax: 700, yTicks: [0, 200, 400, 600], height: 300, yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
     tooltip: (i, v) => `${monthsLong[i]} · ${v} kWh made · ${yHome[i]} used at home · ${yExp[i]} exported`,
     ariaLabel: 'Stacked bar chart of monthly solar production, June 2025 to May 2026 (May so far: 170 kWh), split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months export more than half; winter months use almost all of it at home.'
