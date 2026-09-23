@@ -50,3 +50,7 @@ Limit 300 kWh · used 187 kWh · 113 kWh left · 13 days → **stay under 8.7 kW
 6. Solar self-sufficiency worked example uses flow-diagram numbers.
 7. Solar seasonal chart absolute, not normalised.
 8. Advice: heat-pump upgrade separated from the "new tips" count; Overview line → "Top tip saves ≈ €150/year".
+9. **Peak insufficient-history daily chart (Sep 2025): illustrative values.** The source has only latest peak (3.1 kW) and month peak (3.4 kW, 6 Sep 19:00). Canonical illustrative daily peaks for 1–15 Sep 2025 ("today" = 15 Sep 2025, 08:30): 2.4, 2.1, 2.6, 2.2, 2.8, **3.4**, 2.5, 2.0, 2.7, 2.3, 2.9, 2.2, 2.6, 2.4, 3.1. Marked as illustrative in spec notes; needs real data before build.
+
+## Phase 4 decision log
+- Product owner chose **Direction C · Soft Native** for the rollout (over the evaluators' B-based hybrid). Known C issues to fix first: gauge scale/negative reading, Overview 113 kWh vs 290 kWh hero conflict, overuse of red, "Rolls off after June" ambiguity, crowded threshold lines, dark-mode active tab subtlety.
