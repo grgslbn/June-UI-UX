@@ -1,0 +1,175 @@
+<style>
+/* Overview — tab-specific layout only (components come from components.css) */
+[data-tab="overview"] .ov-figure { display: flex; align-items: baseline; gap: 12px 16px; flex-wrap: wrap; margin-top: var(--s-6); }
+[data-tab="overview"] .ov-figure .cap { font-size: var(--fs-md); color: var(--ink-700); }
+[data-tab="overview"] .ov-meter { margin-top: var(--s-6); }
+[data-tab="overview"] .ov-left { margin-top: var(--s-4); font-size: var(--fs-md); color: var(--ink-700); }
+[data-tab="overview"] .ov-head { padding: 8px 4px 12px; }
+[data-tab="overview"] .row__meta .mid-num { font-size: var(--fs-lg); }
+</style>
+
+<section class="panel" id="panel-overview" data-tab="overview" data-label="Overview · May 2026" aria-labelledby="ov-title">
+  <div class="grid">
+
+    <!-- Hero: one answer, one numeral (the forecast the sentence talks about) -->
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__status">
+          <span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span>
+          <span class="xs muted">May 2026 · electricity</span>
+        </div>
+        <h1 class="hero__sentence" id="ov-title">May is on track — 290&nbsp;kWh forecast against your 300&nbsp;kWh budget.</h1>
+        <div class="ov-figure">
+          <p class="hero-num"><span class="num" data-count="290">290</span><span class="unit">kWh</span></p>
+          <p class="cap">forecast for May · budget 300&nbsp;kWh</p>
+        </div>
+        <div class="ov-meter">
+          <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9"
+               role="img" aria-label="Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
+            <span class="meter__fcast grow-x"></span>
+            <span class="meter__fill grow-x"></span>
+            <span class="meter__limit"></span>
+          </div>
+          <div class="meter-key">
+            <span><i class="sw" aria-hidden="true"></i>Used so far <b>187 kWh</b></span>
+            <span><i class="sw fcast" aria-hidden="true"></i>Forecast <b>290 kWh</b></span>
+            <span><i class="sw limit" aria-hidden="true"></i>Budget <b>300 kWh</b></span>
+          </div>
+        </div>
+        <p class="ov-left"><b>113 kWh left</b> for the next 13 days — about 8.7 kWh a day.</p>
+      </article>
+    </div>
+
+    <!-- Needs attention: ranked, one link per card -->
+    <section class="span-5" aria-labelledby="ov-attn">
+      <div class="section-head ov-head">
+        <h2 class="section-title" id="ov-attn">Needs attention <span class="badge">3</span></h2>
+      </div>
+      <ol class="rank-list">
+        <li>
+          <a href="#panel-compare" class="surface tactile rank-card">
+            <span class="rank" aria-hidden="true">1</span>
+            <span>
+              <span class="rank-card__topic"><svg class="icon sm" aria-hidden="true"><use href="#i-users"/></svg>Compare</span>
+              <span class="rank-card__title"><span class="alert-text">+73%</span> more than similar homes</span>
+              <span class="rank-card__line">April 2026: you used 442&nbsp;kWh, similar homes 255&nbsp;kWh.</span>
+              <span class="sr-only">See comparison</span>
+            </span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="#panel-peak" class="surface tactile rank-card">
+            <span class="rank" aria-hidden="true">2</span>
+            <span>
+              <span class="rank-card__topic"><svg class="icon sm" aria-hidden="true"><use href="#i-activity"/></svg>Peak</span>
+              <span class="rank-card__title">Your June 2025 peak drops out on 1&nbsp;June</span>
+              <span class="rank-card__line">At 5.8&nbsp;kW it's your highest — your average may fall to about 3.9&nbsp;kW.</span>
+              <span class="sr-only">See peak details</span>
+            </span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="#panel-advice" class="surface tactile rank-card">
+            <span class="rank" aria-hidden="true">3</span>
+            <span>
+              <span class="rank-card__topic"><svg class="icon sm" aria-hidden="true"><use href="#i-bulb"/></svg>Advice</span>
+              <span class="rank-card__title">3 new tips</span>
+              <span class="rank-card__line">Top tip saves <span class="approx">≈</span>&nbsp;€150/year.</span>
+              <span class="sr-only">See all advice</span>
+            </span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <!-- All topics -->
+    <section class="span-7" aria-labelledby="ov-topics">
+      <div class="section-head ov-head">
+        <h2 class="section-title" id="ov-topics">All topics</h2>
+        <span class="xs muted">May 2026</span>
+      </div>
+      <div class="surface" style="padding:0">
+        <ul class="rows">
+          <li><a href="#panel-forecast" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span>
+            <span class="row__title">Forecast</span>
+            <span class="row__sub">Projected this month — 8% more than May last year (269&nbsp;kWh).</span>
+            <span class="row__meta mid-num">290<span class="unit">kWh</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See forecast</span></a></li>
+          <li><a href="#panel-budgets" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg></span>
+            <span class="row__title">Budgets</span>
+            <span class="row__sub">187 of 300&nbsp;kWh used, 13 days left.</span>
+            <span class="row__meta"><span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See your budget</span></a></li>
+          <li><a href="#panel-compare" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
+            <span class="row__title">Compare</span>
+            <span class="row__sub">More than similar homes in April.</span>
+            <span class="row__meta mid-num">+73%</span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See comparison</span></a></li>
+          <li><a href="#panel-peak" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg></span>
+            <span class="row__title">Peak</span>
+            <span class="row__sub">12-month average — sets your capacity tariff.</span>
+            <span class="row__meta mid-num">4.0<span class="unit">kW</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See peak details</span></a></li>
+          <li><a href="#panel-breakdown" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-pie"/></svg></span>
+            <span class="row__title">Breakdown</span>
+            <span class="row__sub">Your biggest category this month.</span>
+            <span class="row__meta mid-num"><span class="unit" style="margin:0 4px 0 0">Heating</span>38%</span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See full breakdown</span></a></li>
+          <li><a href="#panel-solar" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span>
+            <span class="row__title">Solar</span>
+            <span class="row__sub">Net exporter today: +3.2&nbsp;kWh to the grid.</span>
+            <span class="row__meta mid-num">62%<span class="unit">used at home</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See solar flow</span></a></li>
+          <li><a href="#panel-advice" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+            <span class="row__title">Advice</span>
+            <span class="row__sub">Top tip saves <span class="approx">≈</span>&nbsp;€150/year.</span>
+            <span class="row__meta mid-num">3<span class="unit">new tips</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See all advice</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. Tip savings use an average electricity price (average, €0.27/kWh), not your own tariff.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Overview</summary>
+    <h4>Structure</h4>
+    <ul>
+      <li>Content: inventory §1 (source panel id <code>panel-consumption</code>). IA per ux-audit §3.1: hero status → needs attention (ranked 0–3) → all topics.</li>
+      <li>Phase 4 fix: ONE hero numeral. It is the 290 kWh forecast the sentence talks about; "113 kWh left for 13 days" moved to the supporting line under the meter (was a competing second hero).</li>
+      <li>"About 8.7 kWh a day" = 113 ÷ 13, the Budgets pacing figure (demo-data "stay under 8.7 kWh/day").</li>
+      <li>Attention cards: one affordance each (whole card is the link, chevron only). Card headlines are 16px body-strong, not hero-size numerals. Red is used once on this screen: +73% in the attention list (over similar homes). The topics row shows +73% in ink.</li>
+      <li>Peak card: "drops out on 1 June" replaces "next month"/"after June" (June 2025 counts through May 2026). "≈ 3.9 kW" = average if it rolled off today (demo-data).</li>
+      <li>Compare card line uses the canonical April 2026 figures (442 vs 255 kWh).</li>
+      <li>Tile link texts ("See comparison →" etc.) kept as each link's accessible name.</li>
+      <li>Consumption placeholder tile removed (designer commentary). Solar row only for solar households (<code>requiredCapability: "solar"</code>).</li>
+    </ul>
+    <h4>Data changes (demo-data.md change log)</h4>
+    <ul>
+      <li>Forecast 412 → 290 kWh; "8% more than May last year (269 kWh)".</li>
+      <li>Compare "this month" → "in April". Solar "self-consumed" → "used at home". Advice "540 kWh/year" → "≈ €150/year".</li>
+    </ul>
+    <h4>Motion</h4>
+    <ul><li>First view: 290 counts up (700ms), meter fills grow from the left. Reduced motion: static.</li></ul>
+    <h4>Reason codes</h4>
+    <ul><li>None designed. Topic-level fallbacks should reuse each tab's own empty-state copy in short form.</li></ul>
+  </details>
+</section>

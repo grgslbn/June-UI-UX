@@ -1,0 +1,382 @@
+<style>
+/* Peak — tab-specific layout only */
+[data-tab="peak"] .pk-money { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--hairline); }
+[data-tab="peak"] .pk-money .cap { flex-basis: 100%; font-size: var(--fs-sm); color: var(--ink-500); }
+[data-tab="peak"] .pk-bench { margin: var(--s-5) 0 var(--s-4); }
+[data-tab="peak"] .pk-chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+[data-tab="peak"] .pk-controls { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
+[data-tab="peak"] .pk-insight { margin: var(--s-3) 0 var(--s-5); }
+[data-tab="peak"] .pk-coming { display: flex; flex-direction: column; gap: var(--s-4); }
+[data-tab="peak"] .pk-coming__head { display: flex; gap: 14px; align-items: flex-start; }
+[data-tab="peak"] .pk-coming__title { font-size: var(--fs-md); font-weight: var(--w-semibold); }
+[data-tab="peak"] .pk-coming .meter-ends { margin-top: 8px; }
+[data-tab="peak"] .pk-beforeafter { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+[data-tab="peak"] .pk-beforeafter .stat__label { font-size: var(--fs-xs); color: var(--ink-500); }
+[data-tab="peak"] .pk-cta { margin-top: auto; padding-top: var(--s-2); }
+[data-tab="peak"] .pk-ready { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--hairline); }
+[data-tab="peak"] .pk-ready .readiness { margin-top: var(--s-4); }
+[data-tab="peak"] .pk-calc { max-width: 760px; }
+@media (min-width: 961px) { [data-tab="peak"] .grid.stretch > .surface { height: 100%; } }
+</style>
+
+<!-- ════════════════════════════ PEAK · main (12+ months) ════════════════════════════ -->
+<section class="panel" id="panel-peak" data-tab="peak" data-label="Peak · May 2026" aria-labelledby="pk-title">
+  <div class="grid stretch">
+
+    <!-- Hero: the tariff answer + honest comparison meter -->
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <h1 class="hero__label" id="pk-title">12-month rolling average
+              <button class="info" type="button" data-pop="pk-pop-rolling" aria-label="What is a rolling average?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </h1>
+            <p class="hero__figure hero-num"><span class="num" data-count="4.0">4.0</span><span class="unit">kW</span></p>
+            <p class="hero__caption">This sets your capacity tariff
+              <button class="info" type="button" data-pop="pk-pop-tariff" aria-label="What is the capacity tariff?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </p>
+            <div class="pk-money">
+              <button class="est" type="button" data-pop="pk-pop-est" aria-label="About this estimate">≈</button>
+              <span class="mid-num">€7.40<span class="unit">/ month</span></span>
+              <span class="cap">Estimated capacity charge</span>
+            </div>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">How you compare</p>
+            <p class="mt-2"><span class="chip positive"><svg class="icon" aria-hidden="true"><use href="#i-trend-down"/></svg>0.24 kW below the Flemish average</span></p>
+            <div class="pk-bench" id="pk-bench"></div>
+            <p class="small secondary">Your rolling average is <b>4.0 kW</b> — the Flemish average is <b>4.24 kW</b>. You're just under average!</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Supporting: the chart (Month / Year) + latest & month peak -->
+    <article class="surface span-8" id="pk-chart-tile" aria-labelledby="pk-chart-title">
+      <div class="pk-chart-head">
+        <h2 class="section-title" id="pk-chart-title"><span data-when="month">Daily peaks</span><span data-when="year" hidden>Monthly peaks</span></h2>
+        <div class="pk-controls">
+          <div class="seg" role="radiogroup" aria-label="Period" data-seg-target="#pk-chart-tile">
+            <button type="button" data-value="day" aria-checked="false" aria-disabled="true">Day</button>
+            <button type="button" data-value="week" aria-checked="false" aria-disabled="true">Week</button>
+            <button type="button" data-value="month" aria-checked="true">Month</button>
+            <button type="button" data-value="year" aria-checked="false">Year</button>
+          </div>
+          <div class="datenav" data-when="month">
+            <button type="button" aria-label="Previous month"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+            <span class="label">May 2026</span>
+            <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+          </div>
+          <span class="datenav" data-when="year" hidden><span class="label">Jun 2025 – May 2026</span></span>
+        </div>
+      </div>
+
+      <div data-when="month">
+        <p class="insight pk-insight">Your highest this month was <b>4.2 kW on 12 May at 18:30</b> — just above your 4.0 kW average.</p>
+        <div id="pk-chart-month"></div>
+      </div>
+      <div data-when="year" hidden>
+        <p class="insight pk-insight">Your average is the mean of these 12 monthly peaks. <b>June 2025 (5.8 kW)</b> is the highest — it drops out on 1 June 2026.</p>
+        <div id="pk-chart-year"></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <p class="stat__label"><span class="mark" aria-hidden="true"></span>Latest peak</p>
+          <p class="stat__value stat-num">3.8<span class="unit">kW</span></p>
+          <p class="stat__meta">Today, 14:30–14:45</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label"><span class="mark alert" aria-hidden="true"></span>Month peak</p>
+          <p class="stat__value stat-num">4.2<span class="unit">kW</span></p>
+          <p class="stat__meta">12 May, 18:30</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- What's coming up: the roll-off, in plain dates -->
+    <article class="surface span-4 pk-coming" aria-labelledby="pk-coming-title">
+      <p class="overline">What's coming up</p>
+      <div class="pk-coming__head">
+        <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+        <div>
+          <h2 class="pk-coming__title" id="pk-coming-title">Your biggest peak is still counting</h2>
+          <p class="small secondary">5.8 kW in June 2025 — the highest of your last 12 months</p>
+        </div>
+      </div>
+      <div>
+        <div class="meter thin rolloff" style="--used: 92" role="img" aria-label="The June 2025 peak has counted for 11 of its 12 months. It drops out of your average on 1 June 2026."><span class="meter__fill grow-x"></span></div>
+        <div class="meter-ends"><span>Counting since Jun 2025</span><span>Drops out 1 Jun 2026</span></div>
+      </div>
+      <p class="small secondary">Counts toward your average for <b>1 more month</b>, then it rolls off and your average may drop.</p>
+      <div>
+        <p class="xs muted">Your last 12 monthly peaks</p>
+        <div id="pk-strip" class="mt-2"></div>
+      </div>
+      <div class="callout">
+        <svg class="icon sm" aria-hidden="true"><use href="#i-trend-down"/></svg>
+        <div>
+          <p>If it rolled off today, your average would be about <b>3.9 kW</b>.</p>
+          <div class="pk-beforeafter" aria-hidden="true">
+            <span><span class="stat__label">Today</span><span class="mid-num">4.0<span class="unit">kW</span></span></span>
+            <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg>
+            <span><span class="stat__label">Without June 2025</span><span class="mid-num">≈ 3.9<span class="unit">kW</span></span></span>
+          </div>
+        </div>
+      </div>
+      <div class="pk-cta">
+        <a href="#panel-advice" class="btn btn--primary">Lower your peak <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        <p class="btn-note">Tips to spread heavy appliances, in Advice</p>
+      </div>
+    </article>
+
+    <!-- Detail: calculation, behind a disclosure -->
+    <article class="surface span-12 disclosure">
+      <button class="disc-btn" type="button" aria-expanded="false" aria-controls="pk-calc-body">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span>
+        <span><span class="t">How the 12-month average is calculated</span><span class="s">See the full calculation</span></span>
+        <span class="chev" aria-hidden="true"><svg class="icon sm"><use href="#i-chev-d"/></svg></span>
+      </button>
+      <div class="disc-body" id="pk-calc-body">
+        <div><div class="disc-inner">
+          <p class="insight" style="margin-bottom:var(--s-4)"><b>Your rolling average, explained.</b> Each month we take your single highest peak. Your rolling average is the mean of the last 12 of them — when a new month is added, the oldest one drops off.</p>
+          <div class="pk-calc">
+            <table class="table">
+              <thead><tr><th scope="col">Month</th><th scope="col" class="hide-sm">When</th><th scope="col" class="r">Peak</th></tr></thead>
+              <tbody>
+                <tr class="hl"><td>Jun 2025 <span class="tags"><span class="tag">rolls off next</span><span class="tag alert">highest</span></span><span class="sub show-sm">12 Jun, 19:00</span></td><td class="hide-sm">12 Jun, 19:00</td><td class="r">5.8 kW</td></tr>
+                <tr><td>Jul 2025<span class="sub show-sm">28 Jul, 20:15</span></td><td class="hide-sm">28 Jul, 20:15</td><td class="r">3.2 kW</td></tr>
+                <tr><td>Aug 2025<span class="sub show-sm">14 Aug, 18:30</span></td><td class="hide-sm">14 Aug, 18:30</td><td class="r">3.8 kW</td></tr>
+                <tr><td>Sep 2025<span class="sub show-sm">3 Sep, 19:45</span></td><td class="hide-sm">3 Sep, 19:45</td><td class="r">4.0 kW</td></tr>
+                <tr><td>Oct 2025<span class="sub show-sm">21 Oct, 07:15</span></td><td class="hide-sm">21 Oct, 07:15</td><td class="r">3.5 kW</td></tr>
+                <tr><td>Nov 2025<span class="sub show-sm">9 Nov, 18:00</span></td><td class="hide-sm">9 Nov, 18:00</td><td class="r">4.4 kW</td></tr>
+                <tr><td>Dec 2025<span class="sub show-sm">24 Dec, 20:30</span></td><td class="hide-sm">24 Dec, 20:30</td><td class="r">3.3 kW</td></tr>
+                <tr><td>Jan 2026<span class="sub show-sm">15 Jan, 07:00</span></td><td class="hide-sm">15 Jan, 07:00</td><td class="r">2.9 kW</td></tr>
+                <tr><td>Feb 2026<span class="sub show-sm">2 Feb, 19:15</span></td><td class="hide-sm">2 Feb, 19:15</td><td class="r">4.0 kW</td></tr>
+                <tr><td>Mar 2026<span class="sub show-sm">18 Mar, 18:45</span></td><td class="hide-sm">18 Mar, 18:45</td><td class="r">4.9 kW</td></tr>
+                <tr><td>Apr 2026<span class="sub show-sm">7 Apr, 19:00</span></td><td class="hide-sm">7 Apr, 19:00</td><td class="r">4.2 kW</td></tr>
+                <tr><td>May 2026 <span class="tags"><span class="tag accent">just added</span></span><span class="sub show-sm">12 May, 18:30</span></td><td class="hide-sm">12 May, 18:30</td><td class="r">4.2 kW</td></tr>
+              </tbody>
+              <tfoot><tr><td>Average of 12 months<span class="sub">48.2 ÷ 12</span></td><td class="hide-sm"></td><td class="r">4.0 kW</td></tr></tfoot>
+            </table>
+          </div>
+        </div></div>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: a peak is your highest 15-minute power use. ≈ marks the estimated capacity charge — a rough regional rate, not your grid operator's bill.</span></p>
+
+  <!-- Popovers (moved to <body> by app.js). IDs prefixed with the tab name. -->
+  <div class="popover" id="pk-pop-rolling" aria-label="Rolling average" hidden>
+    <h3>Rolling average</h3>
+    <p>Each month, your single highest 15-minute peak is recorded. Your rolling average is the mean of your last 12 monthly peaks. Every new month pushes the oldest one out — that's the "rolling" part.</p>
+  </div>
+  <div class="popover" id="pk-pop-tariff" aria-label="Capacity tariff" hidden>
+    <h3>Capacity tariff</h3>
+    <p>In Flanders, part of your grid costs depends on how much power you draw at once, not only on how much energy you use in total. Your 12-month rolling average is the number that sets it.</p>
+  </div>
+  <div class="popover" id="pk-pop-est" aria-label="Estimated capacity charge" hidden>
+    <h3>Estimated capacity charge <span class="tag accent">New idea</span></h3>
+    <p>Translating the kW number into a rough € figure.</p>
+    <p class="note">Rough estimate, fixed regional €/kW rate — not your grid operator's exact rate. Eliq's price formulas can't compute this component.</p>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Peak</summary>
+    <h4>Approval &amp; structure</h4>
+    <ul>
+      <li>✓ Approved: chart + stats + rolling-average explainer (calc table) + benchmark + capacity-charge estimate idea. IA per ux-audit §3.6.</li>
+      <li>Hero = 12-month rolling average (was the 3rd stat card) + ≈ €7.40 + comparison. Latest/Month peak = 2-up row under the chart. Calc table behind the disclosure.</li>
+      <li>Capacity-charge card folded into the hero € line; its title, "New idea" badge, sub and honesty note live in the ≈ popover (verbatim).</li>
+    </ul>
+    <h4>Phase 4 fixes</h4>
+    <ul>
+      <li>Gauge removed. Comparison is now a bullet meter on a plain 0–5 kW ruler (starts at zero, 1 kW ticks; 5 kW = next whole kW above the largest value shown, 4.24). You 4.0 kW = filled bar + dot above; Flemish average 4.24 kW = tick labelled below. No derived "−0.24 kW" reading: the delta is written as "0.24 kW below the Flemish average".</li>
+      <li>Thresholds 0.2 kW apart: the 12-month avg line (the one that sets your tariff) is emphasised (2px, accent); month peak is 1px ink. Labels in the right gutter are de-collided with leader lines; at &lt;480px they move to a key row above the plot. y-axis has a 4 kW tick.</li>
+      <li>Red is only the month's peak (bar, annotation, "Month peak" swatch) and the "highest" tag. The roll-off bar, strip and hourglass are ink/neutral.</li>
+      <li>"Rolls off after June" → "Drops out 1 Jun 2026" / "drops out on 1 June 2026" (June 2025 counts through May 2026 = "1 more month").</li>
+      <li>Year view works (12 monthly peaks from the calc table; Jun 2025 in ink with its drop-out date, May 2026 in accent, 4.0 kW average line). Day and Week are shown but disabled until 15-minute data is wired (not in the keyboard order).</li>
+      <li>Chart: focusable; ←/→ steps through days with a tooltip (announced), Esc clears.</li>
+    </ul>
+    <h4>Data (demo-data.md)</h4>
+    <ul>
+      <li>Month peak date 18 May → 12 May, 18:30. Chart = 18 real days (1–18 May); 19–31 May shown as "still to come".</li>
+      <li>"About 3.9 kW if it rolled off today" = (48.2 − 5.8 + 4.2) ÷ 12 ≈ 3.9 (demo-data).</li>
+    </ul>
+    <h4>Reason codes</h4>
+    <ul><li>peakpower endpoint; history ≥ 12 months → this state. &lt; 12 months → "Peak · insufficient history".</li></ul>
+  </details>
+</section>
+
+<!-- ════════════════════════ PEAK · insufficient history (< 12 months) ════════════════════════ -->
+<section class="panel" id="panel-peak-history" data-tab="peak" data-label="Peak · insufficient history" aria-labelledby="pkh-title">
+  <div class="grid stretch">
+
+    <div class="span-12 ambient left">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <h1 class="hero__label" id="pkh-title">Average so far
+              <button class="info" type="button" data-pop="pk-pop-rolling" aria-label="What is a rolling average?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </h1>
+            <p class="hero__figure hero-num"><span class="num" data-count="3.0">3.0</span><span class="unit">kW</span></p>
+            <p class="hero__caption">Based on 3 months, not 12 yet</p>
+
+            <div class="pk-ready">
+              <h2 class="section-title">Still building your 12-month average</h2>
+              <p class="small secondary">3 of 12 months collected so far</p>
+              <div class="readiness" data-done="3" data-total="12" data-labels="Jul,Aug,Sep,Oct,Nov,Dec,Jan,Feb,Mar,Apr,May,Jun"
+                   aria-label="3 of 12 months collected: July, August and September 2025. Complete after June 2026.">
+                <div class="readiness__foot">
+                  <span><b>Complete after June 2026</b> · 9 more months</span>
+                </div>
+              </div>
+              <p class="small secondary mt-2">There's nothing you need to do — we'll keep counting.</p>
+            </div>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">How you compare</p>
+            <div class="pk-bench" id="pkh-bench"></div>
+            <p class="small secondary">Your average so far is <b>3.0 kW</b> — the Flemish average is <b>4.24 kW</b>.</p>
+            <p class="callout mt-4"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>Take this comparison lightly — it's based on 3 months, not your full year.</span></p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="surface span-8" aria-labelledby="pkh-chart-title">
+      <div class="pk-chart-head">
+        <h2 class="section-title" id="pkh-chart-title">Daily peaks</h2>
+        <div class="pk-controls">
+          <div class="seg" role="radiogroup" aria-label="Period">
+            <button type="button" data-value="day" aria-checked="false" aria-disabled="true">Day</button>
+            <button type="button" data-value="week" aria-checked="false" aria-disabled="true">Week</button>
+            <button type="button" data-value="month" aria-checked="true">Month</button>
+            <button type="button" data-value="year" aria-checked="false" aria-disabled="true">Year</button>
+          </div>
+          <div class="datenav">
+            <button type="button" aria-label="Previous month"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+            <span class="label">Sep 2025</span>
+            <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <p class="insight pk-insight">Your highest this month was <b>3.4 kW on 6 Sep at 19:00</b> — above your 3.0 kW average so far.</p>
+      <div id="pkh-chart"></div>
+      <div class="stat-row">
+        <div class="stat">
+          <p class="stat__label"><span class="mark" aria-hidden="true"></span>Latest peak</p>
+          <p class="stat__value stat-num">3.1<span class="unit">kW</span></p>
+          <p class="stat__meta">Today, 08:15–08:30</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label"><span class="mark alert" aria-hidden="true"></span>Month peak</p>
+          <p class="stat__value stat-num">3.4<span class="unit">kW</span></p>
+          <p class="stat__meta">6 Sep, 19:00</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="surface span-4 pk-coming" aria-labelledby="pkh-coming-title">
+      <p class="overline" id="pkh-coming-title">What's coming up</p>
+      <div class="pk-coming__head">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-trend-up"/></svg></span>
+        <p class="secondary">Nothing "rolls off" yet — every month you have still counts. The full picture (and your real capacity-tariff number) needs a complete 12 months.</p>
+      </div>
+      <p class="callout"><svg class="icon sm" aria-hidden="true"><use href="#i-scale"/></svg><span>Belgium sets a 2.5 kW regulatory floor — if your average lands below that, 2.5 kW is what actually gets billed, not your raw number.</span></p>
+      <div class="pk-cta">
+        <a href="#panel-advice" class="btn btn--primary">Lower your peak <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        <p class="btn-note">Tips to spread heavy appliances, in Advice</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: a peak is your highest 15-minute power use. Your capacity-tariff figure settles once 12 months are in.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Peak · insufficient history</summary>
+    <h4>Approval &amp; structure</h4>
+    <ul>
+      <li>✓ Edge case — also approved: insufficient history. Chart, Latest peak and Month peak work as usual; only the rolling-average pieces change shape.</li>
+      <li>Hero: "Average so far 3.0 kW · Based on 3 months, not 12 yet" + the shared readiness meter (12 segments, 3 filled, Jul–Jun) + completion date. The kW comparison meter is separate and never carries a month count.</li>
+      <li>"Complete after June 2026 · 9 more months" and "There's nothing you need to do — we'll keep counting." are derived copy (3 of 12 months: Jul, Aug, Sep 2025) — flag for copy review.</li>
+      <li>Comparison meter: provisional (hatched) fill to 3.0 kW with a hollow dot; 2.5 kW regulatory floor shown as a shaded zone because it is relevant in this state; Flemish average 4.24 kW. Caveat kept verbatim next to it.</li>
+      <li>No calc table and no € estimate in this state (both assume a settled 12-month figure). Year view disabled (3 months only).</li>
+    </ul>
+    <h4>Data</h4>
+    <ul>
+      <li>Separate new-customer household, Sep 2025: Latest 3.1 kW (Today 08:15–08:30), Month peak 3.4 kW (6 Sep 19:00), Average so far 3.0 kW.</li>
+      <li>⚠ <b>Illustrative</b>: daily peaks 1–15 Sep 2025 (demo-data change log #9: 2.4, 2.1, 2.6, 2.2, 2.8, 3.4, 2.5, 2.0, 2.7, 2.3, 2.9, 2.2, 2.6, 2.4, 3.1; "today" = 15 Sep). Needs real data before build.</li>
+    </ul>
+    <h4>Reason code</h4>
+    <ul><li>History &lt; 12 months (peakpower endpoint). No named code.</li></ul>
+  </details>
+</section>
+
+<script>
+/* Peak charts — one JuneCharts call each */
+(() => {
+  const days = n => Array.from({ length: n }, (_, i) => String(i + 1));
+  const may = [2.6, 2.1, 3.0, 2.4, 2.8, 1.9, 3.1, 2.2, 2.7, 3.3, 2.5, 4.2, 2.9, 3.4, 2.3, 3.0, 2.6, 3.8];
+  JuneCharts.bars('#pk-chart-month', {
+    values: may, slots: 31, labels: days(31), tipLabels: days(31).map(d => d + ' May'),
+    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' },
+    highlight: { index: 11, tone: 'alert' }, annotation: { index: 11, text: '4.2 kW · 12 May, 18:30', tone: 'alert' },
+    thresholds: [
+      { value: 4.2, label: 'Month peak', tone: 'ink' },
+      { value: 4.0, label: '12-month avg', tone: 'accent', emphasis: true }
+    ],
+    yMax: 5, yTicks: [0, 1, 2, 3, 4, 5], yLabel: 'Daily peak (kW)', unit: 'kW', decimals: 1,
+    futureLabel: '19–31 May still to come',
+    ariaLabel: 'Bar chart of daily peaks, 1 to 18 May 2026; 19 to 31 May have not happened yet. Most days sit between 1.9 and 3.4 kW. The month peak is 4.2 kW on 12 May at 18:30, shown in red. Today reached 3.8 kW. Lines: month peak 4.2 kW and 12-month average 4.0 kW.'
+  });
+  const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'];
+  const monthsLong = ['Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026'];
+  const monthly = [5.8, 3.2, 3.8, 4.0, 3.5, 4.4, 3.3, 2.9, 4.0, 4.9, 4.2, 4.2];
+  JuneCharts.bars('#pk-chart-year', {
+    values: monthly, labels: months, tipLabels: monthsLong, tone: 'muted',
+    highlight: [{ index: 0, tone: 'ink' }, { index: 11, tone: 'accent' }],
+    annotation: { index: 0, text: 'Drops out 1 Jun 2026', tone: 'ink' },
+    thresholds: [{ value: 4.0, label: '12-month avg', tone: 'accent', emphasis: true }],
+    yMax: 6, yTicks: [0, 2, 4, 6], yLabel: 'Monthly peak (kW)', unit: 'kW', decimals: 1, maxBar: 28,
+    ariaLabel: 'Bar chart of your 12 monthly peaks, June 2025 to May 2026: 5.8, 3.2, 3.8, 4.0, 3.5, 4.4, 3.3, 2.9, 4.0, 4.9, 4.2 and 4.2 kW. Their average is 4.0 kW. June 2025 is the highest and drops out on 1 June 2026.'
+  });
+  JuneCharts.bars('#pk-strip', {
+    values: monthly, labels: monthsLong, compact: true, tone: 'muted', xTicks: [0, 11], height: 64,
+    highlight: [{ index: 0, tone: 'ink' }, { index: 11, tone: 'accent' }], yMax: 6, unit: 'kW', decimals: 1, interactive: false,
+    ariaLabel: 'Monthly peaks from June 2025 to May 2026. June 2025, the highest at 5.8 kW, drops out next; May 2026 (4.2 kW) was just added.'
+  });
+  JuneCharts.meter('#pk-bench', {
+    min: 0, max: 5, ticks: [0, 1, 2, 3, 4, 5], unit: 'kW', fill: { to: 4.0 },
+    markers: [
+      { value: 4.0, label: 'You', kind: 'you', side: 'above' },
+      { value: 4.24, label: 'Flemish average', kind: 'ref', side: 'below', valueText: '4.24 kW' }
+    ],
+    ariaLabel: 'Comparison on a 0 to 5 kW scale: your rolling average 4.0 kW is 0.24 kW below the Flemish average of 4.24 kW.'
+  });
+
+  const sep = [2.4, 2.1, 2.6, 2.2, 2.8, 3.4, 2.5, 2.0, 2.7, 2.3, 2.9, 2.2, 2.6, 2.4, 3.1];
+  JuneCharts.bars('#pkh-chart', {
+    values: sep, slots: 30, labels: days(30), tipLabels: days(30).map(d => d + ' Sep'),
+    xTicks: [0, 4, 9, 19, 24, 29], now: { index: 14, label: 'Today' },
+    highlight: { index: 5, tone: 'alert' }, annotation: { index: 5, text: '3.4 kW · 6 Sep, 19:00', tone: 'alert' },
+    thresholds: [
+      { value: 3.4, label: 'Month peak', tone: 'ink' },
+      { value: 3.0, label: 'Average so far', tone: 'accent', emphasis: true }
+    ],
+    yMax: 4, yTicks: [0, 1, 2, 3, 4], yLabel: 'Daily peak (kW)', unit: 'kW', decimals: 1,
+    futureLabel: '16–30 Sep still to come',
+    ariaLabel: 'Bar chart of daily peaks, 1 to 15 September 2025; the rest of the month has not happened yet. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today reached 3.1 kW. Lines: month peak 3.4 kW and average so far 3.0 kW.'
+  });
+  JuneCharts.meter('#pkh-bench', {
+    min: 0, max: 5, ticks: [0, 1, 2, 3, 4, 5], unit: 'kW', fill: { to: 3.0, provisional: true },
+    zones: [{ from: 0, to: 2.5, label: 'Regulatory floor', valueText: '2.5 kW' }],
+    markers: [
+      { value: 3.0, label: 'You, so far', kind: 'you', side: 'above', hollow: true },
+      { value: 4.24, label: 'Flemish average', kind: 'ref', side: 'below', valueText: '4.24 kW' }
+    ],
+    ariaLabel: 'Comparison on a 0 to 5 kW scale: your average so far, 3.0 kW, is above the 2.5 kW regulatory floor and below the Flemish average of 4.24 kW. Based on 3 months only.'
+  });
+})();
+</script>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>June Insights</title>
+<!-- Build: node tools/build.mjs → app/index.html (fragments from app/panels/*.html replace the PANELS marker) -->
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+/* Critical: panel switch motion is decided before components.css paints (full rules live there). */
+@media (prefers-reduced-motion: reduce) { .panel.active { animation: none; } }
+</style>
+<script src="app.js"></script>
+</head>
+<body>
+
+<!-- ═══ Icon sprite (Lucide-style, 24px grid, 1.5px stroke). Use: <svg class="icon" aria-hidden="true"><use href="#i-name"/></svg> ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- navigation -->
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chev-u" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+    <symbol id="i-arrow-up-r" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+    <symbol id="i-arrow-down-l" viewBox="0 0 24 24"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.7 9.7 0 0 0-6.7 2.7L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <!-- topics -->
+    <symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol>
+    <symbol id="i-line" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+    <symbol id="i-bars" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22"/><path d="M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4A2 2 0 0 0 17 6.2V2"/></symbol>
+    <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></symbol>
+    <symbol id="i-trend-up" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h16"/><path d="m4 7-2.5 6a3.5 3.5 0 0 0 5 0z"/><path d="m20 7-2.5 6a3.5 3.5 0 0 0 5 0z"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 3.8M18 2H6v7a6 6 0 0 0 12 0V2z"/></symbol>
+    <symbol id="i-credit-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/></symbol>
+    <!-- energy & appliances -->
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+    <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></symbol>
+    <symbol id="i-pot" viewBox="0 0 24 24"><path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="m4 8 16-4"/><path d="m8.9 6.8-.5-1.8a2 2 0 0 1 1.5-2.4l1.9-.5a2 2 0 0 1 2.4 1.5l.5 1.8"/></symbol>
+    <symbol id="i-fridge" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M5 10h14"/><path d="M9 5v2M9 13v3"/></symbol>
+    <symbol id="i-washer" viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M7 6h.01M10 6h.01"/></symbol>
+    <!-- brand: hand-drawn bolt (not a UI icon — wordmark / empty states only) -->
+    <symbol id="brand-bolt" viewBox="0 0 16 24"><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="var(--accent)" transform="translate(1.4 1.2)"/><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="currentColor"/></symbol>
+    <!-- chart pattern: provisional (not-yet-settled) fills -->
+    <pattern id="jc-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="jc-hatch-bg" width="6" height="6"/><line class="jc-hatch-a" x1="0" y1="0" x2="0" y2="6"/></pattern>
+  </defs>
+</svg>
+
+<!-- ═══ Reviewer layer (meta — outside the product frame; not product UI) ═══ -->
+<div class="meta meta-bar" role="region" aria-label="Reviewer controls">
+  <span class="label">June Insights · Phase 4</span>
+  <div class="group">
+    <button type="button" id="panel-prev" aria-label="Previous panel">‹</button>
+    <label class="sr-only" for="panel-picker">Panel</label>
+    <select id="panel-picker"></select>
+    <button type="button" id="panel-next" aria-label="Next panel">›</button>
+  </div>
+  <span class="spacer"></span>
+  <div class="group" role="group" aria-label="Theme">
+    <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
+    <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+    <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+  </div>
+</div>
+
+<!-- ═══ Product frame ═══ -->
+<div class="frame">
+<div class="app">
+  <header class="topbar">
+    <div class="wordmark">
+      <span class="logo" aria-label="June">june<svg class="bolt" aria-hidden="true"><use href="#brand-bolt"/></svg></span>
+      <span class="divider" aria-hidden="true"></span>
+      <span class="product">Insights</span>
+    </div>
+    <div class="right">
+      <span class="home-chip"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span>Detached house · Flanders</span></span>
+      <button class="avatar" type="button" aria-label="Account"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></button>
+    </div>
+  </header>
+
+  <nav class="tabs-scroll" aria-label="Insights topics">
+    <div class="tabs">
+      <span class="thumb" aria-hidden="true"></span>
+      <a class="tab" href="#panel-overview" data-tab="overview">Overview</a>
+      <a class="tab" href="#panel-compare" data-tab="compare">Compare</a>
+      <a class="tab" href="#panel-solar" data-tab="solar">Solar</a>
+      <a class="tab" href="#panel-breakdown" data-tab="breakdown">Breakdown</a>
+      <a class="tab" href="#panel-peak" data-tab="peak">Peak</a>
+      <a class="tab" href="#panel-forecast" data-tab="forecast">Forecast</a>
+      <a class="tab" href="#panel-advice" data-tab="advice">Advice</a>
+      <a class="tab" href="#panel-budgets" data-tab="budgets">Budgets</a>
+    </div>
+  </nav>
+
+  <main id="main">
+<!-- ═══ overview ═══ -->
+<style>
+/* Overview — tab-specific layout only (components come from components.css) */
+[data-tab="overview"] .ov-figure { display: flex; align-items: baseline; gap: 12px 16px; flex-wrap: wrap; margin-top: var(--s-6); }
+[data-tab="overview"] .ov-figure .cap { font-size: var(--fs-md); color: var(--ink-700); }
+[data-tab="overview"] .ov-meter { margin-top: var(--s-6); }
+[data-tab="overview"] .ov-left { margin-top: var(--s-4); font-size: var(--fs-md); color: var(--ink-700); }
+[data-tab="overview"] .ov-head { padding: 8px 4px 12px; }
+[data-tab="overview"] .row__meta .mid-num { font-size: var(--fs-lg); }
+</style>
+
+<section class="panel" id="panel-overview" data-tab="overview" data-label="Overview · May 2026" aria-labelledby="ov-title">
+  <div class="grid">
+
+    <!-- Hero: one answer, one numeral (the forecast the sentence talks about) -->
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__status">
+          <span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span>
+          <span class="xs muted">May 2026 · electricity</span>
+        </div>
+        <h1 class="hero__sentence" id="ov-title">May is on track — 290&nbsp;kWh forecast against your 300&nbsp;kWh budget.</h1>
+        <div class="ov-figure">
+          <p class="hero-num"><span class="num" data-count="290">290</span><span class="unit">kWh</span></p>
+          <p class="cap">forecast for May · budget 300&nbsp;kWh</p>
+        </div>
+        <div class="ov-meter">
+          <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9"
+               role="img" aria-label="Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
+            <span class="meter__fcast grow-x"></span>
+            <span class="meter__fill grow-x"></span>
+            <span class="meter__limit"></span>
+          </div>
+          <div class="meter-key">
+            <span><i class="sw" aria-hidden="true"></i>Used so far <b>187 kWh</b></span>
+            <span><i class="sw fcast" aria-hidden="true"></i>Forecast <b>290 kWh</b></span>
+            <span><i class="sw limit" aria-hidden="true"></i>Budget <b>300 kWh</b></span>
+          </div>
+        </div>
+        <p class="ov-left"><b>113 kWh left</b> for the next 13 days — about 8.7 kWh a day.</p>
+      </article>
+    </div>
+
+    <!-- Needs attention: ranked, one link per card -->
+    <section class="span-5" aria-labelledby="ov-attn">
+      <div class="section-head ov-head">
+        <h2 class="section-title" id="ov-attn">Needs attention <span class="badge">3</span></h2>
+      </div>
+      <ol class="rank-list">
+        <li>
+          <a href="#panel-compare" class="surface tactile rank-card">
+            <span class="rank" aria-hidden="true">1</span>
+            <span>
+              <span class="rank-card__topic"><svg class="icon sm" aria-hidden="true"><use href="#i-users"/></svg>Compare</span>
+              <span class="rank-card__title"><span class="alert-text">+73%</span> more than similar homes</span>
+              <span class="rank-card__line">April 2026: you used 442&nbsp;kWh, similar homes 255&nbsp;kWh.</span>
+              <span class="sr-only">See comparison</span>
+            </span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="#panel-peak" class="surface tactile rank-card">
+            <span class="rank" aria-hidden="true">2</span>
+            <span>
+              <span class="rank-card__topic"><svg class="icon sm" aria-hidden="true"><use href="#i-activity"/></svg>Peak</span>
+              <span class="rank-card__title">Your June 2025 peak drops out on 1&nbsp;June</span>
+              <span class="rank-card__line">At 5.8&nbsp;kW it's your highest — your average may fall to about 3.9&nbsp;kW.</span>
+              <span class="sr-only">See peak details</span>
+            </span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+          </a>
+        </li>
+        <li>
+          <a href="#panel-advice" class="surface tactile rank-card">
+            <span class="rank" aria-hidden="true">3</span>
+            <span>
+              <span class="rank-card__topic"><svg class="icon sm" aria-hidden="true"><use href="#i-bulb"/></svg>Advice</span>
+              <span class="rank-card__title">3 new tips</span>
+              <span class="rank-card__line">Top tip saves <span class="approx">≈</span>&nbsp;€150/year.</span>
+              <span class="sr-only">See all advice</span>
+            </span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+          </a>
+        </li>
+      </ol>
+    </section>
+
+    <!-- All topics -->
+    <section class="span-7" aria-labelledby="ov-topics">
+      <div class="section-head ov-head">
+        <h2 class="section-title" id="ov-topics">All topics</h2>
+        <span class="xs muted">May 2026</span>
+      </div>
+      <div class="surface" style="padding:0">
+        <ul class="rows">
+          <li><a href="#panel-forecast" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span>
+            <span class="row__title">Forecast</span>
+            <span class="row__sub">Projected this month — 8% more than May last year (269&nbsp;kWh).</span>
+            <span class="row__meta mid-num">290<span class="unit">kWh</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See forecast</span></a></li>
+          <li><a href="#panel-budgets" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg></span>
+            <span class="row__title">Budgets</span>
+            <span class="row__sub">187 of 300&nbsp;kWh used, 13 days left.</span>
+            <span class="row__meta"><span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See your budget</span></a></li>
+          <li><a href="#panel-compare" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
+            <span class="row__title">Compare</span>
+            <span class="row__sub">More than similar homes in April.</span>
+            <span class="row__meta mid-num">+73%</span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See comparison</span></a></li>
+          <li><a href="#panel-peak" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg></span>
+            <span class="row__title">Peak</span>
+            <span class="row__sub">12-month average — sets your capacity tariff.</span>
+            <span class="row__meta mid-num">4.0<span class="unit">kW</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See peak details</span></a></li>
+          <li><a href="#panel-breakdown" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-pie"/></svg></span>
+            <span class="row__title">Breakdown</span>
+            <span class="row__sub">Your biggest category this month.</span>
+            <span class="row__meta mid-num"><span class="unit" style="margin:0 4px 0 0">Heating</span>38%</span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See full breakdown</span></a></li>
+          <li><a href="#panel-solar" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span>
+            <span class="row__title">Solar</span>
+            <span class="row__sub">Net exporter today: +3.2&nbsp;kWh to the grid.</span>
+            <span class="row__meta mid-num">62%<span class="unit">used at home</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See solar flow</span></a></li>
+          <li><a href="#panel-advice" class="row">
+            <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+            <span class="row__title">Advice</span>
+            <span class="row__sub">Top tip saves <span class="approx">≈</span>&nbsp;€150/year.</span>
+            <span class="row__meta mid-num">3<span class="unit">new tips</span></span>
+            <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            <span class="sr-only">See all advice</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. Tip savings use an average electricity price (average, €0.27/kWh), not your own tariff.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Overview</summary>
+    <h4>Structure</h4>
+    <ul>
+      <li>Content: inventory §1 (source panel id <code>panel-consumption</code>). IA per ux-audit §3.1: hero status → needs attention (ranked 0–3) → all topics.</li>
+      <li>Phase 4 fix: ONE hero numeral. It is the 290 kWh forecast the sentence talks about; "113 kWh left for 13 days" moved to the supporting line under the meter (was a competing second hero).</li>
+      <li>"About 8.7 kWh a day" = 113 ÷ 13, the Budgets pacing figure (demo-data "stay under 8.7 kWh/day").</li>
+      <li>Attention cards: one affordance each (whole card is the link, chevron only). Card headlines are 16px body-strong, not hero-size numerals. Red is used once on this screen: +73% in the attention list (over similar homes). The topics row shows +73% in ink.</li>
+      <li>Peak card: "drops out on 1 June" replaces "next month"/"after June" (June 2025 counts through May 2026). "≈ 3.9 kW" = average if it rolled off today (demo-data).</li>
+      <li>Compare card line uses the canonical April 2026 figures (442 vs 255 kWh).</li>
+      <li>Tile link texts ("See comparison →" etc.) kept as each link's accessible name.</li>
+      <li>Consumption placeholder tile removed (designer commentary). Solar row only for solar households (<code>requiredCapability: "solar"</code>).</li>
+    </ul>
+    <h4>Data changes (demo-data.md change log)</h4>
+    <ul>
+      <li>Forecast 412 → 290 kWh; "8% more than May last year (269 kWh)".</li>
+      <li>Compare "this month" → "in April". Solar "self-consumed" → "used at home". Advice "540 kWh/year" → "≈ €150/year".</li>
+    </ul>
+    <h4>Motion</h4>
+    <ul><li>First view: 290 counts up (700ms), meter fills grow from the left. Reduced motion: static.</li></ul>
+    <h4>Reason codes</h4>
+    <ul><li>None designed. Topic-level fallbacks should reuse each tab's own empty-state copy in short form.</li></ul>
+  </details>
+</section>
+
+<!-- ═══ peak ═══ -->
+<style>
+/* Peak — tab-specific layout only */
+[data-tab="peak"] .pk-money { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--hairline); }
+[data-tab="peak"] .pk-money .cap { flex-basis: 100%; font-size: var(--fs-sm); color: var(--ink-500); }
+[data-tab="peak"] .pk-bench { margin: var(--s-5) 0 var(--s-4); }
+[data-tab="peak"] .pk-chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+[data-tab="peak"] .pk-controls { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
+[data-tab="peak"] .pk-insight { margin: var(--s-3) 0 var(--s-5); }
+[data-tab="peak"] .pk-coming { display: flex; flex-direction: column; gap: var(--s-4); }
+[data-tab="peak"] .pk-coming__head { display: flex; gap: 14px; align-items: flex-start; }
+[data-tab="peak"] .pk-coming__title { font-size: var(--fs-md); font-weight: var(--w-semibold); }
+[data-tab="peak"] .pk-coming .meter-ends { margin-top: 8px; }
+[data-tab="peak"] .pk-beforeafter { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+[data-tab="peak"] .pk-beforeafter .stat__label { font-size: var(--fs-xs); color: var(--ink-500); }
+[data-tab="peak"] .pk-cta { margin-top: auto; padding-top: var(--s-2); }
+[data-tab="peak"] .pk-ready { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--hairline); }
+[data-tab="peak"] .pk-ready .readiness { margin-top: var(--s-4); }
+[data-tab="peak"] .pk-calc { max-width: 760px; }
+@media (min-width: 961px) { [data-tab="peak"] .grid.stretch > .surface { height: 100%; } }
+</style>
+
+<!-- ════════════════════════════ PEAK · main (12+ months) ════════════════════════════ -->
+<section class="panel" id="panel-peak" data-tab="peak" data-label="Peak · May 2026" aria-labelledby="pk-title">
+  <div class="grid stretch">
+
+    <!-- Hero: the tariff answer + honest comparison meter -->
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <h1 class="hero__label" id="pk-title">12-month rolling average
+              <button class="info" type="button" data-pop="pk-pop-rolling" aria-label="What is a rolling average?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </h1>
+            <p class="hero__figure hero-num"><span class="num" data-count="4.0">4.0</span><span class="unit">kW</span></p>
+            <p class="hero__caption">This sets your capacity tariff
+              <button class="info" type="button" data-pop="pk-pop-tariff" aria-label="What is the capacity tariff?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </p>
+            <div class="pk-money">
+              <button class="est" type="button" data-pop="pk-pop-est" aria-label="About this estimate">≈</button>
+              <span class="mid-num">€7.40<span class="unit">/ month</span></span>
+              <span class="cap">Estimated capacity charge</span>
+            </div>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">How you compare</p>
+            <p class="mt-2"><span class="chip positive"><svg class="icon" aria-hidden="true"><use href="#i-trend-down"/></svg>0.24 kW below the Flemish average</span></p>
+            <div class="pk-bench" id="pk-bench"></div>
+            <p class="small secondary">Your rolling average is <b>4.0 kW</b> — the Flemish average is <b>4.24 kW</b>. You're just under average!</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Supporting: the chart (Month / Year) + latest & month peak -->
+    <article class="surface span-8" id="pk-chart-tile" aria-labelledby="pk-chart-title">
+      <div class="pk-chart-head">
+        <h2 class="section-title" id="pk-chart-title"><span data-when="month">Daily peaks</span><span data-when="year" hidden>Monthly peaks</span></h2>
+        <div class="pk-controls">
+          <div class="seg" role="radiogroup" aria-label="Period" data-seg-target="#pk-chart-tile">
+            <button type="button" data-value="day" aria-checked="false" aria-disabled="true">Day</button>
+            <button type="button" data-value="week" aria-checked="false" aria-disabled="true">Week</button>
+            <button type="button" data-value="month" aria-checked="true">Month</button>
+            <button type="button" data-value="year" aria-checked="false">Year</button>
+          </div>
+          <div class="datenav" data-when="month">
+            <button type="button" aria-label="Previous month"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+            <span class="label">May 2026</span>
+            <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+          </div>
+          <span class="datenav" data-when="year" hidden><span class="label">Jun 2025 – May 2026</span></span>
+        </div>
+      </div>
+
+      <div data-when="month">
+        <p class="insight pk-insight">Your highest this month was <b>4.2 kW on 12 May at 18:30</b> — just above your 4.0 kW average.</p>
+        <div id="pk-chart-month"></div>
+      </div>
+      <div data-when="year" hidden>
+        <p class="insight pk-insight">Your average is the mean of these 12 monthly peaks. <b>June 2025 (5.8 kW)</b> is the highest — it drops out on 1 June 2026.</p>
+        <div id="pk-chart-year"></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <p class="stat__label"><span class="mark" aria-hidden="true"></span>Latest peak</p>
+          <p class="stat__value stat-num">3.8<span class="unit">kW</span></p>
+          <p class="stat__meta">Today, 14:30–14:45</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label"><span class="mark alert" aria-hidden="true"></span>Month peak</p>
+          <p class="stat__value stat-num">4.2<span class="unit">kW</span></p>
+          <p class="stat__meta">12 May, 18:30</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- What's coming up: the roll-off, in plain dates -->
+    <article class="surface span-4 pk-coming" aria-labelledby="pk-coming-title">
+      <p class="overline">What's coming up</p>
+      <div class="pk-coming__head">
+        <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+        <div>
+          <h2 class="pk-coming__title" id="pk-coming-title">Your biggest peak is still counting</h2>
+          <p class="small secondary">5.8 kW in June 2025 — the highest of your last 12 months</p>
+        </div>
+      </div>
+      <div>
+        <div class="meter thin rolloff" style="--used: 92" role="img" aria-label="The June 2025 peak has counted for 11 of its 12 months. It drops out of your average on 1 June 2026."><span class="meter__fill grow-x"></span></div>
+        <div class="meter-ends"><span>Counting since Jun 2025</span><span>Drops out 1 Jun 2026</span></div>
+      </div>
+      <p class="small secondary">Counts toward your average for <b>1 more month</b>, then it rolls off and your average may drop.</p>
+      <div>
+        <p class="xs muted">Your last 12 monthly peaks</p>
+        <div id="pk-strip" class="mt-2"></div>
+      </div>
+      <div class="callout">
+        <svg class="icon sm" aria-hidden="true"><use href="#i-trend-down"/></svg>
+        <div>
+          <p>If it rolled off today, your average would be about <b>3.9 kW</b>.</p>
+          <div class="pk-beforeafter" aria-hidden="true">
+            <span><span class="stat__label">Today</span><span class="mid-num">4.0<span class="unit">kW</span></span></span>
+            <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg>
+            <span><span class="stat__label">Without June 2025</span><span class="mid-num">≈ 3.9<span class="unit">kW</span></span></span>
+          </div>
+        </div>
+      </div>
+      <div class="pk-cta">
+        <a href="#panel-advice" class="btn btn--primary">Lower your peak <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        <p class="btn-note">Tips to spread heavy appliances, in Advice</p>
+      </div>
+    </article>
+
+    <!-- Detail: calculation, behind a disclosure -->
+    <article class="surface span-12 disclosure">
+      <button class="disc-btn" type="button" aria-expanded="false" aria-controls="pk-calc-body">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span>
+        <span><span class="t">How the 12-month average is calculated</span><span class="s">See the full calculation</span></span>
+        <span class="chev" aria-hidden="true"><svg class="icon sm"><use href="#i-chev-d"/></svg></span>
+      </button>
+      <div class="disc-body" id="pk-calc-body">
+        <div><div class="disc-inner">
+          <p class="insight" style="margin-bottom:var(--s-4)"><b>Your rolling average, explained.</b> Each month we take your single highest peak. Your rolling average is the mean of the last 12 of them — when a new month is added, the oldest one drops off.</p>
+          <div class="pk-calc">
+            <table class="table">
+              <thead><tr><th scope="col">Month</th><th scope="col" class="hide-sm">When</th><th scope="col" class="r">Peak</th></tr></thead>
+              <tbody>
+                <tr class="hl"><td>Jun 2025 <span class="tags"><span class="tag">rolls off next</span><span class="tag alert">highest</span></span><span class="sub show-sm">12 Jun, 19:00</span></td><td class="hide-sm">12 Jun, 19:00</td><td class="r">5.8 kW</td></tr>
+                <tr><td>Jul 2025<span class="sub show-sm">28 Jul, 20:15</span></td><td class="hide-sm">28 Jul, 20:15</td><td class="r">3.2 kW</td></tr>
+                <tr><td>Aug 2025<span class="sub show-sm">14 Aug, 18:30</span></td><td class="hide-sm">14 Aug, 18:30</td><td class="r">3.8 kW</td></tr>
+                <tr><td>Sep 2025<span class="sub show-sm">3 Sep, 19:45</span></td><td class="hide-sm">3 Sep, 19:45</td><td class="r">4.0 kW</td></tr>
+                <tr><td>Oct 2025<span class="sub show-sm">21 Oct, 07:15</span></td><td class="hide-sm">21 Oct, 07:15</td><td class="r">3.5 kW</td></tr>
+                <tr><td>Nov 2025<span class="sub show-sm">9 Nov, 18:00</span></td><td class="hide-sm">9 Nov, 18:00</td><td class="r">4.4 kW</td></tr>
+                <tr><td>Dec 2025<span class="sub show-sm">24 Dec, 20:30</span></td><td class="hide-sm">24 Dec, 20:30</td><td class="r">3.3 kW</td></tr>
+                <tr><td>Jan 2026<span class="sub show-sm">15 Jan, 07:00</span></td><td class="hide-sm">15 Jan, 07:00</td><td class="r">2.9 kW</td></tr>
+                <tr><td>Feb 2026<span class="sub show-sm">2 Feb, 19:15</span></td><td class="hide-sm">2 Feb, 19:15</td><td class="r">4.0 kW</td></tr>
+                <tr><td>Mar 2026<span class="sub show-sm">18 Mar, 18:45</span></td><td class="hide-sm">18 Mar, 18:45</td><td class="r">4.9 kW</td></tr>
+                <tr><td>Apr 2026<span class="sub show-sm">7 Apr, 19:00</span></td><td class="hide-sm">7 Apr, 19:00</td><td class="r">4.2 kW</td></tr>
+                <tr><td>May 2026 <span class="tags"><span class="tag accent">just added</span></span><span class="sub show-sm">12 May, 18:30</span></td><td class="hide-sm">12 May, 18:30</td><td class="r">4.2 kW</td></tr>
+              </tbody>
+              <tfoot><tr><td>Average of 12 months<span class="sub">48.2 ÷ 12</span></td><td class="hide-sm"></td><td class="r">4.0 kW</td></tr></tfoot>
+            </table>
+          </div>
+        </div></div>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: a peak is your highest 15-minute power use. ≈ marks the estimated capacity charge — a rough regional rate, not your grid operator's bill.</span></p>
+
+  <!-- Popovers (moved to <body> by app.js). IDs prefixed with the tab name. -->
+  <div class="popover" id="pk-pop-rolling" aria-label="Rolling average" hidden>
+    <h3>Rolling average</h3>
+    <p>Each month, your single highest 15-minute peak is recorded. Your rolling average is the mean of your last 12 monthly peaks. Every new month pushes the oldest one out — that's the "rolling" part.</p>
+  </div>
+  <div class="popover" id="pk-pop-tariff" aria-label="Capacity tariff" hidden>
+    <h3>Capacity tariff</h3>
+    <p>In Flanders, part of your grid costs depends on how much power you draw at once, not only on how much energy you use in total. Your 12-month rolling average is the number that sets it.</p>
+  </div>
+  <div class="popover" id="pk-pop-est" aria-label="Estimated capacity charge" hidden>
+    <h3>Estimated capacity charge <span class="tag accent">New idea</span></h3>
+    <p>Translating the kW number into a rough € figure.</p>
+    <p class="note">Rough estimate, fixed regional €/kW rate — not your grid operator's exact rate. Eliq's price formulas can't compute this component.</p>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Peak</summary>
+    <h4>Approval &amp; structure</h4>
+    <ul>
+      <li>✓ Approved: chart + stats + rolling-average explainer (calc table) + benchmark + capacity-charge estimate idea. IA per ux-audit §3.6.</li>
+      <li>Hero = 12-month rolling average (was the 3rd stat card) + ≈ €7.40 + comparison. Latest/Month peak = 2-up row under the chart. Calc table behind the disclosure.</li>
+      <li>Capacity-charge card folded into the hero € line; its title, "New idea" badge, sub and honesty note live in the ≈ popover (verbatim).</li>
+    </ul>
+    <h4>Phase 4 fixes</h4>
+    <ul>
+      <li>Gauge removed. Comparison is now a bullet meter on a plain 0–5 kW ruler (starts at zero, 1 kW ticks; 5 kW = next whole kW above the largest value shown, 4.24). You 4.0 kW = filled bar + dot above; Flemish average 4.24 kW = tick labelled below. No derived "−0.24 kW" reading: the delta is written as "0.24 kW below the Flemish average".</li>
+      <li>Thresholds 0.2 kW apart: the 12-month avg line (the one that sets your tariff) is emphasised (2px, accent); month peak is 1px ink. Labels in the right gutter are de-collided with leader lines; at &lt;480px they move to a key row above the plot. y-axis has a 4 kW tick.</li>
+      <li>Red is only the month's peak (bar, annotation, "Month peak" swatch) and the "highest" tag. The roll-off bar, strip and hourglass are ink/neutral.</li>
+      <li>"Rolls off after June" → "Drops out 1 Jun 2026" / "drops out on 1 June 2026" (June 2025 counts through May 2026 = "1 more month").</li>
+      <li>Year view works (12 monthly peaks from the calc table; Jun 2025 in ink with its drop-out date, May 2026 in accent, 4.0 kW average line). Day and Week are shown but disabled until 15-minute data is wired (not in the keyboard order).</li>
+      <li>Chart: focusable; ←/→ steps through days with a tooltip (announced), Esc clears.</li>
+    </ul>
+    <h4>Data (demo-data.md)</h4>
+    <ul>
+      <li>Month peak date 18 May → 12 May, 18:30. Chart = 18 real days (1–18 May); 19–31 May shown as "still to come".</li>
+      <li>"About 3.9 kW if it rolled off today" = (48.2 − 5.8 + 4.2) ÷ 12 ≈ 3.9 (demo-data).</li>
+    </ul>
+    <h4>Reason codes</h4>
+    <ul><li>peakpower endpoint; history ≥ 12 months → this state. &lt; 12 months → "Peak · insufficient history".</li></ul>
+  </details>
+</section>
+
+<!-- ════════════════════════ PEAK · insufficient history (< 12 months) ════════════════════════ -->
+<section class="panel" id="panel-peak-history" data-tab="peak" data-label="Peak · insufficient history" aria-labelledby="pkh-title">
+  <div class="grid stretch">
+
+    <div class="span-12 ambient left">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <h1 class="hero__label" id="pkh-title">Average so far
+              <button class="info" type="button" data-pop="pk-pop-rolling" aria-label="What is a rolling average?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </h1>
+            <p class="hero__figure hero-num"><span class="num" data-count="3.0">3.0</span><span class="unit">kW</span></p>
+            <p class="hero__caption">Based on 3 months, not 12 yet</p>
+
+            <div class="pk-ready">
+              <h2 class="section-title">Still building your 12-month average</h2>
+              <p class="small secondary">3 of 12 months collected so far</p>
+              <div class="readiness" data-done="3" data-total="12" data-labels="Jul,Aug,Sep,Oct,Nov,Dec,Jan,Feb,Mar,Apr,May,Jun"
+                   aria-label="3 of 12 months collected: July, August and September 2025. Complete after June 2026.">
+                <div class="readiness__foot">
+                  <span><b>Complete after June 2026</b> · 9 more months</span>
+                </div>
+              </div>
+              <p class="small secondary mt-2">There's nothing you need to do — we'll keep counting.</p>
+            </div>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">How you compare</p>
+            <div class="pk-bench" id="pkh-bench"></div>
+            <p class="small secondary">Your average so far is <b>3.0 kW</b> — the Flemish average is <b>4.24 kW</b>.</p>
+            <p class="callout mt-4"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>Take this comparison lightly — it's based on 3 months, not your full year.</span></p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="surface span-8" aria-labelledby="pkh-chart-title">
+      <div class="pk-chart-head">
+        <h2 class="section-title" id="pkh-chart-title">Daily peaks</h2>
+        <div class="pk-controls">
+          <div class="seg" role="radiogroup" aria-label="Period">
+            <button type="button" data-value="day" aria-checked="false" aria-disabled="true">Day</button>
+            <button type="button" data-value="week" aria-checked="false" aria-disabled="true">Week</button>
+            <button type="button" data-value="month" aria-checked="true">Month</button>
+            <button type="button" data-value="year" aria-checked="false" aria-disabled="true">Year</button>
+          </div>
+          <div class="datenav">
+            <button type="button" aria-label="Previous month"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+            <span class="label">Sep 2025</span>
+            <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <p class="insight pk-insight">Your highest this month was <b>3.4 kW on 6 Sep at 19:00</b> — above your 3.0 kW average so far.</p>
+      <div id="pkh-chart"></div>
+      <div class="stat-row">
+        <div class="stat">
+          <p class="stat__label"><span class="mark" aria-hidden="true"></span>Latest peak</p>
+          <p class="stat__value stat-num">3.1<span class="unit">kW</span></p>
+          <p class="stat__meta">Today, 08:15–08:30</p>
+        </div>
+        <div class="stat">
+          <p class="stat__label"><span class="mark alert" aria-hidden="true"></span>Month peak</p>
+          <p class="stat__value stat-num">3.4<span class="unit">kW</span></p>
+          <p class="stat__meta">6 Sep, 19:00</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="surface span-4 pk-coming" aria-labelledby="pkh-coming-title">
+      <p class="overline" id="pkh-coming-title">What's coming up</p>
+      <div class="pk-coming__head">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-trend-up"/></svg></span>
+        <p class="secondary">Nothing "rolls off" yet — every month you have still counts. The full picture (and your real capacity-tariff number) needs a complete 12 months.</p>
+      </div>
+      <p class="callout"><svg class="icon sm" aria-hidden="true"><use href="#i-scale"/></svg><span>Belgium sets a 2.5 kW regulatory floor — if your average lands below that, 2.5 kW is what actually gets billed, not your raw number.</span></p>
+      <div class="pk-cta">
+        <a href="#panel-advice" class="btn btn--primary">Lower your peak <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        <p class="btn-note">Tips to spread heavy appliances, in Advice</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: a peak is your highest 15-minute power use. Your capacity-tariff figure settles once 12 months are in.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Peak · insufficient history</summary>
+    <h4>Approval &amp; structure</h4>
+    <ul>
+      <li>✓ Edge case — also approved: insufficient history. Chart, Latest peak and Month peak work as usual; only the rolling-average pieces change shape.</li>
+      <li>Hero: "Average so far 3.0 kW · Based on 3 months, not 12 yet" + the shared readiness meter (12 segments, 3 filled, Jul–Jun) + completion date. The kW comparison meter is separate and never carries a month count.</li>
+      <li>"Complete after June 2026 · 9 more months" and "There's nothing you need to do — we'll keep counting." are derived copy (3 of 12 months: Jul, Aug, Sep 2025) — flag for copy review.</li>
+      <li>Comparison meter: provisional (hatched) fill to 3.0 kW with a hollow dot; 2.5 kW regulatory floor shown as a shaded zone because it is relevant in this state; Flemish average 4.24 kW. Caveat kept verbatim next to it.</li>
+      <li>No calc table and no € estimate in this state (both assume a settled 12-month figure). Year view disabled (3 months only).</li>
+    </ul>
+    <h4>Data</h4>
+    <ul>
+      <li>Separate new-customer household, Sep 2025: Latest 3.1 kW (Today 08:15–08:30), Month peak 3.4 kW (6 Sep 19:00), Average so far 3.0 kW.</li>
+      <li>⚠ <b>Illustrative</b>: daily peaks 1–15 Sep 2025 (demo-data change log #9: 2.4, 2.1, 2.6, 2.2, 2.8, 3.4, 2.5, 2.0, 2.7, 2.3, 2.9, 2.2, 2.6, 2.4, 3.1; "today" = 15 Sep). Needs real data before build.</li>
+    </ul>
+    <h4>Reason code</h4>
+    <ul><li>History &lt; 12 months (peakpower endpoint). No named code.</li></ul>
+  </details>
+</section>
+
+<script>
+/* Peak charts — one JuneCharts call each */
+(() => {
+  const days = n => Array.from({ length: n }, (_, i) => String(i + 1));
+  const may = [2.6, 2.1, 3.0, 2.4, 2.8, 1.9, 3.1, 2.2, 2.7, 3.3, 2.5, 4.2, 2.9, 3.4, 2.3, 3.0, 2.6, 3.8];
+  JuneCharts.bars('#pk-chart-month', {
+    values: may, slots: 31, labels: days(31), tipLabels: days(31).map(d => d + ' May'),
+    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' },
+    highlight: { index: 11, tone: 'alert' }, annotation: { index: 11, text: '4.2 kW · 12 May, 18:30', tone: 'alert' },
+    thresholds: [
+      { value: 4.2, label: 'Month peak', tone: 'ink' },
+      { value: 4.0, label: '12-month avg', tone: 'accent', emphasis: true }
+    ],
+    yMax: 5, yTicks: [0, 1, 2, 3, 4, 5], yLabel: 'Daily peak (kW)', unit: 'kW', decimals: 1,
+    futureLabel: '19–31 May still to come',
+    ariaLabel: 'Bar chart of daily peaks, 1 to 18 May 2026; 19 to 31 May have not happened yet. Most days sit between 1.9 and 3.4 kW. The month peak is 4.2 kW on 12 May at 18:30, shown in red. Today reached 3.8 kW. Lines: month peak 4.2 kW and 12-month average 4.0 kW.'
+  });
+  const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'];
+  const monthsLong = ['Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026'];
+  const monthly = [5.8, 3.2, 3.8, 4.0, 3.5, 4.4, 3.3, 2.9, 4.0, 4.9, 4.2, 4.2];
+  JuneCharts.bars('#pk-chart-year', {
+    values: monthly, labels: months, tipLabels: monthsLong, tone: 'muted',
+    highlight: [{ index: 0, tone: 'ink' }, { index: 11, tone: 'accent' }],
+    annotation: { index: 0, text: 'Drops out 1 Jun 2026', tone: 'ink' },
+    thresholds: [{ value: 4.0, label: '12-month avg', tone: 'accent', emphasis: true }],
+    yMax: 6, yTicks: [0, 2, 4, 6], yLabel: 'Monthly peak (kW)', unit: 'kW', decimals: 1, maxBar: 28,
+    ariaLabel: 'Bar chart of your 12 monthly peaks, June 2025 to May 2026: 5.8, 3.2, 3.8, 4.0, 3.5, 4.4, 3.3, 2.9, 4.0, 4.9, 4.2 and 4.2 kW. Their average is 4.0 kW. June 2025 is the highest and drops out on 1 June 2026.'
+  });
+  JuneCharts.bars('#pk-strip', {
+    values: monthly, labels: monthsLong, compact: true, tone: 'muted', xTicks: [0, 11], height: 64,
+    highlight: [{ index: 0, tone: 'ink' }, { index: 11, tone: 'accent' }], yMax: 6, unit: 'kW', decimals: 1, interactive: false,
+    ariaLabel: 'Monthly peaks from June 2025 to May 2026. June 2025, the highest at 5.8 kW, drops out next; May 2026 (4.2 kW) was just added.'
+  });
+  JuneCharts.meter('#pk-bench', {
+    min: 0, max: 5, ticks: [0, 1, 2, 3, 4, 5], unit: 'kW', fill: { to: 4.0 },
+    markers: [
+      { value: 4.0, label: 'You', kind: 'you', side: 'above' },
+      { value: 4.24, label: 'Flemish average', kind: 'ref', side: 'below', valueText: '4.24 kW' }
+    ],
+    ariaLabel: 'Comparison on a 0 to 5 kW scale: your rolling average 4.0 kW is 0.24 kW below the Flemish average of 4.24 kW.'
+  });
+
+  const sep = [2.4, 2.1, 2.6, 2.2, 2.8, 3.4, 2.5, 2.0, 2.7, 2.3, 2.9, 2.2, 2.6, 2.4, 3.1];
+  JuneCharts.bars('#pkh-chart', {
+    values: sep, slots: 30, labels: days(30), tipLabels: days(30).map(d => d + ' Sep'),
+    xTicks: [0, 4, 9, 19, 24, 29], now: { index: 14, label: 'Today' },
+    highlight: { index: 5, tone: 'alert' }, annotation: { index: 5, text: '3.4 kW · 6 Sep, 19:00', tone: 'alert' },
+    thresholds: [
+      { value: 3.4, label: 'Month peak', tone: 'ink' },
+      { value: 3.0, label: 'Average so far', tone: 'accent', emphasis: true }
+    ],
+    yMax: 4, yTicks: [0, 1, 2, 3, 4], yLabel: 'Daily peak (kW)', unit: 'kW', decimals: 1,
+    futureLabel: '16–30 Sep still to come',
+    ariaLabel: 'Bar chart of daily peaks, 1 to 15 September 2025; the rest of the month has not happened yet. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today reached 3.1 kW. Lines: month peak 3.4 kW and average so far 3.0 kW.'
+  });
+  JuneCharts.meter('#pkh-bench', {
+    min: 0, max: 5, ticks: [0, 1, 2, 3, 4, 5], unit: 'kW', fill: { to: 3.0, provisional: true },
+    zones: [{ from: 0, to: 2.5, label: 'Regulatory floor', valueText: '2.5 kW' }],
+    markers: [
+      { value: 3.0, label: 'You, so far', kind: 'you', side: 'above', hollow: true },
+      { value: 4.24, label: 'Flemish average', kind: 'ref', side: 'below', valueText: '4.24 kW' }
+    ],
+    ariaLabel: 'Comparison on a 0 to 5 kW scale: your average so far, 3.0 kW, is above the 2.5 kW regulatory floor and below the Flemish average of 4.24 kW. Based on 3 months only.'
+  });
+})();
+</script>
+  </main>
+</div>
+</div>
+</body>
+</html>
