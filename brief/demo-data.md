@@ -52,5 +52,10 @@ Limit 300 kWh · used 187 kWh · 113 kWh left · 13 days → **stay under 8.7 kW
 8. Advice: heat-pump upgrade separated from the "new tips" count; Overview line → "Top tip saves ≈ €150/year".
 9. **Peak insufficient-history daily chart (Sep 2025): illustrative values.** The source has only latest peak (3.1 kW) and month peak (3.4 kW, 6 Sep 19:00). Canonical illustrative daily peaks for 1–15 Sep 2025 ("today" = 15 Sep 2025, 08:30): 2.4, 2.1, 2.6, 2.2, 2.8, **3.4**, 2.5, 2.0, 2.7, 2.3, 2.9, 2.2, 2.6, 2.4, 3.1. Marked as illustrative in spec notes; needs real data before build.
 
+10. **Solar hero:** "Net exporter today +3.2 kWh" was false (import 4.4 > export 3.2) → "Sent to the grid today · 3.2 kWh", with the 4.4 kWh import named. Overview Solar row → "3.2 kWh sent to the grid today".
+11. **Breakdown period = April 2026** (last full month, same as Compare), total 442 kWh: Heating 168 (38%), Water heating 88 (20%), Always on 62 (14%), Cooking 53 (12%), Fridge & freezer 40 (9%), Other 31 (7%). The 820 kWh total is dropped. The seasonal chart highlights April.
+12. **"Now" = 18 May 2026, 20:00** on every tab (Forecast marker was 14:30).
+13. Forecast over-budget daily figure and Compare trend-range sentence recomputed.
+
 ## Phase 4 decision log
 - Product owner chose **Direction C · Soft Native** for the rollout (over the evaluators' B-based hybrid). Known C issues to fix first: gauge scale/negative reading, Overview 113 kWh vs 290 kWh hero conflict, overuse of red, "Rolls off after June" ambiguity, crowded threshold lines, dark-mode active tab subtlety.
