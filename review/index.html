@@ -1,0 +1,249 @@
+<title>June Insights Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#16242a; --ink-2:#4a5a61; --ink-3:#5f6f76; --line:#e1e8e8; --page:#f4f7f6; --surface:#ffffff; --sunken:#eaf1f0;
+  --green:#3bada8; --green-strong:#1b7773; --green-soft:#e3f3f2; --red:#d63f45; --red-soft:#fdecec; --warn:#8a6100; --warn-soft:#fdf4dc;
+  --display:"Montserrat",ui-sans-serif,system-ui,sans-serif; --ui:"Inter","Open Sans",ui-sans-serif,system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --ink:#e8eef0; --ink-2:#a3b1b6; --ink-3:#8a989d; --line:#253740; --page:#0f1a1e; --surface:#162429; --sunken:#1b2c32;
+  --green:#4fc4bf; --green-strong:#5fd0ca; --green-soft:rgba(79,196,191,.13); --red:#ff7479; --red-soft:rgba(255,107,112,.13); --warn:#f0b93a; --warn-soft:rgba(240,185,58,.12);}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --ink:#e8eef0; --ink-2:#a3b1b6; --ink-3:#8a989d; --line:#253740; --page:#0f1a1e; --surface:#162429; --sunken:#1b2c32;
+  --green:#4fc4bf; --green-strong:#5fd0ca; --green-soft:rgba(79,196,191,.13); --red:#ff7479; --red-soft:rgba(255,107,112,.13); --warn:#f0b93a; --warn-soft:rgba(240,185,58,.12);}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font:15px/1.55 var(--ui);padding-inline:20px;padding-block:0 72px}
+.wrap{max-width:1080px;margin:0 auto}
+header{padding-block:44px 28px;display:grid;gap:14px}
+.eyebrow{font:600 12px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--green-strong)}
+h1{font:500 clamp(30px,5vw,44px)/1.1 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance;max-width:20ch}
+h2{font:600 22px/1.25 var(--display);letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+h3{font:600 16px/1.3 var(--display);margin:0}
+p{margin:0}
+.lede{color:var(--ink-2);max-width:62ch;font-size:16px}
+section{padding-block:36px;border-top:1px solid var(--line);display:grid;gap:20px}
+.sub{color:var(--ink-3);max-width:65ch}
+.num{font-variant-numeric:tabular-nums}
+
+/* verdict */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pod{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.pod.win{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.pod .rank{display:flex;justify-content:space-between;align-items:center;font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.chip{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:99px;letter-spacing:0;text-transform:none}
+.chip.go{background:var(--green-soft);color:var(--green-strong)}
+.chip.no{background:var(--red-soft);color:var(--red)}
+.score{font:300 44px/1 var(--display);letter-spacing:-.02em}
+.score small{font:500 15px var(--ui);color:var(--ink-3);letter-spacing:0}
+.pod .who{font-size:13px;color:var(--ink-3)}
+.bar{height:6px;background:var(--sunken);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:99px;transform-origin:left;animation:grow .9s var(--ease) both}
+.pod:not(.win) .bar i{background:var(--ink-3)}
+@keyframes grow{from{transform:scaleX(0)}}
+
+/* gates */
+.gates{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.gate{background:var(--surface);padding:16px 18px;display:grid;gap:4px}
+.gate b{font:500 26px/1.1 var(--display)}
+.gate span{font-size:13px;color:var(--ink-3)}
+.gate .was{color:var(--red);font-size:13px}
+
+/* table */
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{font:600 12px/1.2 var(--ui);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);background:var(--sunken)}
+td.c,th.c{text-align:right;font-variant-numeric:tabular-nums;width:92px}
+td.w{color:var(--ink-3);width:70px}
+tr.group td{font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--green-strong);background:transparent;padding-top:18px}
+td .best{font-weight:600;color:var(--green-strong)}
+td .low{color:var(--red)}
+tr.total td{font-weight:600;border-bottom:0}
+
+/* gallery */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font:500 14px var(--ui);border:1px solid var(--line);background:var(--surface);color:var(--ink-2);padding:8px 14px;border-radius:99px;cursor:pointer;transition:background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+.tab:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--green) 55%,transparent);outline-offset:2px}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+figure{margin:0;display:grid;gap:10px}
+figure .frame{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;max-height:560px;overflow-y:auto}
+figure img{display:block;width:100%;height:auto;transition:opacity .24s var(--ease)}
+figcaption{display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:13px;color:var(--ink-3)}
+figcaption b{font:600 14px var(--display);color:var(--ink)}
+a{color:var(--green-strong);font-weight:500;text-decoration-thickness:1px;text-underline-offset:3px}
+.mobile .shots{grid-template-columns:repeat(3,minmax(0,300px));justify-content:start}
+
+/* directions */
+.dirs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dir{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:12px;align-content:start}
+.dir ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2);font-size:14px}
+.dir .lbl{font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.dir .lbl.bad{color:var(--red)}
+
+/* hybrid */
+.hybrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.hy{background:var(--surface);padding:18px 20px;display:grid;gap:10px;align-content:start}
+.hy ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
+.hy.drop h3{color:var(--red)}
+.fixes{background:var(--warn-soft);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+.fixes h3{color:var(--warn)}
+.fixes ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+
+.before{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.squig{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4' fill='none' stroke='%233bada8' stroke-width='2'/%3E%3C/svg%3E") repeat-x 0 100%/24px 8px;padding-bottom:6px}
+footer{padding-top:28px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
+
+@media (max-width:820px){
+  .podium,.dirs,.hybrid,.shots,.before{grid-template-columns:1fr}
+  .gates{grid-template-columns:1fr 1fr}
+  .mobile .shots{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">June Insights redesign · Phase 3 checkpoint</span>
+  <h1>Three directions, two evaluators, <span class="squig">one clear lead</span>.</h1>
+  <p class="lede">Each direction redesigned the same pilot screens: Overview, Peak, and Peak's "not enough history yet" state. They used the same frozen content and the same demo household. Two independent evaluators scored every screen against a 13-criterion rubric. The totals below are the average of the two.</p>
+</header>
+
+<section aria-labelledby="h-verdict">
+  <h2 id="h-verdict">Verdict</h2>
+  <div class="podium">
+    <article class="pod win">
+      <div class="rank">1st · B <span class="chip go">Clears 4.0 bar</span></div>
+      <h3>Energy Almanac</h3>
+      <div class="score num">4.22 <small>/ 5</small></div>
+      <div class="bar"><i style="width:84.4%"></i></div>
+      <p class="who num">Design lead 4.15 · UX research 4.29</p>
+    </article>
+    <article class="pod">
+      <div class="rank">2nd · A <span class="chip go">Clears 4.0 bar</span></div>
+      <h3>Calm Ledger</h3>
+      <div class="score num">4.08 <small>/ 5</small></div>
+      <div class="bar"><i style="width:81.6%"></i></div>
+      <p class="who num">Design lead 4.05 · UX research 4.11</p>
+    </article>
+    <article class="pod">
+      <div class="rank">3rd · C <span class="chip no">Below 4.0</span></div>
+      <h3>Soft Native</h3>
+      <div class="score num">3.83 <small>/ 5</small></div>
+      <div class="bar"><i style="width:76.5%"></i></div>
+      <p class="who num">Design lead 3.83 · UX research 3.82</p>
+    </article>
+  </div>
+  <div class="gates" role="list">
+    <div class="gate" role="listitem"><b class="num">0</b><span>hard-gate failures, all 3 directions</span><span class="was num">was 40 in the original</span></div>
+    <div class="gate" role="listitem"><b class="num">6</b><span>font sizes per screen</span><span class="was num">was up to 16</span></div>
+    <div class="gate" role="listitem"><b class="num">0 px</b><span>horizontal overflow at 390 px</span><span class="was num">was up to 249 px</span></div>
+    <div class="gate" role="listitem"><b class="num">0</b><span>emoji used as icons</span><span class="was num">was 118</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-look">
+  <h2 id="h-look">See them side by side</h2>
+  <p class="sub">Each frame scrolls. Pick a screen and a width. The live prototypes are linked under each frame, and they have working motion, popovers, disclosures and dark mode.</p>
+  <div class="tabs" role="group" aria-label="Screen">
+    <button class="tab" data-panel="peak" aria-pressed="true">Peak</button>
+    <button class="tab" data-panel="overview" aria-pressed="false">Overview</button>
+    <button class="tab" data-panel="peak-history" aria-pressed="false">Not enough history</button>
+  </div>
+  <div class="tabs" role="group" aria-label="Width">
+    <button class="tab" data-vp="desktop" aria-pressed="true">Desktop 1280</button>
+    <button class="tab" data-vp="mobile" aria-pressed="false">Mobile 390</button>
+  </div>
+  <div id="gallery">
+    <div class="shots">
+      <figure><div class="frame"><img data-dir="a" alt="Direction A, Calm Ledger" loading="lazy"></div><figcaption><b>A · Calm Ledger</b><a href="a/index.html" target="_blank" rel="noopener">Open prototype</a></figcaption></figure>
+      <figure><div class="frame"><img data-dir="b" alt="Direction B, Energy Almanac" loading="lazy"></div><figcaption><b>B · Energy Almanac</b><a href="b/index.html" target="_blank" rel="noopener">Open prototype</a></figcaption></figure>
+      <figure><div class="frame"><img data-dir="c" alt="Direction C, Soft Native" loading="lazy"></div><figcaption><b>C · Soft Native</b><a href="c/index.html" target="_blank" rel="noopener">Open prototype</a></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-before">
+  <h2 id="h-before">Before and after: Peak</h2>
+  <div class="before">
+    <figure><div class="frame"><img src="shots/original-peak.png" alt="Original Peak mockup" loading="lazy"></div><figcaption><b>Original</b><span>Equal-weight cards, 9–13 px text, dashed thresholds</span></figcaption></figure>
+    <figure><div class="frame"><img src="shots/b-peak-desktop.png" alt="Direction B Peak" loading="lazy"></div><figcaption><b>Direction B</b><span>Headline, one hero number, one annotated chart</span></figcaption></figure>
+  </div>
+</section>
+
+<section aria-labelledby="h-scores">
+  <h2 id="h-scores">Scores by criterion</h2>
+  <p class="sub">Each score is the average of the two evaluators, from 1 to 5. Weights add up to 100. The best score in each row is in green, and scores under 3.75 are in red.</p>
+  <div class="tablebox">
+  <table>
+    <thead><tr><th>Criterion</th><th>Weight</th><th class="c">A</th><th class="c">B</th><th class="c">C</th></tr></thead>
+    <tbody id="scores"></tbody>
+  </table>
+  </div>
+</section>
+
+<section aria-labelledby="h-dirs">
+  <h2 id="h-dirs">What each direction brings</h2>
+  <div class="dirs">
+    <article class="dir"><h3>A · Calm Ledger</h3><p class="sub">Swiss precision: hairlines instead of cards, numbers doing the work.</p>
+      <span class="lbl">Strengths</span><ul><li>Best-disciplined colour and accessibility</li><li>The strongest chart: to scale, a Today marker, a working Year view, arrow-key tooltips</li><li>The "4.0 → 3.9 kW without June 2025" comparison</li></ul>
+      <span class="lbl bad">Weaknesses</span><ul><li>Feels cold, with little of June's character</li><li>The history state drops the daily chart</li><li>The ≈ € button is too small to tap (14 px)</li></ul></article>
+    <article class="dir"><h3>B · Energy Almanac</h3><p class="sub">Editorial: a headline that answers, an 88 px numeral, one annotated chart.</p>
+      <span class="lbl">Strengths</span><ul><li>Best 5-second comprehension and hierarchy</li><li>The strongest June voice: squiggle motif, warm copy</li><li>Text summaries under charts, a clear CTA with context</li></ul>
+      <span class="lbl bad">Weaknesses</span><ul><li>Popovers close on scroll (keyboard users lose them)</li><li>The Peak headline mixes two messages, and the Flemish comparison appears 3 times</li><li>The blob behind the hero is clipped, and the peak marker floats too high</li></ul></article>
+    <article class="dir"><h3>C · Soft Native</h3><p class="sub">App-like: large soft tiles, a live gauge instrument.</p>
+      <span class="lbl">Strengths</span><ul><li>Most tactile, the best dark mode</li><li>12-month peak strip showing June 2025 rolling off</li><li>Latest and month peaks paired under the chart</li></ul>
+      <span class="lbl bad">Weaknesses</span><ul><li>The gauge uses an invented 0–6 kW scale, and "−0.24 kW" reads as a negative reading</li><li>Competing big numbers (113 kWh vs 290 kWh), too much red</li><li>Drifts toward a generic energy app</li></ul></article>
+  </div>
+</section>
+
+<section aria-labelledby="h-hybrid">
+  <h2 id="h-hybrid">Recommended: B as the base, plus the best of A and C</h2>
+  <p class="sub">Both evaluators came to this independently. If you agree, Phase 4 applies it to all 8 tabs and every edge state.</p>
+  <div class="hybrid">
+    <div class="hy"><h3>Keep from B</h3><ul><li>Headline sentence + oversized light numeral</li><li>Squiggle underline as the single brand motif</li><li>Editorial column + slim side rail</li><li>Chart text summaries, CTA with context line</li></ul></div>
+    <div class="hy"><h3>Borrow from A and C</h3><ul><li>A: Peak chart (Today marker, Year view, arrow-key tooltips)</li><li>A: "4.0 → 3.9 kW" comparison, mobile table, red discipline</li><li>A: "Complete after June 2026" on the history state</li><li>C: 12-month peak strip, sliding tab and segmented-control thumbs</li></ul></div>
+    <div class="hy drop"><h3>Drop</h3><ul><li>C's gauge and its invented kW scale</li><li>C's 113 kWh hero (contradicts 290 kWh)</li><li>A's visible "New idea" badge</li><li>B's clipped blob and floating peak marker</li></ul></div>
+  </div>
+  <div class="fixes">
+    <h3>Fixes to B itself</h3>
+    <ul><li>Popovers close only on Esc or a click outside</li><li>Peak headline leads with "4.0 kW, ≈ €7.40 a month, just under the Flemish average", with the comparison said once</li><li>Inactive tabs taken out of the keyboard order, tap targets ≥ 24 px</li><li>The illustrative September daily peaks logged in the demo-data change log</li></ul>
+  </div>
+</section>
+
+<footer>Full reports: <code>evaluations/round1-evaluator1.md</code>, <code>evaluations/round1-evaluator2.md</code> · brief: <code>brief/design-brief.md</code> · branch <code>claude/june-energy-ui-design-mnsn2a</code> in grgslbn/june-ui-ux.</footer>
+</div>
+
+<script>
+const rows=[
+ ['g','Design (50%)'],
+ ['Visual hierarchy',10,4.0,4.5,3.5],['Typography',8,4.0,4.5,4.0],['Colour restraint',8,4.5,4.25,3.5],['Spacing & rhythm',6,4.0,4.0,4.0],
+ ['Data-viz clarity',10,4.0,4.25,3.5],['Consistency',4,4.0,4.0,3.75],['Craft & premium feel',4,3.5,4.25,4.0],
+ ['g','UX (50%)'],
+ ['5-second comprehension',12,4.25,4.5,4.0],['Cognitive load',8,4.0,4.0,3.5],['Action clarity',8,4.0,4.0,4.0],['Edge / empty states',8,3.75,4.0,4.0],
+ ['Accessibility',8,4.25,4.0,4.0],['Responsive',6,4.5,4.25,4.25],
+];
+const tb=document.getElementById('scores');let html='';
+for(const r of rows){
+  if(r[0]==='g'){html+=`<tr class="group"><td colspan="5">${r[1]}</td></tr>`;continue}
+  const [n,w,...s]=r;const m=Math.max(...s);
+  html+=`<tr><td>${n}</td><td class="w num">${w}</td>`+s.map(v=>`<td class="c"><span class="${v===m?'best':v<3.75?'low':''}">${v.toFixed(2)}</span></td>`).join('')+'</tr>';
+}
+html+='<tr class="total"><td>Weighted total</td><td class="w num">100</td><td class="c">4.08</td><td class="c"><span class="best">4.22</span></td><td class="c">3.83</td></tr>';
+tb.innerHTML=html;
+
+let panel='peak',vp='desktop';
+const gal=document.getElementById('gallery');
+function render(){
+  gal.className=vp;
+  gal.querySelectorAll('img').forEach(img=>{img.src=`shots/${img.dataset.dir}-${panel}-${vp}.png`;img.parentElement.scrollTop=0});
+  document.querySelectorAll('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.panel===panel));
+  document.querySelectorAll('[data-vp]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.vp===vp));
+}
+document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>{panel=b.dataset.panel;render()});
+document.querySelectorAll('[data-vp]').forEach(b=>b.onclick=()=>{vp=b.dataset.vp;render()});
+render();
+</script>
