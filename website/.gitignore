@@ -3,3 +3,4 @@ dist/
 .astro/
 report/
 evaluations/scratch/
+dist-*/

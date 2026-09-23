@@ -1,0 +1,126 @@
+/* ==========================================================================
+   June · Variant C "Honest Market" — design tokens
+   Source of truth: app/tokens.css (Soft Native). This file keeps the app's
+   names and values and adds an editorial "paper" layer for the marketing site.
+   RULE: components reference tokens only, never raw hex.
+   Contrast ratios (light) are measured against --paper unless noted.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ── Type ─────────────────────────────────────────────────────────── */
+  --font-display: "Montserrat", "Montserrat Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-text: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+
+  /* Editorial scale (site): 13 · 15 · 17/18 · 22 · 32 · 44 · 64  */
+  --fs-note: 13px;   /* footnotes, sources, chart labels (never below 12) */
+  --fs-ui: 15px;     /* buttons, nav, table cells */
+  --fs-body: 18px;   /* reading column */
+  --fs-lead: 21px;   /* hero sub, standfirst */
+  --fs-h3: 22px;
+  --fs-h2: clamp(28px, 2.2vw + 18px, 40px);
+  --fs-h1: clamp(32px, 2.5vw + 24.5px, 58px);
+  --fs-quote: clamp(26px, 1.6vw + 18px, 36px);
+  --fs-numeral: clamp(48px, 3vw + 30px, 72px);
+  --lh-display: 1.06;
+  --lh-snug: 1.3;
+  --lh-body: 1.6;
+  --tracking-display: -0.02em;
+  --tracking-caps: 0.08em;
+  --measure: 62ch;          /* reading column */
+
+  /* ── Paper & surfaces (editorial layer) ───────────────────────────── */
+  --paper: #f7f8f6;         /* page canvas: off-white, near-mint */
+  --paper-deep: #eef2ef;    /* alternate band, table header */
+  --surface: #ffffff;       /* cards, form field */
+  --rule: #d9e0de;          /* hairline rules (editorial columns) */
+  --rule-strong: #14232a;   /* masthead + section rules */
+
+  /* ── Ink (from app) ───────────────────────────────────────────────── */
+  --ink-900: #14232a;       /* text          15.1:1 */
+  --ink-700: #435359;       /* secondary      7.5:1 */
+  --ink-500: #56666d;       /* notes/source   5.6:1 */
+  --ink-400: #8c999e;       /* icons, non-text marks */
+  --ink-200: #c9d3d5;       /* chart baseline */
+  --ink-100: #e4eaeb;       /* gridlines */
+
+  /* ── June Green: data + links + the ONE CTA colour ────────────────── */
+  --logo: #1ca498;          /* official logo green (measured from the SVG logo) */
+  --accent: #1ca498;        /* fills, icons, large display, data marks (2.9:1: never small text) */
+  --accent-strong: #127a71; /* CTA, links, small green text  5.2:1 on white, 4.9:1 on paper */
+  --accent-deep: #0e5f58;   /* CTA hover, green text on tinted washes  7.0:1 */
+  --accent-soft: #e3f4f2;   /* highlight wash */
+  --on-accent: #ffffff;     /* on --accent-strong 5.2:1 */
+
+  /* ── June Red: ONE "loyalty penalty" annotation per page ──────────── */
+  --spark: #e85257;         /* squiggle stroke (graphic, 3.4:1) */
+  --spark-text: #c4383e;    /* annotation text   4.95:1 */
+  --spark-wash: rgba(232, 82, 87, 0.10);
+
+  /* ── Energy series (charts only) ──────────────────────────────────── */
+  --elec: #f0b429;
+  --elec-strong: #9a6d00;
+  --gas: #1f86c4;
+
+  /* ── Chart roles ──────────────────────────────────────────────────── */
+  --chart-grid: var(--ink-100);
+  --chart-axis: var(--ink-200);
+  --chart-label: var(--ink-500);
+  --chart-june: var(--accent-strong);
+  --chart-stay: var(--ink-700);
+  --chart-gap: var(--spark-wash);
+
+  /* ── Ink block (dark band) ────────────────────────────────────────── */
+  --block: #14232a;
+  --on-block: #ffffff;       /* 16.1:1 */
+  --on-block-muted: #b6cfcc; /* ~9:1 */
+  --on-block-accent: #9fd9d5;/* 10.3:1 */
+
+  /* ── Spacing: 4px scale ───────────────────────────────────────────── */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+  --section-y: clamp(64px, 8vw, 120px);
+  --content-max: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+
+  /* ── Radii (app set; editorial uses the small end) ────────────────── */
+  --r-sm: 10px; --r-md: 14px; --r-lg: 24px; --r-pill: 999px;
+
+  /* ── Elevation: print is flat. One soft level for the form + sticky. ─ */
+  --shadow-1: 0 1px 2px rgba(18, 52, 50, 0.05), 0 8px 24px -12px rgba(18, 52, 50, 0.18);
+
+  /* ── Motion (app tokens) ──────────────────────────────────────────── */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 480ms;
+  --dur-draw: 700ms;
+
+  --focus-ring: 0 0 0 3px var(--paper), 0 0 0 5px var(--accent-strong);
+}
+
+/* ── Dark (auto) — app dark tokens, paper becomes night ink ─────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0d171a; --paper-deep: #121e21; --surface: #162427;
+    --rule: #26363a; --rule-strong: #e8f0f0;
+    --ink-900: #e8f0f0; --ink-700: #b5c3c5; --ink-500: #9aabae; --ink-400: #62747a; --ink-200: #33464b; --ink-100: #1d2c31;
+    --logo: #45c4b8; --accent: #45c4b8; --accent-strong: #62d3cc; --accent-deep: #8ee3dd; --accent-soft: #143331; --on-accent: #06201e;
+    --spark: #ff6b70; --spark-text: #ff8589; --spark-wash: rgba(255, 107, 112, 0.14);
+    --block: #06100f; --on-block: #e8f0f0; --on-block-muted: #b5c3c5; --on-block-accent: #62d3cc;
+    --shadow-1: 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+    --focus-ring: 0 0 0 3px var(--paper), 0 0 0 5px var(--accent-strong);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0d171a; --paper-deep: #121e21; --surface: #162427;
+  --rule: #26363a; --rule-strong: #e8f0f0;
+  --ink-900: #e8f0f0; --ink-700: #b5c3c5; --ink-500: #9aabae; --ink-400: #62747a; --ink-200: #33464b; --ink-100: #1d2c31;
+  --logo: #45c4b8; --accent: #45c4b8; --accent-strong: #62d3cc; --accent-deep: #8ee3dd; --accent-soft: #143331; --on-accent: #06201e;
+  --spark: #ff6b70; --spark-text: #ff8589; --spark-wash: rgba(255, 107, 112, 0.14);
+  --block: #06100f; --on-block: #e8f0f0; --on-block-muted: #b5c3c5; --on-block-accent: #62d3cc;
+  --shadow-1: 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+}

@@ -1,0 +1,14 @@
+---
+// Who pays whom: You → June (subscription) → Supplier (June compares & switches); your energy bill bypasses June.
+interface Props { c: any; row?: boolean; }
+const { c, row = false } = Astro.props;
+const f = c.flow;
+---
+<div class:list={['flow', { 'flow--row': row }]} role="img" aria-label={`${f.you} → ${f.june}: ${f.pay}. ${f.june} → ${f.sup}: ${f.work}. ${f.bill}.`}>
+  <span class="node">{f.you}</span>
+  <span class="edge edge--money"><span>{f.pay}</span></span>
+  <span class="node node--june">{f.june}</span>
+  <span class="edge"><span>{f.work}</span></span>
+  <span class="node">{f.sup}</span>
+  <span class="bypass"><span>{f.bill}</span></span>
+</div>

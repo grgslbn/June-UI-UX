@@ -1,0 +1,11 @@
+---
+// Editorial section head: numbered kicker with a hairline, H2, optional standfirst (slot).
+interface Props { n?: string; kicker: string; id: string; title: string; level?: 'h2' | 'h1'; }
+const { n, kicker, id, title, level = 'h2' } = Astro.props;
+const H = level;
+---
+<div class="section-head">
+  <p class="kicker">{n && <span class="kicker-n">{n}</span>}<span>{kicker}</span></p>
+  <H id={id}>{title}</H>
+  {Astro.slots.has('default') && <div class="prose standfirst"><slot /></div>}
+</div>

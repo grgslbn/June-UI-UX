@@ -1,0 +1,12 @@
+---
+import Stars from './Stars.astro';
+import Icon from './Icon.astro';
+import Fn from "./Fn.astro";
+interface Props { c: any; id: string; }
+const { c, id } = Astro.props;
+---
+<ul class="trust">
+  <li><Stars value={c.rating} id={id} /><span><strong>{c.trust.rating}</strong><Fn n={2} L={c.L} /></span></li>
+  <li><Icon name="check-circle" /><span>{c.trust.customers}<Fn n={3} L={c.L} /></span></li>
+  <li><Icon name="check-circle" /><span>{c.trust.same}</span></li>
+</ul>

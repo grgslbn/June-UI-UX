@@ -1,0 +1,60 @@
+---
+// Veelgestelde vragen / Questions fréquentes — "Eerlijke antwoorden". Category jump links, native <details>
+// (deep-linkable ids), unconfirmed answers tagged instead of hidden, FAQPage JSON-LD mirroring the visible text.
+import Site from '../../layouts/Site.astro';
+import Icon from '../Icon.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import { faqCopy } from '../../i18n/pages.js';
+import { href, abs } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = faqCopy(locale);
+const L = c.L;
+const base = import.meta.env.BASE_URL;
+const all = c.cats.flatMap((k: any) => k.items);
+const ld = [{
+  '@type': 'FAQPage', '@id': `${abs('faq', locale)}#faq`, inLanguage: L === 'fr' ? 'fr-BE' : 'nl-BE',
+  mainEntity: all.map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+}];
+---
+<Site locale={locale} routeKey="faq" title={c.meta.title} description={c.meta.description} ld={ld}>
+  <section class="page-hero" aria-labelledby="h1">
+    <div class="wrap">
+      <p class="kicker"><span>{c.hero.kicker}</span></p>
+      <h1 id="h1">{c.hero.h1}</h1>
+      <p class="lead">{c.hero.lead}</p>
+      <nav class="chips" aria-label={c.hero.jump}>
+        <span class="chips-label">{c.hero.jump}</span>
+        {c.cats.map((k: any) => <a class="chip" href={`#${k.id}`}>{k.name}<span class="chip-n">{k.items.length}</span></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <div class="faq-page" data-sticky-hide>
+    {c.cats.map((k: any, i: number) => (
+      <section class:list={['section', { 'section--deep': i % 2 === 1 }]} id={k.id} aria-labelledby={`${k.id}-h`}>
+        <div class="wrap faq-split">
+          <div class="section-head">
+            <p class="kicker"><span class="kicker-n">{String(i + 1).padStart(2, '0')}</span><span>{k.items.length} {L === 'fr' ? 'questions' : 'vragen'}</span></p>
+            <h2 id={`${k.id}-h`}>{k.name}</h2>
+          </div>
+          <FaqList items={k.items} L={L} group={k.id} openFirst={i === 0} />
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <section class="section" id="niet-gevonden" aria-labelledby="nf-h">
+    <div class="wrap nf">
+      <h2 id="nf-h">{c.notFound.h2}</h2>
+      <p class="prose">{c.notFound.p}</p>
+      <p class="nf-links">
+        <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.notFound.how}<Icon name="arrow-r" /></a>
+        <a class="link-arrow" href={href('plans', locale, base)}>{c.notFound.plans}<Icon name="arrow-r" /></a>
+      </p>
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} />
+</Site>

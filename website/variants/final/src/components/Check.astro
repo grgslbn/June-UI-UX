@@ -1,0 +1,9 @@
+---
+// Table cell value: 1 → included (check), 0 → not included (dash), string → shown as text.
+import Icon from './Icon.astro';
+interface Props { v: any; ui: any; }
+const { v, ui } = Astro.props;
+---
+{v === 1 ? <span class="yes"><Icon name="check" /><span class="sr-only">{ui.included}</span></span>
+  : v === 0 ? <span class="no"><span aria-hidden="true">–</span><span class="sr-only">{ui.notIncluded}</span></span>
+  : <span class="txt">{v}</span>}

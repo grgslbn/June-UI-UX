@@ -1,5 +1,6 @@
 // Quality gates + screenshots for one built variant.
-// Usage: node tools/check-site.mjs <variant-dir> [--lighthouse] [--shots] [--dark] [--routes=nl-be/,fr-be/]
+// Usage: node tools/check-site.mjs <variant-dir> [--lighthouse | --lighthouse-all] [--shots] [--dark] [--narrow (adds 320px)]
+//        [--site-files (sitemap/robots/404/og:image)] [--routes=nl-be/,fr-be/] [--dist=path]
 //   <variant-dir> e.g. variants/a  (must contain dist/ built with default base "/")
 // Output: <variant-dir>/report/check.json + check.md, screenshots in <variant-dir>/report/shots/
 // Gates: no horizontal overflow (1280, 390), no text < 12px (SVG ≥ 11px), WCAG AA text contrast,
@@ -16,7 +17,7 @@ const args = process.argv.slice(2);
 const dir = resolve(args.find(a => !a.startsWith('--')) || '.');
 const flag = f => args.includes(f);
 const opt = k => (args.find(a => a.startsWith(`--${k}=`)) || '').split('=')[1];
-const dist = join(dir, 'dist');
+const dist = opt('dist') ? resolve(opt('dist')) : join(dir, 'dist');
 const out = join(dir, 'report');
 await mkdir(join(out, 'shots'), { recursive: true });
 
@@ -45,7 +46,8 @@ const results = [];
 const cssText = async () => { let s = ''; try { for (const f of await readdir(join(dist, '_astro'))) if (f.endsWith('.css')) s += await readFile(join(dist, '_astro', f), 'utf8'); } catch {} return s; };
 const reducedMotionCss = /prefers-reduced-motion/.test(await cssText());
 
-for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: 'mobile', width: 390, height: 844 }]) {
+const VIEWPORTS = [{ name: 'desktop', width: 1280, height: 900 }, { name: 'mobile', width: 390, height: 844 }, ...(flag('--narrow') ? [{ name: 'narrow', width: 320, height: 640 }] : [])];
+for (const vp of VIEWPORTS) {
   const ctx = await browser.newContext({ viewport: vp, reducedMotion: 'reduce', colorScheme: flag('--dark') ? 'dark' : 'light' });
   const page = await ctx.newPage();
   const consoleErrors = [];
@@ -117,11 +119,12 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: 'mobile
 
 // ── Lighthouse (mobile) on key pages ─────────────────────
 const lh = [];
-if (flag('--lighthouse')) {
+if (flag('--lighthouse') || flag('--lighthouse-all')) {
   const { default: lighthouse } = await import('lighthouse');
   const LH_PORT = 9300 + Math.floor(Math.random() * 600);
   const lhBrowser = await chromium.launch({ args: [`--remote-debugging-port=${LH_PORT}`] });
-  for (const route of ['nl-be/', 'nl-be/abonnementen/', 'nl-be/aanmelden/', 'fr-be/'].filter(r => ROUTES.includes(r))) {
+  const LH_ROUTES = flag('--lighthouse-all') ? ROUTES : ['nl-be/', 'nl-be/abonnementen/', 'nl-be/aanmelden/', 'fr-be/'].filter(r => ROUTES.includes(r));
+  for (const route of LH_ROUTES) {
     const r = await lighthouse(origin + route, { port: LH_PORT, output: 'json', logLevel: 'error', onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'], formFactor: 'mobile', screenEmulation: { mobile: true, width: 390, height: 844, deviceScaleFactor: 3, disabled: false } });
     const c = r.lhr.categories; const a = r.lhr.audits;
     const s = { route, perf: Math.round(c.performance.score * 100), a11y: Math.round(c.accessibility.score * 100), bp: Math.round(c['best-practices'].score * 100), seo: Math.round(c.seo.score * 100), lcp: a['largest-contentful-paint'].displayValue, cls: a['cumulative-layout-shift'].displayValue, tbt: a['total-blocking-time'].displayValue };
@@ -130,13 +133,21 @@ if (flag('--lighthouse')) {
   }
   await lhBrowser.close();
 }
+// ── site-level files ──────────────────────────────────────
+const siteGates = [];
+if (flag('--site-files')) {
+  for (const f of ['sitemap-index.xml', 'robots.txt', '404.html']) { const st = await fetch(origin + f).then(x => x.status).catch(() => 0); if (st !== 200) siteGates.push(`${f} missing`); }
+  const html = await fetch(origin + 'nl-be/').then(x => x.text()).catch(() => '');
+  if (!/property="og:image"/.test(html)) siteGates.push('og:image missing on nl-be/');
+}
 await browser.close(); server.close();
 
 // ── report ────────────────────────────────────────────────
-const fails = results.reduce((n, r) => n + r.gates.length, 0) + lh.reduce((n, r) => n + r.gates.length, 0) + (reducedMotionCss ? 0 : 1);
+const fails = results.reduce((n, r) => n + r.gates.length, 0) + lh.reduce((n, r) => n + r.gates.length, 0) + (reducedMotionCss ? 0 : 1) + siteGates.length;
 let md = `# Check — ${dir.split('/').slice(-2).join('/')}\n\n| Route | Viewport | Result |\n|---|---|---|\n`;
 for (const r of results) md += `| ${r.route} | ${r.viewport} | ${r.gates.length ? '✗ ' + r.gates.join(' · ') : '✓'} |\n`;
 if (lh.length) { md += `\n## Lighthouse (mobile)\n\n| Route | Perf | A11y | BP | SEO | LCP | CLS | TBT |\n|---|---|---|---|---|---|---|---|\n`; for (const s of lh) md += `| ${s.route} | ${s.perf} | ${s.a11y} | ${s.bp} | ${s.seo} | ${s.lcp} | ${s.cls} | ${s.tbt} |\n`; }
+if (siteGates.length) md += `\nsite files: ✗ ${siteGates.join(' · ')}\n`; else if (flag('--site-files')) md += `\nsite files: ✓ sitemap, robots.txt, 404, og:image\n`;
 md += `\nreduced-motion handled: ${reducedMotionCss ? 'yes' : 'NO'}\n\n**hard-gate failures: ${fails}**\n`;
 await writeFile(join(out, 'check.json'), JSON.stringify({ results, lighthouse: lh, reducedMotionCss, fails }, null, 2));
 await writeFile(join(out, 'check.md'), md);
