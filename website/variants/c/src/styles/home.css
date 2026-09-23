@@ -82,5 +82,4 @@
   .flow--row .bypass { grid-column: 1 / -1; max-width: none; margin-top: var(--s-6); text-align: center; }
 }
 .flow--row { margin-top: var(--s-10); }
-.tip .honest-limit { display: block; }
 
