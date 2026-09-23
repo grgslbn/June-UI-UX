@@ -2,7 +2,7 @@
 // Answers persist in sessionStorage (funnel-state.js) so back, reload and the NL↔FR switch keep them.
 // Analytics (dataLayer, no PII — never the postcode, e-mail or usage): signup_started (once per session, first valid
 // postcode submitted), signup_step_viewed, signup_error, estimate_viewed, plan_selected, signup_submitted, help_click.
-import { getEstimate, fmtRange, fmtEur, fmtNum, KWH_RANGE } from './estimate.js';
+import { getEstimate, fmtRange, fmtEur, fmtNum, KWH_RANGE, isBelowZero } from './estimate.js';
 import { lookupPostcode, PC_RE } from './postcode.js';
 import { fromQuery, toQuery, load, save, onceStarted, stepFromHash, hashFor, STEPS } from './funnel-state.js';
 
@@ -125,8 +125,9 @@ export function initSignup() {
     e.closest('.q')?.classList.toggle('is-invalid', !!msg);
     if (input) msg ? input.setAttribute('aria-invalid', 'true') : input.removeAttribute('aria-invalid');
   }
-  function clearField(id, input) {
+  function clearField(id, input, group) {
     setErr(id, null, input);
+    if (group) $$(`input[name="${group}"]`, form).forEach((r) => r.removeAttribute('aria-invalid'));
     const li = sum.querySelector(`li[data-err="${id}"]`);
     if (li) { li.remove(); if (!sum.querySelector('li')) { sum.hidden = true; live.textContent = ''; } }
   }
@@ -143,6 +144,7 @@ export function initSignup() {
     const ul = $('ul', sum);
     for (const x of errs) {
       setErr(x.id, x.msg, x.input ? x.target : null);
+      if (x.target.type === 'radio') $$(`input[name="${x.target.name}"]`, form).forEach((r) => r.setAttribute('aria-invalid', 'true'));
       const li = document.createElement('li'); li.dataset.err = x.id;
       const a = document.createElement('a'); a.href = `#${x.target.id}`; a.textContent = x.msg;
       a.addEventListener('click', (ev) => { ev.preventDefault(); x.target.focus({ preventScroll: true }); x.target.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); });
@@ -203,6 +205,9 @@ export function initSignup() {
     text('[data-est-fee-label]', fill(C.est.ledger.fee, { name: p.name }));
     text('[data-est-fee]', `− ${fmtEur(r.fees[rec], L)}`);
     text('[data-est-net2]', fmtRange(r.nets[rec], L));
+    const words = isBelowZero(r.nets[rec]);
+    $('.est-range').classList.toggle('is-words', words);
+    $('[data-est-net2]').classList.toggle('is-words', words);
     const alt = $('[data-est-alt]');
     alt.hidden = !r.alt || r.reason === 'premium-analog';
     if (!alt.hidden) alt.textContent = fill(C.est.alt, { name: plansBy[r.alt].name, fee: plansBy[r.alt].yearly, range: fmtRange(r.nets[r.alt], L) });
@@ -226,7 +231,8 @@ export function initSignup() {
       const n = $(`[data-net-for="${s}"]`); n.hidden = false; n.textContent = '';
       const lab = document.createElement('span'); lab.textContent = C.s2.plan.net;
       const val = document.createElement('strong'); val.textContent = fmtRange(r.nets[s], L);
-      n.append(lab, val, ` ${C.s2.plan.perYear}`);
+      val.classList.toggle('is-words', isBelowZero(r.nets[s]));
+      n.append(lab, val, isBelowZero(r.nets[s]) ? '' : ` ${C.s2.plan.perYear}`);
       const b = $(`[data-rec-badge="${s}"]`); b.hidden = s !== rec;
     }
     const share = $('[data-share]');
@@ -298,16 +304,16 @@ export function initSignup() {
     const t = e.target;
     readForm();
     if (t.name === 'energy') syncEnergy();
-    if (t.name === 'household') { clearField('household-err'); }
-    if (t.name === 'meter') clearField('meter-err');
-    if (t.name === 'pref') clearField('pref-err');
+    if (t.name === 'household') { clearField('household-err', null, 'household'); }
+    if (t.name === 'meter') clearField('meter-err', null, 'meter');
+    if (t.name === 'pref') clearField('pref-err', null, 'pref');
     if (t.name === 'plan') { clearField('plan-err'); push('plan_selected', { plan: t.value, recommended: est?.recommended || null }); }
     if (t.name === 'terms' && t.checked) clearField('su-terms-err', t);
     premWarn(); side(); syncLang();
   });
   form.addEventListener('input', (e) => {
     const t = e.target;
-    if (t.name === 'kwh_elec' || t.name === 'kwh_gas') { t.value = t.value.replace(/\D/g, ''); clearField('kwh-err', t); clearField('household-err'); }
+    if (t.name === 'kwh_elec' || t.name === 'kwh_gas') { t.value = t.value.replace(/\D/g, ''); clearField('kwh-err', t); clearField('household-err', null, 'household'); }
     if (t.name === 'email' && t.getAttribute('aria-invalid')) clearField('su-email-err', t);
     readForm(); side();
   });

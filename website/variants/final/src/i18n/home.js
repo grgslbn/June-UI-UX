@@ -10,12 +10,12 @@ const page = localise((L, m) => {
   if (L === 'nl') return {
     meta: {
       title: 'June: automatisch naar een voordeliger energiecontract',
-      description: 'June is geen leverancier. Jij betaalt ons, dus wij volgen de markt voor jou op: 17+ energieleveranciers, minstens elke maand. Klanten besparen gemiddeld € 326 per jaar.',
+      description: 'June is geen energieleverancier. We vergelijken minstens elke maand 17+ leveranciers voor jouw verbruik en regelen de overstap. Gemiddeld € 326 per jaar.',
     },
     hero: {
       kicker: 'Onafhankelijk · geen energieleverancier',
       h1a: 'Energieleveranciers rekenen op je trouw.', h1b: 'Wij niet.',
-      lead: 'Jij betaalt ons, niet de leverancier. Dus werken we voor jou: minstens elke maand zoeken we een voordeliger contract voor jouw verbruik. De overstap regelen wij.',
+      lead: 'June is geen energieleverancier en kiest je contract op basis van jouw verbruik. Minstens elke maand zoeken we een voordeliger contract; de overstap regelen wij.',
       saving: ['Klanten besparen ', facts.saving.averagePerYear.display.nl, '.'],
     },
     ledger: [
@@ -35,7 +35,7 @@ const page = localise((L, m) => {
     tile: {
       label: 'Aanbevolen', plan: 'Switch Plus', price: m(SWP.priceYearly), per: 'per jaar', monthly: `${SWP.priceDisplay.nl.main}, jaarlijks gefactureerd`,
       guarantee: `Winstgarantie: ${m(G.amount)} terug als je in een abonnementsjaar niet meer bespaart dan je abonnement kost.`,
-      checked: 'Elke maand gecontroleerd', months: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'], monthsLabel: 'Twaalf controles per jaar, één per maand',
+      checked: 'Deze maand gecontroleerd, elke maand opnieuw', months: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'], monthsLabel: 'Twaalf controles per jaar, één per maand; de huidige maand is gemarkeerd',
       control: 'Automatisch, of pas na jouw akkoord', link: 'Alle abonnementen',
     },
     how: {
@@ -75,12 +75,12 @@ const page = localise((L, m) => {
   return {
     meta: {
       title: 'June : un contrat d’énergie avantageux, automatiquement',
-      description: `June n’est pas un fournisseur. C’est vous qui nous payez : nous suivons pour vous ${facts.suppliers.count.display.fr}, au moins une fois par mois. En moyenne 326 € d’économie par an.`,
+      description: `June n’est pas un fournisseur. Au moins une fois par mois, nous comparons ${facts.suppliers.count.display.fr} pour vous et gérons le changement.`,
     },
     hero: {
       kicker: 'Indépendant · pas un fournisseur d’énergie',
       h1a: 'Les fournisseurs comptent sur votre fidélité.', h1b: 'Pas nous.',
-      lead: 'C’est vous qui nous payez, pas le fournisseur. Nous travaillons donc pour vous : au moins une fois par mois, nous cherchons un contrat plus avantageux pour votre consommation. Le changement, c’est nous.',
+      lead: 'June n’est pas un fournisseur d’énergie et choisit votre contrat sur la base de votre consommation. Au moins une fois par mois, nous cherchons mieux ; le changement, c’est nous.',
       saving: ['Nos clients économisent ', facts.saving.averagePerYear.display.fr, '.'],
     },
     ledger: [
@@ -100,7 +100,7 @@ const page = localise((L, m) => {
     tile: {
       label: 'Recommandé', plan: 'Switch Plus', price: m(SWP.priceYearly), per: 'par an', monthly: `${SWP.priceDisplay.fr.main}, facturé annuellement`,
       guarantee: `Garantie de gain : ${m(G.amount)} remboursés si, sur une année d’abonnement, vous n’économisez pas plus que le prix de votre abonnement.`,
-      checked: 'Contrôlé chaque mois', months: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'], monthsLabel: 'Douze contrôles par an, un par mois',
+      checked: 'Contrôlé ce mois-ci, et chaque mois', months: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'], monthsLabel: 'Douze contrôles par an, un par mois ; le mois en cours est indiqué',
       control: 'Automatiquement, ou après votre accord', link: 'Tous les abonnements',
     },
     how: {

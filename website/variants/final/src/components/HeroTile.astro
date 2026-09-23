@@ -6,6 +6,9 @@ import Fn from './Fn.astro';
 interface Props { c: any; plansUrl: string; }
 const { c, plansUrl } = Astro.props;
 const t = c.tile;
+// Month strip: past months filled, this month dark with a check, future months as outlines. Rendered for the build
+// month; a one-line script in Page.astro moves the marker to the visitor's real month.
+const now = new Date().getMonth();
 ---
 <aside class="hero-tile" aria-label={`${t.label}: ${t.plan}`}>
   <div class="ht-top">
@@ -15,8 +18,8 @@ const t = c.tile;
   <p class="ht-mo">{t.monthly}<Fn n={6} L={c.L} /></p>
   <p class="ht-g"><Icon name="shield" /><span>{t.guarantee}<Fn n={4} L={c.L} /></span></p>
   <div class="ht-check">
-    <ol class="ht-months" aria-label={t.monthsLabel}>
-      {t.months.map((m: string, i: number) => <li style={`--i:${i}`} aria-hidden="true"><span>{m}</span></li>)}
+    <ol class="ht-months" aria-label={t.monthsLabel} data-month-strip>
+      {t.months.map((m: string, i: number) => <li style={`--i:${i}`} class:list={{ 'is-past': i < now, 'is-now': i === now }} aria-hidden="true"><span class="ht-dot"></span><span class="ht-m">{m}</span></li>)}
     </ol>
     <p><Icon name="check-circle" />{t.checked}</p>
     <p><Icon name="repeat" />{t.control}</p>

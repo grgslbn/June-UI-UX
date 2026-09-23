@@ -4,8 +4,8 @@
 // Reusable: Plans uses variant="full" (with the three product steps); Home can use variant="compact".
 // Price block follows rule C8 (yearly first, monthly + billing beside it); guarantee always with its condition;
 // the P1 requirement is always shown next to the CTA. Only confirmed Premium features (freeze §2.2).
-// Styles are scoped here, so the band looks the same wherever it is dropped in. Images are eager + fetchpriority=low
-// (small AVIF/WebP, fixed width/height): no pop-in, no layout shift, and they never compete with the LCP.
+// Styles are scoped here, so the band looks the same wherever it is dropped in. Images are lazy (below the fold)
+// with fixed width/height, so no layout shift; the soft brand field behind them avoids an empty pop-in.
 import { Picture } from 'astro:assets';
 import Icon from './Icon.astro';
 import Fn from './Fn.astro';
@@ -52,8 +52,8 @@ const signup = href('signup', locale, base);
       </div>
       <figure class="pb-stage">
         <div class="pb-field" aria-hidden="true"></div>
-        <Picture src={L === 'fr' ? phoneFr : phoneNl} formats={['avif', 'webp']} widths={[220, 299]} sizes="(max-width: 860px) 44vw, 220px" alt={b.stageAlt} loading="eager" fetchpriority="low" decoding="async" pictureAttributes={{ class: 'pb-phone' }} />
-        <Picture src={dongle} formats={['avif', 'webp']} widths={[200, 400]} sizes="(max-width: 860px) 36vw, 200px" alt="" loading="eager" fetchpriority="low" decoding="async" pictureAttributes={{ class: 'pb-dongle' }} />
+        <Picture src={L === 'fr' ? phoneFr : phoneNl} formats={['avif', 'webp']} widths={[220, 299]} sizes="(max-width: 860px) 44vw, 220px" alt={b.stageAlt} loading="lazy" decoding="async" pictureAttributes={{ class: 'pb-phone' }} />
+        <Picture src={dongle} formats={['avif', 'webp']} widths={[200, 400]} sizes="(max-width: 860px) 36vw, 200px" alt="" loading="lazy" decoding="async" pictureAttributes={{ class: 'pb-dongle' }} />
         <figcaption class="pb-tag">{b.tag}</figcaption>
       </figure>
     </div>

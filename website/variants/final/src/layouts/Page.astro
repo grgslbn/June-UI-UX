@@ -83,10 +83,8 @@ const ogImage = `https://www.june.energy/og/june-${locale === 'fr-be' ? 'fr' : '
       });
     }
 
-    // Funnel language switch keeps the visitor's answers: carry the query + step hash to the other locale.
-    document.querySelectorAll<HTMLAnchorElement>('a[data-keep-state]').forEach((a) => a.addEventListener('click', () => {
-      const u = new URL(a.href, location.href); u.search = location.search; u.hash = location.hash; a.href = u.toString();
-    }));
+    const m = new Date().getMonth();
+    document.querySelectorAll('[data-month-strip] li').forEach((li, i) => { li.classList.toggle('is-past', i < m); li.classList.toggle('is-now', i === m); });
 
     const menu = document.querySelector<HTMLDetailsElement>('details.menu');
     menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')));

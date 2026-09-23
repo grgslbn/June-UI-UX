@@ -16,7 +16,8 @@
       advantageous contract in our comparison: elec € 0,03–0,06/kWh · gas € 0,008–0,016/kWh (incl. VAT).
       A band in, a range out: never one number.
    3. Gross capped at € 700/year. Low end rounded down, high end rounded to the nearest € 10.
-   4. Net = gross − the plan's yearly price (floored at 0). The NET figure is the headline.
+   4. Net = gross − the plan's yearly price. NOT floored at 0: when the fee exceeds the saving the formatter
+      says so in words ("minder dan je abonnement kost") instead of a misleading "€ 0". The NET figure is the headline.
    5. Advice (never recommend a plan whose fee eats the saving):
       - Premium only fits a digital meter; it is suggested for digital meter + solar panels, and only
         when you keep something even at the low end of the range (net low end > 0).
@@ -27,7 +28,6 @@
         says honestly "Je zit al goed" and explains the guarantee instead of pushing.
    The postcode only sets the region label; it is not used in the maths.
    ========================================================================== */
-import facts from '@shared/content/facts.json';
 
 export const PRESETS = {
   '1': { elec: 1800, gas: 8000 },
@@ -41,11 +41,14 @@ export const EXTRA = { ev: 2000, heatpump: 3500, solarFactor: 0.7 };
 export const LOW_THRESHOLD = 50;
 export const KWH_RANGE = [100, 100000];
 export const PLAN_SLUGS = ['switch', 'switch-plus', 'premium'];
-/** Yearly fees straight from facts.json (frozen prices). */
-export const FEES = Object.fromEntries(facts.plans.map((p) => [p.slug, p.priceYearly]));
+/** Yearly fees (frozen prices). Inlined so the client bundle does not carry facts.json; src/i18n/signup.js
+ *  asserts at build time that they still equal facts.json plans[].priceYearly. */
+export const FEES = { switch: 69, 'switch-plus': 99, premium: 198 };
 
 const down10 = (v) => Math.max(0, Math.floor(v / 10) * 10);
 const near10 = (v) => Math.max(0, Math.round(v / 10) * 10);
+const sdown10 = (v) => Math.floor(v / 10) * 10 || 0; // signed (net may be below zero)
+const snear10 = (v) => Math.round(v / 10) * 10 || 0;
 const kwh = (v) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : 0; };
 
 /** Usage + gross range (pure, synchronous). */
@@ -61,8 +64,8 @@ export function usageAndGross(i) {
   return { elec, gas, own: ownE || ownG, gross: [down10(lo), near10(hi)] };
 }
 
-/** Net range for a gross range and a yearly fee. */
-export const net = (gross, fee) => [down10(gross[0] - fee), near10(gross[1] - fee)];
+/** Net range for a gross range and a yearly fee (signed: can be below zero). */
+export const net = (gross, fee) => [sdown10(gross[0] - fee), snear10(gross[1] - fee)];
 
 /**
  * Plan advice. Returns { recommended, reason, alt }.
@@ -109,4 +112,13 @@ export async function getEstimate(input) {
 const NBSP = ' ', NNBSP = ' ';
 export const fmtNum = (n, L) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, L === 'fr' ? NNBSP : '.');
 export const fmtEur = (n, L) => (L === 'fr' ? `${fmtNum(n, L)}${NBSP}€` : `€${NBSP}${fmtNum(n, L)}`);
-export const fmtRange = (r, L) => `${fmtEur(r[0], L)} – ${fmtEur(r[1], L)}`;
+const BELOW = { nl: 'minder dan je abonnement kost', fr: 'moins que le prix de votre abonnement' };
+/** Range formatter. A (net) range that dips below zero is said in words, never shown as "€ 0" or a clipped range. */
+export const fmtRange = (r, L) => {
+  const l = L === 'fr' ? 'fr' : 'nl';
+  if (r[1] <= 0) return BELOW[l];
+  if (r[0] < 0) return l === 'fr' ? `jusqu’à ${fmtEur(r[1], L)}, ou ${BELOW.fr}` : `tot ${fmtEur(r[1], L)}, of ${BELOW.nl}`;
+  return `${fmtEur(r[0], L)} – ${fmtEur(r[1], L)}`;
+};
+/** True when a range needs words instead of two amounts (for styling). */
+export const isBelowZero = (r) => r[0] < 0;

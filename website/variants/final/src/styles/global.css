@@ -15,7 +15,8 @@
 
 /* ── Base ───────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--paper); scroll-behavior: smooth; scroll-padding-top: 88px; }
+html { -webkit-text-size-adjust: 100%; background: var(--paper); scroll-padding-top: 88px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 /* The sticky mobile CTA (≤ 760px, ~72px) must never cover a focused element (WCAG 2.4.11). */
 @media (max-width: 760px) { html { scroll-padding-bottom: 96px; } }
 body {
@@ -32,7 +33,8 @@ a { color: var(--accent-strong); text-underline-offset: 3px; text-decoration-thi
 a:hover { color: var(--accent-deep); text-decoration-thickness: 2px; }
 :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 4px; }
 sup.fn { font-size: 12px; line-height: 0; vertical-align: super; font-weight: 600; }
-sup.fn a { text-decoration: none; padding: 0 1px; }
+/* Footnote markers: ≥ 24 × 24 px hit area (WCAG 2.5.8) without changing the line box. */
+sup.fn a { text-decoration: none; display: inline-block; min-width: 24px; min-height: 24px; line-height: 24px; text-align: center; margin: -9px -8px -9px -7px; vertical-align: middle; }
 .num { font-variant-numeric: tabular-nums lining-nums; }
 .nowrap { white-space: nowrap; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -56,7 +58,6 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
   display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
   color: var(--ink-700); border: 1px solid var(--ink-400); border-radius: var(--r-pill); padding: 2px 10px; line-height: 1.6; white-space: nowrap;
 }
-.tag--spark { color: var(--spark-text); border-color: var(--spark); }
 
 .section { padding-block: var(--section-y); border-top: 1px solid var(--rule-strong); }
 .section--deep { background: var(--paper-deep); }
@@ -205,8 +206,9 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
 .outcomes p strong { color: var(--on-block); }
 .promise-foot { margin-top: var(--s-10); display: grid; grid-template-columns: 1fr auto; gap: var(--s-6); align-items: center; border-top: 1px solid rgba(255,255,255,.18); padding-top: var(--s-6); }
 .promise-foot .note { color: var(--on-block-muted); }
-.promise .btn--light, .btn--light { background: var(--on-block); color: var(--block); }
-.promise .btn--light:hover, .btn--light:hover { background: var(--on-block-accent); color: var(--block); }
+/* One inverse CTA for every dark or green field: white button, ink text (hover: mint). .btn--light is kept as an alias. */
+.btn--inverse, .btn--light, .promise .btn--light, .summary--field .btn { background: #fff; color: #14232a; }
+.btn--inverse:hover, .btn--light:hover, .promise .btn--light:hover, .summary--field .btn:hover { background: #e3f4f2; color: #14232a; }
 @media (max-width: 860px) {
   .outcomes { grid-template-columns: 1fr; }
   .outcomes > div, .outcomes > div + div { padding: var(--s-5) 0; border-left: 0; border-bottom: 1px solid rgba(255,255,255,.18); }
@@ -313,8 +315,6 @@ main:focus { outline: none; }
 .page-hero .kicker::after { max-width: 160px; }
 
 /* Home tweaks */
-.hero-fig { display: grid; gap: var(--s-8); }
-.ledger { margin-top: 0; }
 .steps--icons li { grid-template-columns: 72px 44px minmax(0, 20ch) minmax(0, 1fr); align-items: center; }
 .steps--icons .anim-icon img { width: 72px; height: 72px; }
 @media (max-width: 760px) {
@@ -339,10 +339,7 @@ main:focus { outline: none; }
 .faq-a .tag { margin-bottom: var(--s-3); }
 .faq details { scroll-margin-top: 96px; }
 .faq details:target summary { color: var(--accent-deep); }
-.quotes-label { margin-bottom: 12px; }
-.quote-ph p { margin-top: 8px; }
 .summary .trust { margin-top: 8px; }
-.summary--char { position: relative; }
 
 /* ── FAQ page ───────────────────────────────────────────────────────── */
 .chips { margin-top: var(--s-8); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
@@ -368,9 +365,6 @@ main:focus { outline: none; }
 @media (max-width: 520px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 
 /* ── Masthead (minimal / funnel) ────────────────────────────────────── */
-.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-900); text-decoration: none; font-weight: 500; min-height: 44px; }
-.back-link svg { width: 16px; height: 16px; }
-.back-link:hover { text-decoration: underline; color: var(--ink-900); }
 .masthead--minimal { position: static; }
 .masthead--minimal .menu { display: none; }
 .lang-cur { color: var(--ink-900); padding: 4px; }
@@ -383,20 +377,15 @@ main:focus { outline: none; }
 /* ==========================================================================
    Final build — shell & brand additions (lead)
    ========================================================================== */
-/* Header: login stays reachable on small screens as an icon; funnel "Hulp nodig?" */
+/* Header: login stays reachable on small screens as an icon */
 .login svg { width: 18px; height: 18px; }
 @media (max-width: 1140px) {
   .util > .login { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-sm); }
   .login .login-t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
-.help-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--ink-900); font-weight: 600; text-decoration: none; }
-.help-link svg { width: 18px; height: 18px; color: var(--accent-strong); }
-.help-link:hover { text-decoration: underline; color: var(--ink-900); }
 @media (max-width: 520px) {
   .masthead-in { gap: var(--s-3); }
   .util { gap: var(--s-2); }
-  .masthead--minimal .back-link span, .masthead--minimal .help-link span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .masthead--minimal .back-link, .masthead--minimal .help-link { width: 44px; justify-content: center; }
   .logo svg { height: 30px; }
 }
 
@@ -405,7 +394,6 @@ main:focus { outline: none; }
 .sq-line { position: absolute; left: -2%; right: -2%; width: 104%; bottom: -0.3em; height: 0.3em; overflow: visible; pointer-events: none; }
 .sq-line path { fill: none; stroke-width: 5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .sq--green .sq-line path { stroke: var(--accent); }
-.sq--ink .sq-line path { stroke: var(--ink-900); }
 @media (prefers-reduced-motion: no-preference) {
   .js .sq-line path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: sq-draw 700ms var(--ease-out) 350ms forwards; }
   @keyframes sq-draw { to { stroke-dashoffset: 0; } }
@@ -463,15 +451,13 @@ main:focus { outline: none; }
 .summary--field sup.fn a { color: #fff; }
 .summary--field .field label { color: #fff; }
 .summary--field .input { border-color: #fff; }
-.summary--field .btn { background: var(--ink-900); color: #fff; }
-.summary--field .btn:hover { background: #000; }
 .summary--field .pc-help { color: #fff; }
 .summary--field .pc-help.is-error { color: #fff; text-decoration: underline; }
 .summary--field .trust, .summary--field .trust strong { color: #fff; }
 .summary--field .trust svg { color: #fff; }
 .summary--field .stars path[clip-path] { fill: #fff; }
 .summary--field .stars path[stroke] { stroke: rgba(255, 255, 255, 0.7); }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) { .summary--field .btn:hover { box-shadow: 4px 4px 0 #fff; } }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) { .btn--inverse:hover, .btn--light:hover, .summary--field .btn:hover { box-shadow: 4px 4px 0 var(--accent); } }
 :root[data-theme="dark"] .summary--field, .summary--field { --on-accent: #fff; }
 
 /* Sticky CTA proof line */

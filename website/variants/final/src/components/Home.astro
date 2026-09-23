@@ -48,9 +48,11 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
           </li>
         ))}
       </ol>
-      <div class="hero-body">
-        <p class="lead">{c.hero.lead}</p>
+      <div class="hero-text">
+        <p class="lead">{c.hero.lead}<Fn n={5} L={L} /></p>
         <p class="hero-cost">{c.hero.saving[0]}<strong>{c.hero.saving[1]}</strong>{c.hero.saving[2]}<Fn n={1} L={L} /></p>
+      </div>
+      <div class="hero-form">
         <div data-sticky-hide id="bereken">
           <PostcodeForm locale={locale} c={c} id="hero" entry="home-hero" />
         </div>

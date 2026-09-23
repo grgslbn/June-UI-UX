@@ -196,7 +196,7 @@ const client = {
           <section class="panel" data-panel="plan" aria-labelledby="s2-h">
             <h2 id="s2-h" tabindex="-1" class="panel-h">{s2.h2}</h2>
 
-            <fieldset class="q" id="q-plan" aria-describedby="plan-g plan-warn plan-err">
+            <fieldset class="q" id="q-plan" aria-describedby="su-plan-g plan-warn plan-err">
               <legend class="q-label">{s2.plan.legend}</legend>
               <div class="plan-opts">
                 {c.plans.map((p: any) => (
@@ -213,7 +213,7 @@ const client = {
                   </label>
                 ))}
               </div>
-              <p class="note plan-g" id="plan-g">{s2.guaranteeNote}</p>
+              <p class="note su-plan-g" id="su-plan-g">{s2.guaranteeNote}</p>
               <p class="warn" id="plan-warn" aria-live="polite" hidden></p>
               <p class="err" id="plan-err" hidden></p>
             </fieldset>

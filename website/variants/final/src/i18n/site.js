@@ -8,21 +8,30 @@ export const G = facts.guarantees.winstgarantie;
 export const faqById = (id) => facts.faq.find((f) => f.id === id);
 export const NNBSP = ' ';
 
+export const NBSP = '\u00A0';
 export const money = (n, L) => {
   const s = Number.isInteger(n) ? String(n) : n.toFixed(2).replace('.', ',');
   const grouped = s.replace(/\B(?=(\d{3})+(?!\d))/g, L === 'nl' ? '.' : NNBSP);
-  return L === 'nl' ? `€ ${grouped}` : `${grouped} €`;
+  return L === 'nl' ? `€${NBSP}${grouped}` : `${grouped}${NBSP}€`;
 };
+
+/** Shared typography helper: keeps amounts and units on one line — "€ 326", "326 €", "21 %", "3.800 kWh" get a
+ *  no-break space. Works on strings, arrays and objects (deep). Applied automatically by localise(); import it for
+ *  any string that does not go through localise(). */
+export const nbsp = (v) => typeof v === 'string'
+  ? v.replace(/€ (?=\d)/g, `€${NBSP}`).replace(/(\d) (?=€|%|kWh\b|m³)/g, `$1${NBSP}`)
+  : Array.isArray(v) ? v.map(nbsp)
+  : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, nbsp(x)])) : v;
 
 // FR typography: narrow no-break space before ? ! : ; — applied to every FR string (not to URLs/HTML attributes).
 export const frPunct = (v) => typeof v === 'string' ? v.replace(/ ([?!:;])(?=\s|$|<)/g, ' $1')
   : Array.isArray(v) ? v.map(frPunct)
   : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, frPunct(x)])) : v;
 
-/** Wrap a page-copy builder so FR output gets French punctuation spacing. */
+/** Wrap a page-copy builder: no-break spaces around amounts/units (both locales) + French punctuation spacing (FR). */
 export const localise = (build) => (locale) => {
   const L = locale === 'fr-be' ? 'fr' : 'nl';
-  const out = build(L, (n) => money(n, L));
+  const out = nbsp(build(L, (n) => money(n, L)));
   return L === 'fr' ? frPunct(out) : out;
 };
 
@@ -48,8 +57,8 @@ export const siteCopy = localise((L, m) => {
       { id: 'fn-3', text: nl ? `Aantal klanten op ${month.nl}.` : `Nombre de clients en ${month.fr}.` },
       { id: 'fn-4', text: nl ? 'Winstgarantie bij Switch Plus en Premium, per abonnementsjaar. Voorwaarden in onze algemene voorwaarden.' : 'Garantie de gain avec Switch Plus et Premium, par année d’abonnement. Conditions dans nos conditions générales.' },
       { id: 'fn-5', text: nl
-        ? 'June leeft van de abonnementen van haar klanten. We zijn geen energieleverancier en kiezen je contract op basis van jouw verbruik.'
-        : 'June vit des abonnements de ses clients. Nous ne sommes pas fournisseur d’énergie et choisissons votre contrat sur la base de votre consommation.' },
+        ? 'June leeft van de abonnementen van haar klanten en kiest je contract op basis van jouw verbruik. Of June daarnaast vergoedingen van leveranciers ontvangt, vermelden we hier zodra dat bevestigd is.'
+        : 'June vit des abonnements de ses clients et choisit votre contrat sur la base de votre consommation. Si June perçoit en plus des rémunérations de fournisseurs, nous l’indiquerons ici dès que ce sera confirmé.' },
       { id: 'fn-6', text: nl ? 'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.' : 'Tous les prix TVA 21 % comprise. Votre consommation d’énergie est facturée par votre fournisseur.' },
     ],
     ui: nl
@@ -62,8 +71,8 @@ export const siteCopy = localise((L, m) => {
       ? { home: 'Home', plans: 'Abonnementen', switchPlus: 'Switch Plus', howItWorks: 'Hoe werkt het', faq: 'Veelgestelde vragen', signup: 'Aanmelden' }
       : { home: 'Accueil', plans: 'Abonnements', switchPlus: 'Switch Plus', howItWorks: 'Comment ça marche', faq: 'Questions fréquentes', signup: 'Inscription' },
     form: nl
-      ? { label: 'Je postcode', placeholder: 'bv. 9000', help: 'Vrijblijvend · 4 vragen · geen persoonsgegevens', error: 'Vul een Belgische postcode in van 4 cijfers, bv. 9000.' }
-      : { label: 'Votre code postal', placeholder: 'ex. 1000', help: 'Sans engagement · 4 questions · aucune donnée personnelle', error: 'Indiquez un code postal belge à 4 chiffres, par ex. 1000.' },
+      ? { label: 'Je postcode', placeholder: 'bv. 9000', help: 'Vrijblijvend · geen persoonsgegevens', error: 'Vul een Belgische postcode in van 4 cijfers, bv. 9000.' }
+      : { label: 'Votre code postal', placeholder: 'ex. 1000', help: 'Sans engagement · aucune donnée personnelle', error: 'Indiquez un code postal belge à 4 chiffres, par ex. 1000.' },
     trust: {
       rating: facts.socialProof.googleRating.display[L],
       customers: facts.socialProof.customers.display[L],
@@ -117,13 +126,13 @@ export const siteCopy = localise((L, m) => {
       : { strong: '4,3/5 sur Google', sub: `${facts.socialProof.customers.display.fr} · sans engagement` },
     finalCta: nl
       ? { h2: 'Kort samengevat.', points: [
-          'June is geen leverancier. Jij betaalt ons, niet de leverancier.',
+          'June is geen leverancier en kiest je contract op basis van jouw verbruik.',
           `We vergelijken ${facts.suppliers.count.display.nl}, minstens elke maand, voor jouw verbruik.`,
           'We wisselen automatisch, of pas na jouw akkoord.',
           `Winstgarantie (Switch Plus): ${m(G.amount)} terug als je niet meer bespaart dan je abonnement kost.`,
         ] }
       : { h2: 'En bref.', points: [
-          'June n’est pas un fournisseur. C’est vous qui nous payez, pas le fournisseur.',
+          'June n’est pas un fournisseur et choisit votre contrat sur la base de votre consommation.',
           `Nous comparons ${facts.suppliers.count.display.fr}, au moins une fois par mois, pour votre consommation.`,
           'Nous changeons automatiquement, ou seulement après votre accord.',
           `Garantie de gain (Switch Plus) : ${m(G.amount)} remboursés si vous n’économisez pas plus que le prix de votre abonnement.`,

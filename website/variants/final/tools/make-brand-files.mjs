@@ -21,8 +21,8 @@ const og = (k, h1a, h1b, sub, foot) => `<!doctype html><html><head><style>${css}
 .logo{color:#1ca498;width:140px}.logo svg{width:100%;height:auto;display:block}
 .k{margin-top:32px;font:600 20px/1 I;letter-spacing:.08em;text-transform:uppercase;color:#435359}
 h1{margin-top:18px;font:600 54px/1.05 M;letter-spacing:-.02em;max-width:680px}h1 span{color:#127a71;display:block}
-p{margin-top:18px;font:400 22px/1.4 I;color:#435359;max-width:640px}
-.f{margin-top:30px;display:flex;gap:28px;font:600 20px/1 I;color:#14232a}.f span{padding-top:14px;border-top:3px solid #14232a}
+p{margin-top:14px;font:400 20px/1.4 I;color:#435359;max-width:640px}
+.f{margin-top:22px;display:flex;gap:28px;font:600 20px/1 I;color:#14232a}.f span{padding-top:14px;border-top:3px solid #14232a}
 .bar{position:absolute;left:0;right:0;top:0;height:10px;background:#1ca498}
 .ch{position:absolute;right:40px;bottom:-10px;width:330px}
 .rule{position:absolute;right:0;top:0;bottom:0;width:430px;background:#e3f4f2}
@@ -31,8 +31,8 @@ p{margin-top:18px;font:400 22px/1.4 I;color:#435359;max-width:640px}
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1200, height: 630 } });
 const shots = {
-  'og/june-nl.png': og('Onafhankelijk · geen energieleverancier', 'Energieleveranciers rekenen op je trouw.', 'Wij niet.', 'June volgt de markt voor jou op en regelt de overstap. Jij betaalt ons, niet de leverancier.', ['4,3/5 op Google', '20.000+ klanten', 'Geen leverancier']),
-  'og/june-fr.png': og('Indépendant · pas un fournisseur d’énergie', 'Les fournisseurs comptent sur votre fidélité.', 'Pas nous.', 'June suit le marché pour vous et gère le changement. C’est vous qui nous payez, pas le fournisseur.', ['4,3/5 sur Google', 'Plus de 20 000 clients', 'Pas un fournisseur']),
+  'og/june-nl.png': og('Onafhankelijk · geen energieleverancier', 'Energieleveranciers rekenen op je trouw.', 'Wij niet.', 'June vergelijkt minstens elke maand 17+ leveranciers voor jouw verbruik en regelt de overstap.', ['4,3/5 op Google', '20.000+ klanten', 'Geen leverancier']),
+  'og/june-fr.png': og('Indépendant · pas un fournisseur d’énergie', 'Les fournisseurs comptent sur votre fidélité.', 'Pas nous.', 'Chaque mois au moins, June compare plus de 17 fournisseurs pour vous et gère le changement.', ['4,3/5 sur Google', 'Plus de 20 000 clients', 'Pas un fournisseur']),
 };
 for (const [f, html] of Object.entries(shots)) { await p.setContent(html); await p.waitForTimeout(300); await p.screenshot({ path: pub + f }); }
 // Square marks: white wordmark on logo green (favicon / touch icon), green wordmark on white (Organization logo).

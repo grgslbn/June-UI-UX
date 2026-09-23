@@ -24,7 +24,8 @@
 .plan-req { display: flex; gap: 8px; align-items: flex-start; font-size: var(--fs-ui); color: var(--ink-700); font-weight: 500; margin: var(--s-4) 0; }
 .plan-req svg { width: 20px; height: 20px; flex: none; color: var(--ink-700); }
 .plan-for { margin-top: auto; padding-top: var(--s-4); border-top: 1px solid var(--rule); font-size: var(--fs-note); color: var(--ink-500); }
-.plans-note { margin-top: var(--s-5); }
+.plans-foot { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-8); align-items: center; justify-content: space-between; }
+.plans-foot .note { max-width: 62ch; }
 @media (max-width: 960px) {
   .plan-cards { grid-template-columns: 1fr; max-width: 560px; }
   .plan--rec { order: -1; }
@@ -114,15 +115,12 @@
   .plans-tools { display: contents; }
   .plans-tools > :first-child { order: 1; margin-bottom: var(--s-8); }
   .plan-cards { order: 2; }
-  .plans-tools > .pl-box { order: 3; margin-top: var(--s-8); }
-  .plans-wrap .plans-note { order: 4; }
+  .plans-tools > .pl-box { order: 4; margin-top: var(--s-8); }
+  .plans-wrap .plans-foot { order: 3; }
 }
 
-.plan-cta { display: grid; gap: var(--s-2); margin-top: var(--s-2); }
-.plan-cta .btn { margin-top: 0; }
 .cta-proof { column-gap: 12px; }
 .cta-proof > span[aria-hidden]:not(.stars) { display: none; } /* separator dot: wraps badly on narrow screens */
-.plan .cta-proof { justify-content: center; font-size: var(--fs-note); text-align: center; }
 
 .plan-fit, .plan-nofit { display: none; align-items: center; gap: 6px; font-size: var(--fs-note); font-weight: 600; margin: 0; }
 .plan-fit svg, .plan-nofit svg { width: 16px; height: 16px; flex: none; }
@@ -175,6 +173,7 @@
 .earn-head .section-head { margin-bottom: 0; }
 .earn-body { color: var(--ink-700); }
 .earn-body strong { color: var(--ink-900); }
+.earn-body .note { margin-top: var(--s-3); }
 @media (max-width: 860px) { .earn-head { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); } }
 .mf { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 0.62fr) minmax(0, 1fr) minmax(120px, 0.62fr) minmax(0, 1fr); align-items: stretch; row-gap: var(--s-4); }
 .mf-node { background: var(--surface); border: 2px solid var(--rule-strong); border-radius: var(--r-md); padding: var(--s-5); display: grid; gap: 6px; align-content: start; }

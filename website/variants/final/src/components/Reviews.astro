@@ -4,24 +4,34 @@
 import Stars from './Stars.astro';
 import Fn from './Fn.astro';
 import SectionHead from './SectionHead.astro';
+import { facts, money } from '../i18n/site.js';
 interface Props { c: any; n?: string; id?: string; }
 const { c, n, id = 'reviews' } = Astro.props;
 const fr = c.L === 'fr';
+// Every figure comes from facts.json (via site.js), so the band cannot drift from the rest of the site.
+const sp = facts.socialProof;
+const nf = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, fr ? '\u202F' : '.');
+const rating = String(sp.googleRating.value).replace('.', ',');
+const facts3: [string, string, number][] = [
+  [`${nf(sp.customers.value)}+`, fr ? 'clients' : 'klanten', 3],
+  [`${facts.suppliers.count.value}+`, fr ? 'fournisseurs comparés' : 'leveranciers vergeleken', 0],
+  [money(facts.saving.averagePerYear.value, c.L), fr ? 'd’économie moyenne par an' : 'gemiddelde besparing per jaar', 1],
+];
 const r = fr
-  ? { kicker: 'Ce que disent nos clients', h2: 'Une note de 4,3, pas de 5. Nous la montrons telle quelle.', basis: 'sur Google, sur la base de plus de 1 200 avis', aria: '4,3 sur 5 étoiles', facts: [['20 000+', 'clients', 3], ['17+', 'fournisseurs comparés', 0], ['326 €', 'd’économie moyenne par an', 1]] }
-  : { kicker: 'Wat klanten zeggen', h2: 'Een 4,3, geen 5. We tonen hem zoals hij is.', basis: 'op Google, op basis van 1.200+ reviews', aria: '4,3 van 5 sterren', facts: [['20.000+', 'klanten', 3], ['17+', 'leveranciers vergeleken', 0], ['€ 326', 'gemiddelde besparing per jaar', 1]] };
+  ? { kicker: 'Ce que disent nos clients', h2: `Une note de ${rating}, pas de 5. Nous la montrons telle quelle.`, basis: `sur Google, sur la base de plus de ${nf(sp.googleRating.reviewCount)} avis`, aria: `${rating} sur ${sp.googleRating.scale} étoiles` }
+  : { kicker: 'Wat klanten zeggen', h2: `Een ${rating}, geen 5. We tonen hem zoals hij is.`, basis: `op Google, op basis van ${nf(sp.googleRating.reviewCount)}+ reviews`, aria: `${rating} van ${sp.googleRating.scale} sterren` };
 ---
 <section class="section" id={id} aria-labelledby={`${id}-h`}>
   <div class="wrap">
     <SectionHead n={n} kicker={r.kicker} id={`${id}-h`} title={r.h2} />
     <div class="rating-band">
       <div class="rating">
-        <p class="rating-big num" role="img" aria-label={r.aria}>4,3<small aria-hidden="true">/5</small></p>
+        <p class="rating-big num" role="img" aria-label={r.aria}>{rating}<small aria-hidden="true">/{sp.googleRating.scale}</small></p>
         <Stars value={c.rating} id={id} />
         <p class="note">{r.basis}<Fn n={2} L={c.L} /></p>
       </div>
       <ul class="rating-facts">
-        {r.facts.map(([big, label, fn]) => <li><strong class="num">{big}</strong><span>{label}{fn ? <Fn n={fn as number} L={c.L} /> : null}</span></li>)}
+        {facts3.map(([big, label, fn]) => <li><strong class="num">{big}</strong><span>{label}{fn ? <Fn n={fn} L={c.L} /> : null}</span></li>)}
       </ul>
     </div>
   </div>

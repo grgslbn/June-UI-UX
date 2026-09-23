@@ -100,6 +100,7 @@ const PII = /@|\b\d{4}\b.*(gent|bruxelles)|voorbeeld|exemple/i;
   await p.click('button[data-next=plan]');
   const s2 = await text(p, '#err-sum');
   ok(/Nog 3 dingen/.test(s2) && /wisselen/.test(s2), 'step 3 errors incl. switch preference: ' + s2.replace(/\n/g, ' | '));
+  ok(await p.evaluate(() => [...document.querySelectorAll('input[name=pref]')].every((r) => r.getAttribute('aria-invalid') === 'true')), 'aria-invalid on the preference radios while their error shows');
   await shot(p, 'nl-d-3-errors');
   // Browser back: stale summary must be gone on the estimate
   await p.goBack(); await p.waitForSelector('[data-panel=est].is-active');
@@ -107,6 +108,7 @@ const PII = /@|\b\d{4}\b.*(gent|bruxelles)|voorbeeld|exemple/i;
   await p.goForward(); await p.waitForSelector('[data-panel=plan].is-active');
   ok(await p.isHidden('#err-sum'), 'no stale summary on forward either');
   await p.click('label:has(#su-pref-ask)');
+  ok(await p.evaluate(() => ![...document.querySelectorAll('input[name=pref]')].some((r) => r.hasAttribute('aria-invalid'))), 'aria-invalid removed once a preference is chosen');
   await p.fill('#su-email', 'an@voorbeeld.be');
   await p.click('label.check:has(#su-terms)');
   // Reload on step 3 keeps everything
@@ -240,7 +242,7 @@ const PII = /@|\b\d{4}\b.*(gent|bruxelles)|voorbeeld|exemple/i;
   ok(await noOverflow(p), 'no overflow (320, step 1)');
   await p.click('button[data-next=home]'); await p.waitForSelector('[data-panel=est].is-active');
   const n = await text(p, '[data-est-notice]');
-  ok(/je zit al goed/i.test(n) && /€ 99 terug/.test(n) && /abonnementsjaar/.test(n), 'low verdict with guarantee + condition: ' + n.replace(/\n/g, ' '));
+  ok(/je zit al goed/i.test(n) && /€\s99 terug/.test(n) && /abonnementsjaar/.test(n), 'low verdict with guarantee + condition: ' + n.replace(/\n/g, ' '));
   ok(await p.isHidden('[data-est-rec-box]') && /Toch verder met Switch Plus/.test(await text(p, '[data-est-next]')), 'no upsell; soft CTA');
   ok(!/Premium/.test(await text(p, '[data-est-next]')), 'Premium never advised on a tiny saving');
   ok(await noOverflow(p), 'no overflow (320, estimate)');
@@ -258,7 +260,28 @@ const PII = /@|\b\d{4}\b.*(gent|bruxelles)|voorbeeld|exemple/i;
   await p.click('button[data-next=home]'); await p.waitForSelector('[data-panel=est].is-active');
   const r = (await dlAll(p)).find((e) => e.event === 'estimate_viewed');
   ok(r.recommended_plan === 'switch-plus' && ['premium-eats'].includes(r.reason) || r.verdict === 'low', 'Premium not advised when its fee eats the saving: ' + JSON.stringify(r));
+  const frNet = await text(p, '[data-est-net]');
+  ok(/jusqu’à .*moins que le prix de votre abonnement/.test(frNet) && !/^0\s?€/.test(frNet), 'FR partly negative net said in words: ' + frNet);
   await shot(p, 'fr-d-premium-eats');
+  await p.context().close();
+}
+
+// ── 6b. Negative net (fee larger than the whole saving) → words, never "€ 0 – € 0" ──
+{
+  const p = await newPage({ width: 320, height: 640 });
+  await p.goto(O + 'nl-be/aanmelden/?postcode=3000&energy=elec&household=1&meter=analog&solar=1'); await settle(p);
+  await p.click('button[data-next=home]'); await p.waitForSelector('[data-panel=est].is-active');
+  const n = await text(p, '[data-est-net]'), n2 = await text(p, '[data-est-net2]');
+  ok(n === 'minder dan je abonnement kost' && n2 === n, 'negative net in words: "' + n + '"');
+  ok(!/€\s?0\b/.test(await p.locator('.est-card').innerText()), 'no "€ 0" anywhere in the estimate card');
+  ok(/je zit al goed/i.test(await text(p, '[data-est-notice]')), 'honest low verdict with a negative net');
+  await p.click('button[data-go-plan]'); await p.waitForSelector('[data-panel=plan].is-active');
+  ok(/minder dan je abonnement kost/.test(await text(p, '[data-net-for=premium]')) && !/€\s?0\b/.test(await p.locator('.plan-opts').innerText()), 'plan cards: no "€ 0" ranges');
+  ok(await noOverflow(p), 'no overflow (320) with worded ranges');
+  await shot(p, 'nl-n-negative-plan');
+  await p.goBack(); await p.waitForSelector('[data-panel=est].is-active');
+  await shot(p, 'nl-n-negative-est');
+  ok(await noOverflow(p), 'no overflow (320, negative estimate)');
   await p.context().close();
 }
 

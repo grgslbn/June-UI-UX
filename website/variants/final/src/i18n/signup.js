@@ -1,7 +1,10 @@
 // Final site — sign-up funnel copy (NL + FR). Honest Market voice: transparent about the maths, the data we ask
 // and what happens next. Prices, guarantee amount and presets come from facts.json / src/lib/estimate.js.
 import { SW, SWP, PREM, G, localise, siteCopy } from './site.js';
-import { PRESETS, GAP, CAP, EXTRA, LOW_THRESHOLD } from '../lib/estimate.js';
+import { PRESETS, GAP, CAP, EXTRA, LOW_THRESHOLD, FEES } from '../lib/estimate.js';
+
+// Build-time guard: the fees inlined in the client estimate must equal the frozen prices in facts.json.
+for (const p of [SW, SWP, PREM]) if (FEES[p.slug] !== p.priceYearly) throw new Error(`estimate.js FEES.${p.slug} (${FEES[p.slug]}) ≠ facts.json (${p.priceYearly})`);
 
 const fmtN = (n, L) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, L === 'nl' ? '.' : ' ');
 const dec = (n, L) => String(n).replace('.', ',') + (L === 'fr' ? ' €' : '');
@@ -101,7 +104,7 @@ const signup = localise((L, m) => {
       },
       recH: 'Ons advies',
       rec: {
-        default: 'Switch Plus: we zoeken elke maand het voordeligste contract voor je, met winstgarantie.',
+        default: 'Switch Plus: we zoeken elke maand het voordeligste contract uit onze vergelijking voor je, met winstgarantie.',
         'premium-fit': `Premium: met een digitale meter en zonnepanelen zie je via de June Dongle live wat je verbruikt en injecteert. Gaat het je enkel om de besparing, dan hou je met Switch Plus ${m(SWP.priceYearly)} meer over per jaar.`,
         'premium-eats': 'Switch Plus. Wil je toch live inzicht via de June Dongle, dan kan je Premium in stap 3 nog kiezen.',
         'premium-analog': 'Switch Plus. Krijg je binnenkort een digitale meter, dan kan je later nog naar Premium.',
@@ -143,7 +146,7 @@ const signup = localise((L, m) => {
       },
       recH: 'Notre conseil',
       rec: {
-        default: 'Switch Plus : nous cherchons chaque mois pour vous le contrat le plus avantageux, avec la garantie de gain.',
+        default: 'Switch Plus : nous cherchons chaque mois pour vous le contrat le plus avantageux parmi ceux que nous comparons, avec la garantie de gain.',
         'premium-fit': `Premium : avec un compteur numérique et des panneaux solaires, le June Dongle vous montre en direct ce que vous consommez et injectez. Si seule l’économie compte pour vous, il vous reste ${m(SWP.priceYearly)} de plus par an avec Switch Plus.`,
         'premium-eats': 'Switch Plus. Vous tenez au suivi en direct avec le June Dongle ? Vous pouvez encore choisir Premium à l’étape 3.',
         'premium-analog': 'Switch Plus. Vous recevez bientôt un compteur numérique ? Vous pourrez passer à Premium plus tard.',

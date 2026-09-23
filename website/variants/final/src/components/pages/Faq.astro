@@ -5,6 +5,7 @@
 // "Niet gevonden?" block: contact via the account + the pointing June character (its only use on this page).
 import { Image } from 'astro:assets';
 import Site from '../../layouts/Site.astro';
+import Squiggle from '../Squiggle.astro';
 import Icon from '../Icon.astro';
 import FaqList from '../FaqList.astro';
 import FinalCta from '../FinalCta.astro';
@@ -15,6 +16,9 @@ interface Props { locale: 'nl-be' | 'fr-be'; }
 const { locale } = Astro.props;
 const c = faqCopy(locale);
 const L = c.L;
+// One squiggle word per page (brand spark), under the H1's key word.
+const mi = c.hero.h1.indexOf(c.hero.mark);
+const h1 = mi < 0 ? [c.hero.h1, ''] : [c.hero.h1.slice(0, mi), c.hero.h1.slice(mi + c.hero.mark.length)];
 const base = import.meta.env.BASE_URL;
 const all = c.cats.flatMap((k: any) => k.items);
 const ld = [{
@@ -26,7 +30,7 @@ const ld = [{
   <section class="page-hero" aria-labelledby="h1">
     <div class="wrap">
       <p class="kicker"><span>{c.hero.kicker}</span></p>
-      <h1 id="h1">{c.hero.h1}</h1>
+      <h1 id="h1">{h1[0]}<Squiggle>{c.hero.mark}</Squiggle>{h1[1]}</h1>
       <p class="lead">{c.hero.lead}</p>
       <nav class="chips" aria-label={c.hero.jump} data-sticky-hide>
         <span class="chips-label">{c.hero.jump}</span>
@@ -79,6 +83,9 @@ const ld = [{
 </Site>
 
 <style>
+  /* Category heads sit at the top of their question list, also when an item is open. */
+  :global(.faq-page .faq-split) { align-items: start; }
+  :global(.faq-page .faq-split > .section-head) { align-self: start; }
   .nf-card { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--s-8); align-items: start; padding: var(--s-8); background: var(--surface); border: 2px solid var(--rule-strong); border-radius: var(--r-md); }
   .nf-card :global(.nf-char) { width: 140px; height: auto; }
   .nf-body h2 { font-size: var(--fs-h2); max-width: 22ch; }

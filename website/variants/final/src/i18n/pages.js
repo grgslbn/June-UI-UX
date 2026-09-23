@@ -76,7 +76,7 @@ const band = localise((L, m) => {
     ],
   };
 });
-export const productBandCopy = (locale) => ({ ...siteCopy(locale), band: band(locale), proof: proofCopy(locale === 'fr-be' ? 'fr' : 'nl') });
+export const productBandCopy = (locale) => nb({ ...siteCopy(locale), band: band(locale), proof: proofCopy(locale === 'fr-be' ? 'fr' : 'nl') });
 
 /* ── Abonnementen / Abonnements ─────────────────────────────── */
 const plans = localise((L, m) => {
@@ -86,9 +86,9 @@ const plans = localise((L, m) => {
       ? { title: 'Abonnementen en prijzen | June', description: `Switch ${m(69)}, Switch Plus ${m(99)} of Premium ${m(198)} per jaar, incl. btw. Welk abonnement past bij jou, en wat hou je over?` }
       : { title: 'Abonnements et prix | June', description: `Switch ${m(69)}, Switch Plus ${m(99)} ou Premium ${m(198)} par an, TVA comprise. Quel abonnement vous convient, et que vous reste-t-il ?` },
     hero: nl
-      ? { kicker: 'Abonnementen en prijzen', h1: 'Eén vaste prijs per jaar. Voor het werk dat wij doen.', lead: 'Met elk abonnement volgt June de markt voor je op en regelt ze je overstap. Je energie zelf betaal je, zoals nu, aan je leverancier.',
+      ? { kicker: 'Abonnementen en prijzen', h1: 'Eén vaste prijs per jaar. Voor het werk dat wij doen.', mark: 'vaste', lead: 'Met elk abonnement volgt June de markt voor je op en regelt ze je overstap. Je energie zelf betaal je, zoals nu, aan je leverancier.',
           facts: [['euro', 'Eén jaarprijs, incl. btw, één keer per jaar gefactureerd'], ['check-circle', 'Jij kiest: automatisch wisselen, of elke overstap eerst zelf goedkeuren'], ['shield', `Winstgarantie bij Switch Plus en Premium: ${m(G.amount)} terug als je niet meer bespaart dan je abonnement kost`]] }
-      : { kicker: 'Abonnements et prix', h1: 'Un prix fixe par an. Pour le travail que nous faisons.', lead: 'Avec chaque abonnement, June suit le marché pour vous et gère votre changement. Votre énergie, vous continuez à la payer à votre fournisseur.',
+      : { kicker: 'Abonnements et prix', h1: 'Un prix fixe par an. Pour le travail que nous faisons.', mark: 'fixe', lead: 'Avec chaque abonnement, June suit le marché pour vous et gère votre changement. Votre énergie, vous continuez à la payer à votre fournisseur.',
           facts: [['euro', 'Un prix annuel, TVA comprise, facturé une fois par an'], ['check-circle', 'Vous choisissez : changement automatique, ou vous validez d’abord chaque changement'], ['shield', `Garantie de gain avec Switch Plus et Premium : ${m(G.amount)} remboursés si vous n’économisez pas plus que le prix de votre abonnement`]] },
     card: nl
       ? { perYear: 'per jaar', perMonth: 'per maand', billed: 'jaarlijks gefactureerd', badge: 'Aanbevolen · met winstgarantie', noGuarantee: 'Zonder winstgarantie', guarantee: `Winstgarantie: ${m(G.amount)} terug als je niet meer bespaart dan je abonnement kost`, needs: 'Vereist: digitale meter met geactiveerde P1-poort', choose: 'Kies', features: 'Wat je krijgt', fit: 'Past bij jou', notFit: 'Niet met een analoge meter', cancel: 'Opzeggen en verlengen' }
@@ -201,6 +201,7 @@ const plans = localise((L, m) => {
         { who: 'Leverancier', what: 'levert je stroom en gas, en stuurt je de factuur' },
       ],
       edges: [`betaalt ${m(SW.priceYearly)}–${m(PREM.priceYearly)} per jaar`, 'sluit je contract af'],
+      fn: 'Of June naast je abonnement ook vergoedingen van leveranciers ontvangt, is nog niet bevestigd. Is dat zo, dan vermelden we het hier.',
       back: 'Je energiefactuur betaal je, zoals nu, rechtstreeks aan je leverancier',
       aria: `Jij betaalt June een abonnement van ${m(SW.priceYearly)} tot ${m(PREM.priceYearly)} per jaar. June vergelijkt en sluit je contract af bij de leverancier. Je energiefactuur betaal je rechtstreeks aan je leverancier.`,
     } : {
@@ -212,6 +213,7 @@ const plans = localise((L, m) => {
         { who: 'Fournisseur', what: 'livre votre électricité et votre gaz, et vous envoie la facture' },
       ],
       edges: [`paie ${m(SW.priceYearly)} à ${m(PREM.priceYearly)} par an`, 'souscrit votre contrat'],
+      fn: 'Que June perçoive aussi des rémunérations de fournisseurs, en plus de votre abonnement, n’est pas encore confirmé. Si c’est le cas, nous l’indiquerons ici.',
       back: 'Votre facture d’énergie, vous la payez comme aujourd’hui directement à votre fournisseur',
       aria: `Vous payez à June un abonnement de ${m(SW.priceYearly)} à ${m(PREM.priceYearly)} par an. June compare et souscrit votre contrat chez le fournisseur. Votre facture d’énergie, vous la payez directement à votre fournisseur.`,
     },
@@ -233,15 +235,15 @@ const switchPlus = localise((L, m) => {
   return {
     meta: nl
       ? { title: 'Switch Plus: besparen, met winstgarantie | June', description: `Bespaar je in een abonnementsjaar niet meer dan je abonnement kost, dan krijg je ${m(G.amount)} terug. Switch Plus: ${m(fee)} per jaar, jaarlijks gefactureerd.` }
-      : { title: 'Switch Plus : économisez avec garantie de gain | June', description: `Si vous n’économisez pas plus que le prix de votre abonnement sur une année, vous récupérez ${m(G.amount)}. Switch Plus : ${m(fee)} par an, facturé annuellement.` },
+      : { title: 'Switch Plus : économisez, avec garantie de gain | June', description: `Vous n’économisez pas plus que le prix de votre abonnement sur un an ? Vous récupérez ${m(G.amount)}. Switch Plus : ${m(fee)} par an, facturé une fois.` },
     hero: nl ? {
-      kicker: 'June Switch Plus · winstgarantie', h1: 'Besparen, met winstgarantie.',
+      kicker: 'June Switch Plus · winstgarantie', h1: 'Besparen, met winstgarantie.', mark: 'winstgarantie',
       lead: `Alles uit Switch, plus een belofte met een duidelijke voorwaarde: bespaar je in een abonnementsjaar niet meer dan je abonnement kost, dan krijg je ${m(G.amount)} terug.`,
       priceNote: 'per jaar, jaarlijks gefactureerd', monthly: SWP.priceDisplay.nl.main,
       cta: 'Kies Switch Plus', secondary: 'Vergelijk met Switch en Premium',
       facts: [['Wat het kost', `${m(fee)} per jaar, incl. btw`], ['Wat je terugkrijgt', `${m(G.amount)}, als je niet meer bespaart dan je abonnement kost`], ['Wanneer we rekenen', 'Na elk abonnementsjaar'], ['Welke meter', 'Analoog of digitaal'], ['Elke overstap', 'Automatisch, of eerst jouw akkoord']],
     } : {
-      kicker: 'June Switch Plus · garantie de gain', h1: 'Économisez, avec garantie de gain.',
+      kicker: 'June Switch Plus · garantie de gain', h1: 'Économisez, avec garantie de gain.', mark: 'garantie',
       lead: `Tout ce qu’offre Switch, plus une promesse à la condition claire : si vous n’économisez pas plus que le prix de votre abonnement sur une année d’abonnement, vous récupérez ${m(G.amount)}.`,
       priceNote: 'par an, facturé annuellement', monthly: SWP.priceDisplay.fr.main,
       cta: 'Choisir Switch Plus', secondary: 'Comparer avec Switch et Premium',
@@ -321,15 +323,15 @@ const how = localise((L, m) => {
   const d = facts.howItWorks.detailed.map((s) => ({ n: s.n, title: s.title[L], body: s.body[L] }));
   return {
     meta: nl
-      ? { title: 'Hoe werkt June? Automatisch overstappen van energieleverancier', description: 'Koppel je meter, June vergelijkt 17+ leveranciers voor jouw verbruik en regelt de overstap: automatisch of na jouw akkoord. Welke gegevens we gebruiken en wat hetzelfde blijft.' }
-      : { title: 'Comment fonctionne June ? Changer de fournisseur automatiquement', description: 'Connectez votre compteur, June compare plus de 17 fournisseurs pour votre consommation et gère le changement : automatiquement ou après votre accord. Vos données, ce qui ne change pas.' },
+      ? { title: 'Hoe werkt June? Automatisch van leverancier wisselen', description: 'June vergelijkt 17+ leveranciers voor jouw verbruik en regelt de overstap: automatisch of na jouw akkoord. Welke gegevens we gebruiken en wat blijft.' }
+      : { title: 'Comment fonctionne June ? Changer automatiquement', description: 'June compare plus de 17 fournisseurs pour votre consommation et gère le changement : automatiquement ou après votre accord. Vos données, ce qui reste.' },
     hero: nl ? {
-      kicker: 'Hoe werkt het', h1: facts.howItWorks.detailTitle.nl,
+      kicker: 'Hoe werkt het', h1: facts.howItWorks.detailTitle.nl, mark: 'voordelig',
       lead: 'Energieprijzen veranderen voortdurend. June volgt ze voor je op, zodat jij dat niet hoeft te doen.',
       tldr: 'In 20 seconden',
       summary: ['Je meldt je aan en vertelt ons iets over je woning. Twee minuten.', `Minstens elke maand leggen we jouw verbruik naast de contracten van ${facts.suppliers.count.display.nl}.`, 'Is er een voordeliger contract, dan regelen wij de overstap: automatisch, of pas na jouw akkoord.', 'Je meter, je aansluiting en je stroom blijven zoals ze zijn. Alleen je factuur verandert.'],
     } : {
-      kicker: 'Comment ça marche', h1: facts.howItWorks.detailTitle.fr,
+      kicker: 'Comment ça marche', h1: facts.howItWorks.detailTitle.fr, mark: 'avantageux',
       lead: 'Les prix de l’énergie changent sans cesse. June les suit pour vous, pour que vous n’ayez pas à le faire.',
       tldr: 'En 20 secondes',
       summary: ['Vous vous inscrivez et nous parlez de votre logement. Deux minutes.', `Au moins une fois par mois, nous comparons votre consommation aux contrats de ${facts.suppliers.count.display.fr}.`, 'S’il existe un contrat plus avantageux, nous gérons le changement : automatiquement, ou seulement après votre accord.', 'Votre compteur, votre raccordement et votre électricité restent tels quels. Seule votre facture change.'],
@@ -503,10 +505,10 @@ const faqPage = localise((L) => {
   return {
     meta: nl
       ? { title: 'Veelgestelde vragen: eerlijke antwoorden | June', description: 'Is June een energieleverancier? Wat kost het, hoe werkt de winstgarantie en kan je opzeggen? Eerlijke antwoorden over de overstap, je meter en je gegevens.' }
-      : { title: 'Questions fréquentes : des réponses franches | June', description: 'June est-elle un fournisseur ? Combien ça coûte, comment fonctionne la garantie de gain, peut-on résilier ? Des réponses franches sur le changement, le compteur et vos données.' },
+      : { title: 'Questions fréquentes : des réponses franches | June', description: 'June est-elle un fournisseur ? Prix, garantie de gain, résiliation, compteur et données : des réponses franches à vos questions sur June.' },
     hero: nl
-      ? { kicker: 'Veelgestelde vragen', h1: 'Eerlijke antwoorden.', lead: 'Ook op de vragen die we liever niet krijgen: wat June kost, wat als het tegenvalt, en hoe je opzegt.', jump: 'Spring naar' }
-      : { kicker: 'Questions fréquentes', h1: 'Des réponses franches.', lead: 'Y compris aux questions qu’on préférerait ne pas recevoir : ce que coûte June, ce qui se passe si ça ne rapporte pas assez, et comment résilier.', jump: 'Aller à' },
+      ? { kicker: 'Veelgestelde vragen', h1: 'Eerlijke antwoorden.', mark: 'Eerlijke', lead: 'Ook op de vragen die we liever niet krijgen: wat June kost, wat als het tegenvalt, en hoe je opzegt.', jump: 'Spring naar' }
+      : { kicker: 'Questions fréquentes', h1: 'Des réponses franches.', mark: 'franches', lead: 'Y compris aux questions qu’on préférerait ne pas recevoir : ce que coûte June, ce qui se passe si ça ne rapporte pas assez, et comment résilier.', jump: 'Aller à' },
     cats: cats.map((c) => ({ ...c, items: [...c.items.map((id) => faqItem(id, L)), ...(c.id === 'meter-gegevens' || c.id === 'compteur-donnees' ? [capacity] : [])] })),
     notFound: nl
       ? { h2: 'Staat je vraag er niet bij?', client: 'Al klant?', clientP: 'Stel je vraag via je account. Zo zien we meteen over welk contract het gaat.', account: 'Naar je account', other: 'Nog geen klant?', otherP: 'Lees hoe June werkt, of begin gewoon: je postcode en vier vragen, en je ziet wat June voor je kan doen. Je betaalt niets tot je een abonnement afsluit.', how: 'Zo werkt June', plans: 'Bekijk de abonnementen', ext: 'opent een andere website' }
@@ -514,8 +516,12 @@ const faqPage = localise((L) => {
   };
 });
 
-export const plansCopy = (locale) => ({ ...siteCopy(locale), ...plans(locale) });
-export const switchPlusCopy = (locale) => ({ ...siteCopy(locale), ...switchPlus(locale) });
-export const howCopy = (locale) => ({ ...siteCopy(locale), ...how(locale), proof: proofCopy(locale === 'fr-be' ? 'fr' : 'nl') });
-export const faqCopy = (locale) => ({ ...siteCopy(locale), ...faqPage(locale) });
+// Amounts and percentages never break across lines (FR "99 €", "100 %", NL "€ 99"); applied to the whole page copy.
+const nb = (v) => typeof v === 'string' ? v.replace(/(\d) (€|%)/g, '$1\u00a0$2').replace(/€ (\d)/g, '€\u00a0$1')
+  : Array.isArray(v) ? v.map(nb)
+  : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, nb(x)])) : v;
+export const plansCopy = (locale) => nb({ ...siteCopy(locale), ...plans(locale) });
+export const switchPlusCopy = (locale) => nb({ ...siteCopy(locale), ...switchPlus(locale) });
+export const howCopy = (locale) => nb({ ...siteCopy(locale), ...how(locale), proof: proofCopy(locale === 'fr-be' ? 'fr' : 'nl') });
+export const faqCopy = (locale) => nb({ ...siteCopy(locale), ...faqPage(locale) });
 export { SWP };

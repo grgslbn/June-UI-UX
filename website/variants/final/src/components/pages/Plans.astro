@@ -4,6 +4,7 @@
 // → two-question helper + "what do you keep?" (method, or the visitor's own estimate) → 3 cards (ledger only with an
 // estimate) → full table → Premium product band → June vs doing it yourself → what you pay June → pricing FAQ → close.
 import Site from '../../layouts/Site.astro';
+import Squiggle from '../Squiggle.astro';
 import '../../styles/plans.css';
 import SectionHead from '../SectionHead.astro';
 import Icon from '../Icon.astro';
@@ -21,6 +22,9 @@ interface Props { locale: 'nl-be' | 'fr-be'; }
 const { locale } = Astro.props;
 const c = plansCopy(locale);
 const L = c.L;
+// One squiggle word per page (brand spark), under the H1's key word.
+const mi = c.hero.h1.indexOf(c.hero.mark);
+const h1 = mi < 0 ? [c.hero.h1, ''] : [c.hero.h1.slice(0, mi), c.hero.h1.slice(mi + c.hero.mark.length)];
 const base = import.meta.env.BASE_URL;
 const signup = href('signup', locale, base);
 const canonical = abs('plans', locale);
@@ -41,7 +45,7 @@ const e = c.earn;
   <section class="page-hero plans-hero" aria-labelledby="h1">
     <div class="wrap">
       <p class="kicker"><span>{c.hero.kicker}</span></p>
-      <h1 id="h1">{c.hero.h1}</h1>
+      <h1 id="h1">{h1[0]}<Squiggle>{c.hero.mark}</Squiggle>{h1[1]}</h1>
       <p class="lead">{c.hero.lead}<Fn n={6} L={L} /></p>
       <ul class="hero-facts" role="list" data-sticky-hide>
         {c.hero.facts.map(([ic, t]: string[], i: number) => <li><Icon name={ic} /><span>{t}{i === 2 && <Fn n={4} L={L} />}</span></li>)}
@@ -73,10 +77,7 @@ const e = c.earn;
                 <span>{p.slug === 'switch' ? c.card.noGuarantee : c.card.guarantee}{p.slug !== 'switch' && <Fn n={4} L={L} />}</span>
               </p>
               <PlanLedger mode="card" c={c} slug={p.slug} fee={p.yearlyN} name={p.name} />
-              <div class="plan-cta" data-sticky-hide>
-                <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}&entry=plans-${p.slug}`} data-plan-link={p.slug} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
-                <CtaProof c={c} id={`card-${p.slug}`} reducer={c.proof.risk} />
-              </div>
+              <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}&entry=plans-${p.slug}`} data-plan-link={p.slug} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
               <h3 class="plan-fh">{c.card.features}</h3>
               <ul class="plan-feat" role="list">
                 {p.features.map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
@@ -88,7 +89,10 @@ const e = c.earn;
         })}
       </ul>
       <PlanLedger mode="fill" c={c} />
-      <p class="note plans-note">{c.footnotes[5].text} <a href={faqCancel}>{c.card.cancel}</a></p>
+      <div class="plans-foot">
+        <CtaProof c={c} id="plans-row" reducer={c.proof.risk} />
+        <p class="note">{c.footnotes[5].text} <a href={faqCancel}>{c.card.cancel}</a></p>
+      </div>
     </div>
   </section>
 
@@ -154,6 +158,7 @@ const e = c.earn;
         <div class="prose earn-body">
           <p><strong>{e.body[0]}</strong></p>
           <p>{e.body[1]}</p>
+          <p class="note">{e.fn}</p>
         </div>
       </div>
       <div class="mf" role="img" aria-label={e.aria}>
@@ -165,7 +170,7 @@ const e = c.earn;
             </div>
             {i < e.edges.length && (
               <div class:list={['mf-edge', { 'mf-edge--money': i === 0 }]}>
-                <span class="mf-label">{i === 0 && <Icon name="euro" />}{e.edges[i]}</span>
+                <span class="mf-label">{e.edges[i]}</span>
                 <span class="mf-line"></span>
               </div>
             )}

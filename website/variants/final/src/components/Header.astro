@@ -1,13 +1,13 @@
 ---
 // Masthead: official logo · 5 nav items · NL|FR (equivalent page) · login (text link) · primary CTA.
 // Mobile: logo · NL|FR · login icon · native <details> menu (works without JS, Esc closes it).
-// `minimal` = funnel chrome: logo, "Hulp nodig?" (→ FAQ), language switch that keeps the funnel state, way back home.
+// (The funnel renders its own minimal header in Signup.astro, reusing .masthead / .skip.)
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { href, LOCALES } from '@shared/routes.mjs';
 import { LOGIN_URL } from '../i18n/site.js';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; minimal?: boolean; }
-const { locale, routeKey, c, minimal = false } = Astro.props;
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; }
+const { locale, routeKey, c } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
 const signup = href('signup', locale, base);
@@ -21,39 +21,30 @@ const items = [
 const lang = { cur: LOCALES[locale].label, url: href(routeKey, other, base), hl: LOCALES[other].html };
 ---
 <a class="skip" href="#inhoud">{c.ui.skip}</a>
-<header class:list={['masthead', { 'masthead--minimal': minimal }]}>
+<header class="masthead">
   <div class="wrap masthead-in">
     <Logo href={href('home', locale, base)} label={c.ui.homeLabel} />
-    {!minimal && (
-      <nav class="nav" aria-label={c.ui.navLabel}>
-        {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
-      </nav>
-    )}
+    <nav class="nav" aria-label={c.ui.navLabel}>
+      {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
+    </nav>
     <div class="util">
-      {minimal && <a class="help-link" href={href('faq', locale, base)} aria-label={c.ui.helpLabel}><Icon name="info" /><span>{c.ui.help}</span></a>}
       <span class="lang">
         <span class="lang-cur">{lang.cur}</span>
         <span aria-hidden="true">|</span>
-        <a href={lang.url} hreflang={lang.hl} lang={lang.hl} aria-label={c.ui.langOtherLabel} data-lang-switch data-keep-state={minimal ? '' : undefined}>{c.ui.langOther}</a>
+        <a href={lang.url} hreflang={lang.hl} lang={lang.hl} aria-label={c.ui.langOtherLabel} data-lang-switch>{c.ui.langOther}</a>
       </span>
-      {minimal ? (
-        <a class="back-link" href={href('home', locale, base)}><Icon name="arrow-l" /><span>{c.ui.home}</span></a>
-      ) : (
-        <>
-          <a class="login" href={LOGIN_URL} rel="noopener"><Icon name="user" /><span class="login-t">{c.ui.login}</span></a>
-          <a class="btn btn--sm header-cta" href={`${signup}?entry=nav-${routeKey}`} data-cta="nav">{c.ui.cta}</a>
-          <details class="menu">
-            <summary aria-label={c.ui.menu}><Icon name="menu" /></summary>
-            <div class="menu-panel">
-              <nav aria-label={c.ui.menu}>
-                {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
-                <a href={LOGIN_URL} rel="noopener">{c.ui.login}<Icon name="ext" /></a>
-              </nav>
-              <a class="btn" href={`${signup}?entry=menu-${routeKey}`} data-cta="menu">{c.ui.cta}<Icon name="arrow-r" /></a>
-            </div>
+      <a class="login" href={LOGIN_URL} rel="noopener"><Icon name="user" /><span class="login-t">{c.ui.login}</span></a>
+      <a class="btn btn--sm header-cta" href={`${signup}?entry=nav-${routeKey}`} data-cta="nav">{c.ui.cta}</a>
+      <details class="menu">
+        <summary aria-label={c.ui.menu}><Icon name="menu" /></summary>
+        <div class="menu-panel">
+          <nav aria-label={c.ui.menu}>
+            {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
+            <a href={LOGIN_URL} rel="noopener">{c.ui.login}<Icon name="ext" /></a>
+          </nav>
+          <a class="btn" href={`${signup}?entry=menu-${routeKey}`} data-cta="menu">{c.ui.cta}<Icon name="arrow-r" /></a>
+        </div>
           </details>
-        </>
-      )}
     </div>
   </div>
 </header>

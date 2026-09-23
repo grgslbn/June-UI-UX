@@ -7,8 +7,8 @@ const { c } = Astro.props;
 const f = c.flow;
 const fr = c.L === 'fr';
 const role = fr
-  ? { you: 'Choisissez votre abonnement et, si vous le souhaitez, validez chaque changement.', june: 'Ne vend pas d’énergie. Gagne sa vie avec votre abonnement, pas avec votre consommation.', sup: 'Livre votre électricité et votre gaz, et vous envoie la facture, comme aujourd’hui.' }
-  : { you: 'Kiest een abonnement en, als je wil, keurt elke overstap zelf goed.', june: 'Verkoopt geen energie. Verdient aan je abonnement, niet aan je verbruik.', sup: 'Levert je stroom en gas en stuurt je de factuur, zoals nu.' };
+  ? { you: 'Choisissez votre abonnement et, si vous le souhaitez, validez chaque changement.', june: 'Ne vend pas d’énergie. Choisit votre contrat sur la base de votre consommation.', sup: 'Livre votre électricité et votre gaz, et vous envoie la facture, comme aujourd’hui.' }
+  : { you: 'Kiest een abonnement en, als je wil, keurt elke overstap zelf goed.', june: 'Verkoopt geen energie. Kiest je contract op basis van jouw verbruik.', sup: 'Levert je stroom en gas en stuurt je de factuur, zoals nu.' };
 ---
 <div class="mflow-c"><figure class="mflow" role="img" aria-label={`${f.you} → ${f.june}: ${f.pay}. ${f.june} → ${f.sup}: ${f.work}. ${f.bill}.`}>
   <div class="mfl-node"><span class="mfl-name">{f.you}</span><span class="mfl-role">{role.you}</span></div>
