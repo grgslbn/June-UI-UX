@@ -1,0 +1,545 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "frozenOn": "2026-09-23",
+    "status": "FROZEN — single source of truth for all variants. Change only via content owner; see website/brief/content-freeze.md.",
+    "sourceLegend": {
+      "content-map": "Taken from website/brief/source-content-mapping.md (live site NL, March 2026). FR is a new translation.",
+      "derived": "Computed from or logically implied by content-map facts (e.g. yearly totals) or by the Insights product in app/.",
+      "proposed": "New copy/fact proposed by the content strategist. Needs owner confirmation before go-live (see needsConfirmation)."
+    },
+    "locales": {
+      "nl": { "htmlLang": "nl-BE", "address": "je/jij (informal, lower-case 'je', 'jouw' for emphasis)", "currencyFormat": "€ 5,75", "thousands": "20.000", "decimal": "," },
+      "fr": { "htmlLang": "fr-BE", "address": "vous (formal)", "currencyFormat": "5,75 €", "thousands": "20 000 (narrow no-break space U+202F)", "decimal": "," }
+    },
+    "priceBasis": "All prices are consumer prices incl. 21% VAT (btw/TVA) — ASSUMED, needsConfirmation. Monthly amount is an equivalent; the plan is billed once per year.",
+    "brandNameRule": "Use 'June' in running copy. 'June Energy' only in legal/footer/meta contexts."
+  },
+
+  "brand": {
+    "name": { "nl": "June", "fr": "June", "source": "content-map" },
+    "legalName": { "nl": "June Energy", "fr": "June Energy", "source": "content-map", "needsConfirmation": "Exact legal entity name + KBO/BCE number for footer." },
+    "domain": "www.june.energy",
+    "descriptor": {
+      "nl": "Onafhankelijke dienst die je automatisch naar een voordeliger energiecontract laat overstappen.",
+      "fr": "Service indépendant qui vous fait passer automatiquement à un contrat d'énergie plus avantageux.",
+      "source": "derived"
+    },
+    "tagline": {
+      "nl": "Automatisch wisselen tussen energieleveranciers.",
+      "fr": "Changez automatiquement de fournisseur d'énergie.",
+      "source": "content-map"
+    },
+    "legacyTagline": {
+      "nl": "Je had energie, nu heb je power.",
+      "fr": null,
+      "source": "content-map",
+      "note": "Brand book 2018. Not recommended for the site (hard to translate, off-message). Kept for reference only."
+    },
+    "personality": { "nl": "Speels, betrouwbaar, zelfzeker.", "fr": "Ludique, fiable, sûr de lui.", "source": "content-map", "note": "Brand book 2018: playful, trustworthy and reliable." },
+    "mission": {
+      "nl": "De energiemarkt eerlijker en transparanter maken voor de consument.",
+      "fr": "Rendre le marché de l'énergie plus juste et plus transparent pour le consommateur.",
+      "source": "content-map"
+    },
+    "missionFocus": {
+      "nl": "Onafhankelijk van energieleveranciers.",
+      "fr": "Indépendant des fournisseurs d'énergie.",
+      "source": "content-map"
+    },
+    "login": {
+      "label": { "nl": "Inloggen", "fr": "Se connecter", "source": "proposed" },
+      "url": null,
+      "external": true,
+      "source": "content-map",
+      "needsConfirmation": "External customer portal URL (and whether one URL or per-product portals)."
+    }
+  },
+
+  "socialProof": {
+    "customers": {
+      "value": 20000,
+      "display": { "nl": "20.000+ klanten", "fr": "Plus de 20 000 clients" },
+      "long": { "nl": "Meer dan 20.000 klanten gingen je voor.", "fr": "Plus de 20 000 clients nous font déjà confiance." },
+      "sourceText": "Meer dan 20.000 tevreden klanten",
+      "asOf": "2026-03",
+      "source": "content-map",
+      "note": "'tevreden' dropped from the frozen display string (not substantiated per customer). See claims register C2."
+    },
+    "googleRating": {
+      "value": 4.3,
+      "scale": 5,
+      "reviewCount": 1200,
+      "display": { "nl": "4,3/5 op Google · 1.200+ reviews", "fr": "4,3/5 sur Google · plus de 1 200 avis" },
+      "stars": "Render 4.3 as partially filled stars (4 full + ~30%). Never 5 full stars.",
+      "asOf": "2026-03",
+      "source": "content-map",
+      "needsConfirmation": "Current figures + date stamp at go-live; link to Google profile."
+    }
+  },
+
+  "saving": {
+    "averagePerYear": {
+      "value": 326,
+      "currency": "EUR",
+      "display": { "nl": "gemiddeld € 326 per jaar", "fr": "en moyenne 326 € par an" },
+      "footnote": {
+        "nl": "Gemiddelde besparing per klant per jaar, berekend door June op [periode] over [aantal] klanten, t.o.v. hun contract vóór de overstap. Je persoonlijke besparing hangt af van je verbruik en de marktprijzen.",
+        "fr": "Économie moyenne par client et par an, calculée par June sur [période] pour [nombre] clients, par rapport à leur contrat avant le changement. Votre économie personnelle dépend de votre consommation et des prix du marché.",
+        "source": "proposed"
+      },
+      "source": "content-map",
+      "needsConfirmation": "Basis (baseline contract), period, population, gross vs net of June fee, elec+gas vs elec only. Placeholders [periode]/[aantal] MUST be filled before go-live or the figure removed."
+    }
+  },
+
+  "suppliers": {
+    "count": {
+      "value": 17,
+      "display": { "nl": "17+ energieleveranciers", "fr": "plus de 17 fournisseurs d'énergie" },
+      "source": "content-map",
+      "note": "Conflicts with 'alle energieleveranciers in België' (homepage). Frozen wording uses the countable claim. See content-issues #1."
+    },
+    "headline": {
+      "nl": "We vergelijken de contracten van 17+ energieleveranciers in België.",
+      "fr": "Nous comparons les contrats de plus de 17 fournisseurs d'énergie en Belgique.",
+      "sourceText": "We vergelijken alle energieleveranciers in België.",
+      "source": "derived"
+    },
+    "logos": [
+      { "name": "Aspiravi", "source": "content-map" },
+      { "name": "Antargaz", "source": "content-map" },
+      { "name": "Octa+", "source": "content-map" },
+      { "name": "DATS 24", "source": "content-map" },
+      { "name": "Wase Wind", "source": "content-map" }
+    ],
+    "logosNote": "Map lists these five and 'etc.'. Full list (17+) and logo usage rights needed from owner. Do not add names not confirmed by the owner. Logos are shown as 'compared', never as 'partners'."
+  },
+
+  "plans": [
+    {
+      "slug": "switch",
+      "name": "June Switch",
+      "shortName": "Switch",
+      "persona": "saver",
+      "priceMonthly": 5.75,
+      "billing": "yearly",
+      "priceYearly": 69.00,
+      "priceYearlySource": "derived",
+      "priceDisplay": {
+        "nl": { "main": "€ 5,75 per maand", "sub": "€ 69 per jaar, jaarlijks gefactureerd" },
+        "fr": { "main": "5,75 € par mois", "sub": "69 € par an, facturé annuellement" }
+      },
+      "valueProposition": {
+        "nl": "Slim besparen op energie, zonder gedoe.",
+        "fr": "Économisez malin sur votre énergie, sans tracas.",
+        "source": "content-map"
+      },
+      "whoFor": {
+        "nl": "Voor wie gewoon minder wil betalen, zonder de markt zelf op te volgen.",
+        "fr": "Pour ceux qui veulent simplement payer moins, sans suivre le marché eux-mêmes.",
+        "source": "proposed"
+      },
+      "features": [
+        { "nl": "Maandelijkse analyse van 17+ leveranciers", "fr": "Analyse mensuelle de plus de 17 fournisseurs", "source": "content-map" },
+        { "nl": "Jij beslist: June wisselt automatisch, of jij keurt elke overstap zelf goed", "fr": "Vous décidez : June change automatiquement, ou vous validez chaque changement", "source": "content-map" },
+        { "nl": "Werkt met analoge en digitale meters", "fr": "Fonctionne avec les compteurs analogiques et numériques", "source": "content-map" },
+        { "nl": "Optie voor 100% groene energie", "fr": "Option 100 % énergie verte", "source": "content-map" },
+        { "nl": "Wij regelen de volledige overstap", "fr": "Nous gérons tout le changement de fournisseur", "source": "content-map" }
+      ],
+      "guarantee": null,
+      "badge": null,
+      "pageUrl": { "nl": null, "fr": null, "note": "No dedicated route in the fixed route list; section on abonnementen/abonnements." }
+    },
+    {
+      "slug": "switch-plus",
+      "name": "June Switch Plus",
+      "shortName": "Switch Plus",
+      "persona": "risk-averse",
+      "priceMonthly": 8.25,
+      "billing": "yearly",
+      "priceYearly": 99.00,
+      "priceYearlySource": "derived",
+      "priceDisplay": {
+        "nl": { "main": "€ 8,25 per maand", "sub": "€ 99 per jaar, jaarlijks gefactureerd" },
+        "fr": { "main": "8,25 € par mois", "sub": "99 € par an, facturé annuellement" }
+      },
+      "valueProposition": {
+        "nl": "Besparen met gegarandeerd resultaat.",
+        "fr": "Économisez, avec un résultat garanti.",
+        "source": "content-map"
+      },
+      "whoFor": {
+        "nl": "Voor wie zekerheid wil: bespaar je niet meer dan je abonnement kost, dan krijg je je geld terug.",
+        "fr": "Pour ceux qui veulent une certitude : si vous n'économisez pas plus que le prix de l'abonnement, vous êtes remboursé.",
+        "source": "proposed"
+      },
+      "features": [
+        { "nl": "Alles uit Switch", "fr": "Tout ce qu'offre Switch", "source": "content-map" },
+        { "nl": "Winstgarantie: € 99 terug als je niet meer bespaart dan je abonnement kost", "fr": "Garantie de gain : 99 € remboursés si vous n'économisez pas plus que le prix de votre abonnement", "source": "content-map" },
+        { "nl": "Jaarlijks besparingsrapport met je verbruik en je winst", "fr": "Rapport d'économies annuel avec votre consommation et votre gain", "source": "content-map" }
+      ],
+      "guarantee": { "ref": "guarantees.winstgarantie" },
+      "badge": { "nl": "Meest gekozen", "fr": "Le plus choisi", "source": "proposed", "needsConfirmation": "Only if true (sales data). Otherwise use 'Met winstgarantie' / 'Avec garantie de gain'." },
+      "pageUrl": { "nl": "/nl-be/switch-plus/", "fr": "/fr-be/switch-plus/" }
+    },
+    {
+      "slug": "premium",
+      "name": "June Premium",
+      "shortName": "Premium",
+      "persona": "tech-enthusiast",
+      "priceMonthly": 16.50,
+      "billing": "yearly",
+      "priceYearly": 198.00,
+      "priceYearlySource": "derived",
+      "priceDisplay": {
+        "nl": { "main": "€ 16,50 per maand", "sub": "€ 198 per jaar, jaarlijks gefactureerd, dongle inbegrepen" },
+        "fr": { "main": "16,50 € par mois", "sub": "198 € par an, facturé annuellement, dongle inclus" }
+      },
+      "valueProposition": {
+        "nl": "Volledige controle voor digitale meters.",
+        "fr": "Le contrôle total pour les compteurs numériques.",
+        "source": "content-map"
+      },
+      "whoFor": {
+        "nl": "Voor wie een digitale meter heeft en zijn verbruik, piekvermogen of zonnepanelen van dichtbij wil opvolgen.",
+        "fr": "Pour ceux qui ont un compteur numérique et veulent suivre de près leur consommation, leur pic de puissance ou leurs panneaux solaires.",
+        "source": "proposed"
+      },
+      "requirements": {
+        "nl": "Digitale meter met geactiveerde gebruikerspoort (P1).",
+        "fr": "Compteur numérique avec port utilisateur (P1) activé.",
+        "source": "derived",
+        "needsConfirmation": "Supported meters per region (Fluvius / ORES / Sibelga)."
+      },
+      "features": [
+        { "nl": "Alles uit Switch Plus, inclusief winstgarantie", "fr": "Tout ce qu'offre Switch Plus, garantie de gain comprise", "source": "content-map" },
+        { "nl": "June Dongle inbegrepen: live data via de P1-poort", "fr": "June Dongle inclus : données en direct via le port P1", "source": "content-map" },
+        { "nl": "Dashboard met je verbruik per kwartier", "fr": "Tableau de bord avec votre consommation par quart d'heure", "source": "content-map" },
+        { "nl": "Zonnepanelen: zie wat je zelf verbruikt en wat je injecteert", "fr": "Panneaux solaires : voyez ce que vous autoconsommez et ce que vous injectez", "source": "content-map" },
+        { "nl": "Volg je piekvermogen op (capaciteitstarief, Vlaanderen)", "fr": "Suivez votre pic de puissance (tarif capacitaire, Flandre)", "source": "derived", "note": "From app/ Insights Peak tab. Flanders-only.", "needsConfirmation": "Part of Premium?" },
+        { "nl": "Stel een verbruiksbudget in en krijg een prognose voor de maand", "fr": "Fixez un budget de consommation et recevez une prévision pour le mois", "source": "derived", "note": "From app/ Insights Budgets + Forecast tabs.", "needsConfirmation": "Part of Premium?" },
+        { "nl": "Persoonlijk bespaaradvies en vergelijking met gelijkaardige woningen", "fr": "Conseils d'économie personnalisés et comparaison avec des logements similaires", "source": "derived", "note": "From app/ Insights Advice + Compare tabs.", "needsConfirmation": "Part of Premium?" }
+      ],
+      "guarantee": { "ref": "guarantees.winstgarantie", "needsConfirmation": "Is the refund € 99 or € 198 on Premium? See content-issues #2." },
+      "badge": null,
+      "pageUrl": { "nl": null, "fr": null, "note": "Not in the fixed route list; section on abonnementen/abonnements." }
+    }
+  ],
+
+  "guarantees": {
+    "winstgarantie": {
+      "name": { "nl": "Winstgarantie", "fr": "Garantie de gain", "source": "content-map" },
+      "amount": 99,
+      "plans": ["switch-plus", "premium"],
+      "summary": {
+        "nl": "Bespaar je in een abonnementsjaar niet meer dan je abonnement kost? Dan krijg je € 99 terug.",
+        "fr": "Vous n'économisez pas plus que le prix de votre abonnement sur une année d'abonnement ? Vous récupérez 99 €.",
+        "source": "content-map"
+      },
+      "sourceText": "Krijg €99 terug als je niet meer bespaart dan je abonnementskost.",
+      "terms": {
+        "period": { "nl": "Per abonnementsjaar", "fr": "Par année d'abonnement", "source": "proposed", "needsConfirmation": true },
+        "measurement": { "nl": "Besparing volgens het jaarlijkse besparingsrapport van June", "fr": "Économie selon le rapport d'économies annuel de June", "source": "proposed", "needsConfirmation": true },
+        "payout": { "nl": "Automatisch terugbetaald, zonder aanvraag", "fr": "Remboursé automatiquement, sans demande", "source": "proposed", "needsConfirmation": true },
+        "conditions": { "nl": "Voorwaarden: zie algemene voorwaarden", "fr": "Conditions : voir conditions générales", "source": "proposed", "needsConfirmation": "Link to T&C article." }
+      },
+      "frozenRule": "Always show amount (€ 99), the condition (savings ≤ subscription cost), the period and a link to the conditions together. Never write 'gratis' / 'gratuit' or 'geen risico' / 'sans risque' unqualified."
+    }
+  },
+
+  "dongle": {
+    "name": { "nl": "June Dongle", "fr": "June Dongle", "source": "content-map" },
+    "description": {
+      "nl": "Klein toestel dat je in de P1-poort van je digitale meter steekt. Het stuurt je verbruik en injectie live door naar June.",
+      "fr": "Petit appareil à brancher sur le port P1 de votre compteur numérique. Il transmet en direct votre consommation et votre injection à June.",
+      "source": "derived"
+    },
+    "includedIn": ["premium"],
+    "standalonePrice": null,
+    "standalonePriceNote": "Dongle appears as a separate product in the IA but has no content/price in the map. Do not show a price until confirmed.",
+    "requirements": {
+      "nl": "Digitale meter met geactiveerde gebruikerspoort (P1) en wifi in de buurt van je meter.",
+      "fr": "Compteur numérique avec port utilisateur (P1) activé et Wi-Fi à proximité du compteur.",
+      "source": "proposed",
+      "needsConfirmation": "Wi-Fi requirement, power via port, ownership after cancellation."
+    },
+    "source": "content-map"
+  },
+
+  "howItWorks": {
+    "title": { "nl": "Hoe werkt het?", "fr": "Comment ça marche ?", "source": "content-map" },
+    "detailTitle": {
+      "nl": "Hoe zorgt June dat je een voordelig energietarief hebt?",
+      "fr": "Comment June veille-t-elle à ce que vous ayez un tarif d'énergie avantageux ?",
+      "sourceText": "Hoe zorgt June steeds voor het laagste energietarief?",
+      "source": "derived",
+      "note": "Absolute 'steeds het laagste' removed (claims register C6)."
+    },
+    "short": [
+      {
+        "n": 1,
+        "title": { "nl": "Koppel je meter", "fr": "Connectez votre compteur" },
+        "body": {
+          "nl": "Met een digitale meter lezen we je verbruik automatisch uit. Een analoge meter? Dan geef je je meterstanden zelf in.",
+          "fr": "Avec un compteur numérique, nous relevons votre consommation automatiquement. Un compteur analogique ? Vous encodez vous-même vos index."
+        },
+        "sourceText": "Koppel je teller(s) - June leest je meterstand automatisch uit.",
+        "source": "content-map"
+      },
+      {
+        "n": 2,
+        "title": { "nl": "June vergelijkt de markt", "fr": "June compare le marché" },
+        "body": {
+          "nl": "We toetsen je contract minstens elke maand aan de aanbiedingen van 17+ leveranciers, op basis van jouw verbruik.",
+          "fr": "Au moins une fois par mois, nous comparons votre contrat aux offres de plus de 17 fournisseurs, sur la base de votre consommation."
+        },
+        "sourceText": "June vergelijkt de markt - We vergelijken continu alle contracten.",
+        "source": "content-map"
+      },
+      {
+        "n": 3,
+        "title": { "nl": "Wissel automatisch", "fr": "Changez automatiquement" },
+        "body": {
+          "nl": "Is er een voordeliger contract? Dan regelen wij de overstap. Automatisch, of pas na jouw akkoord: jij kiest.",
+          "fr": "Un contrat plus avantageux ? Nous nous occupons du changement. Automatiquement ou seulement après votre accord : c'est vous qui choisissez."
+        },
+        "sourceText": "Wissel automatisch - Zodra er een betere deal is, regelen wij het.",
+        "source": "content-map"
+      }
+    ],
+    "detailed": [
+      {
+        "n": 1,
+        "title": { "nl": "Je verbruik in kaart", "fr": "Votre consommation en clair" },
+        "body": {
+          "nl": "We verzamelen je verbruiksgegevens via je digitale meter, de June Dongle of je eigen meterstanden. Zo kennen we je echte profiel: hoeveel je verbruikt, wanneer, en of je zonnepanelen hebt.",
+          "fr": "Nous collectons vos données de consommation via votre compteur numérique, le June Dongle ou vos propres relevés d'index. Nous connaissons ainsi votre vrai profil : combien vous consommez, quand, et si vous avez des panneaux solaires."
+        },
+        "sourceText": "Data Verzamelen: Via slimme meter, dongle of manuele invoer.",
+        "source": "content-map"
+      },
+      {
+        "n": 2,
+        "title": { "nl": "Onze software vergelijkt", "fr": "Notre logiciel compare" },
+        "body": {
+          "nl": "Onze software legt jouw profiel naast de contracten op de Belgische markt. Niet op basis van een gemiddeld gezin, maar op basis van jouw verbruik.",
+          "fr": "Notre logiciel confronte votre profil aux contrats du marché belge. Pas sur la base d'un ménage moyen, mais sur la base de votre consommation."
+        },
+        "sourceText": "Algoritme: Onze software vergelijkt dagelijks de markt op basis van jouw profiel.",
+        "source": "content-map",
+        "note": "'dagelijks' removed pending frequency confirmation (content-issues #5)."
+      },
+      {
+        "n": 3,
+        "title": { "nl": "Wij regelen de overstap", "fr": "Nous gérons le changement" },
+        "body": {
+          "nl": "Vinden we een voordeliger contract, dan doen wij de volledige administratie: het nieuwe contract, de opzeg bij je oude leverancier, alles. Je stroom en gas blijven gewoon lopen.",
+          "fr": "Si nous trouvons un contrat plus avantageux, nous nous chargeons de toute l'administration : le nouveau contrat, la résiliation chez votre ancien fournisseur, tout. Votre électricité et votre gaz continuent de fonctionner normalement."
+        },
+        "sourceText": "De Switch: Wij verzorgen de volledige administratie van de overstap.",
+        "source": "content-map"
+      },
+      {
+        "n": 4,
+        "title": { "nl": "Wij blijven opvolgen", "fr": "Nous continuons à suivre" },
+        "body": {
+          "nl": "Na de overstap blijven we de markt volgen. Met Switch Plus en Premium krijg je elk jaar een besparingsrapport.",
+          "fr": "Après le changement, nous continuons à suivre le marché. Avec Switch Plus et Premium, vous recevez chaque année un rapport d'économies."
+        },
+        "source": "proposed"
+      }
+    ]
+  },
+
+  "faq": [
+    {
+      "id": "not-a-supplier",
+      "q": { "nl": "Zijn jullie een energieleverancier?", "fr": "Êtes-vous un fournisseur d'énergie ?" },
+      "a": {
+        "nl": "Nee. June is een onafhankelijke tussenpersoon. We leveren zelf geen stroom of gas: we zoeken voor jou het voordeligste contract bij de leveranciers die we vergelijken, en regelen de overstap.",
+        "fr": "Non. June est un intermédiaire indépendant. Nous ne fournissons pas nous-mêmes d'électricité ni de gaz : nous cherchons pour vous le contrat le plus avantageux parmi les fournisseurs que nous comparons, et nous gérons le changement."
+      },
+      "source": "content-map"
+    },
+    {
+      "id": "how-so-much",
+      "q": { "nl": "Hoe kunnen jullie zoveel besparen?", "fr": "Comment pouvez-vous faire économiser autant ?" },
+      "a": {
+        "nl": "Energieprijzen veranderen voortdurend, en wie niets doet, blijft vaak op een duurder contract zitten. June volgt de markt voor jou op en stapt over zodra een ander contract voordeliger is voor jouw verbruik.",
+        "fr": "Les prix de l'énergie changent sans cesse, et celui qui ne fait rien reste souvent sur un contrat plus cher. June suit le marché pour vous et change dès qu'un autre contrat est plus avantageux pour votre consommation."
+      },
+      "sourceText": "Hoe kunnen jullie zóveel besparen?",
+      "source": "content-map"
+    },
+    {
+      "id": "which-suppliers",
+      "q": { "nl": "Welke leveranciers vergelijken jullie?", "fr": "Quels fournisseurs comparez-vous ?" },
+      "a": {
+        "nl": "We vergelijken de contracten van 17+ energieleveranciers die in België actief zijn, waaronder Aspiravi, Antargaz, Octa+, DATS 24 en Wase Wind.",
+        "fr": "Nous comparons les contrats de plus de 17 fournisseurs d'énergie actifs en Belgique, dont Aspiravi, Antargaz, Octa+, DATS 24 et Wase Wind."
+      },
+      "source": "content-map",
+      "note": "Map answer = 'All Belgian suppliers'. Aligned to 17+ pending content-issues #1."
+    },
+    {
+      "id": "cost",
+      "q": { "nl": "Wat kost June?", "fr": "Combien coûte June ?" },
+      "a": {
+        "nl": "Switch kost € 69 per jaar (€ 5,75 per maand), Switch Plus € 99 per jaar (€ 8,25 per maand) en Premium € 198 per jaar (€ 16,50 per maand, dongle inbegrepen). Je betaalt één keer per jaar. Je energie zelf betaal je gewoon aan je leverancier.",
+        "fr": "Switch coûte 69 € par an (5,75 € par mois), Switch Plus 99 € par an (8,25 € par mois) et Premium 198 € par an (16,50 € par mois, dongle inclus). Vous payez une fois par an. Votre énergie, vous la payez normalement à votre fournisseur."
+      },
+      "source": "proposed"
+    },
+    {
+      "id": "exit-fee",
+      "q": { "nl": "Betaal ik een opzegvergoeding bij mijn huidige leverancier?", "fr": "Dois-je payer une indemnité de rupture à mon fournisseur actuel ?" },
+      "a": {
+        "nl": "Nee. Als particulier kan je in België altijd van energieleverancier veranderen zonder verbrekingsvergoeding, met een opzegtermijn van een maand. June houdt daar rekening mee.",
+        "fr": "Non. En Belgique, un particulier peut toujours changer de fournisseur d'énergie sans indemnité de rupture, moyennant un préavis d'un mois. June en tient compte."
+      },
+      "source": "proposed",
+      "needsConfirmation": "Legal check of wording (residential consumers, law of 25 Aug 2012)."
+    },
+    {
+      "id": "no-interruption",
+      "q": { "nl": "Zit ik bij een overstap even zonder stroom of gas?", "fr": "Vais-je être privé d'électricité ou de gaz lors d'un changement ?" },
+      "a": {
+        "nl": "Nee. Je meter, je aansluiting en je netbeheerder blijven dezelfde. Alleen de leverancier die je factureert verandert.",
+        "fr": "Non. Votre compteur, votre raccordement et votre gestionnaire de réseau restent les mêmes. Seul le fournisseur qui vous facture change."
+      },
+      "source": "proposed"
+    },
+    {
+      "id": "approval",
+      "q": { "nl": "Wisselt June zonder dat ik het weet?", "fr": "June change-t-elle de fournisseur sans me prévenir ?" },
+      "a": {
+        "nl": "Jij kiest. Je laat June automatisch wisselen, of je keurt elke overstap eerst zelf goed. In beide gevallen laten we je weten naar welk contract je overstapt en waarom.",
+        "fr": "C'est vous qui choisissez. Vous laissez June changer automatiquement, ou vous validez d'abord chaque changement. Dans les deux cas, nous vous informons du contrat choisi et de la raison."
+      },
+      "source": "proposed",
+      "needsConfirmation": "Confirm June always notifies before/after a switch."
+    },
+    {
+      "id": "meters",
+      "q": { "nl": "Werkt June met mijn meter?", "fr": "June fonctionne-t-elle avec mon compteur ?" },
+      "a": {
+        "nl": "Switch en Switch Plus werken met analoge en digitale meters. Premium heeft een digitale meter met geactiveerde P1-poort nodig, want de June Dongle leest die poort uit.",
+        "fr": "Switch et Switch Plus fonctionnent avec les compteurs analogiques et numériques. Premium nécessite un compteur numérique avec port P1 activé, car le June Dongle lit ce port."
+      },
+      "source": "proposed"
+    },
+    {
+      "id": "guarantee",
+      "q": { "nl": "Hoe werkt de winstgarantie?", "fr": "Comment fonctionne la garantie de gain ?" },
+      "a": {
+        "nl": "Met Switch Plus en Premium kijken we na elk abonnementsjaar hoeveel je bespaard hebt. Is dat niet meer dan wat je abonnement kost, dan krijg je € 99 terug. Alle voorwaarden vind je in onze algemene voorwaarden.",
+        "fr": "Avec Switch Plus et Premium, nous vérifions après chaque année d'abonnement combien vous avez économisé. Si ce n'est pas plus que le prix de votre abonnement, vous récupérez 99 €. Toutes les conditions figurent dans nos conditions générales."
+      },
+      "source": "proposed",
+      "needsConfirmation": "See guarantees.winstgarantie.terms."
+    },
+    {
+      "id": "cancel",
+      "q": { "nl": "Kan ik mijn abonnement opzeggen?", "fr": "Puis-je résilier mon abonnement ?" },
+      "a": {
+        "nl": "Ja. [Opzegregels en verlenging invullen na bevestiging.] Je hebt bovendien 14 dagen bedenktijd na je aanmelding.",
+        "fr": "Oui. [Règles de résiliation et de reconduction à compléter après confirmation.] Vous disposez en outre d'un délai de rétractation de 14 jours après votre inscription."
+      },
+      "source": "proposed",
+      "needsConfirmation": "BLOCKING: renewal and cancellation terms unknown. Placeholder must not ship."
+    },
+    {
+      "id": "regions",
+      "q": { "nl": "Werkt June in heel België?", "fr": "June est-elle disponible dans toute la Belgique ?" },
+      "a": {
+        "nl": "[Te bevestigen: Vlaanderen, Brussel en Wallonië?] Vul bij het aanmelden je postcode in, dan weet je meteen of June bij jou werkt.",
+        "fr": "[À confirmer : Flandre, Bruxelles et Wallonie ?] Indiquez votre code postal lors de l'inscription pour savoir tout de suite si June est disponible chez vous."
+      },
+      "source": "proposed",
+      "needsConfirmation": "BLOCKING: regional coverage."
+    },
+    {
+      "id": "independence",
+      "q": { "nl": "Hoe verdient June geld? Zijn jullie echt onafhankelijk?", "fr": "Comment June gagne-t-elle de l'argent ? Êtes-vous vraiment indépendants ?" },
+      "a": {
+        "nl": "June leeft van de abonnementen van haar klanten. [Te bevestigen: ontvangt June vergoedingen van leveranciers? Zo ja, vermelden.] We zijn geen leverancier en kiezen het contract op basis van jouw verbruik.",
+        "fr": "June vit des abonnements de ses clients. [À confirmer : June perçoit-elle des rémunérations de fournisseurs ? Si oui, le mentionner.] Nous ne sommes pas fournisseur et choisissons le contrat sur la base de votre consommation."
+      },
+      "source": "proposed",
+      "needsConfirmation": "BLOCKING: disclosure of supplier commissions (misleading omission risk)."
+    },
+    {
+      "id": "data",
+      "q": { "nl": "Wat doen jullie met mijn gegevens?", "fr": "Que faites-vous de mes données ?" },
+      "a": {
+        "nl": "We gebruiken je verbruiksgegevens alleen om je contract te vergelijken en je de inzichten uit je abonnement te tonen. We verkopen ze niet. Meer in onze privacyverklaring.",
+        "fr": "Nous utilisons vos données de consommation uniquement pour comparer votre contrat et vous montrer les analyses de votre abonnement. Nous ne les vendons pas. Plus d'infos dans notre déclaration de confidentialité."
+      },
+      "source": "proposed",
+      "needsConfirmation": "Check against privacy policy."
+    },
+    {
+      "id": "green",
+      "q": { "nl": "Kan ik kiezen voor groene stroom?", "fr": "Puis-je choisir de l'électricité verte ?" },
+      "a": {
+        "nl": "Ja. Je kan aangeven dat je alleen 100% groene energie wil. Dan vergelijken we enkel groene contracten.",
+        "fr": "Oui. Vous pouvez indiquer que vous ne voulez que de l'énergie 100 % verte. Nous ne comparons alors que des contrats verts."
+      },
+      "source": "proposed",
+      "note": "Option is content-map (Switch features); answer detail is proposed."
+    }
+  ],
+
+  "signup": {
+    "steps": [
+      { "n": 1, "label": { "nl": "Je woning", "fr": "Votre logement" }, "fields": ["postcode", "energyType", "meterType", "household", "annualUsageOptional", "solar"] },
+      { "n": 2, "label": { "nl": "Je e-mailadres", "fr": "Votre adresse e-mail" }, "fields": ["email", "consentTerms", "consentMarketingOptional"] }
+    ],
+    "householdPresets": {
+      "note": "Presets are indicative estimates only, used to pre-fill usage. Values must be confirmed by June (VREG/CREG reference profiles).",
+      "source": "proposed",
+      "needsConfirmation": true,
+      "options": [
+        { "id": "1", "label": { "nl": "1 persoon", "fr": "1 personne" } },
+        { "id": "2", "label": { "nl": "2 personen", "fr": "2 personnes" } },
+        { "id": "3-4", "label": { "nl": "3–4 personen", "fr": "3–4 personnes" } },
+        { "id": "5+", "label": { "nl": "5 of meer", "fr": "5 ou plus" } }
+      ]
+    },
+    "continuesTo": "External onboarding/customer portal after step 2 (URL needsConfirmation).",
+    "source": "proposed"
+  },
+
+  "routes": {
+    "fixed": {
+      "home":        { "nl": "/nl-be/",                     "fr": "/fr-be/" },
+      "plans":       { "nl": "/nl-be/abonnementen/",        "fr": "/fr-be/abonnements/" },
+      "switchPlus":  { "nl": "/nl-be/switch-plus/",         "fr": "/fr-be/switch-plus/" },
+      "howItWorks":  { "nl": "/nl-be/hoe-werkt-het/",       "fr": "/fr-be/comment-ca-marche/" },
+      "faq":         { "nl": "/nl-be/veelgestelde-vragen/", "fr": "/fr-be/questions-frequentes/" },
+      "signup":      { "nl": "/nl-be/aanmelden/",           "fr": "/fr-be/inscription/" }
+    },
+    "proposedFuture": {
+      "switch":      { "nl": "/nl-be/switch/",              "fr": "/fr-be/switch/" },
+      "premium":     { "nl": "/nl-be/premium/",             "fr": "/fr-be/premium/" },
+      "dongle":      { "nl": "/nl-be/dongle/",              "fr": "/fr-be/dongle/" },
+      "prices":      { "nl": "/nl-be/prijzen/",             "fr": "/fr-be/prix/" },
+      "vision":      { "nl": "/nl-be/visie/",               "fr": "/fr-be/vision/" },
+      "reviews":     { "nl": "/nl-be/reviews/",             "fr": "/fr-be/avis/" },
+      "partners":    { "nl": "/nl-be/partnervoordelen/",    "fr": "/fr-be/avantages-partenaires/" },
+      "privacy":     { "nl": "/nl-be/privacy/",             "fr": "/fr-be/confidentialite/" },
+      "terms":       { "nl": "/nl-be/algemene-voorwaarden/","fr": "/fr-be/conditions-generales/" }
+    },
+    "source": "proposed",
+    "note": "Fixed routes come from tools/check-site.mjs and must not change. Product names (switch, switch-plus, premium, dongle) keep the same slug in both locales. Every page links its counterpart via hreflang nl-BE / fr-BE."
+  },
+
+  "ctas": {
+    "primary":   { "nl": "Start je aanmelding", "fr": "Commencer mon inscription", "href": "signup", "source": "proposed" },
+    "primaryShort": { "nl": "Aanmelden", "fr": "S'inscrire", "href": "signup", "source": "proposed" },
+    "secondary": { "nl": "Hoe werkt het?", "fr": "Comment ça marche ?", "href": "howItWorks", "source": "content-map" },
+    "plans":     { "nl": "Bekijk de abonnementen", "fr": "Voir les abonnements", "href": "plans", "source": "proposed" },
+    "legacyHero": { "nl": "Ontdek hoe June jou kan helpen", "fr": "Découvrez comment June peut vous aider", "source": "content-map", "note": "Live-site hero CTA. Replaced by primary CTA because the conversion goal is starting sign-up." }
+  }
+}
