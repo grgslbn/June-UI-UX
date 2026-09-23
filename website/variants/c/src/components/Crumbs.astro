@@ -1,0 +1,13 @@
+---
+import { href } from '@shared/routes.mjs';
+interface Props { trail: { name: string; key: string }[]; locale: 'nl-be' | 'fr-be'; label: string; }
+const { trail, locale, label } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<nav class="crumbs wrap" aria-label={label}>
+  <ol>
+    {trail.map((t, i) => i < trail.length - 1
+      ? <li><a href={href(t.key, locale, base)}>{t.name}</a></li>
+      : <li aria-current="page">{t.name}</li>)}
+  </ol>
+</nav>

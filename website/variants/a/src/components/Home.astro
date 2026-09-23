@@ -1,7 +1,8 @@
 ---
-// Home · Variant A "Calm Confidence". Section order follows ux-research §4.4 (hero → proof → how →
-// what stays the same → plans → guarantee → reviews + FAQ → final CTA). Frozen facts come from facts.json.
-import { copy, eur, planBySlug, faqById, L, type Locale } from '../content/i18n';
+// Home · Variant A "Calm Confidence". Section order (ux-research §4.4, one change): hero → proof → how →
+// what stays the same → plans → guarantee → Premium (D's product story, real dongle + app) → reviews + FAQ → final CTA.
+// Premium sits after the guarantee so the recommended, risk-free plan is read first; Premium is the qualified upsell.
+import { copy, faqById, L, to, type Locale } from '../content/i18n';
 import Site from '../layouts/Site.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
@@ -11,32 +12,30 @@ import TrustLine from './TrustLine.astro';
 import Stars from './Stars.astro';
 import Icon from './Icon.astro';
 import Fn from './Fn.astro';
+import AnimIcon from './AnimIcon.astro';
+import PlanCards from './PlanCards.astro';
+import GuaranteeExample from './GuaranteeExample.astro';
+import PremiumStory from './PremiumStory.astro';
+import FaqList from './FaqList.astro';
+import FinalCta from './FinalCta.astro';
+import StickyCta from './StickyCta.astro';
 import PhotoPlaceholder from './PhotoPlaceholder.astro';
 import facts from '@shared/content/facts.json';
-import { abs } from '@shared/routes.mjs';
+import { graph } from '../lib/schema';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = copy[locale];
 const lg = L(locale);
 const base = import.meta.env.BASE_URL;
-const ids = locale === 'nl-be'
-  ? { how: 'hoe-het-werkt', plans: 'prijzen', reviews: 'reviews' }
-  : { how: 'comment-ca-marche', plans: 'prix', reviews: 'avis' };
+const ids = locale === 'nl-be' ? { how: 'hoe-het-werkt', plans: 'prijzen', reviews: 'reviews' } : { how: 'comment-ca-marche', plans: 'prix', reviews: 'avis' };
 const steps = facts.howItWorks.short;
-const stepIcons = ['i-plug', 'i-scale', 'i-repeat'];
-const planOrder = ['switch', 'switch-plus', 'premium'];
-const monthly = (v: number) => eur(v, locale);
-const faqs = c.faq.ids.map(faqById);
+const stepIcons = ['home-analysis', 'compare', 'home-switch'] as const;
 const g = c.guar;
-const jsonld = [
-  { '@context': 'https://schema.org', '@type': 'Organization', name: 'June', legalName: 'June Energy', url: 'https://www.june.energy/', description: facts.brand.descriptor[lg] },
-  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'June', url: abs('home', locale), inLanguage: locale === 'nl-be' ? 'nl-BE' : 'fr-BE' },
-  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q[lg], acceptedAnswer: { '@type': 'Answer', text: f.a[lg] } })) },
-];
+const jsonld = graph({ locale, routeKey: 'home', title: c.meta.title });
 ---
 <Site locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description} jsonld={jsonld}>
-  <Header locale={locale} />
+  <Header locale={locale} routeKey="home" />
   <main id="main">
 
     <!-- ① HERO -->
@@ -64,7 +63,7 @@ const jsonld = [
         <h2 id="proof-title" class="sr-only">{c.proof.title}</h2>
         <ul class="proof__list" role="list">
           {c.proof.items.map(p => (
-            <li class="proof__item reveal">
+            <li class="proof__item">
               <span class="proof__n">{p.n}{p.stars && <Stars value={4.3} label={c.trust.stars} size={16} />}</span>
               <span class="proof__t">{p.t}{p.fn && <Fn n={p.fn} locale={locale} />}</span>
             </li>
@@ -73,7 +72,7 @@ const jsonld = [
       </div>
     </section>
 
-    <!-- ③ HOW IT WORKS -->
+    <!-- ③ HOW IT WORKS — animated brand icons (static frame under reduced motion) -->
     <section class="section section--canvas" id={ids.how} aria-labelledby="how-title">
       <div class="wrap">
         <header class="sec-head">
@@ -83,9 +82,9 @@ const jsonld = [
         </header>
         <ol class="steps" role="list">
           {steps.map((s, i) => (
-            <li class="step surface reveal">
+            <li class="step surface">
               <div class="step__head">
-                <span class="well" aria-hidden="true"><Icon name={stepIcons[i]} /></span>
+                <AnimIcon name={stepIcons[i]} size={88} />
                 <span class="step__n" aria-hidden="true">0{s.n}</span>
               </div>
               <h3 class="h3">{s.title[lg]}</h3>
@@ -95,12 +94,12 @@ const jsonld = [
         </ol>
         <div class="steps__after">
           <span class="steps__after-l"><Icon name="i-repeat" size="sm" />{c.how.after}</span>
-          <span class="mini-rings" aria-hidden="true">{Array.from({ length: 12 }, (_, i) => <span class:list={[i < 8 && 'on', i === 8 && 'now']}></span>)}</span>
+          <a class="link" href={to('howItWorks', locale)}>{c.how.link}<Icon name="i-arrow-r" size="sm" /></a>
         </div>
       </div>
     </section>
 
-    <!-- ④ WHAT STAYS THE SAME (anti-anxiety) + the one calm home photo -->
+    <!-- ④ WHAT STAYS THE SAME (anti-anxiety) -->
     <section class="section section--white" aria-labelledby="same-title">
       <div class="wrap same">
         <PhotoPlaceholder src={`${base}img/placeholder-photo-home-livingroom.svg`} alt={c.same.photoAlt} tag={c.same.photoTag} />
@@ -110,7 +109,7 @@ const jsonld = [
           <p class="sec-head__intro">{c.same.intro}</p>
           <ul class="same__list" role="list">
             {c.same.items.map(it => (
-              <li class="reveal">
+              <li>
                 <span class="well well--sm" aria-hidden="true"><Icon name="i-check" size="sm" /></span>
                 <div><h3 class="h4">{it.t}</h3><p>{it.d}</p></div>
               </li>
@@ -128,29 +127,9 @@ const jsonld = [
           <h2 id="plans-title" class="h2">{c.plans.title}</h2>
           <p class="sec-head__intro">{c.plans.intro}</p>
         </header>
-        <div class="plans">
-          {planOrder.map(slug => {
-            const p = planBySlug(slug) as any;
-            const rec = slug === 'switch-plus';
-            return (
-              <article class:list={['plan surface', rec && 'plan--rec']} aria-labelledby={`plan-${slug}`}>
-                {rec && <p class="plan__badge"><Icon name="i-check-circle" size="sm" />{c.plans.badge}</p>}
-                <h3 id={`plan-${slug}`} class="plan__name">{p.shortName}</h3>
-                <p class="plan__who">{c.plans.whoFor[slug]}</p>
-                <p class="plan__price">
-                  <span class="plan__year">{eur(p.priceYearly, locale)}</span>
-                  <span class="plan__per">{c.plans.perYear}</span>
-                </p>
-                <p class="plan__month">{monthly(p.priceMonthly)} {c.plans.billed}</p>
-                <ul class="plan__feat" role="list">
-                  {c.plans.short[slug].map(f => <li><Icon name="i-check" size="sm" />{f}</li>)}
-                </ul>
-              </article>
-            );
-          })}
-        </div>
+        <PlanCards locale={locale} mode="teaser" entry="home-plans" />
         <div class="plans__foot">
-          <a class="btn btn--primary btn--lg" href="#start" data-focus-postcode>{c.cta}<Icon name="i-arrow-r" size="sm" class="nudge" /></a>
+          <a class="link" href={to('plans', locale)}>{c.plans.all}<Icon name="i-arrow-r" size="sm" /></a>
           <p class="plans__note">{c.plans.note}</p>
           <p class="footnote">{c.plans.footnote}</p>
         </div>
@@ -167,25 +146,17 @@ const jsonld = [
             {g.terms.map(t => <li><Icon name="i-check" size="sm" />{t}</li>)}
             <li><Icon name="i-check" size="sm" />{g.conditions}</li>
           </ul>
+          <a class="link guar__link" href={to('switchPlus', locale)}>{g.link}<Icon name="i-arrow-r" size="sm" /></a>
         </div>
-        <figure class="guar__ex surface" aria-labelledby="guar-ex-title">
-          <figcaption class="guar__ex-head"><span id="guar-ex-title" class="h4">{g.exTitle}</span><span class="tag">{g.exTag}</span></figcaption>
-          {[g.exA, g.exB].map((ex, i) => (
-            <div class:list={['exrow', i === 1 && 'exrow--refund']}>
-              <p class="exrow__label">{ex.label} <strong>{eur(ex.saved, locale)}</strong></p>
-              <div class="exbar" aria-hidden="true" style={`--w:${Math.min(ex.saved / 300, 1) * 100}%; --t:${(99 / 300) * 100}%`}>
-                <span class="exbar__fill"></span><span class="exbar__t"></span>
-              </div>
-              <p class="exrow__out">{i === 1 ? <Icon name="i-check-circle" size="sm" /> : <Icon name="i-check" size="sm" />}{ex.out}</p>
-            </div>
-          ))}
-          <p class="exbar__legend"><span class="exbar__legend-t" aria-hidden="true"></span>{g.threshold}</p>
-        </figure>
+        <GuaranteeExample locale={locale} />
       </div>
     </section>
 
-    <!-- ⑦ REVIEWS + FAQ -->
-    <section class="section section--canvas" aria-label={`${c.reviews.title} · ${c.faq.title}`}>
+    <!-- ⑦ PREMIUM: product story with the real dongle + app -->
+    <PremiumStory locale={locale} entry="home-premium" />
+
+    <!-- ⑧ REVIEWS + FAQ -->
+    <section class="section section--white" aria-label={`${c.reviews.title} · ${c.faq.title}`}>
       <div class="wrap rf">
         <div class="rf__reviews" id={ids.reviews}>
           <p class="eyebrow">{c.reviews.eyebrow}</p>
@@ -201,78 +172,15 @@ const jsonld = [
         <div class="rf__faq" id="faq">
           <p class="eyebrow">{c.faq.eyebrow}</p>
           <h2 class="h2">{c.faq.title}</h2>
-          <div class="faq">
-            {faqs.map(f => (
-              <details class="faq__item">
-                <summary><span>{f.q[lg]}</span><Icon name="i-plus" size="sm" /></summary>
-                <p>{f.a[lg]}</p>
-              </details>
-            ))}
-          </div>
+          <FaqList locale={locale} ids={c.faq.ids} />
+          <a class="link rf__all" href={to('faq', locale)}>{c.faq.all}<Icon name="i-arrow-r" size="sm" /></a>
         </div>
       </div>
     </section>
 
-    <!-- ⑧ FINAL CTA -->
-    <section class="final" aria-labelledby="final-title">
-      <div class="wrap">
-        <div class="final__card surface ambient-soft" data-sticky-sentinel>
-          <h2 id="final-title" class="h2">{c.final.title}</h2>
-          <p class="sec-head__intro">{c.final.sub}</p>
-          <PostcodeForm locale={locale} id="pc-final" entry="home-final" />
-          <TrustLine locale={locale} />
-        </div>
-      </div>
-    </section>
+    <!-- ⑨ FINAL CTA -->
+    <FinalCta locale={locale} title={c.final.title} sub={c.final.sub} entry="home-final" />
   </main>
-  <Footer locale={locale} />
-
-  <!-- Sticky mobile CTA: appears once the hero form has scrolled away, hides near the final form. -->
-  <div class="sticky" data-sticky aria-hidden="true">
-    <a class="btn btn--primary sticky__btn" href="#start" data-focus-postcode tabindex="-1">{c.cta}</a>
-    <p class="sticky__proof">{c.sticky}</p>
-  </div>
-
-  <script is:inline>
-  (() => {
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const d = document;
-    // Postcode: validate a Belgian postcode before leaving the page (server validates again).
-    d.querySelectorAll('[data-postcode]').forEach(f => f.addEventListener('submit', e => {
-      const i = f.querySelector('input[name=postcode]'), err = f.querySelector('.pc__err');
-      i.value = i.value.replace(/\D/g, '');
-      const ok = /^[1-9]\d{3}$/.test(i.value);
-      err.hidden = ok; i.setAttribute('aria-invalid', String(!ok));
-      if (!ok) { e.preventDefault(); i.focus(); }
-    }));
-    // CTA links to #start focus the hero postcode field.
-    d.querySelectorAll('[data-focus-postcode]').forEach(a => a.addEventListener('click', () => setTimeout(() => d.getElementById('pc-hero')?.focus({ preventScroll: true }), reduce ? 0 : 350)));
-    // Sticky CTA (mobile only via CSS): show when no postcode form is in view and the hero is above.
-    const bar = d.querySelector('[data-sticky]');
-    const sentinels = [...d.querySelectorAll('[data-sticky-sentinel]')];
-    const vis = new Map();
-    const io = new IntersectionObserver(es => {
-      es.forEach(e => vis.set(e.target, { in: e.isIntersecting, above: e.boundingClientRect.top < 0 }));
-      const hero = vis.get(sentinels[0]);
-      const show = hero && !hero.in && hero.above && ![...vis.values()].some(v => v.in);
-      bar.classList.toggle('is-on', !!show);
-      bar.setAttribute('aria-hidden', String(!show));
-      bar.querySelector('a').tabIndex = show ? 0 : -1;
-    });
-    sentinels.forEach(s => io.observe(s));
-    // Signature motion: "the monthly check" — chip ticks, numeral counts up once (≤ 700ms).
-    if (reduce) return;
-    const chip = d.querySelector('[data-check-chip]');
-    const num = d.querySelector('[data-count]');
-    if (!chip || !num) return;
-    chip.classList.add('is-checking');
-    const target = +num.dataset.count;
-    setTimeout(() => {
-      chip.classList.remove('is-checking'); chip.classList.add('is-checked');
-      const t0 = performance.now();
-      const step = t => { const p = Math.min((t - t0) / 700, 1); num.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
-      num.textContent = '0'; requestAnimationFrame(step);
-    }, 1100);
-  })();
-  </script>
+  <Footer locale={locale} routeKey="home" />
+  <StickyCta label={c.cta} href="#start" focus="pc-hero" proof={c.sticky} />
 </Site>

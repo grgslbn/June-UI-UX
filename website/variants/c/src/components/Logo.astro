@@ -1,6 +1,10 @@
 ---
-// "june" wordmark + bolt, as in the app header (app/shell.html #brand-bolt).
-interface Props { href: string; label?: string; }
-const { href, label = 'June, naar de startpagina' } = Astro.props;
+// Official June script logo (vector trace from shared/assets/logo), inlined so it inherits `color` (logo green #1CA498).
+import raw from '@shared/assets/logo/june-logo.svg?raw';
+interface Props { href?: string; label: string; size?: 'md' | 'lg'; }
+const { href, label, size = 'md' } = Astro.props;
+const svg = raw.replace(/\s(role|aria-label)="[^"]*"/g, '').replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
 ---
-<a class="logo" href={href} aria-label={label}>june<svg viewBox="0 0 16 24" aria-hidden="true"><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="var(--accent)" transform="translate(1.4 1.2)"/><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="currentColor"/></svg></a>
+{href
+  ? <a class={`logo logo--${size}`} href={href} aria-label={label}><Fragment set:html={svg} /></a>
+  : <span class={`logo logo--${size}`} role="img" aria-label={label}><Fragment set:html={svg} /></span>}

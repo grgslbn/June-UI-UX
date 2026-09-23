@@ -1,0 +1,6 @@
+---
+import { copy, type Locale } from '../content/copy';
+interface Props { n: number; locale: Locale }
+const { n, locale } = Astro.props;
+---
+<sup class="fn"><a href={`#fn-${n}`} aria-label={copy[locale].fnLabel(n)}>{n}</a></sup>

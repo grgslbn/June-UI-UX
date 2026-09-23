@@ -1,0 +1,19 @@
+---
+// Final CTA band on the bright LOGO green (#1CA498) with ink type (5.23:1) — the only place the pure logo green carries text.
+import PostcodeForm from './PostcodeForm.astro';
+import Trust from './Trust.astro';
+import Squiggle from './Squiggle.astro';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale; h2?: string; body?: string; plan?: string; cta?: string }
+const { locale, h2, body, plan, cta } = Astro.props;
+const t = copy[locale];
+---
+<section class="closing" aria-labelledby="h-close" data-sticky-hide>
+  <Squiggle kind="wave" class="closing__wave" />
+  <div class="wrap closing__in">
+    <h2 id="h-close" class="closing__h2">{h2 || t.closing.h2}</h2>
+    <p class="closing__body">{body || t.closing.body}</p>
+    <PostcodeForm locale={locale} id="pc-close" tone="light" plan={plan} cta={cta} loc="final" />
+    <Trust locale={locale} id="close" tone="light" items={['rating', 'customers', 'guarantee']} />
+  </div>
+</section>

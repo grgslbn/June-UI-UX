@@ -1,0 +1,20 @@
+---
+// Animated brand icon (looping transparent WebP, 240px) with the static PNG frame under reduced motion.
+// The WebP is shipped as-is (?url) so the animation survives; the static frame goes through astro:assets.
+import { getImage } from 'astro:assets';
+interface Props { name: 'calculator' | 'celebrate' | 'compare' | 'home-analysis' | 'home-automatic' | 'home-switch' | 'relax'; size?: number; eager?: boolean; class?: string; }
+const { name, size = 96, eager = false, class: cls } = Astro.props;
+const anims = import.meta.glob<{ default: string }>('../../../../shared/assets/icons/*.webp', { query: '?url', eager: true });
+const statics = import.meta.glob<{ default: ImageMetadata }>('../../../../shared/assets/icons/*-static.png', { eager: true });
+const anim = Object.entries(anims).find(([k]) => k.endsWith(`/icon-${name}.webp`))![1].default;
+const st = Object.entries(statics).find(([k]) => k.endsWith(`/icon-${name}-static.png`))![1].default;
+const still = await getImage({ src: st, width: Math.min(240, size * 2), format: 'webp' });
+---
+<picture class:list={['anim-icon', cls]}>
+  <source media="(prefers-reduced-motion: reduce)" srcset={still.src} type="image/webp" />
+  <img src={anim} alt="" width={size} height={size} style={`width:var(--icon-size, ${size}px);height:auto`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+</picture>
+<style>
+  .anim-icon { display: block; flex: none; }
+  .anim-icon img { display: block; max-width: none; }
+</style>

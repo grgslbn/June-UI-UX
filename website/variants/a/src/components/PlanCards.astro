@@ -1,0 +1,73 @@
+---
+// Three plan cards (Switch · Switch Plus [recommended] · Premium). Yearly total first, monthly beside it
+// (price rule C8). Optional meter chooser (absorbed from variant D): pure CSS :has() highlights the fitting
+// plan; a tiny script only carries the answer into the sign-up links (?meter=…) so step 1 is prefilled.
+import { copy, eur, planBySlug, signupHref, L, type Locale } from '../content/i18n';
+import { pages } from '../content/pages';
+import Icon from './Icon.astro';
+interface Props { locale: Locale; mode?: 'full' | 'teaser'; chooser?: boolean; entry?: string }
+const { locale, mode = 'full', chooser = false, entry = 'plans-card' } = Astro.props;
+const c = copy[locale];
+const p = pages[locale].plans;
+const lg = L(locale);
+const order = ['switch', 'switch-plus', 'premium'];
+---
+<div class="plans-wrap" data-plans>
+  {chooser && (
+    <fieldset class="meter-pick">
+      <legend>{p.chooser.legend}</legend>
+      <div class="seg">
+        {p.chooser.options.map(([v, l], i) => (
+          <label class="seg__opt"><input type="radio" name="meter" value={v} id={`m-${v}`} checked={i === 0} /><span>{l}</span></label>
+        ))}
+      </div>
+      <p class="meter-pick__help">{p.chooser.help}</p>
+    </fieldset>
+  )}
+  <div class:list={['plans', `plans--${mode}`]}>
+    {order.map(slug => {
+      const plan = planBySlug(slug) as any;
+      const rec = slug === 'switch-plus';
+      const feats: string[] = mode === 'teaser' ? c.plans.short[slug] : plan.features.slice(0, slug === 'premium' ? 4 : 5).map((f: any) => f[lg]);
+      const hasG = slug !== 'switch';
+      return (
+        <article class:list={['plan surface', `plan--${slug}`, rec && 'plan--rec']} id={mode === 'full' ? slug : undefined} aria-labelledby={`plan-${slug}-${mode}`}>
+          {rec && <p class="plan__badge"><Icon name="i-check-circle" size="sm" />{c.plans.badge}</p>}
+          {slug === 'premium' && chooser && <p class="plan__fit plan__fit--solar"><Icon name="i-sun" size="sm" />{p.chooser.fitSolar}</p>}
+          {slug === 'premium' && chooser && <p class="plan__fit plan__fit--digital"><Icon name="i-check" size="sm" />{p.chooser.fitDigital}</p>}
+          <h3 id={`plan-${slug}-${mode}`} class="plan__name">{plan.shortName}</h3>
+          <p class="plan__who">{mode === 'full' ? p.tagline[slug] : c.plans.whoFor[slug]}</p>
+          <p class="plan__price">
+            <span class="plan__year">{eur(plan.priceYearly, locale)}</span>
+            <span class="plan__per">{c.plans.perYear}</span>
+          </p>
+          <p class="plan__month">{eur(plan.priceMonthly, locale)} {c.plans.billed}</p>
+          {mode === 'full' && <p class="plan__for">{p.whoFor[slug]}</p>}
+          <ul class="plan__feat" role="list">
+            {feats.map(f => <li><Icon name="i-check" size="sm" />{f}</li>)}
+          </ul>
+          {slug === 'premium' && chooser && <p class="plan__analog">{p.chooser.analogNote}</p>}
+          <a class:list={['btn', rec ? 'btn--primary' : 'btn--secondary', 'plan__cta']} href={signupHref(locale, `plan=${slug}&entry=${entry}`)} data-plan-link={slug}
+            aria-describedby={`plan-${slug}-${mode}`}>{p.choose(plan.shortName)}</a>
+          {mode === 'full' && (hasG
+            ? <p class="plan__g"><Icon name="i-shield" size="sm" /><span>{locale === 'nl-be' ? 'Met winstgarantie' : 'Avec garantie de gain'}<sup class="fn"><a href="#fn-4" aria-label={locale === 'nl-be' ? 'voetnoot 4' : 'note 4'}>4</a></sup></span></p>
+            : <p class="plan__g plan__g--none">{locale === 'nl-be' ? 'Zonder winstgarantie' : 'Sans garantie de gain'}</p>)}
+        </article>
+      );
+    })}
+  </div>
+</div>
+{chooser && (
+  <script>
+    // Carry the meter answer into the plan links so the sign-up step 1 is prefilled (no re-asking).
+    document.querySelectorAll<HTMLElement>('[data-plans]').forEach(w => {
+      const links = [...w.querySelectorAll<HTMLAnchorElement>('[data-plan-link]')];
+      const base = links.map(a => a.href);
+      w.addEventListener('change', e => {
+        const v = (e.target as HTMLInputElement).value;
+        const q = v === 'solar' ? '&meter=digital&solar=yes' : v === 'digital' || v === 'analog' ? `&meter=${v}` : '';
+        links.forEach((a, i) => { a.href = base[i] + q; });
+      });
+    });
+  </script>
+)}

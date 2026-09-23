@@ -1,0 +1,18 @@
+---
+import PostcodeForm from './PostcodeForm.astro';
+import TrustLine from './TrustLine.astro';
+import type { Locale } from '../content/i18n';
+interface Props { locale: Locale; title: string; sub: string; entry: string; plan?: string; id?: string }
+const { locale, title, sub, entry, plan, id = 'pc-final' } = Astro.props;
+---
+<section class="final" aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <div class="final__card surface" data-sticky-sentinel>
+      <h2 id={`${id}-title`} class="h2">{title}</h2>
+      <p class="sec-head__intro">{sub}</p>
+      <PostcodeForm locale={locale} id={id} entry={entry} plan={plan} />
+      <TrustLine locale={locale} />
+      <slot />
+    </div>
+  </div>
+</section>

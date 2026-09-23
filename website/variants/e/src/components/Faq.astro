@@ -1,0 +1,15 @@
+---
+// FAQ accordion: native <details name> (exclusive, zero JS), deep-linkable ids, answers from facts.json (meaning frozen).
+import { faqById, tp, rich, lang, type Locale } from '../content/copy';
+interface Props { locale: Locale; ids: string[]; group?: string; slugs?: Record<string, string>; headingLevel?: 'h3' | 'p' }
+const { locale, ids, group = 'faq', slugs = {} } = Astro.props;
+const L = lang(locale);
+---
+<div class="faqlist">
+  {ids.map(id => { const q = faqById(id); return (
+    <details class="qa" name={group} id={slugs[id]}>
+      <summary><span>{tp(q.q[L], locale)}</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="qa__a"><p set:html={rich(tp(q.a[L], locale))} /></div>
+    </details>
+  ); })}
+</div>

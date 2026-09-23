@@ -1,0 +1,27 @@
+---
+// Sub-page hero on the green field: header, breadcrumb, eyebrow, H1 (one squiggled word), lede, CTA slot, art slot.
+import Header from './Header.astro';
+import Crumbs from './Crumbs.astro';
+import Blob from './Blob.astro';
+import { markWord } from './squiggle';
+import type { Locale } from '../content/copy';
+interface Props { locale: Locale; routeKey: string; crumbs: { key: string; name: string }[]; eyebrow: string; h1: string; mark?: string; lede?: string; blob?: 'pink' | 'green' | 'none'; compact?: boolean }
+const { locale, routeKey, crumbs, eyebrow, h1, mark, lede, blob = 'green', compact = false } = Astro.props;
+const hasArt = Astro.slots.has('art');
+---
+<div class="field-top">
+  <Header locale={locale} routeKey={routeKey} />
+  <section class={`phero ${hasArt ? 'phero--art' : ''} ${compact ? 'phero--compact' : ''}`} aria-labelledby="h1">
+    {blob !== 'none' && <Blob shape={3} class={`phero__blob phero__blob--${blob}`} />}
+    <div class="wrap phero__in">
+      <div class="phero__copy">
+        <Crumbs locale={locale} items={crumbs} />
+        <p class="eyebrow eyebrow--field">{eyebrow}</p>
+        <h1 id="h1" class={`phero__h1 ${locale === 'fr-be' ? 'phero__h1--fr' : ''}`} set:html={markWord(h1, mark)} />
+        {lede && <p class="phero__lede">{lede}</p>}
+        <slot />
+      </div>
+      {hasArt && <div class="phero__art"><slot name="art" /></div>}
+    </div>
+  </section>
+</div>

@@ -1,6 +1,7 @@
 // Variant A copy layer. Frozen facts (numbers, prices, plan features, FAQ answers, guarantee terms)
 // are read from @shared/content/facts.json; this file only holds variant headlines/microcopy.
 import facts from '@shared/content/facts.json';
+import { href as routeHref } from '@shared/routes.mjs';
 
 export type Locale = 'nl-be' | 'fr-be';
 export const L = (loc: Locale) => (loc === 'nl-be' ? 'nl' : 'fr') as 'nl' | 'fr';
@@ -15,6 +16,11 @@ export const eur = (v: number, loc: Locale) => {
 export const thousands = (v: number, loc: Locale) => String(v).replace(/\B(?=(\d{3})+(?!\d))/g, loc === 'nl-be' ? '.' : NNB);
 
 export const F = facts;
+export type NavItem = { label: string; key: string; hash?: string };
+/** Internal link inside this build (respects BASE), with optional query + fragment. */
+export const to = (key: string, locale: Locale, opts: { hash?: string; query?: string } = {}) =>
+  routeHref(key, locale, import.meta.env.BASE_URL) + (opts.query ? `?${opts.query}` : '') + (opts.hash ? `#${opts.hash}` : '');
+export const signupHref = (locale: Locale, query = '') => to('signup', locale, { query });
 const plans = facts.plans;
 export const planBySlug = (slug: string) => plans.find((p: any) => p.slug === slug)!;
 export const faqById = (id: string) => (facts.faq as any[]).find(f => f.id === id)!;
@@ -29,11 +35,11 @@ export const copy = {
     },
     skip: 'Naar de inhoud',
     nav: [
-      { label: 'Hoe werkt het', href: '#hoe-het-werkt' },
-      { label: 'Prijzen', href: '#prijzen' },
-      { label: 'Reviews', href: '#reviews' },
-      { label: 'FAQ', href: '#faq' },
-    ],
+      { label: 'Hoe werkt het', key: 'howItWorks' },
+      { label: 'Prijzen', key: 'plans' },
+      { label: 'Reviews', key: 'home', hash: 'reviews' },
+      { label: 'FAQ', key: 'faq' },
+    ] as NavItem[],
     navLabel: 'Hoofdmenu',
     langOther: { label: 'FR', aria: 'Lire en français' },
     langCurrent: 'NL',
@@ -83,6 +89,7 @@ export const copy = {
       title: 'Drie stappen. Daarna doet June het werk.',
       intro: 'Je doet het één keer. Wij blijven kijken, elke maand opnieuw.',
       after: 'Daarna: elke maand een nieuwe controle',
+      link: 'Zo werkt June, stap voor stap',
     },
     same: {
       eyebrow: 'Wat verandert er?',
@@ -110,6 +117,7 @@ export const copy = {
       } as Record<string, string[]>,
       whoFor: { switch: 'Gewoon minder betalen', 'switch-plus': 'Voor wie zekerheid wil', premium: 'Digitale meter of zonnepanelen' } as Record<string, string>,
       note: 'Je kiest je abonnement pas na je berekening.',
+      all: 'Vergelijk alle abonnementen',
       footnote: 'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.',
     },
     guar: {
@@ -118,6 +126,7 @@ export const copy = {
       body: facts.guarantees.winstgarantie.summary.nl,
       terms: [facts.guarantees.winstgarantie.terms.period.nl, facts.guarantees.winstgarantie.terms.measurement.nl, facts.guarantees.winstgarantie.terms.payout.nl],
       conditions: 'Voorwaarden in onze algemene voorwaarden',
+      link: 'Meer over Switch Plus en de winstgarantie',
       exTitle: 'Rekenvoorbeeld',
       exTag: 'Illustratief',
       exA: { saved: 250, label: 'Je bespaart', out: 'Je houdt je besparing.' },
@@ -133,7 +142,7 @@ export const copy = {
       link: 'Alle reviews op Google',
       placeholder: '[placeholder] Hier komen drie echte Google-reviews: letterlijk, met voornaam en datum. We verzinnen geen citaten.',
     },
-    faq: { eyebrow: 'FAQ', title: 'Veelgestelde vragen', ids: ['not-a-supplier', 'cost', 'no-interruption', 'approval', 'exit-fee'] },
+    faq: { eyebrow: 'FAQ', title: 'Veelgestelde vragen', ids: ['not-a-supplier', 'independence', 'exit-fee', 'meters', 'approval'], all: 'Alle vragen' },
     final: {
       title: 'Laat je energiecontract voortaan aan June over.',
       sub: 'Vul je postcode in. In een paar vragen weet je wat June voor jou kan doen.',
@@ -143,15 +152,28 @@ export const copy = {
       tagline: 'Jij de power, wij het werk.',
       about: 'June volgt de energiemarkt voor jou op en laat je automatisch overstappen naar een voordeliger contract.',
       mission: facts.brand.mission.nl,
-      links: ['Algemene voorwaarden', 'Privacy', 'Cookies', 'Contact'],
-      legal: '© 2026 June Energy · [KBO-nummer]',
+      cols: [
+        { title: 'June', links: [
+          { label: 'Hoe werkt het', key: 'howItWorks' }, { label: 'Abonnementen en prijzen', key: 'plans' },
+          { label: 'Switch Plus', key: 'switchPlus' }, { label: 'Premium en June Dongle', key: 'plans', hash: 'premium' },
+          { label: 'Reviews', key: 'home', hash: 'reviews' } ] },
+        { title: 'Hulp', links: [
+          { label: 'Veelgestelde vragen', key: 'faq' }, { label: 'Contact', todo: 'contact page + phone/hours' },
+          { label: 'Voorwaarden winstgarantie', todo: 'T&C article' }, { label: 'Inloggen', todo: 'customer portal URL' } ] },
+        { title: 'Over June', links: [
+          { label: 'Hoe verdient June geld?', key: 'faq', hash: 'independence' }, { label: 'Onze missie', todo: 'visie page' },
+          { label: 'Algemene voorwaarden', todo: 'T&C' }, { label: 'Privacy', todo: 'privacy' }, { label: 'Cookies', todo: 'cookies' } ] },
+      ] as { title: string; links: (NavItem | { label: string; todo: string })[] }[],
+      legal: '© 2026 June Energy · [KBO-nummer] · [adres]',
       notes: [
         facts.saving.averagePerYear.footnote.nl,
         'Google-score en aantal reviews op maart 2026.',
         'Aantal klanten op maart 2026.',
         'Winstgarantie bij Switch Plus en Premium. Voorwaarden in onze algemene voorwaarden.',
+        'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.',
       ],
       footnotesLabel: 'Voetnoten',
+      regulators: 'June is geen energieleverancier. Toezicht op de energiemarkt: VREG (Vlaanderen), CWaPE (Wallonië), Brugel (Brussel) en CREG (federaal). Zij keuren June niet goed of af; vergelijk ook zelf via hun tools.',
     },
   },
   'fr-be': {
@@ -161,11 +183,11 @@ export const copy = {
     },
     skip: 'Aller au contenu',
     nav: [
-      { label: 'Comment ça marche', href: '#comment-ca-marche' },
-      { label: 'Prix', href: '#prix' },
-      { label: 'Avis', href: '#avis' },
-      { label: 'FAQ', href: '#faq' },
-    ],
+      { label: 'Comment ça marche', key: 'howItWorks' },
+      { label: 'Prix', key: 'plans' },
+      { label: 'Avis', key: 'home', hash: 'avis' },
+      { label: 'FAQ', key: 'faq' },
+    ] as NavItem[],
     navLabel: 'Menu principal',
     langOther: { label: 'NL', aria: 'Lees in het Nederlands' },
     langCurrent: 'FR',
@@ -215,6 +237,7 @@ export const copy = {
       title: 'Trois étapes. Ensuite, June fait le travail.',
       intro: 'Vous le faites une fois. Nous restons attentifs, chaque mois.',
       after: 'Ensuite : un nouveau contrôle chaque mois',
+      link: 'Comment fonctionne June, étape par étape',
     },
     same: {
       eyebrow: "Qu'est-ce qui change ?",
@@ -242,6 +265,7 @@ export const copy = {
       } as Record<string, string[]>,
       whoFor: { switch: 'Simplement payer moins', 'switch-plus': 'Pour ceux qui veulent une certitude', premium: 'Compteur numérique ou panneaux solaires' } as Record<string, string>,
       note: 'Vous choisissez votre abonnement après le calcul.',
+      all: 'Comparer tous les abonnements',
       footnote: 'Tous les prix TVA 21 % comprise. Votre consommation d’énergie est facturée par votre fournisseur.',
     },
     guar: {
@@ -250,6 +274,7 @@ export const copy = {
       body: facts.guarantees.winstgarantie.summary.fr,
       terms: [facts.guarantees.winstgarantie.terms.period.fr, facts.guarantees.winstgarantie.terms.measurement.fr, facts.guarantees.winstgarantie.terms.payout.fr],
       conditions: 'Conditions dans nos conditions générales',
+      link: 'En savoir plus sur Switch Plus et la garantie',
       exTitle: 'Exemple de calcul',
       exTag: 'Illustratif',
       exA: { saved: 250, label: 'Vous économisez', out: 'Vous gardez votre économie.' },
@@ -265,7 +290,7 @@ export const copy = {
       link: 'Tous les avis sur Google',
       placeholder: "[placeholder] Ici viendront trois vrais avis Google en français : mot pour mot, avec prénom et date. Nous n'inventons aucune citation.",
     },
-    faq: { eyebrow: 'FAQ', title: 'Questions fréquentes', ids: ['not-a-supplier', 'cost', 'no-interruption', 'approval', 'exit-fee'] },
+    faq: { eyebrow: 'FAQ', title: 'Questions fréquentes', ids: ['not-a-supplier', 'independence', 'exit-fee', 'meters', 'approval'], all: 'Toutes les questions' },
     final: {
       title: 'Confiez désormais votre contrat d’énergie à June.',
       sub: 'Indiquez votre code postal. En quelques questions, vous savez ce que June peut faire pour vous.',
@@ -275,15 +300,28 @@ export const copy = {
       tagline: 'À vous le pouvoir, à nous le travail.',
       about: "June suit le marché de l'énergie pour vous et vous fait passer automatiquement à un contrat plus avantageux.",
       mission: facts.brand.mission.fr,
-      links: ['Conditions générales', 'Confidentialité', 'Cookies', 'Contact'],
-      legal: '© 2026 June Energy · [numéro BCE]',
+      cols: [
+        { title: 'June', links: [
+          { label: 'Comment ça marche', key: 'howItWorks' }, { label: 'Abonnements et prix', key: 'plans' },
+          { label: 'Switch Plus', key: 'switchPlus' }, { label: 'Premium et June Dongle', key: 'plans', hash: 'premium' },
+          { label: 'Avis', key: 'home', hash: 'avis' } ] },
+        { title: 'Aide', links: [
+          { label: 'Questions fréquentes', key: 'faq' }, { label: 'Contact', todo: 'contact page + phone/hours' },
+          { label: 'Conditions de la garantie de gain', todo: 'T&C article' }, { label: 'Se connecter', todo: 'customer portal URL' } ] },
+        { title: 'À propos', links: [
+          { label: 'Comment June gagne-t-elle sa vie ?', key: 'faq', hash: 'independence' }, { label: 'Notre mission', todo: 'vision page' },
+          { label: 'Conditions générales', todo: 'T&C' }, { label: 'Confidentialité', todo: 'privacy' }, { label: 'Cookies', todo: 'cookies' } ] },
+      ] as { title: string; links: (NavItem | { label: string; todo: string })[] }[],
+      legal: '© 2026 June Energy · [numéro BCE] · [adresse]',
       notes: [
         facts.saving.averagePerYear.footnote.fr,
         'Note Google et nombre d’avis en mars 2026.',
         'Nombre de clients en mars 2026.',
         'Garantie de gain avec Switch Plus et Premium. Conditions dans nos conditions générales.',
+        'Tous les prix TVA 21 % comprise. Votre consommation d’énergie est facturée par votre fournisseur.',
       ],
       footnotesLabel: 'Notes',
+      regulators: "June n'est pas un fournisseur d'énergie. Le marché de l'énergie est contrôlé par la CWaPE (Wallonie), Brugel (Bruxelles), la VREG (Flandre) et la CREG (fédéral). Ils n'approuvent ni ne désapprouvent June ; vous pouvez aussi comparer via leurs outils.",
     },
   },
 };

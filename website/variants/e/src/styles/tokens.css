@@ -28,23 +28,25 @@
 :root {
   color-scheme: light;
 
-  /* ── Brand colour ─────────────────────────────── */
-  --june-green: #3bada8;        /* brand fill — graphics, blobs, numerals (never small text on white: 2.72:1) */
-  --june-green-field: #1f7f7a;  /* E's signature surface — white text 4.80:1 (AA all sizes) */
-  --june-green-deep: #19736f;   /* = app --accent-strong — links/CTA on white 5.64:1 */
-  --june-green-ink: #0f4f4c;    /* pressed / hover on field */
-  --june-red: #e85257;          /* spark: blobs, Junior — graphic only */
-  --june-red-text: #c4383e;     /* red as text on white 5.0:1 (rare) */
-  --elec: #fad145;              /* brand-book Sunglow — squiggles, bolt charge (graphic, 3.26:1 on field) */
-  --ink: #14232a;               /* app ink-900 — text, ink bands, primary button on white */
-  --ink-2: #3c4d53;             /* secondary text on white 9.2:1 / on mint 8.3:1 */
-  --mint: #edf4f3;              /* app canvas */
-  --mint-2: #d8ecea;            /* card wash, halftone on light */
-  --mint-3: #b6e3df;            /* ambient blob */
+  /* ── Brand colour (Phase 4: real logo green #1CA498 + logo pink #F15859) ── */
+  --june-green: #1ca498;        /* logo green — fills, logo, large numerals/icons. White text on it = 3.08:1 → never small white text; INK text on it = 5.23:1 ✓ */
+  --june-green-field: #127a71;  /* E's signature text-bearing surface — white text 5.19:1 (AA all sizes) */
+  --june-green-deep: #127a71;   /* links / focus / checks on white 5.19:1, on mint 4.65:1 */
+  --june-green-ink: #0b5a53;    /* hover / pressed / offset shadow on field (white 8.07:1) */
+  --june-pink: #f15859;         /* logo pink — blobs framing the character, spark accents (graphic only; ink on it 4.82:1) */
+  --june-pink-soft: #fde6e4;    /* light band for the character (ink 13.5:1) */
+  --june-red-text: #c4383e;     /* red as text / form errors on white 5.27:1 */
+  --mascot: #58afa0;            /* June character teal — reference only, never a UI colour */
+  --elec: #fad145;              /* squiggle / badge (ink text on it 10.9:1) */
+  --ink: #14232a;
+  --ink-2: #3c4d53;             /* secondary text on white 9.2:1 / mint 8.3:1 / pink-soft 7.4:1 */
+  --mint: #edf4f3;
+  --mint-2: #d8ecea;
+  --mint-3: #b6e3df;
   --white: #ffffff;
   --on-field: #ffffff;
 
-  /* ── Type ─────────────────────────────────────── */
+/* ── Type ─────────────────────────────────────── */
   --font-display: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
   --font-text: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   --fs-mega: clamp(3.25rem, 1.6rem + 7.4vw, 7.5rem);   /* 52 → 120 hero */

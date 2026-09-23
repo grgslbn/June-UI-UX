@@ -1,0 +1,20 @@
+---
+// Inner-page hero: breadcrumb · eyebrow · H1 · lede, optional aside (right column on desktop).
+import Breadcrumb from './Breadcrumb.astro';
+import { pages } from '../content/pages';
+import type { Locale } from '../content/i18n';
+interface Props { locale: Locale; crumb: string; eyebrow: string; h1: string; intro: string; split?: boolean }
+const { locale, crumb, eyebrow, h1, intro, split = false } = Astro.props;
+---
+<section class:list={['phero', split && 'phero--split']} aria-labelledby="page-title">
+  <div class="wrap phero__grid">
+    <div class="phero__copy">
+      <Breadcrumb locale={locale} trail={[{ label: pages[locale].crumbsHome, key: 'home' }, { label: crumb }]} />
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 id="page-title" class="display display--page">{h1}</h1>
+      <p class="lede">{intro}</p>
+      <slot />
+    </div>
+    {Astro.slots.has('aside') && <div class="phero__aside"><slot name="aside" /></div>}
+  </div>
+</section>

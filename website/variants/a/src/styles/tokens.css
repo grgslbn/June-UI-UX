@@ -51,11 +51,14 @@
   --ink-100: #e4eaeb;  /* gridlines, tracks */
 
   /* ── Accent: June Green (the ONE interactive hue + "your data") ─────── */
-  --accent: #3bada8;          /* fills: bars, meters, selected marks */
-  --accent-strong: #19736f;   /* text, links, buttons, emphasised lines (5.6:1) */
+  /* Phase 4 (PO decision): brand green = measured logo green #1CA498. It is a FILL colour (logo,
+     large display, icons, bars). Text + buttons use the darker step #127A71 (5.2:1 on white, 4.65:1 on canvas). */
+  --brand: #1ca498;           /* logo green: logo, fills, large display, icon accents */
+  --accent: #1ca498;          /* fills: bars, meters, selected marks */
+  --accent-strong: #127a71;   /* text, links, buttons, emphasised lines (5.2:1 on white) */
   --accent-soft: #e2f3f1;     /* selected / subtle highlight backgrounds */
   --on-accent: #ffffff;       /* text on --accent-strong */
-  --accent-stripe: #9fd9d5;   /* forecast hatch, provisional fills */
+  --accent-stripe: #9bd8d1;   /* forecast hatch, provisional fills */
 
   /* ── Semantic (status only — always with a word or icon) ────────────── */
   --alert: #c4383e;           /* June Red for text (5.3:1) — month peak / over / alerts ONLY */
@@ -77,7 +80,7 @@
   /* ── Categorical ramp (Breakdown categories). Round 3: accent + ink tints, NO new hues.
         cat-1 = the category the tab is about (accent); cat-2…5 + other = ink steps from mid-ink
         fading toward the surface (light AND dark), so the accent always leads. Always text-labelled; order fixed. ── */
-  --cat-1: #3bada8;  /* accent — the lead category (e.g. Heating) */
+  --cat-1: #1ca498;  /* accent — the lead category (e.g. Heating) */
   --cat-2: #6b7f84;  /* ink 1 — starts at mid-ink so cat-1 always leads */
   --cat-3: #8c9ea2;  /* ink 2 */
   --cat-4: #adbcbf;  /* ink 3 */
@@ -92,14 +95,14 @@
   --chart-compare: var(--ink-200);       /* benchmark / similar homes */
   --chart-muted: #cfdcdb;                /* de-emphasised bars next to a highlight */
   --chart-rolloff: var(--ink-700);       /* the item leaving a rolling window (not red) */
-  --chart-band: rgba(59, 173, 168, 0.16);/* confidence band */
+  --chart-band: rgba(28, 164, 152, 0.16);/* confidence band */
   --tooltip-bg: var(--ink-900);
   --tooltip-ink: #ffffff;
 
   /* ── Ambient brand depth (behind surfaces only, one per screen) ─────── */
-  --ambient: #b6e3df;
+  --ambient: #b3e2dc;
   --ambient-opacity: 0.9;
-  --halftone: rgba(59, 173, 168, 0.28);
+  --halftone: rgba(28, 164, 152, 0.28);
 
   /* ── Spacing: 4px scale ─────────────────────────────────────────────── */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
@@ -283,8 +286,15 @@
 
   --star: var(--ink-900);
   --hdr-bg: rgba(237, 244, 243, 0.9);
+  /* Animated brand icons are black line art on transparent: always sit on a light well. */
+  --icon-well: #ffffff;
+  --icon-blob: #e2f3f1;
+  /* Product stage behind real device/dongle renders (never pure white so the leaf reads). */
+  --stage: #e6f1ef;
+  --stage-2: #d3ebe7;
+  --logo: var(--brand);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --band-ink: #060d0f; --band-ink-line: #1a2a2e; --placeholder-a: #15312f; --placeholder-b: #1f4d4a; --placeholder-ink: #e8f0f0; --hdr-bg: rgba(10, 19, 21, 0.88); }
+  :root:not([data-theme="light"]) { --band-ink: #060d0f; --band-ink-line: #1a2a2e; --placeholder-a: #15312f; --placeholder-b: #1f4d4a; --placeholder-ink: #e8f0f0; --hdr-bg: rgba(10, 19, 21, 0.88); --brand: #3cc0b3; --icon-blob: #cfe9e5; --stage: #16292c; --stage-2: #1b3336; }
 }
-:root[data-theme="dark"] { --band-ink: #060d0f; --band-ink-line: #1a2a2e; --placeholder-a: #15312f; --placeholder-b: #1f4d4a; --placeholder-ink: #e8f0f0; --hdr-bg: rgba(10, 19, 21, 0.88); }
+:root[data-theme="dark"] { --band-ink: #060d0f; --band-ink-line: #1a2a2e; --placeholder-a: #15312f; --placeholder-b: #1f4d4a; --placeholder-ink: #e8f0f0; --hdr-bg: rgba(10, 19, 21, 0.88); --brand: #3cc0b3; --icon-blob: #cfe9e5; --stage: #16292c; --stage-2: #1b3336; }

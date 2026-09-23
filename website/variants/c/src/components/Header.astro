@@ -1,37 +1,59 @@
 ---
+// Masthead: official logo · 5 nav items · NL|FR (equivalent page) · login (text link) · primary CTA.
+// Mobile: native <details> menu (works without JS). `minimal` = funnel chrome (logo, language, way back).
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { href, LOCALES } from '@shared/routes.mjs';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; }
-const { locale, routeKey, c } = Astro.props;
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; minimal?: boolean; }
+const { locale, routeKey, c, minimal = false } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
 const signup = href('signup', locale, base);
 const loginUrl = 'https://www.june.energy/'; // TODO: customer portal URL (facts.brand.login.url needsConfirmation)
+const items = [
+  { key: 'howItWorks', label: c.nav.howItWorks, url: href('howItWorks', locale, base) },
+  { key: 'plans', label: c.nav.plans, url: href('plans', locale, base) },
+  { key: 'switchPlus', label: c.nav.switchPlus, url: href('switchPlus', locale, base) },
+  { key: 'reviews', label: c.nav.reviews, url: href('home', locale, base) + '#reviews' },
+  { key: 'faq', label: c.nav.faq, url: href('faq', locale, base) },
+];
+const lang = (
+  { cur: LOCALES[locale].label, url: href(routeKey, other, base), hl: LOCALES[other].html }
+);
 ---
 <a class="skip" href="#inhoud">{c.ui.skip}</a>
-<header class="masthead">
+<header class:list={['masthead', { 'masthead--minimal': minimal }]}>
   <div class="wrap masthead-in">
-    <Logo href={href('home', locale, base)} label={locale === 'nl-be' ? 'June, naar de startpagina' : 'June, vers la page d’accueil'} />
-    <nav class="nav" aria-label={c.ui.navLabel}>
-      {c.nav.map(([label, h]) => <a href={h}>{label}</a>)}
-    </nav>
+    <Logo href={href('home', locale, base)} label={c.ui.homeLabel} />
+    {!minimal && (
+      <nav class="nav" aria-label={c.ui.navLabel}>
+        {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
+      </nav>
+    )}
     <div class="util">
       <span class="lang">
-        <span aria-current="true">{LOCALES[locale].label}</span>
+        <span class="lang-cur">{lang.cur}</span>
         <span aria-hidden="true">|</span>
-        <a href={href(routeKey, other, base)} hreflang={LOCALES[other].html} lang={LOCALES[other].html} aria-label={c.ui.langOtherLabel}>{c.ui.langOther}</a>
+        <a href={lang.url} hreflang={lang.hl} lang={lang.hl} aria-label={c.ui.langOtherLabel}>{c.ui.langOther}</a>
       </span>
-      <a class="login" href={loginUrl} rel="noopener">{c.ui.login}<Icon name="ext" /></a>
-      <a class="btn btn--sm" href={signup}>{c.ui.cta}</a>
-      <details class="menu">
-        <summary aria-label={c.ui.menu}><Icon name="menu" /></summary>
-        <div class="menu-panel">
-          {c.nav.map(([label, h]) => <a href={h}>{label}</a>)}
-          <a href={loginUrl} rel="noopener">{c.ui.login} ↗</a>
-          <a class="btn" href={signup}>{c.ui.cta}</a>
-        </div>
-      </details>
+      {minimal ? (
+        <a class="back-link" href={href('home', locale, base)}><Icon name="arrow-l" />{c.ui.home}</a>
+      ) : (
+        <>
+          <a class="login" href={loginUrl} rel="noopener"><Icon name="user" />{c.ui.login}</a>
+          <a class="btn btn--sm" href={signup} data-cta="nav">{c.ui.cta}</a>
+          <details class="menu">
+            <summary aria-label={c.ui.menu}><Icon name="menu" /></summary>
+            <div class="menu-panel">
+              <nav aria-label={c.ui.menu}>
+                {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
+                <a href={loginUrl} rel="noopener">{c.ui.login}<Icon name="ext" /></a>
+              </nav>
+              <a class="btn" href={signup} data-cta="menu">{c.ui.cta}<Icon name="arrow-r" /></a>
+            </div>
+          </details>
+        </>
+      )}
     </div>
   </div>
 </header>

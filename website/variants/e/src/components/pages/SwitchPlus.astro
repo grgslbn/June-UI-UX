@@ -1,0 +1,224 @@
+---
+// Switch Plus product page — ux-research §4.4. Guarantee always with amount + condition + period + conditions link (C7).
+import Site from '../../layouts/Site.astro';
+import PageHero from '../PageHero.astro';
+import Footer from '../Footer.astro';
+import Trust from '../Trust.astro';
+import AnimIcon from '../AnimIcon.astro';
+import Stars from '../Stars.astro';
+import Faq from '../Faq.astro';
+import Fn from '../Fn.astro';
+import Closing from '../Closing.astro';
+import Sticky from '../Sticky.astro';
+import { Picture } from 'astro:assets';
+import reportCard from '@shared/assets/feature/savings-report.png';
+import { href, abs } from '@shared/routes.mjs';
+import { copy, deep, money, plan, tp, lang, stepsShort, confirmedFeatures, faqSlug, f, type Locale } from '../../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const nl = locale === 'nl-be';
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const p = plan('switch-plus');
+const sw = plan('switch');
+const g = f.guarantees.winstgarantie;
+const signup = `${h('signup')}?plan=switch-plus`;
+const C = deep(nl ? {
+  title: 'Switch Plus: besparen met winstgarantie | June',
+  description: 'Bespaar je in een abonnementsjaar niet meer dan je abonnement kost? Dan krijg je € 99 terug. Met jaarlijks besparingsrapport. € 99 per jaar (€ 8,25/maand).',
+  crumb: 'Switch Plus', eyebrow: 'Switch Plus · aanbevolen',
+  h1: 'Besparen met gegarandeerd resultaat.', mark: 'gegarandeerd',
+  lede: 'Alles uit Switch, plus de winstgarantie en een jaarlijks besparingsrapport. Bespaar je niet meer dan je abonnement kost? Dan krijg je € 99 terug.',
+  cta: 'Start met Switch Plus',
+  cardAlt: 'Kaart uit de June-app: het maandelijkse besparingsrapport met het bespaarde bedrag en de laatste overstap.',
+  cardCap: 'Voorbeeld uit de June-app',
+  g: { eyebrow: 'Zo werkt de winstgarantie', h2: 'Twee uitkomsten. Allebei goed voor jou.',
+    a: { tag: 'Uitkomst A · illustratief', t: 'Je bespaart meer dan je abonnement', ex: `bv. ${money(200, locale)} besparing`, r: 'Je besparing is groter dan de € 99 die je betaalde. Dat staat zwart op wit in je besparingsrapport.' },
+    b: { tag: 'Uitkomst B · illustratief', t: 'Je bespaart niet meer dan je abonnement', ex: `bv. ${money(80, locale)} besparing`, r: 'Dan krijg je € 99 terug. Je abonnement heeft je dan niets gekost.' },
+    cond: 'De voorwaarden in het kort', terms: 'Alle voorwaarden' },
+  inc: { eyebrow: 'Wat zit erin', h2: 'Alles uit Switch. Plus zekerheid.', from: 'Uit Switch', plus: 'Extra in Switch Plus' },
+  how: { eyebrow: 'Hoe werkt het voor jou', h2: 'Jij kiest hoe we wisselen.', auto: { t: 'Automatisch', b: 'Is er een voordeliger contract, dan regelen wij de overstap. Je krijgt bericht naar welk contract en waarom.' }, ask: { t: 'Eerst jouw akkoord', b: 'We stellen het nieuwe contract voor. Pas als jij het goedkeurt, stappen we over.' }, note: 'Je kiest bij het aanmelden en kan het later altijd aanpassen.' },
+  mini: { h2: 'Past Switch Plus bij jou?', rows: ['Prijs per jaar', 'Winstgarantie', 'Besparingsrapport', 'June Dongle'], all: 'Vergelijk alle abonnementen', yes: 'Ja', no: 'Nee' },
+  proof: { h2: 'Klanten gingen je voor', of: 'op 5', count: 'op basis van 1.200+ reviews op Google' },
+  close: { h2: 'Besparen met zekerheid? Start met Switch Plus.', body: 'Eerst je gratis schatting. Pas daarna kies je, zonder verplichtingen.' },
+  sticky: 'Switch Plus · € 99 per jaar',
+} : {
+  title: 'Switch Plus : économies avec garantie de gain | June',
+  description: 'Vous n’économisez pas plus que le prix de votre abonnement sur une année ? Vous récupérez 99 €. Rapport annuel inclus. 99 € par an (8,25 €/mois).',
+  crumb: 'Switch Plus', eyebrow: 'Switch Plus · recommandé',
+  h1: 'Des économies au résultat garanti.', mark: 'garanti',
+  lede: 'Tout ce qu’offre Switch, plus la garantie de gain et un rapport d’économies annuel. Vous n’économisez pas plus que le prix de votre abonnement ? Vous récupérez 99 €.',
+  cta: 'Commencer avec Switch Plus',
+  g: { eyebrow: 'Comment fonctionne la garantie de gain', h2: 'Deux issues. Toutes deux à votre avantage.',
+    a: { tag: 'Issue A · illustratif', t: 'Vous économisez plus que votre abonnement', ex: `p. ex. ${money(200, locale)} d’économie`, r: 'Votre économie dépasse les 99 € payés. C’est écrit noir sur blanc dans votre rapport d’économies.' },
+    b: { tag: 'Issue B · illustratif', t: 'Vous n’économisez pas plus que votre abonnement', ex: `p. ex. ${money(80, locale)} d’économie`, r: 'Vous récupérez 99 €. Votre abonnement ne vous aura rien coûté.' },
+    cond: 'Les conditions en bref', terms: 'Toutes les conditions' },
+  inc: { eyebrow: 'Ce qui est inclus', h2: 'Tout Switch. Plus la sérénité.', from: 'Compris dans Switch', plus: 'En plus avec Switch Plus' },
+  how: { eyebrow: 'Comment ça marche pour vous', h2: 'Vous choisissez comment nous changeons.', auto: { t: 'Automatiquement', b: 'Un contrat plus avantageux ? Nous nous occupons du changement. Nous vous informons du contrat choisi et de la raison.' }, ask: { t: 'D’abord votre accord', b: 'Nous vous proposons le nouveau contrat. Nous changeons seulement après votre validation.' }, note: 'Vous choisissez à l’inscription et pouvez toujours modifier ce choix par la suite.' },
+  mini: { h2: 'Switch Plus est-il fait pour vous ?', rows: ['Prix par an', 'Garantie de gain', 'Rapport d’économies', 'June Dongle'], all: 'Comparer toutes les formules', yes: 'Oui', no: 'Non' },
+  proof: { h2: 'Ils nous font déjà confiance', of: 'sur 5', count: 'sur la base de plus de 1 200 avis Google' },
+  close: { h2: 'Des économies en toute sérénité ? Commencez avec Switch Plus.', body: 'D’abord votre estimation gratuite. Ensuite seulement, vous choisissez, sans engagement.' },
+  sticky: 'Switch Plus · 99 € par an',
+}, locale);
+const conds = [g.terms.period[L], g.terms.measurement[L], g.terms.payout[L]].map(s => tp(s, locale));
+const faqG = `${h('faq')}#${faqSlug[locale].guarantee}`;
+const icons = ['home-analysis', 'compare', 'home-switch'] as const;
+const graph = [{
+  '@type': 'Product', '@id': `${abs('switchPlus', locale)}#product`, name: p.name, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: `${p.valueProposition[L]} ${g.summary[L]}`,
+  offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=switch-plus`, price: '99.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: [
+      { '@type': 'UnitPriceSpecification', price: '99.00', priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' }, billingDuration: 'P1Y' },
+      { '@type': 'UnitPriceSpecification', price: '8.25', priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' }, priceType: 'https://schema.org/ListPrice' } ] },
+}];
+const tiers = ['switch', 'switch-plus', 'premium'].map(s => plan(s));
+const miniVal = (row: number, s: string) => row === 0 ? money(plan(s).priceYearly, locale) : row === 1 ? (s === 'switch' ? C.mini.no : C.mini.yes) : row === 2 ? (s === 'switch' ? C.mini.no : C.mini.yes) : (s === 'premium' ? C.mini.yes : C.mini.no);
+---
+<Site locale={locale} routeKey="switchPlus" title={C.title} description={C.description} crumbs={[{ key: 'plans', name: nl ? 'Abonnementen' : 'Abonnements' }, { key: 'switchPlus', name: C.crumb }]} graph={graph}>
+  <PageHero locale={locale} routeKey="switchPlus" crumbs={[{ key: 'plans', name: nl ? 'Abonnementen' : 'Abonnements' }, { key: 'switchPlus', name: C.crumb }]} eyebrow={C.eyebrow} h1={C.h1} mark={C.mark} lede={C.lede} blob="pink">
+    <div class="sp-price">
+      <p class="sp-price__big"><span>{money(99, locale)}</span> {t.perYear}</p>
+      <p class="sp-price__sub">= {money(8.25, locale)} {t.perMonth} · {t.billed}, {t.vat}<Fn n={5} locale={locale} /></p>
+    </div>
+    <div class="phero__actions" data-sticky-trigger>
+      <a class="btn btn--white" href={signup} data-cta="hero">{C.cta}<svg class="btn__arrow" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="link-arrow link-arrow--white" href={faqG}>{C.g.terms}</a>
+    </div>
+    <Trust locale={locale} id="hero" items={['rating', 'customers', 'supplier']} />
+    <Fragment slot="art">
+      {nl ? (
+        <figure class="report">
+          <Picture src={reportCard} formats={['avif', 'webp']} widths={[292, 440, 584]} sizes="(max-width: 900px) 80vw, 360px" alt={C.cardAlt} loading="eager" decoding="async" fallbackFormat="webp" class="report__img" />
+          <figcaption class="report__cap">{C.cardCap}</figcaption>
+        </figure>
+      ) : (
+        <figure class="report report--html" aria-label="Aperçu du rapport d’économies (exemple illustratif)">
+          <div class="rep">
+            <p class="rep__t">Rapport d’économies mensuel</p>
+            <p class="rep__amt"><span class="rep__arrow" aria-hidden="true">↑</span> 45,78 €<small>Économisé ce mois-ci</small></p>
+            <p class="rep__row">Changement automatique depuis le 01/10/2023<span>Fournisseur X → Fournisseur Y</span></p>
+            <p class="rep__row">Optimisation de la consommation<span>Pics évités : 12</span></p>
+          </div>
+          <figcaption class="report__cap">Exemple illustratif, d’après l’app June</figcaption>
+        </figure>
+      )}
+    </Fragment>
+  </PageHero>
+
+  <main id="main">
+    <section class="sec gx" aria-labelledby="h-gx">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="eyebrow">{C.g.eyebrow}</p>
+          <h2 id="h-gx" class="display-2">{C.g.h2}</h2>
+          <p class="lede">{tp(g.summary[L], locale)}<Fn n={4} locale={locale} /></p>
+        </header>
+        <div class="gx__grid">
+          {[C.g.a, C.g.b].map((o: any, i: number) => (
+            <article class={`outcome outcome--${i ? 'b' : 'a'}`}>
+              <p class="outcome__tag">{o.tag}</p>
+              <h3 class="outcome__t">{o.t}</h3>
+              <dl class="outcome__calc">
+                <div><dt>{nl ? 'Je abonnement' : 'Votre abonnement'}</dt><dd>{money(99, locale)}</dd></div>
+                <div><dt>{nl ? 'Je besparing' : 'Votre économie'}</dt><dd>{o.ex}</dd></div>
+                <div class="outcome__res"><dt>{nl ? 'Resultaat' : 'Résultat'}</dt><dd>{i ? (nl ? `${money(99, locale)} terug` : `${money(99, locale)} remboursés`) : (nl ? 'Je houdt je besparing' : 'Vous gardez votre économie')}</dd></div>
+              </dl>
+              <p class="outcome__r">{o.r}</p>
+            </article>
+          ))}
+          <aside class="conds">
+            <h3 class="conds__h">{C.g.cond}</h3>
+            <ul role="list">{conds.map((c: string) => <li>{c}</li>)}</ul>
+            <a class="link-arrow" href={faqG}>{C.g.terms}</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec inc" aria-labelledby="h-inc">
+      <div class="wrap inc__in">
+        <div>
+          <p class="eyebrow">{C.inc.eyebrow}</p>
+          <h2 id="h-inc" class="display-3">{C.inc.h2}</h2>
+          <AnimIcon name="home-automatic" class="inc__icon" size={140} />
+        </div>
+        <div class="inc__lists">
+          <div class="inc__col inc__col--plus">
+            <h3>{C.inc.plus}</h3>
+            <ul class="plan__feat" role="list">{p.features.slice(1).map((x: any) => <li>{tp(x[L], locale)}</li>)}</ul>
+          </div>
+          <div class="inc__col">
+            <h3>{C.inc.from}</h3>
+            <ul class="plan__feat" role="list">{confirmedFeatures(sw).map((x: any) => <li>{tp(x[L], locale)}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec how" aria-labelledby="h-how">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="eyebrow">{C.how.eyebrow}</p>
+          <h2 id="h-how" class="display-2">{C.how.h2}</h2>
+        </header>
+        <ol class="steps__list" role="list">
+          {stepsShort.map((s, i) => (
+            <li class="step">
+              <div class="step__top"><span class="step__num" aria-hidden="true">{s.n}</span><AnimIcon name={icons[i]} class="step__icon" /></div>
+              <h3 class="step__title">{tp(s.title[L], locale)}</h3>
+              <p class="step__body">{tp(s.body[L], locale)}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="choice">
+          <div class="choice__opt"><h3>{C.how.auto.t}</h3><p>{C.how.auto.b}</p></div>
+          <span class="choice__or" aria-hidden="true">{nl ? 'of' : 'ou'}</span>
+          <div class="choice__opt"><h3>{C.how.ask.t}</h3><p>{C.how.ask.b}</p></div>
+        </div>
+        <p class="choice__note">{C.how.note}</p>
+      </div>
+    </section>
+
+    <section class="sec sec--tight mini" aria-labelledby="h-mini">
+      <div class="wrap">
+        <h2 id="h-mini" class="display-3">{C.mini.h2}</h2>
+        <div class="tbl__scroll" tabindex="0" role="region" aria-labelledby="h-mini">
+          <table class="tbl tbl--mini">
+            <thead><tr><td></td>{tiers.map(x => <th scope="col" class={x.slug === 'switch-plus' ? 'is-rec' : ''}><span class="tbl__plan">{x.shortName}</span></th>)}</tr></thead>
+            <tbody>{C.mini.rows.map((r: string, i: number) => <tr><th scope="row">{r}</th>{tiers.map(x => <td class={x.slug === 'switch-plus' ? 'is-rec' : ''}>{miniVal(i, x.slug)}</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+        <p class="sec__more"><a class="link-arrow" href={h('plans')}>{C.mini.all}</a></p>
+      </div>
+    </section>
+
+    <section class="sec sec--tight sp-proof" aria-labelledby="h-proof">
+      <div class="wrap sp-proof__in">
+        <h2 id="h-proof" class="display-3">{C.proof.h2}</h2>
+        <div class="sp-proof__score">
+          <p class="score"><span class="score__num">4,3</span> <span class="score__of">{C.proof.of}</span></p>
+          <Stars id="st-sp" label={t.trust.ratingAria} class="score__stars" />
+          <p class="score__meta">{C.proof.count}<Fn n={2} locale={locale} /> · {t.trust.customers}<Fn n={3} locale={locale} /></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq sec" aria-labelledby="h-faq">
+      <div class="wrap faq__in">
+        <header>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="h-faq" class="display-2">{nl ? 'Vragen over de winstgarantie' : 'Questions sur la garantie de gain'}</h2>
+          <p class="sec__more"><a class="link-arrow" href={h('faq')}>{t.allFaq}</a></p>
+        </header>
+        <Faq locale={locale} ids={['guarantee', 'cost', 'cancel', 'approval']} group="sp-faq" />
+      </div>
+    </section>
+
+    <Closing locale={locale} h2={C.close.h2} body={C.close.body} plan="switch-plus" />
+  </main>
+  <Footer locale={locale} routeKey="switchPlus" />
+  <Sticky locale={locale} label={nl ? 'Kies Switch Plus' : 'Choisir Switch Plus'} proof={C.sticky} plan="switch-plus" />
+</Site>

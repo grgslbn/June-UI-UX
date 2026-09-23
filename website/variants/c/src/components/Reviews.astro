@@ -1,0 +1,37 @@
+---
+// Rating (partial stars, source + date footnote, no AggregateRating markup) + placeholders for verbatim Google reviews.
+import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+import SectionHead from './SectionHead.astro';
+interface Props { c: any; n?: string; id?: string; }
+const { c, n, id = 'reviews' } = Astro.props;
+const r = c.L === 'fr'
+  ? { kicker: 'Ce que disent nos clients', h2: 'Une note de 4,3, pas de 5. Nous la montrons telle quelle.', basis: 'sur Google, sur la base de plus de 1 200 avis', label: 'Extraits de nos avis Google', ph: 'Ici viendra un vrai avis Google : mot pour mot, avec prénom, commune et date. Portrait uniquement avec accord.', aria: '4,3 sur 5 étoiles' }
+  : { kicker: 'Wat klanten zeggen', h2: 'Een 4,3, geen 5. We tonen hem zoals hij is.', basis: 'op Google, op basis van 1.200+ reviews', label: 'Uit onze Google-reviews', ph: 'Hier komt een echte Google-review: woordelijk, met voornaam, gemeente en datum. Portret enkel met toestemming.', aria: '4,3 van 5 sterren' };
+---
+<section class="section" id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <SectionHead n={n} kicker={r.kicker} id={`${id}-h`} title={r.h2} />
+    <div class="reviews">
+      <div class="rating">
+        <p class="rating-big num" aria-label={r.aria}>4,3<small aria-hidden="true">/5</small></p>
+        <Stars value={c.rating} id={id} />
+        <p class="note">{r.basis}<Fn n={2} L={c.L} /></p>
+      </div>
+      <div>
+        <p class="note quotes-label">{r.label}</p>
+        <div class="quotes">
+          {[1, 2].map((i) => (
+            <div class="quote-ph" data-placeholder="review">
+              <div class="portrait-ph" role="img" aria-label={`placeholder ${c.L === 'fr' ? 'portrait client' : 'klantportret'} ${i}`}></div>
+              <div>
+                <span class="tag">placeholder</span>
+                <p>{r.ph}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

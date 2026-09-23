@@ -1,6 +1,8 @@
 ---
+// Site header: logo · 4 primary items · NL|FR (to the equivalent page) · login text link · primary CTA.
+// Mobile: logo · NL|FR · menu sheet (items + login + CTA). Zero JS (native <details>).
 import { href } from '@shared/routes.mjs';
-import { copy, type Locale } from '../content/i18n';
+import { copy, to, signupHref, type Locale } from '../content/i18n';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 interface Props { locale: Locale; routeKey?: string }
@@ -9,26 +11,29 @@ const c = copy[locale];
 const base = import.meta.env.BASE_URL;
 const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
 const otherHref = href(routeKey, other, base);
+const items = c.nav.map(n => ({ ...n, href: to(n.key, locale, { hash: n.hash }), current: !n.hash && n.key === routeKey }));
+const cta = signupHref(locale, 'entry=header');
 ---
 <a class="skip" href="#main">{c.skip}</a>
 <header class="hdr">
   <div class="hdr__inner wrap">
-    <Logo href={href('home', locale, base)} label={c.home} />
+    <Logo href={to('home', locale)} label={c.home} />
     <nav class="hdr__nav" aria-label={c.navLabel}>
-      <ul>{c.nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+      <ul>{items.map(n => <li><a href={n.href} aria-current={n.current ? 'page' : undefined}>{n.label}</a></li>)}</ul>
     </nav>
     <div class="hdr__util">
       <div class="lang">
-        <span class="lang__cur" aria-current="true">{c.langCurrent}</span>
+        <span class="lang__cur">{c.langCurrent}<span class="sr-only"> ({locale === 'nl-be' ? 'huidige taal' : 'langue actuelle'})</span></span>
         <a class="lang__alt" href={otherHref} hreflang={other === 'fr-be' ? 'fr-BE' : 'nl-BE'} lang={other === 'fr-be' ? 'fr' : 'nl'} aria-label={c.langOther.aria}>{c.langOther.label}</a>
       </div>
-      <a class="hdr__login" href="#" data-todo="external customer portal URL (facts.brand.login.url = null)">{c.login}</a>
-      <a class="btn btn--primary btn--sm hdr__cta" href="#start" data-focus-postcode>{c.cta}</a>
+      <a class="hdr__login" href="#" data-todo="external customer portal URL (facts.brand.login.url = null)"><Icon name="i-user" size="sm" />{c.login}</a>
+      <a class="btn btn--primary btn--sm hdr__cta" href={cta}>{c.cta}</a>
       <details class="menu">
-        <summary aria-label={locale === 'nl-be' ? 'Menu' : 'Menu'}><Icon name="i-menu" /></summary>
+        <summary aria-label="Menu"><Icon name="i-menu" /></summary>
         <div class="menu__panel">
-          <ul>{c.nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}</ul>
-          <a class="menu__login" href="#">{c.login}</a>
+          <ul>{items.map(n => <li><a href={n.href} aria-current={n.current ? 'page' : undefined}>{n.label}</a></li>)}</ul>
+          <a class="menu__login" href="#"><Icon name="i-user" size="sm" />{c.login}</a>
+          <a class="btn btn--primary menu__cta" href={cta}>{c.cta}</a>
         </div>
       </details>
     </div>

@@ -1,0 +1,158 @@
+---
+// FAQ. H1 + search (progressive: filters the list, works as find-in-page without JS) · category chips (anchors) ·
+// grouped native <details> (deep-linkable ids) · FAQPage JSON-LD mirroring the visible text · contact + CTA.
+// Items whose answer still holds a [placeholder] (cancel, regions, independence) are hidden until confirmed.
+import { href } from '@shared/routes.mjs';
+import facts from '@shared/content/facts.json';
+import Page from '../Page.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import type { Locale } from '../../lib/estimate';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+const k = fr ? 'fr' : 'nl';
+const plans = href('plans', locale, base), how = href('howItWorks', locale, base), sp = href('switchPlus', locale, base);
+const HIDDEN = new Set(facts.faq.filter(f => /\[/.test(f.a.nl) || /\[/.test(f.a.fr)).map(f => f.id));
+const idOf = (id: string) => (id === 'guarantee' ? 'winstgarantie' : id);
+// Contextual "read more" links appended to answers (plain <a>, same locale).
+const more: Record<string, [string, string]> = {
+  cost: [plans, fr ? 'Voir les abonnements' : 'Bekijk de abonnementen'],
+  guarantee: [sp, fr ? 'La garantie de gain expliquée' : 'Zo werkt de Winstgarantie'],
+  meters: [how, fr ? 'Comment fonctionne June' : 'Zo werkt June'],
+  approval: [how, fr ? 'Comment fonctionne June' : 'Zo werkt June'],
+};
+const groups = (fr
+  ? [['about', 'À propos de June', ['not-a-supplier', 'independence', 'how-so-much', 'which-suppliers']], ['price', 'Prix et abonnement', ['cost', 'guarantee', 'cancel']], ['switch', 'Le changement de fournisseur', ['approval', 'exit-fee', 'no-interruption', 'green']], ['meter', 'Votre compteur et vos données', ['meters', 'regions', 'data']]]
+  : [['over', 'Over June', ['not-a-supplier', 'independence', 'how-so-much', 'which-suppliers']], ['prijs', 'Prijs en abonnement', ['cost', 'guarantee', 'cancel']], ['overstap', 'De overstap', ['approval', 'exit-fee', 'no-interruption', 'green']], ['meter', 'Je meter en je gegevens', ['meters', 'regions', 'data']]]
+) as [string, string, string[]][];
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const G = groups.map(([id, label, ids]) => ({ id, label, items: ids.filter(i => !HIDDEN.has(i)).map(i => {
+  const f = facts.faq.find(x => x.id === i)!;
+  const m = more[i];
+  return { id: idOf(i), q: f.q[k], plain: f.a[k], a: esc(f.a[k]) + (m ? ` <a href="${m[0]}">${m[1]}</a>` : '') };
+}) }));
+const all = G.flatMap(g => g.items);
+const graph = [{ '@type': 'FAQPage', '@id': `https://www.june.energy/${locale}/${fr ? 'questions-frequentes' : 'veelgestelde-vragen'}/#faq`, inLanguage: fr ? 'fr-BE' : 'nl-BE',
+  mainEntity: all.map(x => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.plain } })) }];
+const t = fr ? {
+  title: 'Questions fréquentes sur June | Prix, changement, compteur', desc: 'June est-il un fournisseur ? Combien ça coûte, comment fonctionne la garantie de gain, et votre compteur ? Toutes les réponses sur le changement avec June.',
+  crumb: 'Questions fréquentes', h1: 'Questions fréquentes', intro: 'Tout sur June : le prix, le changement de fournisseur, la garantie de gain, votre compteur et vos données.',
+  search: 'Chercher une question', ph: 'Par ex. compteur, garantie, résilier', none: 'Aucune question ne correspond. Essayez un autre mot, ou contactez-nous.', count: (n: number) => `${n} question${n > 1 ? 's' : ''}`,
+  cats: 'Catégories', helpH: 'Votre question n’y figure pas ?', helpB: 'Contactez-nous : nous répondons en français et en néerlandais.', helpFlag: 'téléphone, e-mail et horaires à venir',
+  soon: 'Bientôt ici : résiliation et reconduction, régions desservies, rémunération de June. Ces réponses attendent une confirmation.',
+  finalH: 'Prêt à commencer ?', finalB: 'Calculez votre économie en 30 secondes, puis décidez.', finalCta: 'Calculez votre économie',
+} : {
+  title: 'Veelgestelde vragen over June | Prijs, overstap, meter', desc: 'Is June een energieleverancier? Wat kost het, hoe werkt de winstgarantie en wat met je meter? Antwoorden op alle vragen over wisselen met June.',
+  crumb: 'Veelgestelde vragen', h1: 'Veelgestelde vragen', intro: 'Alles over June: wat het kost, hoe de overstap werkt, de Winstgarantie, je meter en je gegevens.',
+  search: 'Zoek een vraag', ph: 'Bv. meter, garantie, opzeggen', none: 'Geen vraag gevonden. Probeer een ander woord, of neem contact op.', count: (n: number) => `${n} ${n === 1 ? 'vraag' : 'vragen'}`,
+  cats: 'Categorieën', helpH: 'Staat je vraag er niet bij?', helpB: 'Neem contact met ons op. We antwoorden in het Nederlands en het Frans.', helpFlag: 'telefoon, e-mail en openingsuren volgen',
+  soon: 'Binnenkort hier: opzeggen en verlengen, regio’s, hoe June vergoed wordt. Die antwoorden wachten op bevestiging.',
+  finalH: 'Klaar om te starten?', finalB: 'Bereken je besparing in 30 seconden en beslis daarna.', finalCta: 'Bereken je besparing',
+};
+---
+<Page locale={locale} routeKey="faq" title={t.title} description={t.desc} crumbs={[[t.crumb, 'faq']]} graph={graph}>
+  <section class="fq-hero" data-sticky-after aria-labelledby="fq-h1">
+    <div class="wrap">
+      <Breadcrumb locale={locale} trail={[[t.crumb, 'faq']]} />
+      <h1 id="fq-h1">{t.h1}</h1>
+      <p class="lead">{t.intro}</p>
+      <div class="search" role="search">
+        <label for="fq-q" class="search-l">{t.search}</label>
+        <div class="search-f">
+          <svg class="i" aria-hidden="true"><use href="#i-search" /></svg>
+          <input id="fq-q" type="search" placeholder={t.ph} autocomplete="off" aria-describedby="fq-status" />
+        </div>
+        <p id="fq-status" class="search-s small" aria-live="polite"></p>
+      </div>
+      <nav class="cats" aria-label={t.cats}>
+        <ul role="list">{G.map(g => <li><a href={`#${g.id}`}>{g.label} <span class="cat-n">{g.items.length}</span></a></li>)}</ul>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section fq-body" aria-label={t.h1}>
+    <div class="wrap fq-grid">
+      <div class="fq-groups">
+        {G.map(g => (
+          <section class="fq-g" id={g.id} aria-labelledby={`${g.id}-h`} data-group>
+            <h2 id={`${g.id}-h`}>{g.label}</h2>
+            <FaqList items={g.items} group={`faq-${g.id}`} />
+          </section>
+        ))}
+        <p class="fq-none" data-none hidden>{t.none}</p>
+        <p class="fq-soon small"><span class="chip chip--placeholder">placeholder</span> {t.soon}</p>
+      </div>
+      <aside class="fq-help" aria-labelledby="help-h">
+        <h2 id="help-h">{t.helpH}</h2>
+        <p>{t.helpB}</p>
+        <p><span class="chip chip--placeholder">{t.helpFlag}</span></p>
+        <a class="btn btn--block" href={href('signup', locale, base)} data-cta="faq_aside">{fr ? 'Commencer mon inscription' : 'Start je aanmelding'}</a>
+      </aside>
+    </div>
+  </section>
+
+  <FinalCta locale={locale} h2={t.finalH} body={t.finalB} cta={t.finalCta} href={`${href('home', locale, base)}#bereken`} secondary={{ label: fr ? 'Comment fonctionne June' : 'Zo werkt June', href: how }} />
+</Page>
+
+<script type="application/json" id="fq-i18n" set:html={JSON.stringify({ fr })} />
+<script>
+  const input = document.getElementById('fq-q') as HTMLInputElement | null;
+  const status = document.getElementById('fq-status');
+  const none = document.querySelector<HTMLElement>('[data-none]');
+  const { fr } = JSON.parse(document.getElementById('fq-i18n')!.textContent!);
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  let timer = 0;
+  input?.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      const q = norm(input.value.trim());
+      let n = 0;
+      document.querySelectorAll<HTMLElement>('[data-group]').forEach(g => {
+        let m = 0;
+        g.querySelectorAll<HTMLDetailsElement>('details[data-q]').forEach(d => {
+          const hit = !q || norm(d.textContent || '').includes(q);
+          d.hidden = !hit; if (hit) m++;
+          if (q && hit && m === 1) d.open = true;
+        });
+        g.hidden = m === 0; n += m;
+      });
+      if (none) none.hidden = n > 0;
+      if (status) status.textContent = q ? (fr ? `${n} question${n > 1 ? 's' : ''} trouvée${n > 1 ? 's' : ''}` : `${n} ${n === 1 ? 'vraag' : 'vragen'} gevonden`) : '';
+    }, 200);
+  });
+</script>
+
+<style>
+  .fq-hero { padding-block: var(--s-8) var(--s-10); background: var(--canvas-mint); }
+  .fq-hero .wrap { display: grid; gap: var(--s-4); }
+  .fq-hero h1 { font-size: var(--fs-72); margin-top: var(--s-6); }
+  .search { display: grid; gap: var(--s-2); max-width: 560px; margin-top: var(--s-4); }
+  .search-l { font-weight: 600; font-size: var(--fs-16); }
+  .search-f { position: relative; }
+  .search-f .i { position: absolute; left: 16px; top: 50%; translate: 0 -50%; color: var(--ink-500); pointer-events: none; }
+  .search-f input { width: 100%; height: 56px; padding: 0 16px 0 50px; border-radius: var(--r-pill); border: 1.5px solid var(--hairline-strong); background: var(--surface); font-size: var(--fs-16); }
+  .search-f input:focus { outline: none; border-color: var(--accent-strong); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search-s { color: var(--ink-700); min-height: 1.4em; }
+  .cats ul { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .cats a { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: var(--r-pill); background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline-strong); color: var(--ink-900); font-size: var(--fs-14); font-weight: 600; text-decoration: none; }
+  .cats a:hover { box-shadow: inset 0 0 0 1.5px var(--accent-strong); }
+  .cat-n { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--r-pill); background: var(--accent-soft); color: var(--accent-strong); font-size: var(--fs-12); }
+  .fq-grid { display: grid; grid-template-columns: 1fr 320px; gap: var(--s-16); align-items: start; }
+  .fq-groups { display: grid; gap: var(--s-12); }
+  .fq-g { scroll-margin-top: calc(var(--header-h) + 24px); }
+  .fq-g h2 { font-size: var(--fs-32); margin-bottom: var(--s-4); }
+  .fq-g[hidden] { display: none; }
+  .fq-g :global(details[hidden]) { display: none; }
+  .fq-none { font-weight: 600; }
+  .fq-soon { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--ink-700); }
+  .fq-help { position: sticky; top: calc(var(--header-h) + 24px); display: grid; gap: var(--s-3); padding: var(--s-6); border-radius: var(--r-lg); background: var(--ink-900); color: var(--on-ink); }
+  .fq-help h2 { font-size: var(--fs-22); }
+  .fq-help p { color: var(--on-ink-muted); font-size: var(--fs-16); }
+  .fq-help .chip { background: transparent; color: var(--on-ink-muted); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
+  .fq-help .btn { --btn-bg: var(--accent); --btn-ink: var(--ink-900); margin-top: var(--s-2); }
+  .fq-help .btn:hover { --btn-bg: var(--accent-on-ink-hover); }
+  @media (max-width: 900px) { .fq-grid { grid-template-columns: 1fr; } .fq-help { position: static; } }
+</style>

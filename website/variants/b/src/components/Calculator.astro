@@ -7,6 +7,9 @@ import { href } from '@shared/routes.mjs';
 import { estimate, eurRange, eur, type Locale } from '../lib/estimate';
 import { copy } from '../content/home';
 import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+import { Image } from 'astro:assets';
+import pointing from '@shared/assets/character/june-character-pointing.png';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const base = import.meta.env.BASE_URL;
@@ -21,7 +24,7 @@ const feeShare = Math.min(1, e.fee / mid);
 const housings = ['apartment', 'terraced', 'semi', 'detached'] as const;
 const stateLabel = `${r.example} · ${t.housing[DEF.housing]}, ${t.energy[DEF.energy].toLowerCase()}`;
 const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions, example: r.example, pcError: t.postcodeError,
-  live: '', liveLowText: r.liveLow, sticky: r.sticky, fr };
+  live: '', liveLowText: r.liveLow, sticky: r.sticky, fr, init: e.net };
 ---
 <section class="hero" aria-labelledby="hero-h">
   <div class="wrap">
@@ -34,7 +37,7 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
       <p class="hero-sub">{h.sub}</p>
     </div>
 
-    <div class="calc" id="bereken">
+    <div class="calc" id="bereken" data-sticky-after>
       <form class="calc-form" id="calc" action={signup} method="get" data-calc>
         <fieldset>
           <legend class="sr-only">{t.legend}</legend>
@@ -109,7 +112,7 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
         </svg>
         <div class="res-head">
           <p class="res-label" id="res-label">{r.label}</p>
-          <span class="res-chip">{r.illustrative}</span>
+          <span class="res-chip">{r.illustrative}<Fn n={6} fr={fr} /></span>
         </div>
         <p class="res-state" data-state-label>{stateLabel}</p>
 
@@ -119,8 +122,11 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
         </div>
         <p class="res-per" data-per>{r.per}</p>
         <div class="res-low" data-low hidden>
-          <p class="res-low-t">{r.lowTitle}</p>
-          <p class="res-low-b">{r.lowBody}</p>
+          <Image src={pointing} alt="" width={96} height={Math.round(96 * pointing.height / pointing.width)} loading="lazy" class="res-char" />
+          <div>
+            <p class="res-low-t">{r.lowTitle}</p>
+            <p class="res-low-b">{r.lowBody}</p>
+          </div>
         </div>
 
         <div class="bar" aria-hidden="true" style={`--fee:${feeShare.toFixed(3)}`} data-bar>
@@ -141,7 +147,7 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
         <button class="btn btn--on-ink btn--lg btn--block res-cta" type="submit" form="calc" name="plan" value="switch-plus">
           {r.cta}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
         </button>
-        <p class="res-after">{r.after} <a href="#methode">{r.methodLink}</a></p>
+        <p class="res-after">{r.after}<Fn n={6} fr={fr} /> <a href="#methode">{r.methodLink}</a></p>
         <noscript><p class="res-after">{t.noscript}</p></noscript>
         <p class="sr-only" aria-live="polite" data-live></p>
       </div>
@@ -165,7 +171,8 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
 <script type="application/json" id="calc-i18n" set:html={JSON.stringify(i18n)}></script>
 
 <script>
-  import { estimate, eurRange, region, type Housing, type Energy, type Locale } from '../lib/estimate';
+  import { estimate, eurRange, region, STORE_KEY, type Housing, type Energy, type Locale } from '../lib/estimate';
+  import { track, signupStarted } from '../lib/track';
   const cfg = JSON.parse(document.getElementById('calc-i18n')!.textContent!);
   const L: Locale = cfg.locale;
   const form = document.querySelector<HTMLFormElement>('[data-calc]')!;
@@ -180,10 +187,10 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   form.noValidate = true;
 
-  let shown = parseRange(out.textContent || '');
-  let personal = false, raf = 0, liveTimer = 0;
+  let shown: [number, number] = cfg.init;
+  let personal = false, raf = 0, liveTimer = 0, used = false;
+  const save = (i: object) => { try { sessionStorage.setItem(STORE_KEY, JSON.stringify({ ...i, postcode: pc.value.trim() })); } catch { /* ignore */ } };
 
-  function parseRange(s: string): [number, number] { const m = s.replace(/[. ]/g, '').match(/\d+/g); return m && m.length > 1 ? [+m[0], +m[1]] : [0, 0]; }
   function read() {
     const fd = new FormData(form);
     const n = (v: FormDataEntryValue | null) => (v && String(v).trim() ? Number(v) : null);
@@ -223,6 +230,8 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
       ? `${hLabel}, ${enLabel}${e.custom ? ' · kWh' : ''}${reg ? ` · ${pc.value.trim()} ${cfg.regions[reg]}` : ''}`
       : `${cfg.example} · ${hLabel}, ${enLabel}`;
     card.dataset.state = personal || reg ? 'personal' : 'example';
+    if (personal || reg) save(i);
+    if (announce && !used) { used = true; track('calculator_used', { band: e.low ? '0-50' : e.net[1] < 150 ? '50-150' : e.net[1] < 300 ? '150-300' : '300+' }); }
     const eqn = document.querySelector('[data-eq-num]'); if (eqn) eqn.textContent = `≈ ${eurRange(e.net[0], e.net[1], L)}`;
     if (sticky) sticky.querySelector('[data-sticky-num]')!.textContent = e.low ? '' : `≈ ${eurRange(e.net[0], e.net[1], L)} ${cfg.sticky}`;
     if (announce) {
@@ -252,24 +261,19 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
       ev.preventDefault();
       if (!ok) { pc.focus(); return; }
       personal = true; render();
-      (window as any).dataLayer?.push({ event: 'signup_started', entry_cta_id: 'hero_calc', lang: L.slice(0, 2), variant: 'b', postcode_region: region(pc.value.trim()) });
+      signupStarted(pc.value.trim(), { entry_cta_id: 'hero_calc', locale: L, route_key: 'home' });
       const rb = card.getBoundingClientRect();
       if (rb.top > innerHeight * 0.6 || rb.bottom < 0) card.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
       return;
     }
-    if (pc.value.trim() && !ok) { ev.preventDefault(); pc.focus(); }
+    if (pc.value.trim() && !ok) { ev.preventDefault(); pc.focus(); return; }
+    save(read());
+    form.querySelectorAll<HTMLInputElement>('input[type="number"]').forEach(i => { if (!i.value) i.disabled = true; }); // clean query
+    addEventListener('pageshow', () => form.querySelectorAll<HTMLInputElement>('input[type="number"]').forEach(i => { i.disabled = false; }), { once: true });
+    track('cta_click', { location: 'hero_result', plan: 'switch-plus', route_key: 'home' });
+    if (ok) signupStarted(pc.value.trim(), { entry_cta_id: 'hero_result', locale: L, route_key: 'home' });
   });
 
-  // Sticky mobile CTA: only after the calculator has scrolled out of view, hidden near the final CTA.
-  if (sticky) {
-    const calc = document.getElementById('bereken')!;
-    const fin = document.querySelector('[data-final]');
-    let calcOut = false, finIn = false;
-    const upd = () => { sticky.dataset.on = String(calcOut && !finIn); sticky.inert = !(calcOut && !finIn); };
-    new IntersectionObserver(([en]) => { calcOut = !en.isIntersecting && en.boundingClientRect.top < 0; upd(); }).observe(calc);
-    if (fin) new IntersectionObserver(([en]) => { finIn = en.isIntersecting; upd(); }).observe(fin);
-    upd();
-  }
 </script>
 
 <style>
@@ -355,12 +359,14 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
   .res-fig { position: relative; display: flex; align-items: baseline; gap: 6px; margin-top: var(--s-4); }
   .est { flex: none; align-self: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.1); color: var(--accent); font: 600 1.625rem/1 var(--font-display); cursor: help;
     transition: background-color var(--dur-fast); }
-  .est:hover, .est:focus-visible { background: rgba(59,173,168,.25); }
+  .est:hover, .est:focus-visible { background: rgba(28,164,152,.25); }
   .res-num { font-size: clamp(2.5rem, 13.5cqi, 5rem); font-weight: 700; line-height: 1; white-space: nowrap; color: #fff; }
   .res-fig::after { content: ""; position: absolute; left: 50px; right: 0; bottom: -10px; height: 4px; border-radius: 4px; background: var(--accent); transform-origin: left; max-width: calc(100% - 50px); }
   .res-fig.is-muted .res-num { font-size: clamp(2rem, 9cqi, 3.25rem); color: var(--on-ink-muted); }
   .res-per { margin-top: 18px; font-size: var(--fs-16); color: var(--on-ink-muted); }
-  .res-low { margin-top: 18px; }
+  .res-low { margin-top: 18px; display: flex; gap: var(--s-4); align-items: center; padding: 12px 14px; border-radius: var(--r-md); background: var(--ink-800); box-shadow: inset 0 0 0 1px var(--on-ink-faint); }
+  .res-low[hidden] { display: none; }
+  .res-char { width: 80px; height: auto; flex: none; }
   .res-low-t { font: 700 var(--fs-22)/1.25 var(--font-display); color: #fff; }
   .res-low-b { margin-top: 6px; font-size: var(--fs-14); color: var(--on-ink-muted); line-height: 1.5; }
 
@@ -378,7 +384,7 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
   .lg--gas { background: var(--gas); }
   .lg--fee { background: repeating-linear-gradient(-45deg, rgba(255,255,255,.6) 0 2px, rgba(255,255,255,.2) 2px 4px); }
 
-  .plan { margin-top: var(--s-5); padding: 14px 16px; border-radius: var(--r-md); background: var(--ink-800); box-shadow: inset 0 0 0 1px rgba(59,173,168,.45); }
+  .plan { margin-top: var(--s-5); padding: 14px 16px; border-radius: var(--r-md); background: var(--ink-800); box-shadow: inset 0 0 0 1px rgba(28,164,152,.45); }
   .plan-rec { font-size: var(--fs-12); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent); }
   .plan-name { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 2px; font: 700 var(--fs-22)/1.3 var(--font-display); }
   .plan-g { display: inline-flex; align-items: center; gap: 5px; font: 600 var(--fs-14)/1.2 var(--font-ui); color: var(--on-ink-muted); }

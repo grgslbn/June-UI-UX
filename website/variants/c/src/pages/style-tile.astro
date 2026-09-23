@@ -8,6 +8,7 @@ import PostcodeForm from '../components/PostcodeForm.astro';
 import Trust from '../components/Trust.astro';
 import Fn from '../components/Fn.astro';
 import { homeCopy } from '../i18n/home.js';
+import { howCopy } from '../i18n/pages.js';
 const c = homeCopy('nl-be');
 const swatches = [
   { name: 'Paper', token: '--paper', hex: '#f7f8f6', role: 'Page canvas. Off-white, near-mint "print" stock.', ratio: 'base' },
@@ -15,9 +16,9 @@ const swatches = [
   { name: 'Ink 900', token: '--ink-900', hex: '#14232a', role: 'Text, rules, ink block.', ratio: '15,1:1' },
   { name: 'Ink 700', token: '--ink-700', hex: '#435359', role: 'Secondary text, "Niets doen" series.', ratio: '7,5:1' },
   { name: 'Ink 500', token: '--ink-500', hex: '#56666d', role: 'Footnotes, sources, axis labels.', ratio: '5,6:1' },
-  { name: 'June Green strong', token: '--accent-strong', hex: '#19736f', role: 'The ONE CTA colour, links, "Met June" series.', ratio: '5,3:1 · wit erop 5,6:1' },
-  { name: 'June Green', token: '--accent', hex: '#3bada8', role: 'Fills only: pull-quote mark, legend. Never text.', ratio: '2,6:1 (graphic)' },
-  { name: 'Mint soft', token: '--accent-soft', hex: '#e2f3f1', role: 'June column wash, highlight.', ratio: 'ink 14,1:1' },
+  { name: 'June Green strong', token: '--accent-strong', hex: '#127a71', role: 'The ONE CTA colour, links, small green text, "Met June" series.', ratio: '5,2:1 · wit erop 5,2:1' },
+  { name: 'Logo green', token: '--accent', hex: '#1ca498', role: 'Logo, fills, icons, large display. Never small text.', ratio: '2,9:1 (graphic)' },
+  { name: 'Mint soft', token: '--accent-soft', hex: '#e3f4f2', role: 'June column wash, highlight.', ratio: 'ink 14,1:1' },
   { name: 'June Red', token: '--spark', hex: '#e85257', role: 'ONE annotation per page: the squiggle.', ratio: '3,4:1 (graphic)' },
   { name: 'June Red text', token: '--spark-text', hex: '#c4383e', role: 'Annotation label "De prijs van trouw", form errors.', ratio: '4,95:1' },
 ];
@@ -26,7 +27,7 @@ const icons = ['arrow-r', 'check-circle', 'shield', 'plug', 'repeat', 'info', 'u
 <Page locale="nl-be" routeKey="style-tile" title="Stijltegel · June variant C · Honest Market" description="Style tile voor concept C, Honest Market: palet, typografie, componenten, grafiekstijl, motief en beweging." noindex>
   <main id="inhoud" class="tile">
     <header class="wrap tile-head">
-      <Logo href="/nl-be/" />
+      <Logo href="/nl-be/" label="June" size="lg" />
       <p class="kicker"><span class="kicker-n">C</span><span>Style tile · concept stage · Honest Market</span></p>
       <h1>De energiemarkt is ingewikkeld gemaakt. <span class="h1-turn">Wij niet.</span></h1>
       <p class="lead">Een redactionele site: papier, inkt, een smalle leeskolom, voetnoten en bronnen. June Green voor data en de ene knop. June Red voor precies één aantekening. Merkvolume 3/10.</p>
@@ -154,7 +155,7 @@ const icons = ['arrow-r', 'check-circle', 'shield', 'plug', 'repeat', 'info', 'u
           <div class="prose"><p><strong>June leeft van de abonnementen van haar klanten.</strong><Fn n={5} L="nl" /> We zijn geen energieleverancier en kiezen je contract op basis van jouw verbruik.</p></div>
         </div>
         <ol class="facts">
-          {c.market.facts.map((f, i) => <li><span class="fact-n" aria-hidden="true">{i + 1}</span><h3>{f.h}</h3><p>{f.p}</p></li>)}
+          {howCopy('nl-be').market.facts.map((f, i) => <li><span class="fact-n" aria-hidden="true">{i + 1}</span><h3>{f.h}</h3><p>{f.p}</p></li>)}
         </ol>
       </div>
     </section>

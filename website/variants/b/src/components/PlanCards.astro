@@ -1,0 +1,140 @@
+---
+// Plan cards, yearly total first (price rule C8), with the concept-B equation per plan:
+//   indicative saving − yearly subscription = what you keep.
+// Default example = rijwoning, elek + gas from the ONE model (lib/estimate.ts). If the visitor used the
+// calculator this session, a small script personalises every card from sessionStorage (same model).
+import { href } from '@shared/routes.mjs';
+import facts from '@shared/content/facts.json';
+import Fn from './Fn.astro';
+import { estimate, netFor, eur, eurRange, type Locale, type PlanSlug } from '../lib/estimate';
+interface Props { locale: Locale; full?: boolean; headingLevel?: 2 | 3; }
+const { locale, full = false, headingLevel = 3 } = Astro.props;
+const H = headingLevel === 2 ? 'h2' : 'h3';
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+const k = fr ? 'fr' : 'nl';
+const signup = href('signup', locale, base);
+const ex = estimate({ housing: 'terraced', energy: 'both' });
+const DERIVED = (f: { source?: string }) => f.source !== 'derived';
+const t = fr ? {
+  per: 'par an', monthly: (m: string) => `soit ${m} par mois, facturé annuellement`, badge: 'Recommandé · avec garantie de gain',
+  eqTitle: 'Ce qui vous reste', eqSave: 'Économie estimée', eqFee: 'Abonnement', eqYou: 'Pour vous', eqExample: 'Exemple indicatif : maison mitoyenne, électricité + gaz',
+  eqLow: 'Économie faible pour ce profil', dongle: 'June Dongle inclus', guarantee: (a: string) => `Économisé moins que ${a} ? Vous récupérez ${a}.`,
+  choose: (n: string) => `Choisir ${n}`, all: 'Tout ce qu’offre',
+} : {
+  per: 'per jaar', monthly: (m: string) => `dus ${m} per maand, jaarlijks gefactureerd`, badge: 'Aanbevolen · met Winstgarantie',
+  eqTitle: 'Wat jij overhoudt', eqSave: 'Geschatte besparing', eqFee: 'Abonnement', eqYou: 'Voor jou', eqExample: 'Indicatief voorbeeld: rijwoning, elektriciteit + gas',
+  eqLow: 'Kleine besparing voor dit profiel', dongle: 'June Dongle inbegrepen', guarantee: (a: string) => `Minder dan ${a} bespaard? Dan krijg je ${a} terug.`,
+  choose: (n: string) => `Kies ${n}`, all: 'Alles uit',
+};
+const plans = facts.plans.map(p => {
+  const slug = p.slug as PlanSlug;
+  const net = netFor(ex.gross, slug);
+  const feats = p.features.filter(DERIVED).map(f => f[k]);
+  return {
+    slug, name: p.shortName, yearly: p.priceYearly, monthly: p.priceMonthly, tagline: p.valueProposition[k], who: p.whoFor[k],
+    features: full ? feats : feats.slice(0, slug === 'switch-plus' ? 3 : 3),
+    rec: slug === 'switch-plus', net, low: net[1] < 50, requirement: slug === 'premium' ? p.requirements[k] : null,
+  };
+});
+const g = facts.guarantees.winstgarantie;
+---
+<ul role="list" class:list={['cards', { 'cards--full': full }]} data-plan-cards data-locale={locale}>
+  {plans.map(p => (
+    <li class:list={['card', { 'card--rec': p.rec }]} id={full ? p.slug : undefined} data-plan={p.slug}>
+      {p.rec ? <p class="card-badge"><svg class="i" aria-hidden="true"><use href="#i-shield" /></svg>{t.badge}</p> : <p class="card-badge card-badge--quiet" aria-hidden="true"></p>}
+      <div class="card-body">
+        <H class="card-name">{p.name}</H>
+        <p class="card-tag">{full ? p.who : p.tagline}</p>
+        <p class="card-price"><span class="num">{eur(p.yearly, locale)}</span> <span class="card-per">{t.per}</span></p>
+        <p class="card-sub">{t.monthly(fr ? `${p.monthly.toFixed(2).replace('.', ',')} €` : `€ ${p.monthly.toFixed(2).replace('.', ',')}`)}{p.slug === 'premium' && <>, {fr ? 'dongle inclus' : 'dongle inbegrepen'}</>}<Fn n={5} fr={fr} /></p>
+
+        <div class="eq" data-eq>
+          <p class="eq-title">{t.eqTitle}</p>
+          <dl>
+            <div><dt>{t.eqSave}<Fn n={6} fr={fr} /></dt><dd class="num" data-eq-gross>≈ {eurRange(ex.gross[0], ex.gross[1], locale)}</dd></div>
+            <div><dt>− {t.eqFee} {p.name}</dt><dd class="num">− {eur(p.yearly, locale)}</dd></div>
+            <div class="eq-you"><dt>= {t.eqYou}</dt><dd class="num" data-eq-net>≈ {eurRange(p.net[0], p.net[1], locale)}</dd></div>
+          </dl>
+          <p class="eq-cap" data-eq-cap>{t.eqExample}</p>
+          {p.slug !== 'switch' && <p class="eq-g"><svg class="i" aria-hidden="true"><use href="#i-shield" /></svg><span>{g.name[k]}: {t.guarantee(eur(g.amount, locale))}<Fn n={4} fr={fr} /></span></p>}
+        </div>
+
+        <ul role="list" class="feat">
+          {p.features.map(f => <li><svg class="i" aria-hidden="true"><use href="#i-check" /></svg><span>{f}</span></li>)}
+        </ul>
+        {p.requirement && <p class="req"><svg class="i" aria-hidden="true"><use href="#i-info" /></svg>{p.requirement}</p>}
+        <a class:list={['btn btn--block card-cta', p.rec ? '' : 'btn--ghost']} href={`${signup}?plan=${p.slug}`} data-cta="plans" data-plan-cta={p.slug}>{t.choose(p.name)}</a>
+      </div>
+    </li>
+  ))}
+</ul>
+<script type="application/json" id="plan-eq-i18n" set:html={JSON.stringify({ fr, cap: fr ? 'Votre estimation indicative' : 'Jouw indicatieve schatting', housing: fr ? { apartment: 'appartement', terraced: 'maison mitoyenne', semi: 'maison 3 façades', detached: 'maison 4 façades' } : { apartment: 'appartement', terraced: 'rijwoning', semi: 'halfopen', detached: 'open bebouwing' }, energy: fr ? { elec: 'électricité', both: 'électricité + gaz' } : { elec: 'elektriciteit', both: 'elektriciteit + gas' } })} />
+<script>
+  import { estimate, netFor, eurRange, STORE_KEY, type Locale, type PlanSlug } from '../lib/estimate';
+  const root = document.querySelector<HTMLElement>('[data-plan-cards]');
+  let saved: any = null;
+  try { saved = JSON.parse(sessionStorage.getItem(STORE_KEY) || 'null'); } catch { /* ignore */ }
+  if (root && saved?.housing) {
+    const L = root.dataset.locale as Locale;
+    const cfg = JSON.parse(document.getElementById('plan-eq-i18n')!.textContent!);
+    const e = estimate(saved);
+    root.querySelectorAll<HTMLElement>('[data-plan]').forEach(card => {
+      const net = netFor(e.gross, card.dataset.plan as PlanSlug);
+      card.querySelector('[data-eq-gross]')!.textContent = `≈ ${eurRange(e.gross[0], e.gross[1], L)}`;
+      card.querySelector('[data-eq-net]')!.textContent = `≈ ${eurRange(net[0], net[1], L)}`;
+      card.querySelector('[data-eq-cap]')!.textContent = `${cfg.cap}: ${cfg.housing[saved.housing]}, ${cfg.energy[saved.energy]}${e.custom ? ' (kWh)' : ''}${saved.solar ? (cfg.fr ? ', panneaux solaires' : ', zonnepanelen') : ''}`;
+    });
+  }
+</script>
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); align-items: stretch; }
+  .card { display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline-strong); scroll-margin-top: calc(var(--header-h) + 24px); }
+  .card-body { display: flex; flex-direction: column; gap: var(--s-3); padding: var(--s-6) var(--s-8) var(--s-8); flex: 1; }
+  .card--rec { box-shadow: inset 0 0 0 2px var(--ink-900), var(--shadow-2); }
+  .card-badge { display: flex; align-items: center; gap: 8px; min-height: 46px; padding: 10px var(--s-8); border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--ink-900); color: #fff; font-size: var(--fs-14); font-weight: 600; }
+  .card-badge--quiet { background: transparent; }
+  .card-badge .i { width: 18px; height: 18px; color: var(--accent); }
+  .card-name { font-size: var(--fs-32); }
+  .card-tag { font-size: var(--fs-16); color: var(--ink-700); min-height: 3em; }
+  .card-price { margin-top: var(--s-1); display: flex; align-items: baseline; gap: 8px; }
+  .card-price .num { font-size: clamp(2.5rem, 1.6rem + 2.2vw, 3.5rem); font-weight: 700; line-height: 1; }
+  .card-per { font-size: var(--fs-16); font-weight: 600; color: var(--ink-700); }
+  .card-sub { font-size: var(--fs-14); color: var(--ink-700); }
+  .eq { margin-top: var(--s-2); padding: var(--s-4); border-radius: var(--r-md); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .card--rec .eq { background: var(--ink-900); color: var(--on-ink); box-shadow: none; }
+  .eq-title { font-size: var(--fs-12); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent-strong); margin-bottom: 6px; }
+  .card--rec .eq-title { color: var(--accent); }
+  .eq dl > div { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; font-size: var(--fs-14); }
+  .eq dt { color: var(--ink-700); }
+  .card--rec .eq dt { color: var(--on-ink-muted); }
+  .eq dd { font-family: var(--font-ui); font-weight: 600; letter-spacing: 0; white-space: nowrap; }
+  .eq .eq-you { margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--hairline-strong); font-size: var(--fs-16); }
+  .card--rec .eq .eq-you { border-color: var(--on-ink-faint); }
+  .eq .eq-you dt { color: var(--ink-900); font-weight: 700; }
+  .card--rec .eq .eq-you dt { color: #fff; }
+  .eq .eq-you dd { font: 700 var(--fs-18)/1.2 var(--font-display); color: var(--accent-strong); }
+  .card--rec .eq .eq-you dd { color: var(--accent); }
+  .eq-cap { margin-top: 6px; font-size: var(--fs-12); color: var(--ink-500); }
+  .card--rec .eq-cap { color: var(--on-ink-muted); }
+  .eq-g { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--hairline-strong); font-size: var(--fs-14); line-height: 1.4; }
+  .card--rec .eq-g { border-color: var(--on-ink-faint); }
+  .eq-g .i { width: 18px; height: 18px; flex: none; color: var(--accent-strong); margin-top: 1px; }
+  .card--rec .eq-g .i, .card--rec .eq :global(sup a) { color: var(--accent); }
+  .feat { display: grid; gap: 10px; margin-top: var(--s-2); font-size: var(--fs-16); }
+  .feat li { display: flex; gap: 10px; align-items: flex-start; }
+  .feat .i { width: 20px; height: 20px; color: var(--accent-strong); flex: none; margin-top: 2px; }
+  .req { display: flex; gap: 8px; align-items: flex-start; font-size: var(--fs-14); color: var(--ink-700); }
+  .req .i { width: 18px; height: 18px; flex: none; color: var(--ink-500); margin-top: 1px; }
+  .card-cta { margin-top: auto; }
+  .feat, .req { margin-bottom: var(--s-2); }
+  @media (max-width: 1000px) {
+    .cards { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
+    .card--rec { order: -1; }
+    .card-badge--quiet { display: none; }
+    .card-body { padding-top: var(--s-8); }
+    .card--rec .card-body { padding-top: var(--s-6); }
+    .card-tag { min-height: 0; }
+  }
+  @media (max-width: 640px) { .card-body { padding: var(--s-6); } .card-badge { padding-inline: var(--s-6); } }
+</style>

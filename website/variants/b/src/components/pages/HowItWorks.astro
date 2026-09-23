@@ -1,0 +1,208 @@
+---
+// Hoe werkt het / Comment ça marche. H1 + 20-second summary · who's who (you · June · supplier · grid operator) ·
+// 4 detailed steps with the animated brand icons (static under reduced motion) · you vs June · what stays the same ·
+// meters (with the real dongle) · region note (FR qualifies the Flanders-only capacity tariff) · CTA.
+import { Image } from 'astro:assets';
+import { href } from '@shared/routes.mjs';
+import facts from '@shared/content/facts.json';
+import Page from '../Page.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import FinalCta from '../FinalCta.astro';
+import AnimIcon from '../AnimIcon.astro';
+import dongleClose from '@shared/assets/dongle/dongle-leaf-closeup.png';
+import type { Locale } from '../../lib/estimate';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+const k = fr ? 'fr' : 'nl';
+const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
+const steps = facts.howItWorks.detailed.map((s, i) => ({ n: s.n, title: s.title[k], body: s.body[k], icon: icons[i] }));
+const faq = href('faq', locale, base);
+const t = fr ? {
+  title: 'Comment fonctionne June ? | Changer de fournisseur automatiquement', desc: 'Connectez votre compteur, June compare plus de 17 fournisseurs pour votre consommation et gère le changement : automatiquement ou après votre accord.',
+  crumb: 'Comment ça marche', eyebrow: 'Comment ça marche', h1: facts.howItWorks.detailTitle.fr,
+  intro: 'Les prix de l’énergie changent sans cesse. June les suit pour vous, pour que vous n’ayez pas à le faire.',
+  tldr: 'En bref', tldrItems: ['Vous vous inscrivez en quelques minutes.', 'Au moins chaque mois, June compare votre contrat à plus de 17 fournisseurs.', 'Un contrat plus avantageux ? June gère le changement, automatiquement ou après votre accord.'],
+  whoH: 'Qui fait quoi ?', who: [
+    ['Vous', 'Vous choisissez : changement automatique ou validation de chaque changement.', 'user'],
+    ['June', 'Suit le marché, choisit le contrat le plus avantageux pour vous et gère l’administration. June n’est pas fournisseur.', 'repeat'],
+    ['Votre fournisseur', 'Vous livre l’électricité et le gaz, et vous facture votre consommation.', 'zap'],
+    ['Votre gestionnaire de réseau', 'Gère le compteur et les câbles. Il ne change pas quand vous changez de fournisseur.', 'grid'],
+  ] as [string, string, string][],
+  stepsH: 'Étape par étape', youH: 'Ce que vous faites, ce que nous faisons',
+  you: ['Vous', 'Vous vous inscrivez (deux minutes). Vous choisissez : changement automatique ou validation par vous. Vous avez un compteur analogique ? Vous encodez vos index de temps en temps.'],
+  june: ['June', 'Nous suivons le marché, cherchons parmi les contrats comparés le plus avantageux pour votre consommation, le souscrivons, résilions votre ancien contrat et vous tenons informé.'],
+  sameH: 'Ce qui ne change pas', same: [['Aucune interruption.', 'Votre compteur et votre gestionnaire de réseau restent les mêmes.', 'plug'], ['Pas d’indemnité de rupture.', 'En Belgique, un particulier change librement de fournisseur.', 'wallet'], ['Vous gardez le contrôle.', 'Changement automatique ou validation de chaque changement : c’est vous qui choisissez.', 'hand']] as [string, string, string][],
+  meterH: 'Quel compteur avez-vous ?', digital: ['Compteur numérique.', 'Nous relevons votre consommation automatiquement. Avec le June Dongle (Premium), vous la voyez même en direct.'],
+  analogue: ['Compteur analogique.', 'Pas de problème. Vous encodez vos index, nous faisons le reste.'], dongleAlt: 'Le June Dongle en gros plan, avec son câble en forme de feuille',
+  regionH: 'Selon votre région', region: 'Le tarif capacitaire, basé sur votre pic de puissance, s’applique uniquement en Flandre. En Wallonie et à Bruxelles, d’autres règles de tarifs de réseau s’appliquent. June compare les contrats sur la base de votre code postal et de votre consommation.',
+  regionFlag: 'couverture régionale à confirmer', regionLink: 'Questions sur les compteurs et les données',
+  finalH: 'Voyez ce que June peut faire pour vous.', finalB: 'Calculez votre économie en 30 secondes, sans données personnelles.', finalCta: 'Calculez votre économie', finalSec: 'Voir les abonnements',
+} : {
+  title: 'Hoe werkt June? | Automatisch overstappen van energieleverancier', desc: 'Koppel je meter, June vergelijkt 17+ leveranciers voor jouw verbruik en regelt de overstap: automatisch of na jouw akkoord.',
+  crumb: 'Hoe werkt het', eyebrow: 'Hoe werkt het', h1: facts.howItWorks.detailTitle.nl,
+  intro: 'Energieprijzen veranderen voortdurend. June volgt ze voor je op, zodat jij dat niet hoeft te doen.',
+  tldr: 'In het kort', tldrItems: ['Je meldt je aan in een paar minuten.', 'Minstens elke maand legt June je contract naast dat van 17+ leveranciers.', 'Een voordeliger contract? June regelt de overstap, automatisch of na jouw akkoord.'],
+  whoH: 'Wie doet wat?', who: [
+    ['Jij', 'Je kiest: automatisch wisselen of elke overstap zelf goedkeuren.', 'user'],
+    ['June', 'Volgt de markt op, kiest het voordeligste contract voor jou en regelt de administratie. June is geen leverancier.', 'repeat'],
+    ['Je leverancier', 'Levert je stroom en gas en factureert je verbruik.', 'zap'],
+    ['Je netbeheerder', 'Beheert je meter en de kabels. Die verandert niet als je van leverancier wisselt.', 'grid'],
+  ] as [string, string, string][],
+  stepsH: 'Stap voor stap', youH: 'Wat jij doet, wat wij doen',
+  you: ['Jij', 'Je meldt je aan (twee minuten). Je kiest: automatisch wisselen of zelf goedkeuren. Heb je een analoge meter? Dan geef je af en toe je meterstanden in.'],
+  june: ['June', 'We volgen de markt op, zoeken het voordeligste contract uit onze vergelijking voor jouw verbruik, sluiten het af, zeggen je oude contract op en houden je op de hoogte.'],
+  sameH: 'Wat hetzelfde blijft', same: [['Geen onderbreking.', 'Je meter en je netbeheerder blijven dezelfde.', 'plug'], ['Geen opzegvergoeding.', 'Als particulier verander je in België vrij van leverancier.', 'wallet'], ['Jij houdt de controle.', 'Automatisch wisselen of elke overstap zelf goedkeuren: jij kiest.', 'hand']] as [string, string, string][],
+  meterH: 'Welke meter heb je?', digital: ['Digitale meter.', 'We lezen je verbruik automatisch uit. Met de June Dongle (Premium) zie je het zelfs live.'],
+  analogue: ['Analoge meter.', 'Geen probleem. Je geeft je meterstanden zelf in, wij doen de rest.'], dongleAlt: 'Close-up van de June Dongle met zijn kabel in de vorm van een blad',
+  regionH: 'Per regio', region: 'In Vlaanderen betaal je sinds 2023 een capaciteitstarief op basis van je piekvermogen. Met een digitale meter en de June Dongle zie je die pieken per kwartier. In Wallonië en Brussel gelden andere regels voor de nettarieven. June vergelijkt op basis van je postcode en je verbruik.',
+  regionFlag: 'regionale dekking te bevestigen', regionLink: 'Vragen over je meter en je gegevens',
+  finalH: 'Zie wat June voor jou kan doen.', finalB: 'Bereken je besparing in 30 seconden, zonder persoonsgegevens.', finalCta: 'Bereken je besparing', finalSec: 'Bekijk de abonnementen',
+};
+---
+<Page locale={locale} routeKey="howItWorks" title={t.title} description={t.desc} crumbs={[[t.crumb, 'howItWorks']]}>
+  <section class="hw-hero" data-sticky-after aria-labelledby="hw-h1">
+    <div class="wrap hw-hero-in">
+      <div class="hw-copy">
+        <Breadcrumb locale={locale} trail={[[t.crumb, 'howItWorks']]} />
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h1 id="hw-h1">{t.h1}</h1>
+        <p class="lead">{t.intro}</p>
+      </div>
+      <div class="tldr">
+        <p class="tldr-t">{t.tldr}</p>
+        <ol role="list">{t.tldrItems.map((x, i) => <li><span class="num" aria-hidden="true">{i + 1}</span><span>{x}</span></li>)}</ol>
+        <a class="btn btn--block" href={`${href('home', locale, base)}#bereken`} data-cta="how_hero">{fr ? 'Calculez votre économie' : 'Bereken je besparing'}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mint" aria-labelledby="who-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="who-h">{t.whoH}</h2></div>
+      <ul role="list" class="who">
+        {t.who.map(([h, b, ic], i) => (
+          <li class:list={['who-c', { 'who-c--june': i === 1 }]}>
+            <span class="well"><svg class="i" aria-hidden="true"><use href={`#i-${ic}`} /></svg></span>
+            <h3>{h}</h3>
+            <p>{b}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="steps-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="steps-h">{t.stepsH}</h2></div>
+      <ol class="dsteps" role="list">
+        {steps.map(s => (
+          <li class="dstep reveal">
+            <AnimIcon name={s.icon} size={120} />
+            <div>
+              <p class="dstep-n">{fr ? 'Étape' : 'Stap'} {s.n}</p>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--ink on-ink" aria-labelledby="you-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="you-h">{t.youH}</h2></div>
+      <div class="yj">
+        <div class="yj-c"><h3>{t.you[0]}</h3><p>{t.you[1]}</p></div>
+        <div class="yj-c yj-c--june"><h3>{t.june[0]}</h3><p>{t.june[1]}</p></div>
+      </div>
+      <h3 class="same-h">{t.sameH}</h3>
+      <ul role="list" class="same">
+        {t.same.map(([h, b, ic]) => <li><span class="tb-ic"><svg class="i" aria-hidden="true"><use href={`#i-${ic}`} /></svg></span><p><strong>{h}</strong> {b}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="meter-h">
+    <div class="wrap meters">
+      <div>
+        <div class="section-head"><h2 id="meter-h">{t.meterH}</h2></div>
+        <ul role="list" class="mcards">
+          <li><svg class="i" aria-hidden="true"><use href="#i-meter" /></svg><p><strong>{t.digital[0]}</strong> {t.digital[1]}</p></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-gauge" /></svg><p><strong>{t.analogue[0]}</strong> {t.analogue[1]}</p></li>
+        </ul>
+        <div class="region">
+          <h3>{t.regionH}</h3>
+          <p>{t.region}</p>
+          <p class="region-links"><span class="chip chip--placeholder">{t.regionFlag}</span> <a href={`${faq}#meters`}>{t.regionLink}</a></p>
+        </div>
+      </div>
+      <Image src={dongleClose} alt={t.dongleAlt} widths={[280, 480]} sizes="(max-width: 900px) 60vw, 360px" class="meters-img" loading="lazy" format="webp" />
+    </div>
+  </section>
+
+  <FinalCta locale={locale} h2={t.finalH} body={t.finalB} cta={t.finalCta} href={`${href('home', locale, base)}#bereken`} secondary={{ label: t.finalSec, href: href('plans', locale, base) }} />
+</Page>
+
+<style>
+  .hw-hero { padding-block: var(--s-8) var(--section-y); }
+  .hw-hero-in { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-16); align-items: end; }
+  .hw-copy { display: grid; gap: var(--s-4); }
+  .hw-copy .eyebrow { margin-top: var(--s-6); }
+  .hw-copy h1 { font-size: clamp(2.125rem, 1.2rem + 3vw, 3.5rem); max-width: 20ch; }
+  .tldr { display: grid; gap: var(--s-4); padding: var(--s-6); border-radius: var(--r-lg); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .tldr-t { font-size: var(--fs-12); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent-strong); }
+  .tldr ol { display: grid; gap: var(--s-3); font-size: var(--fs-16); }
+  .tldr li { display: flex; gap: 12px; }
+  .tldr .num { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ink-900); color: #fff; font-size: var(--fs-14); font-weight: 700; flex: none; letter-spacing: 0; }
+
+  .who { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-4); }
+  .who-c { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-6); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-1); }
+  .who-c p { font-size: var(--fs-16); color: var(--ink-700); }
+  .who-c--june { background: var(--ink-900); color: var(--on-ink); }
+  .who-c--june p { color: var(--on-ink-muted); }
+  .who-c--june .well { background: rgba(28,164,152,.18); color: var(--accent); }
+
+  .dsteps { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-10) var(--s-12); }
+  .dstep { display: flex; gap: var(--s-6); align-items: flex-start; min-width: 0; }
+
+  .dstep > div { display: grid; gap: var(--s-2); min-width: 0; flex: 1; }
+  .dstep :global(.anim-icon) { flex: none; }
+  .dstep-n { font-size: var(--fs-12); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent-strong); }
+  .dstep p:not(.dstep-n) { color: var(--ink-700); font-size: var(--fs-16); }
+
+  .yj { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+  .yj-c { padding: var(--s-6); border-radius: var(--r-lg); background: var(--ink-800); box-shadow: inset 0 0 0 1px var(--on-ink-faint); display: grid; gap: var(--s-2); }
+  .yj-c p { color: var(--on-ink-muted); font-size: var(--fs-16); }
+  .yj-c--june { box-shadow: inset 0 0 0 1.5px var(--accent); }
+  .yj-c--june h3 { color: var(--accent); }
+  .same-h { margin-top: var(--s-12); margin-bottom: var(--s-4); }
+  .same { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+  .same li { display: flex; gap: var(--s-4); }
+  .same p { color: var(--on-ink-muted); font-size: var(--fs-16); }
+  .same strong { color: #fff; }
+  .tb-ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-md); background: rgba(28,164,152,.16); color: var(--accent); flex: none; }
+
+  .meters { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-16); align-items: center; }
+  .mcards { display: grid; gap: var(--s-4); }
+  .mcards li { display: flex; gap: var(--s-4); padding: var(--s-5); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--hairline-strong); }
+  .mcards .i { width: 28px; height: 28px; flex: none; color: var(--accent-strong); }
+  .region { margin-top: var(--s-8); display: grid; gap: var(--s-2); padding-left: var(--s-5); border-left: 3px solid var(--accent); }
+  .region p { color: var(--ink-700); font-size: var(--fs-16); }
+  .region-links { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; }
+  .meters :global(.meters-img) { width: 100%; max-width: 360px; height: auto; justify-self: center; }
+
+  @media (max-width: 1000px) { .who { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 900px) {
+    .hw-hero-in, .meters { grid-template-columns: 1fr; gap: var(--s-8); }
+    .dsteps, .yj, .same { grid-template-columns: minmax(0, 1fr); }
+    .meters :global(.meters-img) { max-width: 220px; }
+  }
+  @media (max-width: 560px) {
+    .who { grid-template-columns: 1fr; }
+    .dstep { gap: var(--s-4); }
+    .dstep { --icon-size: 80px; }
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+// Official June script logo (vector trace, currentColor). White on the green field, ink elsewhere.
+// Min width 72px; white-on-green only ≥ 96px wide (shared/assets/README.md).
+import raw from '@shared/assets/logo/june-logo.svg?raw';
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const svg = raw
+  .replace(/\s(role|aria-label)="[^"]*"/g, '')
+  .replace('<svg ', `<svg class="logo ${cls}" aria-hidden="true" focusable="false" `);
+---
+<Fragment set:html={svg} />

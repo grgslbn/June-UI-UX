@@ -1,0 +1,99 @@
+---
+// FAQ (ux-research §4.4): H1 + search (small island; hidden without JS) + contact shortcut → topic chips →
+// grouped <details> with deep-link ids (FAQPage JSON-LD mirrors the visible text) → "didn't find it?" (June character).
+import { Image } from 'astro:assets';
+import { copy, faqById, L, to, type Locale } from '../../content/i18n';
+import { pages, faqAnswer } from '../../content/pages';
+import Site from '../../layouts/Site.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageHero from '../PageHero.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import StickyCta from '../StickyCta.astro';
+import Icon from '../Icon.astro';
+import character from '@shared/assets/character/june-character-pointing.png';
+import { graph, faqNode } from '../../lib/schema';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = copy[locale];
+const P = pages[locale];
+const f = P.faq;
+const lg = L(locale);
+const all = f.groups.flatMap(g => g.ids).map(id => { const x = faqById(id); return { q: x.q[lg], a: faqAnswer(x.a[lg]) }; });
+const jsonld = graph({ locale, routeKey: 'faq', title: f.title, crumbs: [{ name: P.crumbsHome, key: 'home' }, { name: f.crumb, key: 'faq' }], extra: [faqNode(all)] });
+---
+<Site locale={locale} routeKey="faq" title={f.title} description={f.description} jsonld={jsonld}>
+  <Header locale={locale} routeKey="faq" />
+  <main id="main">
+    <PageHero locale={locale} crumb={f.crumb} eyebrow={f.eyebrow} h1={f.h1} intro={f.intro}>
+      <div class="fsearch" data-faq-search hidden data-sticky-sentinel>
+        <label class="pc__label" for="faq-q">{f.search}</label>
+        <div class="fsearch__row">
+          <Icon name="i-search" />
+          <input id="faq-q" type="search" placeholder={f.searchPh} autocomplete="off" aria-describedby="faq-q-status" />
+        </div>
+        <p id="faq-q-status" class="fsearch__status" aria-live="polite" data-none={f.noResults}></p>
+      </div>
+    </PageHero>
+
+    <section class="section section--canvas section--flush-top" aria-label={f.h1}>
+      <div class="wrap faqlayout">
+        <nav class="topics" aria-label={f.groupsLabel}>
+          <p class="topics__t" aria-hidden="true">{f.groupsLabel}</p>
+          <ul role="list">{f.groups.map(g => <li><a class="topic" href={`#${g.id}`}>{g.t}</a></li>)}</ul>
+        </nav>
+        <div class="faqlayout__main">
+        {f.groups.map(g => (
+          <section class="fgroup" id={g.id} aria-labelledby={`${g.id}-t`} data-faq-group>
+            <h2 id={`${g.id}-t`} class="h3 fgroup__t">{g.t}</h2>
+            <FaqList locale={locale} ids={g.ids} anchors />
+          </section>
+        ))}
+        <aside class="more surface" aria-labelledby="more-title">
+          <Image src={character} alt="" width={168} height={Math.round(168 * 628 / 689)} loading="lazy" decoding="async" class="more__char" />
+          <div>
+            <h2 id="more-title" class="h3">{f.more.t}</h2>
+            <p>{f.more.b}</p>
+            <p class="more__links">
+              <a class="btn btn--secondary btn--sm" href="#" data-todo="support e-mail"><Icon name="i-mail" size="sm" />{f.more.mail}</a>
+              <span class="more__phone"><Icon name="i-phone" size="sm" />{f.more.phone}: {f.more.hours}</span>
+            </p>
+          </div>
+        </aside>
+        </div>
+      </div>
+    </section>
+
+    <FinalCta locale={locale} title={f.final.title} sub={f.final.sub} entry="faq-final" />
+  </main>
+  <Footer locale={locale} routeKey="faq" />
+  <StickyCta label={c.cta} href={to('signup', locale, { query: 'entry=faq-sticky' })} proof={c.sticky} />
+</Site>
+
+<script>
+  // Deep links open their answer; search filters questions + answers (progressive enhancement).
+  const openHash = () => { const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (el instanceof HTMLDetailsElement) el.open = true; };
+  openHash(); addEventListener('hashchange', openHash);
+  const box = document.querySelector<HTMLElement>('[data-faq-search]');
+  if (box) {
+    box.hidden = false;
+    const input = box.querySelector('input')!;
+    const status = box.querySelector<HTMLElement>('#faq-q-status')!;
+    const items = [...document.querySelectorAll<HTMLDetailsElement>('[data-faq]')];
+    const groups = [...document.querySelectorAll<HTMLElement>('[data-faq-group]')];
+    const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const lang = document.documentElement.lang.startsWith('fr');
+    let t: number | undefined;
+    input.addEventListener('input', () => {
+      const q = norm(input.value.trim());
+      let n = 0;
+      items.forEach(it => { const hit = !q || norm(it.textContent || '').includes(q); it.hidden = !hit; if (hit) n++; });
+      groups.forEach(g => { g.hidden = !g.querySelector('[data-faq]:not([hidden])'); });
+      clearTimeout(t);
+      t = window.setTimeout(() => {
+        status.textContent = !q ? '' : n ? (lang ? `${n} question${n > 1 ? 's' : ''} trouvée${n > 1 ? 's' : ''}` : `${n} ${n === 1 ? 'vraag' : 'vragen'} gevonden`) : status.dataset.none!;
+      }, 300);
+    });
+  }
+</script>

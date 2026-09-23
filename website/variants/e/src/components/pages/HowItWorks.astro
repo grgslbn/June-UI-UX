@@ -1,0 +1,172 @@
+---
+// Hoe werkt het / Comment ça marche — ux-research §4.4. The character appears once: pointing at "Goed om te weten" (tips).
+import Site from '../../layouts/Site.astro';
+import PageHero from '../PageHero.astro';
+import Footer from '../Footer.astro';
+import AnimIcon from '../AnimIcon.astro';
+import Character from '../Character.astro';
+import Faq from '../Faq.astro';
+import Closing from '../Closing.astro';
+import Sticky from '../Sticky.astro';
+import { Picture } from 'astro:assets';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+import dongle from '@shared/assets/dongle/dongle-leaf.png';
+import { href } from '@shared/routes.mjs';
+import { copy, deep, tp, rich, lang, stepsDetailed, faqById, f, type Locale } from '../../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const nl = locale === 'nl-be';
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const C = deep(nl ? {
+  title: 'Hoe werkt automatisch wisselen? | June',
+  description: 'Koppel je meter, June vergelijkt elke maand de markt voor jouw verbruik en regelt de volledige overstap. Zonder onderbreking, zonder opzegvergoeding. Zo werkt June.',
+  crumb: 'Hoe werkt het', eyebrow: 'Hoe werkt het',
+  lede: 'Kort: jij meldt je één keer aan. Wij kennen je verbruik, vergelijken minstens elke maand de contracten van 17+ leveranciers en regelen de overstap als het voordeliger kan. Automatisch, of pas na jouw akkoord. Je stroom en gas blijven gewoon lopen.',
+  phoneAlt: 'De June-app op een smartphone: het verbruiksscherm met een staafgrafiek per dag.',
+  who: { eyebrow: 'Wie doet wat', h2: 'Vier partijen. Eén ervan werkt voor jou.', items: [
+    { t: 'Jij', b: 'Je meldt je één keer aan en kiest: automatisch wisselen, of eerst zelf goedkeuren.', tag: 'Jij beslist' },
+    { t: 'June', b: 'Kent je verbruik, vergelijkt de markt en doet de administratie van de overstap. Je betaalt June een abonnement.', tag: 'Werkt voor jou' },
+    { t: 'Je leverancier', b: 'Levert je stroom en gas en stuurt je de energiefactuur. Alleen deze partij verandert.', tag: 'Verandert' },
+    { t: 'Je netbeheerder', b: 'Beheert de kabels, leidingen en je meter. Die blijven precies dezelfde.', tag: 'Blijft dezelfde' },
+  ] },
+  steps: { eyebrow: 'Stap voor stap', h2: 'Van aanmelding tot overstap.' },
+  src: { t: 'Zo kennen we je verbruik', items: ['Digitale meter', 'June Dongle (Premium)', 'Je eigen meterstanden (analoge meter)'] },
+  sw: { t: 'Bij de overstap', items: ['Geen onderbreking van je stroom of gas', 'Geen opzegvergoeding bij je oude leverancier', 'Automatisch, of pas na jouw akkoord'] },
+  dongleAlt: 'De June Dongle, een wit toestel met een groene kabel in de vorm van een blad.',
+  tips: { eyebrow: 'Goed om te weten', h2: 'Drie dingen die mensen vaak vragen.', items: [
+    { t: 'Analoge meter?', b: 'Geen probleem. Switch en Switch Plus werken ook met een analoge meter: je geeft je meterstanden zelf in.' },
+    { t: 'Groene stroom', b: 'Kies je voor groene stroom, dan vergelijken we enkel contracten met 100% groene stroom volgens de leverancier.' },
+    { t: 'Waar werkt June?', b: '' },
+  ] },
+  faq: { h2: 'Vragen over de overstap' },
+  close: { h2: 'Klaar om het werk aan ons te laten?' },
+} : {
+  title: 'Comment fonctionne le changement automatique ? | June',
+  description: 'Connectez votre compteur, June compare chaque mois le marché selon votre consommation et gère tout le changement. Sans coupure, sans indemnité de rupture.',
+  crumb: 'Comment ça marche', eyebrow: 'Comment ça marche',
+  lede: 'En bref : vous vous inscrivez une seule fois. Nous connaissons votre consommation, comparons au moins une fois par mois les contrats de plus de 17 fournisseurs et gérons le changement quand c’est plus avantageux. Automatiquement, ou seulement après votre accord. Votre électricité et votre gaz continuent de fonctionner.',
+  phoneAlt: 'L’app June en français sur un smartphone : l’écran Consommation avec un graphique en barres par jour.',
+  who: { eyebrow: 'Qui fait quoi', h2: 'Quatre acteurs. Un seul travaille pour vous.', items: [
+    { t: 'Vous', b: 'Vous vous inscrivez une fois et choisissez : changement automatique, ou validation préalable.', tag: 'Vous décidez' },
+    { t: 'June', b: 'Connaît votre consommation, compare le marché et gère toute l’administration du changement. Vous payez un abonnement à June.', tag: 'Travaille pour vous' },
+    { t: 'Votre fournisseur', b: 'Vous fournit l’électricité et le gaz et vous envoie la facture d’énergie. Seul cet acteur change.', tag: 'Change' },
+    { t: 'Votre gestionnaire de réseau', b: 'Gère les câbles, les conduites et votre compteur. Ils restent exactement les mêmes.', tag: 'Reste le même' },
+  ] },
+  steps: { eyebrow: 'Étape par étape', h2: 'De l’inscription au changement.' },
+  src: { t: 'Comment nous connaissons votre consommation', items: ['Compteur numérique', 'June Dongle (Premium)', 'Vos propres relevés d’index (compteur analogique)'] },
+  sw: { t: 'Lors du changement', items: ['Aucune coupure d’électricité ni de gaz', 'Aucune indemnité de rupture chez votre ancien fournisseur', 'Automatiquement, ou seulement après votre accord'] },
+  dongleAlt: 'Le June Dongle, un boîtier blanc avec un câble vert en forme de feuille.',
+  tips: { eyebrow: 'Bon à savoir', h2: 'Trois questions qu’on nous pose souvent.', items: [
+    { t: 'Compteur analogique ?', b: 'Aucun problème. Switch et Switch Plus fonctionnent aussi avec un compteur analogique : vous encodez vous-même vos index.' },
+    { t: 'Électricité verte', b: 'Si vous choisissez l’électricité verte, nous ne comparons que des contrats 100 % verts selon le fournisseur.' },
+    { t: 'Où June est-elle disponible ?', b: '' },
+  ] },
+  faq: { h2: 'Questions sur le changement' },
+  close: { h2: 'Prêt à nous laisser le travail ?' },
+}, locale);
+const regions = tp(faqById('regions').a[L], locale);
+const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
+const phone = nl ? phoneNl : phoneFr;
+---
+<Site locale={locale} routeKey="howItWorks" title={C.title} description={C.description} crumbs={[{ key: 'howItWorks', name: C.crumb }]}>
+  <PageHero locale={locale} routeKey="howItWorks" crumbs={[{ key: 'howItWorks', name: C.crumb }]} eyebrow={C.eyebrow} h1={tp(f.howItWorks.detailTitle[L], locale)} mark={nl ? 'voordelig' : 'avantageux'} lede={C.lede} blob="green">
+    <div class="phero__actions" data-sticky-trigger>
+      <a class="btn btn--white" href={h('signup')} data-cta="hero">{t.cta}<svg class="btn__arrow" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <p class="phero__micro">{t.reassure}</p>
+    </div>
+    <Fragment slot="art">
+      <Picture src={phone} formats={['avif', 'webp']} widths={[220, 330, 500]} sizes="(max-width: 900px) 55vw, 280px" alt={C.phoneAlt} loading="eager" decoding="async" fallbackFormat="webp" class="hiw-phone" />
+    </Fragment>
+  </PageHero>
+
+  <main id="main">
+    <section class="sec who" aria-labelledby="h-who">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="eyebrow">{C.who.eyebrow}</p>
+          <h2 id="h-who" class="display-2">{C.who.h2}</h2>
+        </header>
+        <ul class="who__grid" role="list">
+          {C.who.items.map((w: any, i: number) => (
+            <li class={`who__card who__card--${i}`}>
+              <p class="who__tag">{w.tag}</p>
+              <h3 class="who__t">{w.t}</h3>
+              <p class="who__b">{w.b}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec dsteps" aria-labelledby="h-dsteps">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="eyebrow">{C.steps.eyebrow}</p>
+          <h2 id="h-dsteps" class="display-2">{C.steps.h2}</h2>
+        </header>
+        <ol class="dsteps__list" role="list">
+          {stepsDetailed.map((s, i) => (
+            <li class="dstep">
+              <div class="dstep__rail" aria-hidden="true"><span class="dstep__num">{s.n}</span></div>
+              <div class="dstep__main">
+                <h3 class="dstep__t">{tp(s.title[L], locale)}</h3>
+                <p class="dstep__b">{tp(s.body[L], locale)}</p>
+                {i === 0 && (
+                  <div class="dstep__extra">
+                    <p class="dstep__xt">{C.src.t}</p>
+                    <ul class="chips chips--sm" role="list">{C.src.items.map((x: string) => <li>{x}</li>)}</ul>
+                    <p class="dstep__privacy" set:html={rich(tp(faqById('data').a[L], locale))} />
+                  </div>
+                )}
+                {i === 2 && (
+                  <div class="dstep__extra">
+                    <p class="dstep__xt">{C.sw.t}</p>
+                    <ul class="checks checks--sm" role="list">{C.sw.items.map((x: string) => <li>{x}</li>)}</ul>
+                  </div>
+                )}
+              </div>
+              <div class="dstep__art">
+                {i === 0 ? <Picture src={dongle} formats={['avif', 'webp']} widths={[160, 240, 360]} sizes="160px" alt={C.dongleAlt} loading="eager" decoding="async" fallbackFormat="webp" class="dstep__dongle" /> : <AnimIcon name={icons[i]} size={150} />}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec tips" aria-labelledby="h-tips">
+      <div class="wrap tips__in">
+        <div class="tips__art" aria-hidden="true">
+          <Character pose="pointing" class="tips__char" sizes="(max-width: 860px) 200px, 320px" />
+        </div>
+        <div>
+          <p class="eyebrow">{C.tips.eyebrow}</p>
+          <h2 id="h-tips" class="display-3">{C.tips.h2}</h2>
+          <dl class="tips__list">
+            {C.tips.items.map((x: any, i: number) => <div><dt>{x.t}</dt><dd set:html={i === 2 ? rich(regions) : rich(x.b)} /></div>)}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq sec" aria-labelledby="h-faq">
+      <div class="wrap faq__in">
+        <header>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="h-faq" class="display-2">{C.faq.h2}</h2>
+          <p class="sec__more"><a class="link-arrow" href={h('faq')}>{t.allFaq}</a></p>
+        </header>
+        <Faq locale={locale} ids={['no-interruption', 'exit-fee', 'approval', 'meters', 'which-suppliers']} group="hiw-faq" />
+      </div>
+    </section>
+
+    <Closing locale={locale} h2={C.close.h2} />
+  </main>
+  <Footer locale={locale} routeKey="howItWorks" />
+  <Sticky locale={locale} />
+</Site>

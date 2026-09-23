@@ -1,10 +1,8 @@
 ---
 // Inline SVG sprite: 24px line icons, 1.75 stroke, round caps (same construction as app/shell.html).
-// The bolt is a BRAND mark (logo, favicon, "switch happened"), never a bullet icon.
 ---
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <symbol id="brand-bolt" viewBox="0 0 16 24"><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="#3bada8" transform="translate(1.4 1.2)"/><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="currentColor"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
@@ -27,5 +25,22 @@
     <symbol id="h-terraced" viewBox="0 0 24 24"><path d="M2 21V10l3.3-4.2L8.7 10l3.3-4.2 3.3 4.2 3.4-4.2L22 10v11zM8.7 10v11M15.3 10v11"/></symbol>
     <symbol id="h-semi" viewBox="0 0 24 24"><path d="M3.5 21V11L8 5.5l4.5 5.5 4.5-5.5 4.5 5.5v10zM12.5 11v10"/></symbol>
     <symbol id="h-detached" viewBox="0 0 24 24"><path d="M6 21V11l6-6 6 6v10zM10.5 21v-4.5h3V21M2 21h20"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17h14M3 17v-4l2-5h14l2 5v4h-2M5 17H3"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M11 3 9 7h4l-2 4"/></symbol>
+    <symbol id="i-heat" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="12" cy="11" r="4"/><path d="M12 7v8M8 11h8M6 21h12"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/></symbol>
+    <symbol id="i-meter" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><rect x="7" y="6" width="10" height="5" rx="1"/><path d="M8 15h.01M12 15h.01M16 15h.01M8 18h8"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M8 21 12 3l4 18M9.3 15h5.4M10.3 10h3.4M5 21h14"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
   </defs>
 </svg>

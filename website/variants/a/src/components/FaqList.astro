@@ -1,0 +1,17 @@
+---
+// Native <details> accordion (zero JS). Answers verbatim from facts.json, confirmed part only.
+import { faqById, L, type Locale } from '../content/i18n';
+import { faqAnswer } from '../content/pages';
+import Icon from './Icon.astro';
+interface Props { locale: Locale; ids: string[]; anchors?: boolean; headingLevel?: 'h3' | 'h2' }
+const { locale, ids, anchors = false } = Astro.props;
+const lg = L(locale);
+---
+<div class="faq">
+  {ids.map(id => { const f = faqById(id); return (
+    <details class="faq__item" id={anchors ? id : undefined} data-faq>
+      <summary><span>{f.q[lg]}</span><Icon name="i-plus" size="sm" /></summary>
+      <p>{faqAnswer(f.a[lg])}</p>
+    </details>
+  ); })}
+</div>

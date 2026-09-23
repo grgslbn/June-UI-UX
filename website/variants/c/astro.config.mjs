@@ -8,6 +8,6 @@ export default defineConfig({
   output: 'static',
   base: process.env.BASE || '/',
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  build: { format: 'directory', inlineStylesheets: 'always' },
   vite: { resolve: { alias: { '@shared': shared } }, server: { fs: { allow: ['..', '../..'] } } },
 });

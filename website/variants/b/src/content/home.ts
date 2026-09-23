@@ -83,7 +83,7 @@ export function copy(locale: Locale) {
       ? {
           label: 'Votre économie estimée',
           example: 'Exemple',
-          illustrative: 'Illustratif',
+          illustrative: 'Indicatif · illustratif',
           per: 'par an, après votre abonnement',
           elec: 'Électricité', gas: 'Gaz', fee: 'Abonnement Switch Plus',
           barFee: 'Abonnement', barYou: 'Pour vous',
@@ -111,7 +111,7 @@ export function copy(locale: Locale) {
       : {
           label: 'Jouw geschatte besparing',
           example: 'Voorbeeld',
-          illustrative: 'Illustratief',
+          illustrative: 'Indicatief · illustratief',
           per: 'per jaar, na je abonnement',
           elec: 'Elektriciteit', gas: 'Gas', fee: 'Abonnement Switch Plus',
           barFee: 'Abonnement', barYou: 'Voor jou',
@@ -241,8 +241,11 @@ export function copy(locale: Locale) {
             'Nombre de clients en mars 2026.',
             'Garantie de gain avec Switch Plus et Premium. Conditions dans nos conditions générales.',
             'Tous les prix TVA 21 % comprise. Votre consommation d’énergie est facturée par votre fournisseur.',
+            'Estimation indicative et illustrative, calculée dans votre navigateur à partir de moyennes (type de logement ou kWh encodés) et d’un écart de prix supposé. Ce n’est pas une offre. Votre économie réelle, nous la calculons après l’inscription, avec vos propres données de consommation et votre contrat actuel. Modèle à valider par June.',
           ],
           legal: '© 2026 June Energy', kbo: 'numéro BCE à venir',
+          colHelp: 'Aide', colAbout: 'À propos de June', guaranteeTerms: 'Conditions de la garantie de gain', earn: 'Comment June gagne sa vie', premium: 'Premium et June Dongle', reviews: 'Avis Google', contact: 'Contact (à venir)', rating: '4,3/5 sur Google · plus de 1 200 avis',
+          regulators: 'Le marché de l’énergie est contrôlé par la CWaPE (Wallonie), Brugel (Bruxelles), la VREG (Flandre) et la CREG (fédéral). Cette mention n’implique aucune approbation de June.',
         }
       : {
           tagline: 'June volgt de energiemarkt voor jou op en laat je automatisch overstappen naar een voordeliger contract.',
@@ -254,8 +257,11 @@ export function copy(locale: Locale) {
             'Aantal klanten op maart 2026.',
             'Winstgarantie bij Switch Plus en Premium. Voorwaarden in onze algemene voorwaarden.',
             'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.',
+            'Indicatieve, illustratieve schatting, berekend in je browser op basis van gemiddelden (type woning of je ingevulde kWh) en een verondersteld prijsverschil. Dit is geen aanbod. Je echte besparing berekenen we na je aanmelding, met je eigen verbruiksgegevens en je huidige contract. Model nog te valideren door June.',
           ],
           legal: '© 2026 June Energy', kbo: 'KBO-nummer volgt',
+          colHelp: 'Hulp', colAbout: 'Over June', guaranteeTerms: 'Voorwaarden Winstgarantie', earn: 'Hoe June geld verdient', premium: 'Premium en June Dongle', reviews: 'Google-reviews', contact: 'Contact (volgt)', rating: '4,3/5 op Google · 1.200+ reviews',
+          regulators: 'De energiemarkt staat onder toezicht van de VREG (Vlaanderen), CWaPE (Wallonië), Brugel (Brussel) en CREG (federaal). Dat is geen goedkeuring van June.',
         },
     sticky: { proof: fr ? `4,3 · plus de 20${NNBSP}000 clients` : '4,3 · 20.000+ klanten' },
     guarantee: g.name[k],

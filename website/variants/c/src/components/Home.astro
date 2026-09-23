@@ -1,275 +1,133 @@
 ---
-// Variant C "Honest Market" — homepage (NL + FR share this template; copy from i18n/home.js).
-import Page from '../layouts/Page.astro';
-import Header from './Header.astro';
-import Footer from './Footer.astro';
+// Variant C "Honest Market" — homepage (NL + FR share this template; copy in i18n/home.js).
+// Order: hero (promise + form + 3-question ledger + illustrative chart) → what June does → who pays + prices
+// → guarantee → reviews → 4 sceptic FAQs → summary + form. Depth lives on Hoe werkt het / Abonnementen / FAQ.
+import { Image } from 'astro:assets';
+import Site from '../layouts/Site.astro';
+import pointing from '@shared/assets/character/june-character-pointing.png';
 import MarketChart from './MarketChart.astro';
 import PostcodeForm from './PostcodeForm.astro';
 import Trust from './Trust.astro';
-import Stars from './Stars.astro';
 import Icon from './Icon.astro';
 import Fn from './Fn.astro';
+import AnimIcon from './AnimIcon.astro';
+import SectionHead from './SectionHead.astro';
+import MoneyFlow from './MoneyFlow.astro';
+import Guarantee from './Guarantee.astro';
+import Reviews from './Reviews.astro';
+import FaqList from './FaqList.astro';
+import FinalCta from './FinalCta.astro';
 import { homeCopy } from '../i18n/home.js';
 import { href } from '@shared/routes.mjs';
 interface Props { locale: 'nl-be' | 'fr-be'; }
 const { locale } = Astro.props;
 const c = homeCopy(locale);
 const L = c.L;
-const signup = href('signup', locale, import.meta.env.BASE_URL);
+const base = import.meta.env.BASE_URL;
+const icons = ['home-analysis', 'compare', 'home-switch'] as const;
 ---
-<Page locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description}>
-  <Header locale={locale} routeKey="home" c={c} />
-
-  <main id="inhoud">
-    <!-- ── HERO ─────────────────────────────────────────── -->
-    <section class="hero" aria-labelledby="h1">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="kicker"><span>{c.hero.kicker}</span></p>
-          <h1 id="h1">{c.hero.h1a} <span class="h1-turn">{c.hero.h1b}</span></h1>
-          <p class="lead">{c.hero.lead}</p>
-          <p class="hero-cost">{c.hero.saving[0]}<strong>{c.hero.saving[1]}</strong>{c.hero.saving[2]}<Fn n={1} L={L} /></p>
-          <div data-sticky-hide id="bereken">
-            <PostcodeForm locale={locale} c={c} id="hero" />
-          </div>
-          <Trust c={c} id="hero" />
+<Site locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description}>
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker"><span>{c.hero.kicker}</span></p>
+        <h1 id="h1">{c.hero.h1a} <span class="h1-turn">{c.hero.h1b}</span></h1>
+        <p class="lead">{c.hero.lead}</p>
+        <p class="hero-cost">{c.hero.saving[0]}<strong>{c.hero.saving[1]}</strong>{c.hero.saving[2]}<Fn n={1} L={L} /></p>
+        <div data-sticky-hide id="bereken">
+          <PostcodeForm locale={locale} c={c} id="hero" />
         </div>
-        <div class="hero-fig">
-          <MarketChart c={c} />
-          <ol class="ledger">
-            {c.ledger.map((r) => (
-              <li>
-                <span class="q">{r.q}</span>
-                <span class="a">{r.a}</span>
-                <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
+        <Trust c={c} id="hero" />
       </div>
-    </section>
-
-    <!-- ── 01 MARKET ───────────────────────────────────── -->
-    <section class="section" id="markt" aria-labelledby="markt-h">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker"><span class="kicker-n">{c.market.n}</span><span>{c.market.kicker}</span></p>
-          <h2 id="markt-h">{c.market.h2}</h2>
-          <p class="prose">{c.market.intro}</p>
-        </div>
-        <ol class="facts">
-          {c.market.facts.map((f, i) => (
-            <li data-reveal>
-              <span class="fact-n" aria-hidden="true">{i + 1}</span>
-              <h3>{f.h}</h3>
-              <p>{f.p}</p>
-            </li>
-          ))}
-        </ol>
-        <figure class="pull" data-reveal>
-          <span class="pull-mark" aria-hidden="true">“</span>
-          <div>
-            <blockquote><p>{c.market.quote}</p></blockquote>
-            <figcaption class="note">{c.market.quoteNote}</figcaption>
-          </div>
-        </figure>
-      </div>
-    </section>
-
-    <!-- ── 02 HOW ──────────────────────────────────────── -->
-    <section class="section section--deep" id="hoe-werkt-het" aria-labelledby="hoe-h">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker"><span class="kicker-n">{c.how.n}</span><span>{c.how.kicker}</span></p>
-          <h2 id="hoe-h">{c.how.h2}</h2>
-        </div>
-        <ol class="steps">
-          {c.steps.map((s) => (
+      <div class="hero-fig">
+        <ol class="ledger">
+          {c.ledger.map((r: any) => (
             <li>
-              <span class="n" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
-              <h3>{s.title}</h3>
-              <p set:html={s.body.replace(c.how.emph, `<em>${c.how.emph}</em>`)} />
+              <span class="q">{r.q}</span>
+              <span class="a">{r.a}</span>
+              <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
             </li>
           ))}
         </ol>
-        <p class="honest-limit"><Icon name="info" /><span set:html={c.how.limit} /></p>
+        <MarketChart c={c} />
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ── 03 WHO PAYS JUNE ────────────────────────────── -->
-    <section class="section" id="prijzen" aria-labelledby="model-h">
-      <div class="wrap model">
-        <div class="model-lede">
-          <div class="section-head">
-            <p class="kicker"><span class="kicker-n">{c.model.n}</span><span>{c.model.kicker}</span></p>
-            <h2 id="model-h">{c.model.h2}</h2>
-          </div>
-          <div class="prose">
-            <p><strong>{c.model.body[0]}</strong><Fn n={5} L={L} />{c.model.body[1]}</p>
-            <p>{c.model.body[2]}</p>
-          </div>
+  <!-- ── 01 WHAT JUNE DOES ───────────────────────────── -->
+  <section class="section section--deep" id="hoe-werkt-het" aria-labelledby="hoe-h">
+    <div class="wrap">
+      <SectionHead n={c.how.n} kicker={c.how.kicker} id="hoe-h" title={c.how.h2} />
+      <ol class="steps steps--icons">
+        {c.steps.map((s: any, i: number) => (
+          <li>
+            <AnimIcon name={icons[i]} size={72} />
+            <span class="n" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+            <h3>{s.title}</h3>
+            <p set:html={s.body.replace(c.how.emph, `<em>${c.how.emph}</em>`)} />
+          </li>
+        ))}
+      </ol>
+      <div class="section-foot">
+        <div class="tip">
+          <Image src={pointing} alt="" widths={[96, 192]} sizes="96px" class="tip-char" loading="lazy" />
+          <p class="honest-limit"><span set:html={c.how.limit} /></p>
         </div>
-        <div>
-          <div class="flow" role="img" aria-label={`${c.model.flow.you} → ${c.model.flow.june}: ${c.model.flow.pay}. ${c.model.flow.june} → ${c.model.flow.sup}: ${c.model.flow.work}. ${c.model.flow.bill}.`}>
-            <span class="node">{c.model.flow.you}</span>
-            <span class="edge edge--money"><span>{c.model.flow.pay}</span></span>
-            <span class="node node--june">{c.model.flow.june}</span>
-            <span class="edge"><span>{c.model.flow.work}</span></span>
-            <span class="node">{c.model.flow.sup}</span>
-            <span class="bypass"><span>{c.model.flow.bill}</span></span>
-          </div>
-          <table class="prices">
-            <caption>{c.model.caption}<Fn n={6} L={L} /></caption>
-            <thead><tr>{c.model.cols.map((h) => <th scope="col">{h}</th>)}</tr></thead>
-            <tbody>
-              {c.plans.map((p) => (
-                <tr class={p.slug === 'switch-plus' ? 'hl' : ''}>
-                  <th scope="row">{p.name}{p.slug === 'switch-plus' && <span class="badge">{c.model.badge}</span>}</th>
-                  <td class="yr num">{p.yearly}</td>
-                  <td class="mo">{p.monthly}, {c.model.billed}{p.slug === 'premium' && `, ${c.model.dongle}`}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.how.more}<Icon name="arrow-r" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 WHO PAYS JUNE ────────────────────────────── -->
+  <section class="section" id="prijzen" aria-labelledby="model-h">
+    <div class="wrap model">
+      <div class="model-lede">
+        <SectionHead n={c.model.n} kicker={c.model.kicker} id="model-h" title={c.model.h2} />
+        <div class="prose">
+          <p><strong>{c.model.body[0]}</strong><Fn n={5} L={L} />{c.model.body[1]}</p>
+          <p>{c.model.body[2]}</p>
         </div>
       </div>
-    </section>
-
-    <!-- ── 04 ONE-SHOT VS ALWAYS-ON ────────────────────── -->
-    <section class="section" id="vergelijking" aria-labelledby="vs-h">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker"><span class="kicker-n">{c.vs.n}</span><span>{c.vs.kicker}</span></p>
-          <h2 id="vs-h">{c.vs.h2}</h2>
-          <p class="prose">{c.vs.intro}</p>
-        </div>
-        <table class="vs">
-          <thead>
-            <tr>
-              <td></td>
-              {c.vs.cols.map(([h, sub], i) => <th scope="col" class={i === 2 ? 'col-june' : ''}>{h}<span class="sub">{sub}</span></th>)}
-            </tr>
-          </thead>
+      <div>
+        <table class="prices">
+          <caption>{c.model.caption}<Fn n={6} L={L} /></caption>
+          <thead><tr>{c.model.cols.map((h: string) => <th scope="col">{h}</th>)}</tr></thead>
           <tbody>
-            {c.vs.rows.map((r, ri) => (
-              <tr>
-                <th scope="row">{r[0]}</th>
-                {r.slice(1).map((cell, i) => (
-                  <td class={i === 2 ? 'col-june' : ''} data-label={c.vs.cols[i][0]}>
-                    <span>
-                      {i === 2 && <Icon name="check" />}
-                      {cell === null ? <><span aria-hidden="true">—</span><span class="sr-only">{c.vs.none}</span></> : cell}
-                      {i === 2 && ri === 4 && <Fn n={4} L={L} />}
-                    </span>
-                  </td>
-                ))}
+            {c.plans.map((p: any) => (
+              <tr class={p.slug === 'switch-plus' ? 'hl' : ''}>
+                <th scope="row">{p.name}{p.slug === 'switch-plus' && <span class="badge">{c.model.badge}</span>}</th>
+                <td class="yr num">{p.yearly}</td>
+                <td class="mo">{p.monthly}, {c.model.billed}{p.slug === 'premium' && `, ${c.model.dongle}`}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div class="vs-foot">
-          <p class="note">{c.vs.caption}</p>
-          <a class="btn" href={signup}>{c.ui.cta}<Icon name="arrow-r" /></a>
+        <div class="prices-foot">
+          <a class="btn btn--ghost" href={href('plans', locale, base)}>{c.model.more}<Icon name="arrow-r" /></a>
+          <a class="link-arrow" href={`${href('plans', locale, base)}#vergelijking`}>{c.model.vs}</a>
         </div>
       </div>
-    </section>
+    </div>
+    <div class="wrap"><MoneyFlow c={c} row /></div>
+  </section>
 
-    <!-- ── 05 THE HONEST PROMISE ───────────────────────── -->
-    <section class="section promise" id="garantie" aria-labelledby="promise-h">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker"><span class="kicker-n">{c.promise.n}</span><span>{c.promise.kicker}</span></p>
-          <h2 id="promise-h">{c.promise.h2}</h2>
-          <p class="prose">{c.guaranteeSummary}<Fn n={4} L={L} /></p>
-        </div>
-        <div class="outcomes">
-          {c.promise.outcomes.map((o) => (
-            <div data-reveal>
-              <span class="o-label">{o.label}</span>
-              <span class={`o-big num${o.accent ? ' o-big--accent' : ''}`}>{o.big}</span>
-              <p set:html={o.p} />
-            </div>
-          ))}
-        </div>
-        <div class="promise-foot">
-          <p class="note">{c.footnotes[3].text} <a href="#fn-4">{c.promise.terms}</a></p>
-          <a class="btn" href={signup}>{c.ui.cta}<Icon name="arrow-r" /></a>
-        </div>
+  <!-- ── 03 THE HONEST PROMISE ───────────────────────── -->
+  <Guarantee c={c} locale={locale} n="03" cta="more" />
+
+  <!-- ── 04 REVIEWS ──────────────────────────────────── -->
+  <Reviews c={c} n={c.reviews.n} />
+
+  <!-- ── 05 FAQ ──────────────────────────────────────── -->
+  <section class="section section--deep" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead n={c.faq.n} kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <div>
+        <FaqList items={c.faq.items} L={L} />
+        <p class="faq-more"><a class="link-arrow" href={href('faq', locale, base)}>{c.faq.all}<Icon name="arrow-r" /></a></p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ── 06 REVIEWS ──────────────────────────────────── -->
-    <section class="section" id="reviews" aria-labelledby="reviews-h">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker" aria-hidden="true"><span class="kicker-n">{c.reviews.n}</span><span>{c.reviews.kicker}</span></p>
-          <h2 id="reviews-h" class="sr-only">{c.reviews.kicker}</h2>
-        </div>
-        <div class="reviews">
-          <div class="rating">
-            <p class="rating-big num">4,3<small>/5</small></p>
-            <Stars value={c.rating} id="reviews" />
-            <p class="note">{c.reviews.basis}<Fn n={2} L={L} /></p>
-          </div>
-          <div>
-            <p class="note" style="margin-bottom: 12px;">{c.reviews.label}</p>
-            <div class="quotes">
-              {[1, 2].map((i) => (
-                <div class="quote-ph" data-placeholder="review">
-                  <div class="portrait-ph" role="img" aria-label={`placeholder ${L === 'fr' ? 'portrait client' : 'klantportret'} ${i}`}></div>
-                  <div>
-                    <span class="tag">placeholder</span>
-                    <p style="margin-top: 8px;">{c.reviews.ph}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── 07 FAQ ──────────────────────────────────────── -->
-    <section class="section section--deep" id="faq" aria-labelledby="faq-h">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker"><span class="kicker-n">{c.faq.n}</span><span>{c.faq.kicker}</span></p>
-          <h2 id="faq-h">{c.faq.h2}</h2>
-        </div>
-        <div class="faq">
-          {c.faq.items.map((f, i) => (
-            <details name="faq" open={i === 0}>
-              <summary>{f.q}<Icon name="plus" /></summary>
-              <p>{f.a}{f.fn && <Fn n={f.fn} L={L} />}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ── SUMMARY + CTA ───────────────────────────────── -->
-    <section class="section" id="start" aria-labelledby="sum-h">
-      <div class="wrap">
-        <div class="summary" data-sticky-hide>
-          <div>
-            <h2 id="sum-h">{c.summary.h2}</h2>
-            <ul class="sum-points">
-              {c.summary.points.map((p, i) => <li><Icon name="check-circle" /><span>{p}{i === 3 && <Fn n={4} L={L} />}</span></li>)}
-            </ul>
-          </div>
-          <div class="pc-wrap">
-            <PostcodeForm locale={locale} c={c} id="sum" />
-            <div style="margin-top: 16px;"><Trust c={c} id="sum" /></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <Footer locale={locale} c={c} />
-
-  <div class="sticky" data-sticky inert>
-    <p class="sticky-proof"><strong>{c.sticky.strong}</strong>{c.sticky.sub}</p>
-    <a class="btn" href={signup}>{c.ui.cta}</a>
-  </div>
-</Page>
+  <FinalCta c={c} locale={locale} />
+</Site>

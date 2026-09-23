@@ -1,0 +1,280 @@
+---
+// Abonnementen / Abonnements. Order: H1 + billing statement · plan helper (CSS :has, no JS) · 3 cards with the
+// equation (saving − subscription) · comparison table · Premium & dongle · June vs doing it yourself ·
+// how June earns money · pricing FAQ · final CTA.
+import { href } from '@shared/routes.mjs';
+import facts from '@shared/content/facts.json';
+import Page from '../Page.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import PlanCards from '../PlanCards.astro';
+import PremiumShowcase from '../PremiumShowcase.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Fn from '../Fn.astro';
+import { type Locale } from '../../lib/estimate';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+const k = fr ? 'fr' : 'nl';
+const signup = href('signup', locale, base);
+const faqIds = ['cost', 'guarantee', 'meters', 'exit-fee'];
+const faqItems = faqIds.map(id => { const f = facts.faq.find(x => x.id === id)!; return { id: id === 'guarantee' ? 'winstgarantie' : id, q: f.q[k], a: f.a[k] }; });
+const Y = '✓';
+const t = fr ? {
+  title: 'Abonnements et prix | June', desc: 'Switch 69 €, Switch Plus 99 € ou Premium 198 € par an. Comparez ce que June fait pour vous et ce qui vous reste après l’abonnement.',
+  crumb: 'Abonnements', eyebrow: 'Abonnements et prix', h1: 'Un abonnement pour chaque ménage',
+  lead: 'Avec chaque abonnement, June suit le marché pour vous et gère votre changement. Vous payez une fois par an, et nous vous montrons ce qui vous reste après ce prix.',
+  billing: ['Facturé une fois par an', 'TVA 21 % comprise', 'Votre énergie reste facturée par votre fournisseur'],
+  helperT: 'Quel abonnement vous convient ?', helperQ1: 'Avez-vous un compteur numérique ?', helperQ2: 'Avez-vous des panneaux solaires ?', yes: 'Oui', no: 'Non / je ne sais pas',
+  helperA: { sp: 'Switch Plus vous convient : le résultat est garanti, quel que soit votre compteur.', pr: 'Premium vaut la peine : le June Dongle vous montre votre production et votre injection en direct.', pd: 'Switch Plus suffit pour économiser. Premium si vous voulez suivre votre consommation en direct.' },
+  tableH: 'Comparez en détail', tableCap: 'Ce que comprend chaque abonnement', feature: 'Fonctionnalité', incl: 'Inclus', excl: 'Non inclus', digital: 'numérique',
+  groups: ['Économiser', 'Garantie', 'Suivi et matériel'],
+  rows: [['Analyse de plus de 17 fournisseurs', Y, Y, Y], ['Nous gérons le changement', Y, Y, Y], ['Automatiquement ou après votre accord', Y, Y, Y], ['Compteurs analogiques et numériques', Y, Y, 'd'], ['Option 100 % énergie verte', Y, Y, Y],
+    ['Garantie de gain (99 € remboursés)', '-', Y, Y], ['Rapport d’économies annuel', '-', Y, Y],
+    ['June Dongle (P1)', '-', '-', Y], ['Consommation en direct, historique par quart d’heure', '-', '-', Y], ['Panneaux solaires : autoconsommation et injection', '-', '-', Y]],
+  price: 'Prix par an', diyH: 'June ou le faire vous-même ?', diyIntro: 'Les comparateurs sont gratuits et utiles. Mais ils vous donnent une photo, une fois. June continue de regarder.',
+  diy: [['Comparer', 'Une fois, quand vous y pensez', 'Au moins chaque mois, pour votre consommation'], ['Changer', 'Vous remplissez tout vous-même', 'Nous gérons tout le changement'], ['Après le changement', 'Plus rien, jusqu’à la prochaine fois', 'Nous continuons à suivre le marché'], ['Si vous économisez peu', 'Aucun filet de sécurité', 'Garantie de gain : 99 € remboursés (Switch Plus, Premium)']],
+  diyCols: ['', 'Vous-même, avec un comparateur', 'Avec June'],
+  earnH: 'Comment June gagne sa vie', earnB: 'June vit des abonnements de ses clients : le prix annuel que vous voyez ici. Nous ne sommes pas fournisseur, et nous choisissons votre contrat sur la base de votre consommation.', earnFlag: 'à confirmer : rémunérations éventuelles de fournisseurs',
+  termsH: 'Résiliation et rétractation', termsB: 'Vous disposez d’un délai de rétractation de 14 jours après votre inscription.', termsFlag: 'règles de résiliation et de reconduction à confirmer',
+  faqH: 'Questions sur le prix', finalH: 'Voyez d’abord ce qui vous reste.', finalB: 'Calculez votre économie, puis choisissez. Switch Plus est présélectionné, vous pouvez changer à tout moment.', finalCta: 'Calculez votre économie', finalSec: 'Comment fonctionne June',
+  priceFoot: 'Tous les prix TVA 21 % comprise. Votre consommation d’énergie est facturée par votre fournisseur.',
+} : {
+  title: 'Abonnementen en prijzen | June', desc: 'Switch € 69, Switch Plus € 99 of Premium € 198 per jaar. Vergelijk wat June voor je doet en wat je overhoudt na je abonnement.',
+  crumb: 'Abonnementen', eyebrow: 'Abonnementen en prijzen', h1: 'Een abonnement voor elk huishouden',
+  lead: 'Met elk abonnement volgt June de markt voor je op en regelt ze je overstap. Je betaalt één keer per jaar, en we tonen je wat je na die prijs overhoudt.',
+  billing: ['Eén keer per jaar gefactureerd', 'Incl. 21% btw', 'Je energie betaal je gewoon aan je leverancier'],
+  helperT: 'Welk abonnement past bij jou?', helperQ1: 'Heb je een digitale meter?', helperQ2: 'Heb je zonnepanelen?', yes: 'Ja', no: 'Nee / weet ik niet',
+  helperA: { sp: 'Switch Plus past bij jou: je resultaat is gegarandeerd, met elke meter.', pr: 'Premium loont: met de June Dongle zie je je productie en injectie live.', pd: 'Switch Plus volstaat om te besparen. Premium als je je verbruik live wil volgen.' },
+  tableH: 'Vergelijk in detail', tableCap: 'Wat elk abonnement bevat', feature: 'Functie', incl: 'Inbegrepen', excl: 'Niet inbegrepen', digital: 'digitaal',
+  groups: ['Besparen', 'Garantie', 'Inzicht en hardware'],
+  rows: [['Analyse van 17+ leveranciers', Y, Y, Y], ['Wij regelen de overstap', Y, Y, Y], ['Automatisch of na jouw akkoord', Y, Y, Y], ['Analoge en digitale meters', Y, Y, 'd'], ['Optie 100% groene energie', Y, Y, Y],
+    ['Winstgarantie (€ 99 terug)', '-', Y, Y], ['Jaarlijks besparingsrapport', '-', Y, Y],
+    ['June Dongle (P1)', '-', '-', Y], ['Live verbruik, historiek per kwartier', '-', '-', Y], ['Zonnepanelen: zelfverbruik en injectie', '-', '-', Y]],
+  price: 'Prijs per jaar', diyH: 'June of zelf vergelijken?', diyIntro: 'Vergelijkingssites zijn gratis en nuttig. Maar ze geven je één momentopname. June blijft kijken.',
+  diy: [['Vergelijken', 'Eén keer, als je eraan denkt', 'Minstens elke maand, voor jouw verbruik'], ['Overstappen', 'Je vult alles zelf in', 'Wij regelen de volledige overstap'], ['Na de overstap', 'Niets meer, tot de volgende keer', 'We blijven de markt volgen'], ['Als je weinig bespaart', 'Geen vangnet', 'Winstgarantie: € 99 terug (Switch Plus, Premium)']],
+  diyCols: ['', 'Zelf, met een vergelijkingssite', 'Met June'],
+  earnH: 'Hoe June geld verdient', earnB: 'June leeft van de abonnementen van haar klanten: de jaarprijs die je hier ziet. We zijn geen leverancier en kiezen je contract op basis van jouw verbruik.', earnFlag: 'te bevestigen: eventuele vergoedingen van leveranciers',
+  termsH: 'Opzeggen en bedenktijd', termsB: 'Je hebt 14 dagen bedenktijd na je aanmelding.', termsFlag: 'opzeg- en verlengingsregels te bevestigen',
+  faqH: 'Vragen over de prijs', finalH: 'Zie eerst wat je overhoudt.', finalB: 'Bereken je besparing en kies daarna. Switch Plus staat klaar, je kan altijd wisselen.', finalCta: 'Bereken je besparing', finalSec: 'Zo werkt June',
+  priceFoot: 'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.',
+};
+const prices = facts.plans.map(p => p.priceYearly);
+const fmt = (n: number) => (fr ? `${n} €` : `€ ${n}`);
+const canonicalPlans = `https://www.june.energy/${locale}/${fr ? 'abonnements' : 'abonnementen'}/`;
+const graph = facts.plans.map(p => ({
+  '@type': 'Product', '@id': `${canonicalPlans}#${p.slug}`, name: p.name, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: p.valueProposition[k],
+  offers: { '@type': 'Offer', url: `https://www.june.energy/${locale}/${fr ? 'inscription' : 'aanmelden'}/?plan=${p.slug}`, price: p.priceYearly.toFixed(2), priceCurrency: 'EUR', availability: 'https://schema.org/InStock',
+    eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: [
+      { '@type': 'UnitPriceSpecification', price: p.priceYearly.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' }, billingDuration: 'P1Y' },
+      { '@type': 'UnitPriceSpecification', price: p.priceMonthly.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' }, priceType: 'https://schema.org/ListPrice', description: fr ? 'Équivalent mensuel, facturé annuellement' : 'Maandelijks equivalent, jaarlijks gefactureerd' },
+    ] },
+}));
+---
+<Page locale={locale} routeKey="plans" title={t.title} description={t.desc} crumbs={[[t.crumb, 'plans']]} graph={graph}>
+  <section class="p-hero" data-sticky-after aria-labelledby="plans-h1">
+    <div class="wrap">
+      <Breadcrumb locale={locale} trail={[[t.crumb, 'plans']]} />
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1 id="plans-h1">{t.h1}</h1>
+      <p class="lead">{t.lead}</p>
+      <ul role="list" class="billing">
+        {t.billing.map((b, i) => <li><svg class="i" aria-hidden="true"><use href={`#i-${['clock', 'check', 'plug'][i]}`} /></svg>{b}{i === 1 && <Fn n={5} fr={fr} />}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight plans-main" aria-label={t.helperT}>
+    <div class="wrap">
+      <form class="helper" aria-labelledby="helper-t" onsubmit="return false">
+        <p class="helper-t" id="helper-t"><svg class="i" aria-hidden="true"><use href="#i-help" /></svg>{t.helperT}</p>
+        <fieldset>
+          <legend>{t.helperQ1}</legend>
+          <div class="pills"><label><input type="radio" name="h-meter" value="yes" /><span>{t.yes}</span></label><label><input type="radio" name="h-meter" value="no" /><span>{t.no}</span></label></div>
+        </fieldset>
+        <fieldset>
+          <legend>{t.helperQ2}</legend>
+          <div class="pills"><label><input type="radio" name="h-solar" value="yes" /><span>{t.yes}</span></label><label><input type="radio" name="h-solar" value="no" /><span>{t.no}</span></label></div>
+        </fieldset>
+        <p class="helper-a" aria-live="polite">
+          <span class="ha ha-sp">{t.helperA.sp}</span><span class="ha ha-pr">{t.helperA.pr}</span><span class="ha ha-pd">{t.helperA.pd}</span>
+        </p>
+      </form>
+      <PlanCards locale={locale} full headingLevel={2} />
+      <p class="fine plans-foot">{t.priceFoot}</p>
+    </div>
+  </section>
+
+  <section class="section section--mint" aria-labelledby="table-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="table-h">{t.tableH}</h2></div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <caption class="sr-only">{t.tableCap}</caption>
+          <thead><tr><th scope="col"><span class="sr-only">{t.feature}</span></th>{facts.plans.map((p, i) => <th scope="col" class:list={{ rec: i === 1 }}>{p.shortName}<span class="tbl-price">{fmt(prices[i])}<span class="sr-only"> {fr ? 'par an' : 'per jaar'}</span></span></th>)}</tr></thead>
+          {[[0, 5], [5, 7], [7, 10]].map(([a, b], gi) => (
+            <tbody>
+              <tr class="grp"><th scope="colgroup" colspan="4">{t.groups[gi]}</th></tr>
+              {t.rows.slice(a, b).map(r => (
+                <tr>
+                  <th scope="row">{r[0]}</th>
+                  {r.slice(1).map((v, i) => (
+                    <td class:list={{ rec: i === 1 }}>
+                      {v === Y ? <><svg class="i yes" aria-hidden="true"><use href="#i-check" /></svg><span class="sr-only">{t.incl}</span></>
+                        : v === 'd' ? <span class="tbl-note">{t.digital}</span>
+                        : <><svg class="i no" aria-hidden="true"><use href="#i-minus" /></svg><span class="sr-only">{t.excl}</span></>}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+          <tfoot><tr><th scope="row">{t.price}</th>{facts.plans.map((p, i) => <td class:list={{ rec: i === 1 }}><a class:list={['btn btn--sm', i === 1 ? '' : 'btn--ghost']} href={`${signup}?plan=${p.slug}`} data-cta="plans_table" aria-label={`${fr ? 'Choisir' : 'Kies'} ${p.shortName}, ${fmt(prices[i])} ${fr ? 'par an' : 'per jaar'}`}>{fmt(prices[i])}</a></td>)}</tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div id="dongle"></div>
+  <PremiumShowcase locale={locale} id="premium-dongle" headingId="dongle-h" />
+
+  <section class="section" aria-labelledby="diy-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="diy-h">{t.diyH}</h2><p>{t.diyIntro}</p></div>
+      <div class="diy" role="table" aria-labelledby="diy-h">
+        <div role="row" class="diy-row diy-head">{t.diyCols.map((c, i) => <span role="columnheader" class:list={{ 'diy-june': i === 2 }}>{c || <span class="sr-only">{fr ? 'Étape' : 'Stap'}</span>}</span>)}</div>
+        {t.diy.map(r => (
+          <div role="row" class="diy-row">
+            <span role="rowheader" class="diy-k">{r[0]}</span>
+            <span role="cell" class="diy-you" data-label={t.diyCols[1]}>{r[1]}</span>
+            <span role="cell" class="diy-june" data-label={t.diyCols[2]}><svg class="i" aria-hidden="true"><use href="#i-check" /></svg>{r[2]}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ink on-ink" id="geld" aria-labelledby="earn-h">
+    <div class="wrap earn">
+      <div>
+        <h2 id="earn-h">{t.earnH}</h2>
+        <p class="earn-b">{t.earnB}</p>
+        <p><span class="chip chip--placeholder">{t.earnFlag}</span></p>
+      </div>
+      <div class="earn-terms">
+        <h3>{t.termsH}</h3>
+        <p>{t.termsB}</p>
+        <p><span class="chip chip--placeholder">{t.termsFlag}</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq" aria-labelledby="pfaq-h">
+    <div class="wrap faq-grid">
+      <div class="section-head">
+        <h2 id="pfaq-h">{t.faqH}</h2>
+        <a class="link-arrow" href={href('faq', locale, base)}>{fr ? 'Toutes les questions' : 'Alle vragen'}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+      </div>
+      <FaqList items={faqItems} />
+    </div>
+  </section>
+
+  <FinalCta locale={locale} h2={t.finalH} body={t.finalB} cta={t.finalCta} href={`${href('home', locale, base)}#bereken`} secondary={{ label: t.finalSec, href: href('howItWorks', locale, base) }} />
+</Page>
+
+<style>
+  .p-hero { padding-block: var(--s-8) var(--s-8); }
+  .p-hero .wrap { display: grid; gap: var(--s-4); }
+  .p-hero h1 { font-size: var(--fs-72); max-width: 18ch; margin-top: var(--s-4); }
+  .p-hero .eyebrow { margin-top: var(--s-6); }
+  .lead { max-width: 56ch; }
+  .billing { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); margin-top: var(--s-2); font-size: var(--fs-14); font-weight: 600; color: var(--ink-700); }
+  .billing li { display: inline-flex; align-items: center; gap: 8px; }
+  .billing .i { width: 18px; height: 18px; color: var(--accent-strong); }
+  .section-tight { padding-bottom: var(--section-y); }
+
+  .helper { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-8); padding: var(--s-4) var(--s-6); margin-bottom: var(--s-8); border-radius: var(--r-lg); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .helper-t { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: var(--fs-16); }
+  .helper-t .i { color: var(--accent-strong); }
+  .helper fieldset { display: flex; align-items: center; gap: var(--s-3); }
+  .helper legend { float: left; font-size: var(--fs-14); color: var(--ink-700); margin-right: 4px; }
+  .pills { display: flex; gap: 4px; }
+  .pills label { position: relative; }
+  .pills input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .pills span { display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: var(--r-pill); background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline-strong); font-size: var(--fs-14); font-weight: 600; }
+  .pills input:checked + span { background: var(--ink-900); color: #fff; box-shadow: none; }
+  .pills input:focus-visible + span { outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+  .helper-a { flex-basis: 100%; font-size: var(--fs-14); font-weight: 600; color: var(--accent-strong); }
+  .helper-a:empty, .ha { display: none; }
+  .helper:has([name="h-meter"]:checked):has([name="h-solar"]:checked) .ha-sp { display: inline; }
+  .helper:has([name="h-meter"][value="yes"]:checked):has([name="h-solar"]:checked) .ha-sp { display: none; }
+  .helper:has([name="h-meter"][value="yes"]:checked):has([name="h-solar"][value="no"]:checked) .ha-pd { display: inline; }
+  .helper:has([name="h-meter"][value="yes"]:checked):has([name="h-solar"][value="yes"]:checked) .ha-pr { display: inline; }
+  /* highlight the matching card */
+  .plans-main:has([name="h-meter"][value="yes"]:checked):has([name="h-solar"][value="yes"]:checked) :global([data-plan="premium"]) { box-shadow: inset 0 0 0 2px var(--accent-strong), var(--shadow-2); }
+  .plans-main:has([name="h-meter"][value="no"]:checked) :global([data-plan="premium"]) { opacity: .6; }
+  .plans-foot { margin-top: var(--s-6); }
+
+  /* comparison table */
+  .tbl-wrap { border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-1); overflow: hidden; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-16); }
+  .tbl th, .tbl td { padding: 14px var(--s-5); border-bottom: 1px solid var(--hairline); text-align: center; }
+  .tbl th[scope="row"] { text-align: left; font-weight: 500; color: var(--ink-900); width: 46%; }
+  .tbl thead th { font: 700 var(--fs-18)/1.2 var(--font-display); padding-block: var(--s-5); vertical-align: bottom; }
+  .tbl-price { display: block; margin-top: 4px; font: 600 var(--fs-14)/1.2 var(--font-ui); color: var(--ink-700); }
+  .tbl .rec { background: var(--accent-soft); }
+  .tbl .grp th { text-align: left; padding-block: 18px 8px; font-size: var(--fs-12); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent-strong); background: var(--surface); }
+  .tbl .yes { width: 22px; height: 22px; color: var(--accent-strong); margin-inline: auto; stroke-width: 2.25; }
+  .tbl .no { width: 18px; height: 18px; color: var(--ink-400); margin-inline: auto; }
+  .tbl-note { font-size: var(--fs-14); font-weight: 600; color: var(--ink-700); }
+  .tbl tfoot th, .tbl tfoot td { border-bottom: 0; padding-block: var(--s-5); }
+  .tbl tfoot .btn { min-width: 96px; }
+
+  /* diy */
+  .diy { display: grid; border-top: 1px solid var(--hairline-strong); }
+  .diy-row { display: grid; grid-template-columns: 1fr 1.3fr 1.3fr; gap: var(--s-6); padding: var(--s-4) 0; border-bottom: 1px solid var(--hairline-strong); align-items: start; }
+  .diy-head { font-size: var(--fs-14); font-weight: 700; color: var(--ink-700); }
+  .diy-head .diy-june { color: var(--accent-strong); }
+  .diy-k { font-weight: 700; font-family: var(--font-display); }
+  .diy-you { color: var(--ink-700); }
+  .diy-row .diy-june { display: flex; gap: 8px; font-weight: 600; }
+  .diy-june .i { width: 20px; height: 20px; flex: none; color: var(--accent-strong); margin-top: 3px; }
+
+  /* earn */
+  .earn { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-16); align-items: start; }
+  .earn h2 { margin-bottom: var(--s-4); }
+  .earn-b { color: var(--on-ink-muted); font-size: var(--fs-18); max-width: 52ch; margin-bottom: var(--s-4); }
+  .earn-terms { display: grid; gap: var(--s-3); padding: var(--s-6); border-radius: var(--r-lg); background: var(--ink-800); box-shadow: inset 0 0 0 1px var(--on-ink-faint); }
+  .earn-terms p { color: var(--on-ink-muted); font-size: var(--fs-16); }
+  .earn .chip { background: transparent; color: var(--on-ink-muted); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
+
+  .faq-grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--s-16); align-items: start; }
+  .faq .section-head { margin-bottom: 0; }
+
+  @media (max-width: 900px) {
+    .earn, .faq-grid { grid-template-columns: 1fr; gap: var(--s-8); }
+    .diy-row { grid-template-columns: 1fr 1fr; gap: var(--s-2) var(--s-4); }
+    .diy-k { grid-column: 1 / -1; }
+    .diy-head span:first-child { display: none; }
+  }
+  @media (max-width: 640px) {
+    .helper { padding: var(--s-4); }
+    .helper fieldset { flex-wrap: wrap; }
+    .helper legend { float: none; width: 100%; }
+    .tbl { font-size: var(--fs-14); }
+    .tbl th, .tbl td { padding: 10px 6px; }
+    .tbl th[scope="row"] { width: auto; padding-left: var(--s-3); }
+    .tbl thead th { font-size: var(--fs-14); }
+    .tbl .grp th { padding-left: var(--s-3); }
+    .tbl tfoot .btn { min-width: 0; padding: 0 10px; min-height: 40px; }
+    .tbl tfoot th { font-size: var(--fs-12); }
+    .diy-row { grid-template-columns: 1fr; }
+    .diy-head { display: none; }
+    .diy-you::before, .diy-row .diy-june::before { content: attr(data-label); display: block; font-size: var(--fs-12); font-weight: 700; color: var(--ink-500); text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+    .diy-row .diy-june { display: block; }
+    .diy-june .i { display: none; }
+  }
+</style>

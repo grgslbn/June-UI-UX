@@ -1,32 +1,40 @@
 ---
-// Site layout for variant C: Base head logic + fonts, styles, JSON-LD, the tiny enhancement script.
+// Head layer for variant C: Base (lang/title/canonical/hreflang/robots) + fonts, meta, one JSON-LD @graph, enhancement script.
 import Base from './Base.astro';
 import '../styles/global.css';
 import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import inter from '@shared/fonts/inter-latin.woff2?url';
+import logoGreen from '@shared/assets/logo/june-logo-green.svg?raw';
 import { ROUTES, abs, LOCALES } from '@shared/routes.mjs';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; }
-const { locale, routeKey, title, description, noindex = false } = Astro.props;
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; crumbs?: { name: string; key: string }[]; ld?: any[]; }
+const { locale, routeKey, title, description, noindex = false, crumbs = [], ld: extra = [] } = Astro.props;
 const mapped = routeKey in ROUTES;
 const canonical = mapped ? abs(routeKey, locale) : null;
 const ld = mapped ? {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'Organization', '@id': 'https://www.june.energy/#org', name: 'June', url: 'https://www.june.energy/', areaServed: { '@type': 'Country', name: 'BE' } },
+    { '@type': 'Organization', '@id': 'https://www.june.energy/#org', name: 'June', url: 'https://www.june.energy/', areaServed: { '@type': 'Country', name: 'BE' },
+      contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: ['nl', 'fr'] } },
     { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: 'https://www.june.energy/', name: 'June', publisher: { '@id': 'https://www.june.energy/#org' }, inLanguage: ['nl-BE', 'fr-BE'] },
-    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, inLanguage: LOCALES[locale].html, isPartOf: { '@id': 'https://www.june.energy/#website' } },
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: LOCALES[locale].html, isPartOf: { '@id': 'https://www.june.energy/#website' },
+      ...(crumbs.length ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}) },
+    ...(crumbs.length ? [{ '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.key, locale) })) }] : []),
+    ...extra,
   ],
 } : null;
-const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3bada8"/><path d="M18.6 5 9.4 18.4l6 .2-2.4 8.4 9.6-14.4-6-.1z" fill="#14232a"/></svg>')}`;
+const favicon = `data:image/svg+xml,${encodeURIComponent(logoGreen.replace(/\s(role|aria-label)="[^"]*"/g, ''))}`;
 ---
 <Base locale={locale} routeKey={routeKey} title={title} description={description} noindex={noindex}>
   <Fragment slot="head">
     <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#f7f8f6" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href={favicon} />
+    <link rel="icon" href={favicon} type="image/svg+xml" />
     {canonical && <meta property="og:title" content={title} />}
     {canonical && <meta property="og:description" content={description} />}
     {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:type" content="website" />
     <meta property="og:locale" content={locale === 'nl-be' ? 'nl_BE' : 'fr_BE'} />
     <meta property="og:locale:alternate" content={locale === 'nl-be' ? 'fr_BE' : 'nl_BE'} />
     <meta name="twitter:card" content="summary_large_image" />
@@ -35,7 +43,8 @@ const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www
   </Fragment>
   <slot />
   <script>
-    // One observer set, ~1 KB: chart draw-on-view, secondary reveals, sticky CTA, postcode hint.
+    // ~1 KB, shared by every content page: chart draw-on-view, reveals, sticky CTA, menu, postcode forms, CTA analytics.
+    const dl = ((window as any).dataLayer ||= []);
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) if (e.isIntersecting) { e.target.classList.add(e.target.hasAttribute('data-draw') ? 'is-drawn' : 'is-in'); io.unobserve(e.target); }
     }, { threshold: 0.3 });
@@ -49,25 +58,28 @@ const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www
       const so = new IntersectionObserver((entries) => {
         for (const e of entries) {
           seen.set(e.target, e.isIntersecting);
-          if (e.target === anchors[0] && !e.isIntersecting && e.boundingClientRect.top < 0) passedHero = true;
-          if (e.target === anchors[0] && e.isIntersecting) passedHero = false;
+          if (e.target === anchors[0]) passedHero = !e.isIntersecting && e.boundingClientRect.top < 0;
         }
-        const anyVisible = [...seen.values()].some(Boolean);
-        const on = passedHero && !anyVisible;
+        const on = passedHero && ![...seen.values()].some(Boolean);
         sticky.classList.toggle('is-on', on);
         sticky.toggleAttribute('inert', !on);
       });
       anchors.forEach((a) => so.observe(a));
     }
 
-    document.querySelectorAll('.menu-panel a').forEach((a) => a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')));
+    const menu = document.querySelector<HTMLDetailsElement>('details.menu');
+    menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu?.open) { menu.open = false; menu.querySelector('summary')?.focus(); } });
+
+    document.querySelectorAll<HTMLElement>('[data-cta]').forEach((a) => a.addEventListener('click', () => dl.push({ event: 'cta_click', location: a.dataset.cta })));
+    document.querySelectorAll<HTMLDetailsElement>('details[data-faq]').forEach((d) => d.addEventListener('toggle', () => { if (d.open) dl.push({ event: 'faq_open', question_id: d.id }); }));
 
     document.querySelectorAll<HTMLFormElement>('form[data-pc]').forEach((f) => {
       const input = f.querySelector('input')!; const help = f.querySelector<HTMLElement>('.pc-help')!;
       f.addEventListener('submit', (ev) => {
         if (!/^[1-9]\d{3}$/.test(input.value.trim())) {
           ev.preventDefault(); input.setAttribute('aria-invalid', 'true'); help.textContent = help.dataset.error!; help.classList.add('is-error'); input.focus();
-        }
+        } else dl.push({ event: 'cta_click', location: f.dataset.pc || 'form' });
       });
       input.addEventListener('input', () => { if (input.getAttribute('aria-invalid')) { input.removeAttribute('aria-invalid'); help.textContent = help.dataset.help!; help.classList.remove('is-error'); } });
     });

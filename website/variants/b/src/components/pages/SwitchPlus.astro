@@ -1,0 +1,265 @@
+---
+// Switch Plus. Hero (yearly price first, guarantee, CTA ?plan=switch-plus) · guarantee explained with two worked
+// examples · 3 steps · annual report preview (placeholder) · also included · Switch / Plus / Premium mini-compare ·
+// FAQ · final CTA.
+import { href } from '@shared/routes.mjs';
+import facts from '@shared/content/facts.json';
+import Page from '../Page.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Stars from '../Stars.astro';
+import Fn from '../Fn.astro';
+import AnimIcon from '../AnimIcon.astro';
+import { eur, eurDec, type Locale } from '../../lib/estimate';
+import { copy } from '../../content/home';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+const k = fr ? 'fr' : 'nl';
+const c = copy(locale);
+const sp = facts.plans.find(p => p.slug === 'switch-plus')!;
+const sw = facts.plans.find(p => p.slug === 'switch')!;
+const g = facts.guarantees.winstgarantie;
+const signup = `${href('signup', locale, base)}?plan=switch-plus`;
+const plansHref = href('plans', locale, base);
+const faqItems = ['guarantee', 'approval', 'cost', 'exit-fee'].map(id => { const f = facts.faq.find(x => x.id === id)!; return { id: id === 'guarantee' ? 'winstgarantie' : id, q: f.q[k], a: f.a[k] }; });
+const E = (n: number) => eur(n, locale);
+const t = fr ? {
+  title: 'Switch Plus : économisez avec garantie de gain | June', desc: 'Si vous n’économisez pas plus que le prix de votre abonnement, vous récupérez 99 €. Switch Plus : 99 € par an, soit 8,25 € par mois.',
+  crumbs: [['Abonnements', 'plans'], ['Switch Plus', 'switchPlus']] as [string, string][],
+  eyebrow: 'June Switch Plus', h1: 'Économisez, avec un résultat garanti.',
+  sub: 'Tout ce qu’offre Switch, plus la certitude que votre abonnement se rembourse. Sinon, vous récupérez 99 €.',
+  per: 'par an', monthly: `soit ${eurDec(8.25, locale)} par mois, facturé annuellement`, cta: 'Choisir Switch Plus', second: 'Comparer avec Switch et Premium',
+  badge: 'Garantie de gain',
+  exH: 'La garantie de gain, en deux exemples', exIntro: 'Nous faisons le compte après chaque année d’abonnement, sur la base de votre rapport d’économies.', exNote: 'Exemples de calcul fictifs, pour illustrer la règle. Ce ne sont pas des résultats de clients.',
+  ex: [
+    { t: 'Vous économisez 260 €', rows: [['Votre économie sur l’année', 260], ['Abonnement Switch Plus', -99]], res: 'Il vous reste 161 €', note: 'Vous avez économisé plus que votre abonnement : la garantie ne joue pas.' },
+    { t: 'Vous économisez 80 €', rows: [['Votre économie sur l’année', 80], ['Abonnement Switch Plus', -99], ['Garantie de gain', 99]], res: 'Il vous reste 80 €', note: '80 €, ce n’est pas plus que 99 € : vous récupérez 99 €.' },
+  ],
+  stepsH: 'Comment fonctionne la garantie de gain', steps: [
+    ['Votre année d’abonnement commence.', 'June suit votre contrat et vous fait changer quand c’est plus avantageux.'],
+    ['Après un an, nous faisons le compte.', 'Votre rapport d’économies montre combien vous avez économisé.'],
+    ['Pas assez économisé ? Remboursé.', 'Si vous n’économisez pas plus que le prix de votre abonnement, vous récupérez 99 €.'],
+  ], terms: 'Toutes les conditions figurent dans nos conditions générales.', termsLink: 'Lire la question sur la garantie',
+  termsList: [['Période', g.terms.period.fr], ['Mesure', g.terms.measurement.fr], ['Paiement', g.terms.payout.fr]], toConfirm: 'à confirmer',
+  reportH: 'Votre rapport d’économies annuel', reportB: 'Un aperçu clair chaque année : ce que vous avez consommé, chez quels fournisseurs vous étiez, et ce que cela vous a rapporté.',
+  reportRows: ['Consommation de l’année', 'Vos fournisseurs', 'Économie réalisée', 'Garantie de gain'], reportPh: 'Aperçu à venir : exemple de rapport réel',
+  alsoH: 'Également inclus', whoH: 'Switch, Switch Plus ou Premium ?', whoB: 'Choisissez Switch si vous voulez simplement économiser. Choisissez Switch Plus si vous voulez être sûr que June se rembourse. Vous avez un compteur numérique et voulez un suivi en direct ? Découvrez Premium.',
+  whoRows: [['Prix par an', '69 €', '99 €', '198 €'], ['Changement automatique ou après accord', '✓', '✓', '✓'], ['Garantie de gain', '–', '✓', '✓'], ['Rapport annuel', '–', '✓', '✓'], ['June Dongle, suivi en direct', '–', '–', '✓']],
+  incl: 'Inclus', excl: 'Non inclus', faqH: 'Questions sur la garantie', finalH: 'Voyez d’abord ce qui vous reste.', finalB: 'Calculez votre économie en 30 secondes. Switch Plus est déjà présélectionné.', finalCta: 'Commencer avec Switch Plus',
+} : {
+  title: 'Switch Plus: besparen met winstgarantie | June', desc: 'Bespaar je niet meer dan je abonnement kost, dan krijg je € 99 terug. Switch Plus: € 99 per jaar, dus € 8,25 per maand.',
+  crumbs: [['Abonnementen', 'plans'], ['Switch Plus', 'switchPlus']] as [string, string][],
+  eyebrow: 'June Switch Plus', h1: 'Besparen met gegarandeerd resultaat.',
+  sub: 'Alles uit Switch, plus de zekerheid dat je abonnement zichzelf terugverdient. Doet het dat niet, dan krijg je € 99 terug.',
+  per: 'per jaar', monthly: `dus ${eurDec(8.25, locale)} per maand, jaarlijks gefactureerd`, cta: 'Kies Switch Plus', second: 'Vergelijk met Switch en Premium',
+  badge: 'Winstgarantie',
+  exH: 'De Winstgarantie in twee voorbeelden', exIntro: 'Na elk abonnementsjaar maken we de rekening, op basis van je besparingsrapport.', exNote: 'Fictieve rekenvoorbeelden om de regel te tonen. Geen klantresultaten.',
+  ex: [
+    { t: 'Je bespaart € 260', rows: [['Je besparing over het jaar', 260], ['Abonnement Switch Plus', -99]], res: 'Je houdt € 161 over', note: 'Je bespaarde meer dan je abonnement: de garantie is niet nodig.' },
+    { t: 'Je bespaart € 80', rows: [['Je besparing over het jaar', 80], ['Abonnement Switch Plus', -99], ['Winstgarantie', 99]], res: 'Je houdt € 80 over', note: '€ 80 is niet meer dan € 99, dus je krijgt € 99 terug.' },
+  ],
+  stepsH: 'Zo werkt de Winstgarantie', steps: [
+    ['Je abonnementsjaar start.', 'June volgt je contract op en zet je over wanneer het voordeliger kan.'],
+    ['Na een jaar maken we de rekening.', 'In je besparingsrapport zie je hoeveel je bespaard hebt.'],
+    ['Te weinig bespaard? Geld terug.', 'Bespaar je niet meer dan je abonnement kost, dan krijg je € 99 terug.'],
+  ], terms: 'De volledige voorwaarden staan in onze algemene voorwaarden.', termsLink: 'Lees de vraag over de Winstgarantie',
+  termsList: [['Periode', g.terms.period.nl], ['Meting', g.terms.measurement.nl], ['Uitbetaling', g.terms.payout.nl]], toConfirm: 'te bevestigen',
+  reportH: 'Je jaarlijks besparingsrapport', reportB: 'Eén helder overzicht per jaar: wat je verbruikt hebt, bij welke leveranciers je zat, en wat dat opbracht.',
+  reportRows: ['Verbruik van het jaar', 'Je leveranciers', 'Gerealiseerde besparing', 'Winstgarantie'], reportPh: 'Voorbeeld volgt: echt rapport van June',
+  alsoH: 'Ook inbegrepen', whoH: 'Switch, Switch Plus of Premium?', whoB: 'Kies Switch als je gewoon wil besparen. Kies Switch Plus als je zeker wil zijn dat June zichzelf terugbetaalt. Heb je een digitale meter en wil je live inzicht? Bekijk dan Premium.',
+  whoRows: [['Prijs per jaar', '€ 69', '€ 99', '€ 198'], ['Automatisch of na jouw akkoord', '✓', '✓', '✓'], ['Winstgarantie', '–', '✓', '✓'], ['Jaarlijks rapport', '–', '✓', '✓'], ['June Dongle, live inzicht', '–', '–', '✓']],
+  incl: 'Inbegrepen', excl: 'Niet inbegrepen', faqH: 'Vragen over de garantie', finalH: 'Zie eerst wat je overhoudt.', finalB: 'Bereken je besparing in 30 seconden. Switch Plus staat al klaar.', finalCta: 'Start met Switch Plus',
+};
+const canonical = `https://www.june.energy/${locale}/switch-plus/`;
+const graph = [{
+  '@type': 'Product', '@id': `${canonical}#switch-plus`, name: sp.name, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: `${sp.valueProposition[k]} ${g.summary[k]}`,
+  offers: { '@type': 'Offer', url: `https://www.june.energy/${locale}/${fr ? 'inscription' : 'aanmelden'}/?plan=switch-plus`, price: '99.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock',
+    eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: [
+      { '@type': 'UnitPriceSpecification', price: '99.00', priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' }, billingDuration: 'P1Y' },
+      { '@type': 'UnitPriceSpecification', price: '8.25', priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' }, priceType: 'https://schema.org/ListPrice', description: fr ? 'Équivalent mensuel, facturé annuellement' : 'Maandelijks equivalent, jaarlijks gefactureerd' },
+    ] },
+}];
+const sign = (n: number) => (n < 0 ? `− ${E(-n)}` : `+ ${E(n)}`);
+---
+<Page locale={locale} routeKey="switchPlus" title={t.title} description={t.desc} crumbs={t.crumbs} graph={graph} stickyHref={signup}>
+  <section class="sp-hero" aria-labelledby="sp-h1">
+    <div class="wrap sp-hero-in">
+      <div class="sp-copy">
+        <Breadcrumb locale={locale} trail={t.crumbs} />
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h1 id="sp-h1">{t.h1}</h1>
+        <p class="lead">{t.sub}<Fn n={4} fr={fr} /></p>
+        <p class="proof-line"><Stars label={c.hero.starsLabel} /> <span>{c.hero.proof}<Fn n={2} fr={fr} /></span></p>
+      </div>
+      <aside class="sp-card on-ink" data-sticky-after aria-label={`Switch Plus, ${E(99)} ${t.per}`}>
+        <p class="sp-badge"><svg class="i" aria-hidden="true"><use href="#i-shield" /></svg>{t.badge}</p>
+        <p class="sp-price"><span class="num">{E(99)}</span> <span>{t.per}</span></p>
+        <p class="sp-monthly">{t.monthly}<Fn n={5} fr={fr} /></p>
+        <p class="sp-g">{g.summary[k]}</p>
+        <a class="btn btn--on-ink btn--lg btn--block" href={signup} data-cta="switchplus_hero">{t.cta}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+        <a class="sp-sec" href={`${plansHref}#switch-plus`}>{t.second}</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--mint" aria-labelledby="ex-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="ex-h">{t.exH}</h2><p>{t.exIntro}</p></div>
+      <div class="ex-grid">
+        {t.ex.map((x, i) => (
+          <article class:list={['ex', { 'ex--g': i === 1 }]} aria-labelledby={`ex-${i}`}>
+            <h3 id={`ex-${i}`}>{x.t}</h3>
+            <dl>
+              {x.rows.map(([l, v]) => <div class:list={{ 'ex-refund': l === g.name[k] }}><dt>{l}</dt><dd class="num">{sign(v as number)}</dd></div>)}
+            </dl>
+            <p class="ex-res num">{x.res}</p>
+            <p class="ex-note">{x.note}</p>
+          </article>
+        ))}
+      </div>
+      <p class="fine ex-fine">{t.exNote}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="steps-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="steps-h">{t.stepsH}</h2></div>
+      <ol class="gsteps" role="list">
+        {t.steps.map(([h, b], i) => (
+          <li>
+            <span class="gs-n num" aria-hidden="true">{i + 1}</span>
+            <h3>{h}</h3>
+            <p>{b}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="terms">
+        <dl>{t.termsList.map(([a, b]) => <div><dt>{a}</dt><dd>{b} <span class="chip chip--placeholder">{t.toConfirm}</span></dd></div>)}</dl>
+        <p class="small">{t.terms} <a href={`${href('faq', locale, base)}#winstgarantie`}>{t.termsLink}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mint" aria-labelledby="report-h">
+    <div class="wrap report">
+      <div class="report-copy">
+        <AnimIcon name="celebrate" size={96} />
+        <h2 id="report-h">{t.reportH}</h2>
+        <p>{t.reportB}</p>
+        <h3 class="also-h">{t.alsoH}</h3>
+        <ul role="list" class="also">{sw.features.map(f => <li><svg class="i" aria-hidden="true"><use href="#i-check" /></svg><span>{f[k]}</span></li>)}</ul>
+      </div>
+      <figure class="rep" aria-label={t.reportPh}>
+        <div class="rep-head"><svg class="i" aria-hidden="true"><use href="#i-doc" /></svg><span>{t.reportH}</span><span class="chip chip--placeholder">placeholder</span></div>
+        <dl>{t.reportRows.map(r => <div><dt>{r}</dt><dd><span class="skel-bar" aria-hidden="true"></span></dd></div>)}</dl>
+        <figcaption class="fine">{t.reportPh}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="who-h">
+    <div class="wrap who">
+      <div class="section-head"><h2 id="who-h">{t.whoH}</h2><p>{t.whoB}</p></div>
+      <table class="mini">
+        <thead><tr><td></td><th scope="col">Switch</th><th scope="col" class="rec">Switch Plus</th><th scope="col">Premium</th></tr></thead>
+        <tbody>
+          {t.whoRows.map(r => (
+            <tr><th scope="row">{r[0]}</th>{r.slice(1).map((v, i) => <td class:list={{ rec: i === 1 }}>{v === '✓' ? <><svg class="i yes" aria-hidden="true"><use href="#i-check" /></svg><span class="sr-only">{t.incl}</span></> : v === '–' ? <><svg class="i no" aria-hidden="true"><use href="#i-minus" /></svg><span class="sr-only">{t.excl}</span></> : v}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section section--mint faq" aria-labelledby="spfaq-h">
+    <div class="wrap faq-grid">
+      <div class="section-head"><h2 id="spfaq-h">{t.faqH}</h2>
+        <a class="link-arrow" href={href('faq', locale, base)}>{fr ? 'Toutes les questions' : 'Alle vragen'}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a></div>
+      <FaqList items={faqItems} />
+    </div>
+  </section>
+
+  <FinalCta locale={locale} h2={t.finalH} body={t.finalB} cta={t.finalCta} href={signup} secondary={{ label: fr ? 'Comparer les abonnements' : 'Vergelijk alle abonnementen', href: plansHref }} />
+</Page>
+
+<style>
+  .sp-hero { padding-block: var(--s-8) var(--section-y); }
+  .sp-hero-in { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--s-16); align-items: center; }
+  .sp-copy { display: grid; gap: var(--s-4); justify-items: start; }
+  .sp-copy .eyebrow { margin-top: var(--s-6); }
+  .sp-copy h1 { font-size: var(--fs-72); }
+  .proof-line { display: flex; align-items: center; gap: 10px; font-size: var(--fs-14); font-weight: 600; color: var(--ink-700); }
+  .sp-card { display: grid; gap: var(--s-3); padding: var(--s-8); border-radius: var(--r-xl); background: var(--ink-900); color: var(--on-ink); box-shadow: var(--shadow-ink); }
+  .sp-badge { display: inline-flex; align-items: center; gap: 8px; justify-self: start; padding: 6px 12px; border-radius: var(--r-pill); background: rgba(28,164,152,.14); color: var(--accent-on-ink-hover); font-size: var(--fs-14); font-weight: 700; }
+  .sp-badge .i { width: 18px; height: 18px; }
+  .sp-price { display: flex; align-items: baseline; gap: 10px; color: var(--on-ink-muted); font-weight: 600; }
+  .sp-price .num { font-size: clamp(3rem, 2rem + 3vw, 4.5rem); font-weight: 700; line-height: 1; color: #fff; }
+  .sp-monthly { font-size: var(--fs-14); color: var(--on-ink-muted); }
+  .sp-monthly :global(sup a) { color: var(--accent); }
+  .sp-g { padding: 12px 14px; border-radius: var(--r-md); background: var(--ink-800); box-shadow: inset 0 0 0 1px rgba(28,164,152,.4); font-size: var(--fs-16); margin-bottom: var(--s-2); }
+  .sp-sec { justify-self: center; display: inline-flex; align-items: center; min-height: 44px; font-size: var(--fs-14); font-weight: 600; color: #fff; }
+
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }
+  .ex { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-8); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-1); }
+  .ex h3 { font-size: var(--fs-22); }
+  .ex dl > div { display: flex; justify-content: space-between; gap: var(--s-4); padding: 8px 0; border-bottom: 1px solid var(--hairline); font-size: var(--fs-16); }
+  .ex dt { color: var(--ink-700); }
+  .ex dd { font-family: var(--font-ui); font-weight: 600; letter-spacing: 0; white-space: nowrap; }
+  .ex-refund dd, .ex-refund dt { color: var(--accent-strong); font-weight: 700; }
+  .ex-res { font-size: var(--fs-32); font-weight: 700; line-height: 1.1; }
+  .ex--g .ex-res { color: var(--accent-strong); }
+  .ex-note { font-size: var(--fs-14); color: var(--ink-700); }
+  .ex-fine { margin-top: var(--s-4); }
+
+  .gsteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-8); counter-reset: s; }
+  .gsteps li { display: grid; gap: var(--s-2); align-content: start; padding-top: var(--s-5); border-top: 3px solid var(--accent); }
+  .gs-n { font-size: var(--fs-48); font-weight: 700; line-height: 1; color: var(--accent-strong); }
+  .gsteps p { color: var(--ink-700); font-size: var(--fs-16); }
+  .terms { margin-top: var(--s-10); padding: var(--s-6); border-radius: var(--r-lg); background: var(--surface-sunken); display: grid; gap: var(--s-4); }
+  .terms dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+  .terms dt { font-size: var(--fs-12); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); }
+  .terms dd { font-size: var(--fs-16); margin-top: 4px; }
+  .terms .chip { margin-top: 6px; }
+
+  .report { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-16); align-items: center; }
+  .report-copy { display: grid; gap: var(--s-4); }
+  .report-copy > p { color: var(--ink-700); }
+
+  .also-h { margin-top: var(--s-4); font-size: var(--fs-18); }
+  .also { display: grid; gap: 8px; font-size: var(--fs-16); }
+  .also li { display: flex; gap: 10px; }
+  .also .i { width: 20px; height: 20px; flex: none; color: var(--accent-strong); margin-top: 2px; }
+  .rep { margin: 0; padding: var(--s-6); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-2); display: grid; gap: var(--s-4); }
+  .rep-head { display: flex; align-items: center; gap: 10px; font: 700 var(--fs-18)/1.2 var(--font-display); }
+  .rep-head .i { color: var(--accent-strong); }
+  .rep-head .chip { margin-left: auto; }
+  .rep dl > div { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: 12px 0; border-bottom: 1px solid var(--hairline); font-size: var(--fs-16); }
+  .skel-bar { display: block; width: 90px; height: 12px; border-radius: 6px; background: var(--surface-track); }
+
+  .mini { width: 100%; max-width: 860px; border-collapse: collapse; font-size: var(--fs-16); }
+  .mini th, .mini td { padding: 12px var(--s-4); border-bottom: 1px solid var(--hairline); text-align: center; }
+  .mini th[scope="row"] { text-align: left; font-weight: 500; }
+  .mini thead th { font: 700 var(--fs-18)/1.2 var(--font-display); }
+  .mini .rec { background: var(--accent-soft); }
+  .mini .yes { width: 22px; height: 22px; color: var(--accent-strong); margin-inline: auto; stroke-width: 2.25; }
+  .mini .no { width: 18px; height: 18px; color: var(--ink-400); margin-inline: auto; }
+  .faq-grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--s-16); align-items: start; }
+  .faq .section-head { margin-bottom: 0; }
+
+  @media (max-width: 900px) {
+    .sp-hero-in, .report, .faq-grid { grid-template-columns: 1fr; gap: var(--s-8); }
+    .ex-grid, .gsteps { grid-template-columns: 1fr; }
+    .terms dl { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .sp-card, .ex { padding: var(--s-6); }
+    .mini { font-size: var(--fs-14); }
+    .mini th, .mini td { padding: 10px 6px; }
+    .mini thead th { font-size: var(--fs-14); }
+  }
+</style>

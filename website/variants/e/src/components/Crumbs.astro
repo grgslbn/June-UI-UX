@@ -1,0 +1,16 @@
+---
+import { href } from '@shared/routes.mjs';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale; items: { key: string; name: string }[] }
+const { locale, items } = Astro.props;
+const t = copy[locale];
+const base = import.meta.env.BASE_URL;
+const all = [{ key: 'home', name: t.home }, ...items];
+---
+<nav class="crumbs" aria-label={t.crumbs}>
+  <ol role="list">
+    {all.map((c, i) => i < all.length - 1
+      ? <li><a href={href(c.key, locale, base)}>{c.name}</a></li>
+      : <li><span aria-current="page">{c.name}</span></li>)}
+  </ol>
+</nav>

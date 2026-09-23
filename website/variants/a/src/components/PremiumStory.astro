@@ -1,0 +1,88 @@
+---
+// Premium section — variant D's product story told in A's calm language, with the REAL leaf dongle and the
+// real current June app (FR pages get the FR phone + an HTML rebuild of the NL-only feature card).
+// Used on Home and on Plans (#dongle). Only confirmed Premium features (freeze §2.2: peak/budget/advice stay flagged).
+import { Picture } from 'astro:assets';
+import { signupHref, to, type Locale } from '../content/i18n';
+import { pages } from '../content/pages';
+import Icon from './Icon.astro';
+import stageNl from '@shared/assets/dongle/dongle-phone-front.png';
+import stageFr from '@shared/assets/dongle/dongle-with-phone.png';
+import dongle from '@shared/assets/dongle/dongle-leaf-closeup.png';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+import solarNl from '@shared/assets/feature/solar-flow.png';
+interface Props { locale: Locale; id?: string; entry: string; compareLink?: boolean; headingId?: string; tone?: 'white' | 'canvas' }
+const { locale, id, entry, compareLink = true, headingId = 'premium-title', tone = 'canvas' } = Astro.props;
+const t = pages[locale].premium;
+const nl = locale === 'nl-be';
+const fmt = (v: string) => (nl ? v : v.replace('.', ','));
+---
+<section class:list={['section premium', `section--${tone}`, tone === 'canvas' && 'premium--canvas']} id={id} aria-labelledby={headingId}>
+  <div class="wrap">
+    <div class="premium__top">
+      <div class="premium__copy">
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h2 id={headingId} class="h2">{t.title}</h2>
+        <p class="sec-head__intro">{t.intro}</p>
+        <div class="premium__price">
+          <p><span class="premium__year">{t.price}</span></p>
+          <p class="premium__sub">{t.priceSub}</p>
+          <p class="premium__incl"><Icon name="i-shield" size="sm" />{t.included}</p>
+        </div>
+        <div class="premium__cta">
+          <a class="btn btn--secondary" href={signupHref(locale, `plan=premium&meter=digital&entry=${entry}`)}>{t.cta}<Icon name="i-arrow-r" size="sm" class="nudge" /></a>
+          {compareLink && <a class="link" href={to('plans', locale, { hash: 'switch-plus' })}>{t.more}</a>}
+        </div>
+        <p class="premium__req"><Icon name="i-info" size="sm" />{t.requirement}</p>
+      </div>
+      <figure class="premium__stage">
+        <Picture src={nl ? stageNl : stageFr} formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(max-width: 960px) 80vw, 460px"
+          alt={t.stageAlt} loading="lazy" decoding="async" class="premium__stage-img" />
+        <figcaption class="tag tag--solid">{t.tag}</figcaption>
+      </figure>
+    </div>
+
+    <ol class="pfeat" role="list">
+      <li class="pfeat__item">
+        <div class="pfeat__vis pfeat__vis--dongle" aria-hidden="true">
+          <Picture src={dongle} formats={['avif', 'webp']} widths={[220, 440]} sizes="220px" alt="" loading="lazy" decoding="async" />
+        </div>
+        <p class="pfeat__n" aria-hidden="true">01</p>
+        <h3 class="h4">{t.steps[0].t}</h3>
+        <p>{t.steps[0].b}</p>
+      </li>
+      <li class="pfeat__item">
+        <div class="pfeat__vis pfeat__vis--phone">
+          <Picture src={nl ? phoneNl : phoneFr} formats={['avif', 'webp']} widths={[180, 360]} sizes="180px" alt={t.phoneAlt} loading="lazy" decoding="async" />
+        </div>
+        <p class="pfeat__n" aria-hidden="true">02</p>
+        <h3 class="h4">{t.steps[1].t}</h3>
+        <p>{t.steps[1].b}</p>
+      </li>
+      <li class="pfeat__item">
+        <div class="pfeat__vis pfeat__vis--card">
+          {nl ? (
+            <Picture src={solarNl} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" alt={t.solarAlt} loading="lazy" decoding="async" />
+          ) : (
+            <div class="solarcard" role="img" aria-label="Exemple de carte de l'app June : production solaire 1 kWh, prélèvement sur le réseau 22,2 kWh, injection 0,2 kWh, autoconsommation 0,8 kWh.">
+              <div class="solarcard__flow" aria-hidden="true">
+                <span class="solarcard__node"><Icon name="i-bolt" size="sm" /><b>22 kWh</b><small>Réseau</small></span>
+                <span class="solarcard__node solarcard__node--sun"><Icon name="i-sun" size="sm" /><b>1 kWh</b><small>Production</small></span>
+                <span class="solarcard__node"><Icon name="i-home" size="sm" /><b>23 kWh</b><small>Consommation</small></span>
+              </div>
+              <dl class="solarcard__rows" aria-hidden="true">
+                <div><dt>Prélèvement</dt><dd>{fmt('22.2')} kWh</dd></div>
+                <div><dt>Injection</dt><dd>{fmt('0.2')} kWh</dd></div>
+                <div><dt>Autoconsommation</dt><dd>{fmt('0.8')} kWh</dd></div>
+              </dl>
+            </div>
+          )}
+        </div>
+        <p class="pfeat__n" aria-hidden="true">03</p>
+        <h3 class="h4">{t.steps[2].t}</h3>
+        <p>{t.steps[2].b}</p>
+      </li>
+    </ol>
+  </div>
+</section>

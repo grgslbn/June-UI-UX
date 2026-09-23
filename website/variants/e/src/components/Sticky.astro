@@ -1,0 +1,28 @@
+---
+// Sticky mobile CTA: appears once the hero CTA ([data-sticky-trigger]) scrolled out, hides over [data-sticky-hide]. ≈400 B JS.
+import { href } from '@shared/routes.mjs';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale; label?: string; proof?: string; plan?: string }
+const { locale, label, proof, plan } = Astro.props;
+const t = copy[locale];
+const url = href('signup', locale, import.meta.env.BASE_URL) + (plan ? `?plan=${plan}` : '');
+---
+<div class="sticky" data-sticky>
+  <p class="sticky__proof">{proof || t.sticky.proof}</p>
+  <a class="btn btn--ink sticky__btn" href={url} data-cta="sticky">{label || t.cta}</a>
+</div>
+<script>
+  const bar = document.querySelector('[data-sticky]');
+  const trig = document.querySelector('[data-sticky-trigger]');
+  const hides = document.querySelectorAll('[data-sticky-hide]');
+  if (bar && trig && 'IntersectionObserver' in window) {
+    let past = false; const seen = new Set();
+    const sync = () => bar.classList.toggle('is-on', past && seen.size === 0);
+    new IntersectionObserver(([e]) => { past = !e.isIntersecting && e.boundingClientRect.top < 0; sync(); }).observe(trig);
+    const io = new IntersectionObserver(es => { es.forEach(e => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target))); sync(); });
+    hides.forEach(h => io.observe(h));
+    // hide while typing (virtual keyboard open)
+    document.addEventListener('focusin', e => { if ((e.target as HTMLElement).matches('input')) bar.classList.add('is-typing'); });
+    document.addEventListener('focusout', () => bar.classList.remove('is-typing'));
+  }
+</script>

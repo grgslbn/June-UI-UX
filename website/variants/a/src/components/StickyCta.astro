@@ -1,0 +1,12 @@
+---
+// Sticky mobile CTA bar (≤ 720px). Appears once the page's first [data-sticky-sentinel] has scrolled away,
+// hides while any CTA block or the footer is visible. `inert` while hidden (not focusable, not announced).
+import Icon from './Icon.astro';
+interface Props { label: string; href: string; proof: string; focus?: string; lead?: string }
+const { label, href, proof, focus, lead } = Astro.props;
+---
+<div class="sticky" data-sticky inert>
+  {lead && <p class="sticky__lead">{lead}</p>}
+  <a class="btn btn--primary sticky__btn" href={href} data-focus={focus}>{label}<Icon name="i-arrow-r" size="sm" /></a>
+  <p class="sticky__proof">{proof}</p>
+</div>

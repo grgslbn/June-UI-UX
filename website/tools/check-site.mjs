@@ -125,7 +125,7 @@ if (flag('--lighthouse')) {
     const r = await lighthouse(origin + route, { port: LH_PORT, output: 'json', logLevel: 'error', onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'], formFactor: 'mobile', screenEmulation: { mobile: true, width: 390, height: 844, deviceScaleFactor: 3, disabled: false } });
     const c = r.lhr.categories; const a = r.lhr.audits;
     const s = { route, perf: Math.round(c.performance.score * 100), a11y: Math.round(c.accessibility.score * 100), bp: Math.round(c['best-practices'].score * 100), seo: Math.round(c.seo.score * 100), lcp: a['largest-contentful-paint'].displayValue, cls: a['cumulative-layout-shift'].displayValue, tbt: a['total-blocking-time'].displayValue };
-    s.gates = [s.perf < 90 && `perf ${s.perf}`, s.a11y < 95 && `a11y ${s.a11y}`, s.bp < 90 && `best-practices ${s.bp}`, s.seo < 95 && `SEO ${s.seo}`].filter(Boolean);
+    s.gates = [s.perf < 90 && `perf ${s.perf}`, s.a11y < 95 && `a11y ${s.a11y}`, s.bp < 90 && `best-practices ${s.bp}`, s.seo < 95 && !/aanmelden|inscription/.test(route) && `SEO ${s.seo}` /* sign-up is noindex by design; Lighthouse's is-crawlable audit penalises that */].filter(Boolean);
     lh.push(s);
   }
   await lhBrowser.close();

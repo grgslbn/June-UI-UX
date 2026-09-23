@@ -1,23 +1,34 @@
 ---
-// Variant A shell: extends Base (keeps its canonical / hreflang / lang / robots logic) and adds
-// fonts, styles, favicon and the JSON-LD for the page.
+// Variant A shell: extends Base (canonical / hreflang / lang / robots) and adds fonts, styles,
+// favicon, Open Graph and the page's JSON-LD @graph.
 import Base from './Base.astro';
 import Icons from '../components/Icons.astro';
 import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import { abs } from '@shared/routes.mjs';
 import '../styles/tokens.css';
 import '../styles/global.css';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; jsonld?: object[]; robots?: string }
-const { locale, routeKey, title, description, jsonld = [], robots } = Astro.props;
-const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#19736f"/><path d="M18.6 5 10 18.2l5.6.2-2.3 9.6 9-13.5-5.7-.1 2-9.4z" fill="#fff"/></svg>')}`;
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; jsonld?: object | object[]; bodyClass?: string }
+const { locale, routeKey, title, description, jsonld = [], bodyClass } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const ld = Array.isArray(jsonld) ? jsonld : [jsonld];
+const og = locale === 'nl-be' ? 'nl_BE' : 'fr_BE';
 ---
 <Base locale={locale} routeKey={routeKey} title={title} description={description}>
   <Fragment slot="head">
     <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
-    <link rel="icon" href={favicon} type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <meta name="theme-color" content="#edf4f3" />
-    {robots && <meta name="robots" content={robots} />}
-    {jsonld.map(j => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="June" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={abs(routeKey, locale)} />
+    <meta property="og:image" content="https://www.june.energy/og/june-og.jpg" />
+    <meta property="og:locale" content={og} />
+    <meta property="og:locale:alternate" content={og === 'nl_BE' ? 'fr_BE' : 'nl_BE'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {ld.map(j => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
   </Fragment>
   <Icons />
-  <slot />
+  <div class:list={['page', bodyClass]}><slot /></div>
 </Base>

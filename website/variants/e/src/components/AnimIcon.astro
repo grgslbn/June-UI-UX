@@ -1,0 +1,25 @@
+---
+// Animated brand icon (blob + line + teal accent). The static frame is the real <img> (tiny, eager, reduced-motion safe);
+// the animated WebP (~150 KB) is swapped in only when motion is welcome AND the icon scrolls into view.
+import { getImage } from 'astro:assets';
+const statics = import.meta.glob<{ default: ImageMetadata }>('../../../../shared/assets/icons/*-static.png', { eager: true });
+const anims = import.meta.glob<string>('../../../../shared/assets/icons/*.webp', { eager: true, query: '?url', import: 'default' });
+type Name = 'compare' | 'calculator' | 'home-analysis' | 'home-automatic' | 'home-switch' | 'celebrate' | 'relax';
+interface Props { name: Name; class?: string; size?: number; eager?: boolean }
+const { name, class: cls = '', size = 120 } = Astro.props;
+const pick = <T,>(m: Record<string, T>, end: string) => m[Object.keys(m).find(k => k.endsWith(end))!];
+const still = await getImage({ src: pick(statics, `/icon-${name}-static.png`).default, width: 240, format: 'webp', quality: 80 });
+const anim = pick(anims, `/icon-${name}.webp`);
+---
+<span class={`aicon ${cls}`} aria-hidden="true"><img src={still.src} data-anim={anim} width={size} height={size} alt="" decoding="async" /></span>
+<script>
+  if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const img = e.target as HTMLImageElement; const a = img.dataset.anim;
+      if (a) { const pre = new Image(); pre.onload = () => { img.src = a; }; pre.src = a; }
+      io.unobserve(img);
+    }), { rootMargin: '150px' });
+    document.querySelectorAll<HTMLImageElement>('img[data-anim]').forEach(i => io.observe(i));
+  }
+</script>

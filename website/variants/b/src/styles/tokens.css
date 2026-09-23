@@ -3,7 +3,7 @@
    Source of truth: app/tokens.css (Soft Native). This file re-declares the app
    values 1:1 and adds a thin MARKETING layer (bigger type, section rhythm,
    the ink result card). No second green, no second radius set.
-   Light only at concept stage (dark tokens = Phase 4, mirrored from app).
+   Light only (no dark mode: theme-color white; the site never declares color-scheme dark).
    ========================================================================== */
 :root {
   color-scheme: light;
@@ -53,11 +53,13 @@
   --on-ink-faint: rgba(255,255,255,.16);/* tracks, hairlines — non-text */
 
   /* ── June Green ── */
-  --accent: #3bada8;          /* fills, bar, underline; text only on ink (5.9:1) */
-  --accent-strong: #19736f;   /* THE CTA colour, links, focus (5.6:1 on white) */
-  --accent-strong-hover: #135c59;
-  --accent-soft: #e2f3f1;
-  --ambient: #b6e3df;
+  --accent: #1ca498;          /* LOGO GREEN (PO decision): fills, bars, icons, large display, logo; text only on ink (5.3:1) */
+  --accent-strong: #127a71;   /* accessible step: CTA fill, links, small text, focus (5.2:1 on white, 4.7:1 on mint) */
+  --accent-strong-hover: #0d6159;
+  --accent-soft: #e6f5f3;
+  --accent-on-ink-hover: #3fbdb1;
+  --ambient: #b3e4de;
+  --mascot: #58afa0;          /* June character teal (asset only) */
   --on-accent: #ffffff;
 
   /* ── Brand spark (sparingly; never a CTA) ── */
@@ -91,4 +93,5 @@
 
   --focus-ring: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent-strong);
   --focus-ring-ink: 0 0 0 3px var(--ink-900), 0 0 0 5px var(--accent);
+  --accent-rgb: 28,164,152;
 }
