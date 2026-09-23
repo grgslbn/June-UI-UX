@@ -96,7 +96,7 @@ const ogImage = `https://www.june.energy/og/june-${locale === 'fr-be' ? 'fr' : '
     document.querySelectorAll<HTMLDetailsElement>('details[data-faq]').forEach((d) => d.addEventListener('toggle', () => { if (d.open) dl.push({ event: 'faq_open', question_id: d.id }); }));
 
     document.querySelectorAll<HTMLFormElement>('form[data-pc]').forEach((f) => {
-      const input = f.querySelector('input')!; const help = f.querySelector<HTMLElement>('.pc-help')!;
+      const input = f.querySelector<HTMLInputElement>('input[name="postcode"]')!; const help = f.querySelector<HTMLElement>('.pc-help')!;
       f.addEventListener('submit', (ev) => {
         if (!/^[1-9]\d{3}$/.test(input.value.trim())) {
           ev.preventDefault(); input.setAttribute('aria-invalid', 'true'); help.textContent = help.dataset.error!; help.classList.add('is-error'); input.focus();
