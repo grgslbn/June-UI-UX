@@ -167,7 +167,7 @@
 <!-- ════════════════════════ BREAKDOWN · required profile fields missing ════════════════════════ -->
 <section class="panel" id="panel-breakdown-profile" data-tab="breakdown" data-label="Breakdown · profile needed" aria-labelledby="bdp-title">
   <div class="grid">
-    <article class="surface span-12 empty motif">
+    <article class="surface span-12 empty">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
       <div>
         <h1 class="empty__title" id="bdp-title">Tell us about your home to see where your energy goes</h1>
@@ -200,7 +200,7 @@
 <!-- ════════════════════════ BREAKDOWN · data not ready yet ════════════════════════ -->
 <section class="panel" id="panel-breakdown-not-ready" data-tab="breakdown" data-label="Breakdown · data not ready yet" aria-labelledby="bdn-title">
   <div class="grid">
-    <article class="surface span-12 empty motif">
+    <article class="surface span-12 empty">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
       <div>
         <h1 class="empty__title" id="bdn-title">Data not ready yet</h1>
@@ -219,6 +219,7 @@
   <details class="meta">
     <summary>Spec notes · Breakdown · data not ready yet</summary>
     <ul>
+      <li>No halftone motif on Breakdown edge states (round 2: it sat behind body copy).</li>
       <li>Title, body and sub verbatim. "Check back soon." is frozen copy; a concrete date sits right under it (copy rule: dates, not "soon").</li>
       <li>Shared readiness meter added (round 2: every time-based state has one). ⚠ <b>Derived</b>: "about 3 more weeks" read as a 4-week requirement with 1 week collected (readings since 11 May 2026 → ready around 8 June 2026). Needs the real readiness threshold from the API before build.</li>
       <li>Nothing for the user to do — said explicitly (verbatim sub).</li>
