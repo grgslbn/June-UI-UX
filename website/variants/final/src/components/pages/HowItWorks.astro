@@ -7,6 +7,7 @@ import { Image } from 'astro:assets';
 import Site from '../../layouts/Site.astro';
 import '../../styles/how.css';
 import SectionHead from '../SectionHead.astro';
+import CtaProof from '../CtaProof.astro';
 import Icon from '../Icon.astro';
 import AnimIcon from '../AnimIcon.astro';
 import FaqList from '../FaqList.astro';
@@ -37,7 +38,7 @@ const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
         <h2 id="tldr-h" class="tldr-h"><Icon name="clock" />{c.hero.tldr}</h2>
         <ol>{c.hero.summary.map((s: string) => <li>{s}</li>)}</ol>
         <a class="btn" href={href('signup', locale, base)} data-cta="hw-hero">{c.ui.cta}<Icon name="arrow-r" /></a>
-        <p class="proof"><Stars value={c.rating} id="hw-hero" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
+        <CtaProof c={c} id="hw-hero" reducer={c.proof.risk} />
       </aside>
     </div>
   </section>

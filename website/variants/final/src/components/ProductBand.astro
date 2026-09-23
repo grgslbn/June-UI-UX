@@ -4,11 +4,12 @@
 // Reusable: Plans uses variant="full" (with the three product steps); Home can use variant="compact".
 // Price block follows rule C8 (yearly first, monthly + billing beside it); guarantee always with its condition;
 // the P1 requirement is always shown next to the CTA. Only confirmed Premium features (freeze §2.2).
-// Styles are scoped here, so the band looks the same wherever it is dropped in.
+// Styles are scoped here, so the band looks the same wherever it is dropped in. Images are eager + fetchpriority=low
+// (small AVIF/WebP, fixed width/height): no pop-in, no layout shift, and they never compete with the LCP.
 import { Picture } from 'astro:assets';
 import Icon from './Icon.astro';
 import Fn from './Fn.astro';
-import Stars from './Stars.astro';
+import CtaProof from './CtaProof.astro';
 import { productBandCopy } from '../i18n/pages.js';
 import { href } from '@shared/routes.mjs';
 import dongle from '@shared/assets/dongle/dongle-leaf-closeup.png';
@@ -46,13 +47,13 @@ const signup = href('signup', locale, base);
           <a class="btn" href={`${signup}?plan=premium&meter=digital`} data-cta={`${entry}-premium`}>{b.cta}<Icon name="arrow-r" /></a>
           {compareLink && <a class="link-arrow" href={`${href('plans', locale, base)}#switch-plus`}>{b.alt}<Icon name="arrow-r" /></a>}
         </div>
-        <p class="pb-proof"><Stars value={c.rating} id={`${id}-pb`} /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
+        <CtaProof c={c} id={`${id}-pb`} reducer={c.proof.risk} />
         <p class="pb-req"><Icon name="meter" /><span>{b.req}</span></p>
       </div>
       <figure class="pb-stage">
         <div class="pb-field" aria-hidden="true"></div>
-        <Picture src={L === 'fr' ? phoneFr : phoneNl} formats={['avif', 'webp']} widths={[220, 299]} sizes="(max-width: 860px) 44vw, 220px" alt={b.stageAlt} loading="lazy" decoding="async" pictureAttributes={{ class: 'pb-phone' }} />
-        <Picture src={dongle} formats={['avif', 'webp']} widths={[200, 400]} sizes="(max-width: 860px) 36vw, 200px" alt="" loading="lazy" decoding="async" pictureAttributes={{ class: 'pb-dongle' }} />
+        <Picture src={L === 'fr' ? phoneFr : phoneNl} formats={['avif', 'webp']} widths={[220, 299]} sizes="(max-width: 860px) 44vw, 220px" alt={b.stageAlt} loading="eager" fetchpriority="low" decoding="async" pictureAttributes={{ class: 'pb-phone' }} />
+        <Picture src={dongle} formats={['avif', 'webp']} widths={[200, 400]} sizes="(max-width: 860px) 36vw, 200px" alt="" loading="eager" fetchpriority="low" decoding="async" pictureAttributes={{ class: 'pb-dongle' }} />
         <figcaption class="pb-tag">{b.tag}</figcaption>
       </figure>
     </div>
@@ -84,9 +85,8 @@ const signup = href('signup', locale, base);
   .pb-g { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; font-size: var(--fs-ui); line-height: 1.45; margin-top: 6px; }
   .pb-g :global(svg), .pb-req :global(svg) { width: 20px; height: 20px; color: var(--accent-strong); margin-top: 1px; }
   .pb-cta { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-6); align-items: center; margin-top: var(--s-2); }
-  .pb-proof { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; font-size: var(--fs-note); color: var(--ink-700); margin-top: calc(-1 * var(--s-2)); }
-  .pb-proof strong { color: var(--ink-900); font-weight: 600; }
-  .pb-proof .sep { display: none; }
+  .pb-copy :global(.cta-proof) { margin-top: calc(-1 * var(--s-2)); column-gap: 12px; }
+  .pb-copy :global(.cta-proof > span[aria-hidden]:not(.stars)) { display: none; }
   .pb-req { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; font-size: var(--fs-note); color: var(--ink-700); max-width: 52ch; }
   .pb-req :global(svg) { color: var(--ink-700); }
 

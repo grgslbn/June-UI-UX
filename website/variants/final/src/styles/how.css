@@ -50,10 +50,8 @@
   .who-change { padding-top: var(--s-3); border-top: 1px solid var(--rule); }
 }
 
-.proof { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; font-size: var(--fs-note); color: var(--ink-700); line-height: 1.4; }
-.proof strong { color: var(--ink-900); font-weight: 600; }
-.proof .sep { display: none; }
-.tldr .proof { margin-top: var(--s-2); justify-content: center; }
+.tldr .cta-proof > span[aria-hidden]:not(.stars) { display: none; }
+.tldr .cta-proof { column-gap: 12px;  margin-top: var(--s-2); justify-content: center; }
 .regions-note { display: flex; gap: 8px; align-items: flex-start; }
 .regions-note svg { width: 18px; height: 18px; flex: none; color: var(--accent-strong); margin-top: 1px; }
 

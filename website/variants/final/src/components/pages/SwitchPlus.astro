@@ -7,12 +7,12 @@ import { Image } from 'astro:assets';
 import Site from '../../layouts/Site.astro';
 import '../../styles/plans.css';
 import SectionHead from '../SectionHead.astro';
+import CtaProof from '../CtaProof.astro';
 import Icon from '../Icon.astro';
 import Fn from '../Fn.astro';
 import FaqList from '../FaqList.astro';
 import FinalCta from '../FinalCta.astro';
 import Check from '../Check.astro';
-import Stars from '../Stars.astro';
 import { switchPlusCopy } from '../../i18n/pages.js';
 import { href, abs } from '@shared/routes.mjs';
 import reportNl from '@shared/assets/feature/savings-report.png';
@@ -34,7 +34,7 @@ const x = c.examples;
 const fee = p.yearlyN;
 ---
 <Site locale={locale} routeKey="switchPlus" title={c.meta.title} description={c.meta.description} ld={ld}
-  sticky={{ strong: `Switch Plus · ${p.yearly} ${L === 'fr' ? 'par an' : 'per jaar'}`, sub: c.hero.monthly, label: c.hero.cta, url: signup }}>
+  stickyPlan="switch-plus">
   <section class="page-hero sp-hero" aria-labelledby="h1">
     <div class="wrap sp-grid">
       <div class="hero-copy">
@@ -43,7 +43,7 @@ const fee = p.yearlyN;
         <p class="lead">{c.hero.lead}<Fn n={4} L={L} /></p>
         <div class="sp-cta" data-sticky-hide>
           <a class="btn" href={signup} data-cta="sp-hero">{c.hero.cta}<Icon name="arrow-r" /></a>
-          <p class="proof"><Stars value={c.rating} id="sp-hero" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
+          <CtaProof c={c} id="sp-hero" reducer={c.proof.risk} />
         </div>
         <p><a class="link-arrow" href={`${href('plans', locale, base)}#vergelijk`}>{c.hero.secondary}<Icon name="arrow-r" /></a></p>
       </div>
@@ -77,7 +77,7 @@ const fee = p.yearlyN;
       </div>
       <div class="gx-cta">
         <a class="btn btn--light" href={signup} data-cta="sp-examples">{c.hero.cta}<Icon name="arrow-r" /></a>
-        <p class="proof"><Stars value={c.rating} id="sp-gx" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
+        <CtaProof c={c} id="sp-gx" tone="light" reducer={c.proof.risk} />
       </div>
     </div>
   </section>

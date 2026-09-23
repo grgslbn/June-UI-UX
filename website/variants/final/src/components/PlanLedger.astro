@@ -12,6 +12,7 @@
 //   <PlanLedger mode="boot" c={c} signup={url} />   method box / "your estimate" box + sets html[data-est]
 //   <PlanLedger mode="card" c={c} slug="switch" fee={69} name="Switch" />   one per plan card
 //   <PlanLedger mode="fill" c={c} />                 fills every ledger (module script, lib/estimate.js)
+import CtaProof from './CtaProof.astro';
 import Icon from './Icon.astro';
 import Stars from './Stars.astro';
 import Fn from './Fn.astro';
@@ -40,7 +41,7 @@ const L = c.L;
         </p>
         <p class="pl-p">{m.p}</p>
         <a class="btn" href={signup} data-cta="plans-method">{m.cta}<Icon name="arrow-r" /></a>
-        <p class="proof"><Stars value={c.rating} id="pl-method" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.riskAlt}</span></p>
+        <CtaProof c={c} id="pl-method" tone="light" reducer={c.proof.riskAlt} />
       </div>
       <div class="pl-mine">
         <p class="pl-h">{l.title}</p>

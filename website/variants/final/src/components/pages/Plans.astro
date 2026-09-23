@@ -8,7 +8,7 @@ import '../../styles/plans.css';
 import SectionHead from '../SectionHead.astro';
 import Icon from '../Icon.astro';
 import Fn from '../Fn.astro';
-import Stars from '../Stars.astro';
+import CtaProof from '../CtaProof.astro';
 import FaqList from '../FaqList.astro';
 import FinalCta from '../FinalCta.astro';
 import Check from '../Check.astro';
@@ -37,13 +37,13 @@ const ld = c.plans.map((p: any) => ({
 const e = c.earn;
 ---
 <Site locale={locale} routeKey="plans" title={c.meta.title} description={c.meta.description} ld={ld}
-  sticky={{ strong: `Switch Plus · ${c.plans[1].yearly} ${c.card.perYear}`, sub: `${c.plans[1].monthly} · ${c.card.billed}`, label: `${c.card.choose} Switch Plus`, url: `${signup}?plan=switch-plus` }}>
+  stickyPlan="switch-plus">
   <section class="page-hero plans-hero" aria-labelledby="h1">
     <div class="wrap">
       <p class="kicker"><span>{c.hero.kicker}</span></p>
       <h1 id="h1">{c.hero.h1}</h1>
       <p class="lead">{c.hero.lead}<Fn n={6} L={L} /></p>
-      <ul class="hero-facts" role="list">
+      <ul class="hero-facts" role="list" data-sticky-hide>
         {c.hero.facts.map(([ic, t]: string[], i: number) => <li><Icon name={ic} /><span>{t}{i === 2 && <Fn n={4} L={L} />}</span></li>)}
       </ul>
     </div>
@@ -56,7 +56,7 @@ const e = c.earn;
         <PlanLedger mode="boot" c={c} signup={signup} />
       </div>
 
-      <ul class="plan-cards" role="list" data-plan-cards data-sticky-hide>
+      <ul class="plan-cards" role="list" data-plan-cards>
         {c.plans.map((p: any) => {
           const rec = p.slug === 'switch-plus';
           return (
@@ -73,8 +73,10 @@ const e = c.earn;
                 <span>{p.slug === 'switch' ? c.card.noGuarantee : c.card.guarantee}{p.slug !== 'switch' && <Fn n={4} L={L} />}</span>
               </p>
               <PlanLedger mode="card" c={c} slug={p.slug} fee={p.yearlyN} name={p.name} />
-              <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}`} data-plan-link={p.slug} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
-              <p class="proof"><Stars value={c.rating} id={`card-${p.slug}`} /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
+              <div class="plan-cta" data-sticky-hide>
+                <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}&entry=plans-${p.slug}`} data-plan-link={p.slug} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
+                <CtaProof c={c} id={`card-${p.slug}`} reducer={c.proof.risk} />
+              </div>
               <h3 class="plan-fh">{c.card.features}</h3>
               <ul class="plan-feat" role="list">
                 {p.features.map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
