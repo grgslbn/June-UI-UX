@@ -46,3 +46,9 @@ Research recommendation: build **A, B, C** in full; fold D's product story into 
 7. Comparison frequency wording (continuous / daily / monthly — pick one).
 8. Phone number / support hours (60+ persona), company legal details for the footer.
 9. Assets: logo files, photography, explainer video, NL/FR app screenshots, dongle photos, Junior vector.
+
+## 6. Product-owner decisions (checkpoint 2)
+- **Build in full:** A · Calm Confidence (absorbs D's product story: Premium section with the real leaf dongle, meter chooser from `variants/d`), B · Savings First, C · Honest Market, E · Bold June. D stays as a concept reference.
+- **Brand green = logo green `#1CA498`** (measured from the official logo). Derive accessible text/button shades from it (white text needs ≥ 4.5:1 — use a darker step for buttons and small text; `#1CA498` is for fills, large display, icons, logo).
+- **Product UI = the real current June app**: use the supplied NL/FR phone mockups, laptop dashboard and feature cards from `shared/assets/` (not recreated Insights tiles). FR pages use the FR phone mockup; NL-only feature cards only on NL pages or with FR text alternatives.
+- **Real assets** (see `shared/assets/README.md`): official SVG logo everywhere (no stand-in wordmarks), the teal June character (not the red 2018 blob), leaf dongle shots, 7 animated brand icons (animated WebP + static PNG for reduced motion). Import via `astro:assets` for AVIF/WebP output. Still placeholders: lifestyle/home photography, video.
