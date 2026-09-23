@@ -1,5 +1,6 @@
 ---
-// Hoe werkt het / Comment ça marche — the editorial deep-dive. 20-second answer → who's who (4 parties, 1 changes)
+// Hoe werkt het / Comment ça marche — the editorial deep-dive. 20-second answer → who's who (four-party strip with
+// the flows between them: money to June, contract to the supplier, delivery via the grid; the bill bypasses June)
 // → why keep watching (market facts) → the 4 steps with what you do / see → data & privacy → what stays the same
 // → meters → regional notes (FR qualifies the Flanders-only capacity tariff) → FAQ → close.
 import { Image } from 'astro:assets';
@@ -10,6 +11,8 @@ import Icon from '../Icon.astro';
 import AnimIcon from '../AnimIcon.astro';
 import FaqList from '../FaqList.astro';
 import FinalCta from '../FinalCta.astro';
+import Stars from '../Stars.astro';
+import Fn from '../Fn.astro';
 import { howCopy } from '../../i18n/pages.js';
 import { href } from '@shared/routes.mjs';
 import pointing from '@shared/assets/character/june-character-pointing.png';
@@ -34,6 +37,7 @@ const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
         <h2 id="tldr-h" class="tldr-h"><Icon name="clock" />{c.hero.tldr}</h2>
         <ol>{c.hero.summary.map((s: string) => <li>{s}</li>)}</ol>
         <a class="btn" href={href('signup', locale, base)} data-cta="hw-hero">{c.ui.cta}<Icon name="arrow-r" /></a>
+        <p class="proof"><Stars value={c.rating} id="hw-hero" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
       </aside>
     </div>
   </section>
@@ -41,15 +45,25 @@ const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
   <section class="section" id="wie-doet-wat" aria-labelledby="who-h">
     <div class="wrap">
       <SectionHead n="01" kicker={c.who.kicker} id="who-h" title={c.who.h2}><p>{c.who.intro}</p></SectionHead>
-      <ol class="who">
-        {c.who.nodes.map((n: any) => (
-          <li class:list={['who-node', { 'who-node--june': n.june, 'who-node--changes': n.changes }]}>
-            <h3>{n.name}</h3>
-            <p class="who-role"><span class="who-label">{c.who.cols[0]}</span>{n.role}</p>
-            <p class="who-change"><span class="who-label">{c.who.cols[1]}</span><span class="who-flag"><Icon name={n.changes ? 'repeat' : 'check'} />{n.change}</span></p>
-          </li>
+      <div class="who">
+        <p class="sr-only">{c.who.nodes[0].name} → {c.who.nodes[1].name}: {c.who.edges[0]}. {c.who.nodes[1].name} → {c.who.nodes[2].name}: {c.who.edges[1]}. {c.who.nodes[2].name} → {c.who.nodes[3].name}: {c.who.edges[2]}. {c.who.back}</p>
+        {c.who.nodes.map((n: any, i: number) => (
+          <>
+            <div class:list={['who-node', { 'who-node--june': n.june, 'who-node--changes': n.changes }]}>
+              <h3>{n.name}{n.changes && <span class="who-tag">{c.who.changesTag}</span>}</h3>
+              <p class="who-role"><span class="who-label">{c.who.cols[0]}</span>{n.role}</p>
+              <p class="who-change"><span class="who-label">{c.who.cols[1]}</span><span class="who-flag"><Icon name={n.changes ? 'repeat' : 'check'} />{n.change}</span></p>
+            </div>
+            {i < 3 && (
+              <div class:list={['who-edge', { 'who-edge--money': i === 0 }]} aria-hidden="true">
+                <span class="who-edge-l">{i === 0 && <Icon name="euro" />}{c.who.edges[i]}</span>
+                <span class="who-line"></span>
+              </div>
+            )}
+          </>
         ))}
-      </ol>
+        <p class="who-back" aria-hidden="true"><Icon name="arrow-l" /><span>{c.who.back}</span></p>
+      </div>
     </div>
   </section>
 
@@ -152,7 +166,7 @@ const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
       <ul class="regions">
         {c.regions.items.map((r: any) => <li><h3>{r.h}</h3><p class="region-net">{r.net}</p><p>{r.p}</p></li>)}
       </ul>
-      <p class="note regions-note"><span class="tag tag--pending">{L === 'fr' ? 'À confirmer' : 'Wordt bevestigd'}</span> {c.regions.note}</p>
+      <p class="note regions-note"><Icon name="info" /><span>{c.regions.note}</span></p>
     </div>
   </section>
 

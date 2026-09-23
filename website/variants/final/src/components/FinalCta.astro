@@ -1,5 +1,6 @@
 ---
-// Closing block on every content page: 4-point summary + repeated postcode form + trust. Optional June character (≤ 1 per page).
+// Closing block on every content page, on a June Green field (brand spark from E): 4-point summary + repeated
+// postcode form + proof. Optional June character (≤ 1 per page, never next to prices).
 import { Image } from 'astro:assets';
 import PostcodeForm from './PostcodeForm.astro';
 import Trust from './Trust.astro';
@@ -13,7 +14,7 @@ const img = character === 'cheering' ? cheering : pointing;
 ---
 <section class="section section--close" id="start" aria-labelledby="sum-h">
   <div class="wrap">
-    <div class:list={['summary', { 'summary--char': character }]} data-sticky-hide>
+    <div class:list={['summary summary--field', { 'summary--char': character }]} data-sticky-hide>
       <div>
         <h2 id="sum-h">{title || c.finalCta.h2}</h2>
         <ul class="sum-points">

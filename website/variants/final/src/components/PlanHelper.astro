@@ -1,0 +1,103 @@
+---
+// Two-question plan helper (patterns from B and E, meter wording from A):
+//   1. digital meter? (yes / no / don't know)   2. solar panels? (yes / no)
+// → marks the fitting plan card (data-fit on [data-plan-cards]) and explains why, in one sentence.
+// Analogue meter (or "don't know") never leads to Premium: the helper says Switch Plus and explains that the
+// June Dongle needs the P1 port of a digital meter. The answers are carried into the plan links (?meter=&solar=)
+// so the sign-up doesn't ask again. Needs JS; without JS it is not shown (the cards stand on their own).
+import Icon from './Icon.astro';
+import AnimIcon from './AnimIcon.astro';
+interface Props { c: any; meterHref: string; }
+const { c, meterHref } = Astro.props;
+const h = c.helper;
+---
+<form class="ph" data-helper aria-labelledby="ph-h" novalidate>
+  <div class="ph-head">
+    <AnimIcon name="home-analysis" size={64} eager />
+    <div>
+      <h2 id="ph-h" class="ph-h">{h.h2}</h2>
+      <p class="ph-sub">{h.sub}</p>
+    </div>
+  </div>
+  <fieldset class="ph-q">
+    <legend>{h.q1} <span class="ph-help">{h.q1help}</span></legend>
+    <div class="seg">
+      {[['digital', h.yes], ['analog', h.no], ['dk', h.dk]].map(([v, l]) => <label><input type="radio" name="meter" value={v} /><span>{l}</span></label>)}
+    </div>
+  </fieldset>
+  <fieldset class="ph-q">
+    <legend>{h.q2}</legend>
+    <div class="seg">
+      {[['yes', h.yes], ['no', h.no]].map(([v, l]) => <label><input type="radio" name="solar" value={v} /><span>{l}</span></label>)}
+    </div>
+  </fieldset>
+  <div class="ph-out" aria-live="polite" data-helper-out>
+    <p class="ph-r0" data-r0><Icon name="info" /><span>{h.r0}</span></p>
+    {Object.entries(h.out).map(([k, o]: [string, any]) => (
+      <div class="ph-r" data-r={k} hidden>
+        <p class="ph-rh"><Icon name="check-circle" /><strong>{o.h}</strong></p>
+        <p>{o.p}</p>
+        <p class="ph-links">
+          <a class="link-arrow" href={`#${o.plan}`}>{h.go} {o.plan === 'premium' ? 'Premium' : 'Switch Plus'}<Icon name="arrow-r" /></a>
+          {k === 'dk' && <a class="link-arrow" href={meterHref}>{h.meterLink}<Icon name="arrow-r" /></a>}
+        </p>
+      </div>
+    ))}
+  </div>
+</form>
+
+<script>
+  // ≈0.7 KB. Pure presentation + link decoration; no estimate logic here.
+  document.querySelectorAll<HTMLFormElement>('[data-helper]').forEach((form) => {
+    const cards = document.querySelector<HTMLElement>('[data-plan-cards]');
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-plan-link]')];
+    const base = links.map((a) => a.getAttribute('href') || '');
+    const r0 = form.querySelector<HTMLElement>('[data-r0]')!;
+    const rs = [...form.querySelectorAll<HTMLElement>('[data-r]')];
+    const val = (n: string) => (form.elements.namedItem(n) as RadioNodeList).value;
+    form.addEventListener('change', () => {
+      const meter = val('meter'), solar = val('solar');
+      if (!meter) return;
+      const key = meter === 'analog' ? 'analog' : meter === 'dk' ? 'dk' : solar === 'yes' ? 'digitalSolar' : solar === 'no' ? 'digital' : '';
+      if (!key) return;
+      r0.hidden = true;
+      rs.forEach((r) => { r.hidden = r.dataset.r !== key; });
+      const fit = key === 'digitalSolar' ? 'premium' : 'switch-plus';
+      if (cards) { cards.dataset.fit = fit; cards.dataset.meter = meter; }
+      const p: string[] = [];
+      if (meter !== 'dk') p.push(`meter=${meter}`);
+      if (solar) p.push(`solar=${solar}`);
+      links.forEach((a, i) => { a.href = base[i] + (p.length ? `&${p.join('&')}` : ''); });
+      (window as any).dataLayer?.push({ event: 'plan_helper', meter, solar, fit });
+    });
+  });
+</script>
+
+<style>
+  .ph { display: none; }
+  :global(.js) .ph { display: grid; }
+  .ph { gap: var(--s-5); padding: var(--s-6); background: var(--surface); border: 2px solid var(--rule-strong); border-radius: var(--r-md); align-content: start; }
+  .ph-head { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--s-4); align-items: center; }
+  .ph-head :global(.anim-icon img) { width: 64px; height: 64px; }
+  .ph-h { font-size: 22px; line-height: 1.2; }
+  .ph-sub { font-size: var(--fs-ui); color: var(--ink-700); margin-top: 4px; }
+  .ph-q { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: var(--s-2); }
+  .ph-q legend { padding: 0; font-weight: 600; font-size: 17px; margin-bottom: var(--s-2); }
+  .ph-help { display: block; font-weight: 400; font-size: var(--fs-note); color: var(--ink-500); }
+  .seg { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seg label { position: relative; }
+  .seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .seg span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--ink-700); border-radius: var(--r-pill); font-weight: 600; font-size: var(--fs-ui); color: var(--ink-900); background: var(--surface); transition: background var(--dur-fast), color var(--dur-fast); }
+  .seg input:checked + span { background: var(--ink-900); border-color: var(--ink-900); color: var(--paper); }
+  .seg input:focus-visible + span { box-shadow: var(--focus-ring); }
+  .seg label:hover span { border-color: var(--ink-900); }
+  .ph-out { min-height: 96px; border-top: 1px solid var(--rule); padding-top: var(--s-4); }
+  .ph-r0 { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; color: var(--ink-700); font-size: var(--fs-ui); }
+  .ph-r0 :global(svg) { width: 20px; height: 20px; color: var(--ink-500); margin-top: 1px; }
+  .ph-r { display: grid; gap: var(--s-2); font-size: 16px; color: var(--ink-700); }
+  .ph-r[hidden], .ph-r0[hidden] { display: none; }
+  .ph-rh { display: flex; gap: 8px; align-items: center; color: var(--ink-900); font-size: 18px; }
+  .ph-rh :global(svg) { width: 22px; height: 22px; color: var(--accent-strong); flex: none; }
+  @media (max-width: 640px) { .ph { padding: var(--s-5); gap: var(--s-4); } .ph-out { min-height: 64px; } }
+  .ph-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); }
+</style>

@@ -1,17 +1,16 @@
 ---
-// Native <details> accordion. Items: { id, q, a (may contain HTML), fn?, pending? }.
+// Native <details> accordion (deep-linkable ids). Items: { id, q, a (may contain HTML), fn? }.
+// No "to be confirmed" tags: unconfirmed answers use the interim wording from the claims register or are left out.
 import Icon from './Icon.astro';
 import Fn from './Fn.astro';
 interface Props { items: any[]; L: string; group?: string; openFirst?: boolean; }
 const { items, L, group = 'faq', openFirst = false } = Astro.props;
-const pendingLabel = L === 'fr' ? 'À confirmer' : 'Wordt bevestigd';
 ---
 <div class="faq">
   {items.map((f, i) => (
     <details id={f.id} name={group} open={openFirst && i === 0} data-faq>
       <summary><span>{f.q}</span><Icon name="plus" /></summary>
       <div class="faq-a">
-        {f.pending && <span class="tag tag--pending">{pendingLabel}</span>}
         <p><Fragment set:html={f.a} />{f.fn && <Fn n={f.fn} L={L} />}</p>
       </div>
     </details>

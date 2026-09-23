@@ -3,6 +3,12 @@
 // Market facts moved to Hoe werkt het; "June vs doing it yourself" moved to Abonnementen.
 import { facts, SW, SWP, PREM, G, faqById, localise, siteCopy } from './site.js';
 
+// Cancellation: facts.json still has a [placeholder] (BLOCKING). Safe interim wording, nothing unconfirmed.
+const CANCEL = {
+  nl: 'Ja. Na je aanmelding heb je 14 dagen bedenktijd. De opzeg- en verlengingsregels van je June-abonnement lees je in de algemene voorwaarden. Je energiecontract zelf kan je als particulier altijd opzeggen met een maand opzeg, zonder verbrekingsvergoeding.',
+  fr: 'Oui. Après votre inscription, vous disposez de 14 jours de rétractation. Les règles de résiliation et de reconduction de votre abonnement June figurent dans les conditions générales. Votre contrat d’énergie, en tant que particulier, vous pouvez toujours le résilier avec un mois de préavis, sans indemnité de rupture.',
+};
+
 const page = localise((L, m) => {
   const steps = facts.howItWorks.short.map((s) => ({ n: s.n, title: s.title[L], body: s.body[L] }));
   const faq = (id, override, fn) => ({ id, q: faqById(id).q[L], a: override || faqById(id).a[L], fn });
@@ -18,7 +24,7 @@ const page = localise((L, m) => {
       saving: ['Klanten besparen ', facts.saving.averagePerYear.display.nl, '.'],
     },
     ledger: [
-      { q: 'Wat is June?', a: 'Geen leverancier.', d: 'Een onafhankelijke dienst. Je stroom en gas blijven gewoon lopen, alleen wie je factureert verandert.' },
+      { q: 'Wat is June?', a: 'Geen leverancier.', d: 'Een onafhankelijke dienst die elke maand vergelijkt en je laat overstappen: automatisch, of pas na jouw akkoord. Je stroom blijft gewoon lopen.' },
       { q: 'Wat kost het?', a: `${m(SW.priceYearly)}, ${m(SWP.priceYearly)} of ${m(PREM.priceYearly)} per jaar.`, d: `Voor Switch, Switch Plus of Premium, jaarlijks gefactureerd (${m(SW.priceMonthly)} tot ${m(PREM.priceMonthly)} per maand). Je energie betaal je aan je leverancier.`, fn: 6 },
       { q: 'Wat als het tegenvalt?', a: `${m(G.amount)} terug.`, d: `Winstgarantie bij Switch Plus: bespaar je in een abonnementsjaar niet meer dan je abonnement kost, dan krijg je ${m(G.amount)} terug.`, fn: 4 },
     ],
@@ -30,6 +36,19 @@ const page = localise((L, m) => {
       stay: ['Niets doen'], june: ['Met June'], step: ['Welkomst-', 'korting stopt'], gap: ['De prijs', 'van trouw'],
       legend: 'June vergelijkt opnieuw en wisselt: automatisch, of na jouw akkoord.',
       method: 'Vereenvoudigd verloop, geen echte marktprijzen. Bron vóór livegang: tariefdata van de CREG en de VREG.',
+    },
+    product: {
+      kicker: 'Wat je daarna ziet', h2: 'Je ziet wat June voor je doet. Elke maand.',
+      body: 'In de June-app zie je je verbruik, je contract en wat een overstap opbracht. Met Premium en de June Dongle zie je het zelfs live.',
+      points: ['Switch en Switch Plus: je verbruik en je contract in de app', 'Switch Plus: elk jaar een besparingsrapport, de basis van je winstgarantie', 'Premium: June Dongle inbegrepen, live verbruik en injectie via de P1-poort'],
+      link: 'Premium en de June Dongle', cap: 'De huidige June-app en de June Dongle.',
+      alt: { phone: 'Verbruiksscherm van de June-app met een staafgrafiek per dag en tegels voor afname en injectie', dongle: 'De June Dongle: een wit toestel met een groene kabel in de vorm van een blad' },
+    },
+    tile: {
+      label: 'Aanbevolen', plan: 'Switch Plus', price: m(SWP.priceYearly), per: 'per jaar', monthly: `${SWP.priceDisplay.nl.main}, jaarlijks gefactureerd`,
+      guarantee: `Winstgarantie: ${m(G.amount)} terug als je in een abonnementsjaar niet meer bespaart dan je abonnement kost.`,
+      checked: 'Elke maand gecontroleerd', months: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'], monthsLabel: 'Twaalf controles per jaar, één per maand',
+      control: 'Automatisch, of pas na jouw akkoord', link: 'Alle abonnementen',
     },
     how: {
       n: '01', kicker: 'Wat June doet',
@@ -60,13 +79,14 @@ const page = localise((L, m) => {
         faq('not-a-supplier'),
         faq('independence', 'June leeft van de abonnementen van haar klanten. We zijn geen leverancier en kiezen het contract op basis van jouw verbruik.', 5),
         faq('exit-fee'),
-        faq('no-interruption'),
+        faq('meters'),
+        { id: 'cancel', q: faqById('cancel').q.nl, a: CANCEL.nl },
       ],
     },
   };
   return {
     meta: {
-      title: 'June : passez automatiquement à un contrat d’énergie plus avantageux',
+      title: 'June : un contrat d’énergie avantageux, automatiquement',
       description: `June n’est pas un fournisseur. C’est vous qui nous payez : nous suivons pour vous ${facts.suppliers.count.display.fr}, au moins une fois par mois. En moyenne 326 € d’économie par an.`,
     },
     hero: {
@@ -76,7 +96,7 @@ const page = localise((L, m) => {
       saving: ['Nos clients économisent ', facts.saving.averagePerYear.display.fr, '.'],
     },
     ledger: [
-      { q: 'June, c’est quoi ?', a: 'Pas un fournisseur.', d: 'Un service indépendant. Votre électricité et votre gaz continuent d’arriver, seul celui qui vous facture change.' },
+      { q: 'June, c’est quoi ?', a: 'Pas un fournisseur.', d: 'Un service indépendant qui compare chaque mois et vous fait changer : automatiquement, ou seulement après votre accord. Votre électricité continue d’arriver.' },
       { q: 'Combien ça coûte ?', a: `${m(SW.priceYearly)}, ${m(SWP.priceYearly)} ou ${m(PREM.priceYearly)} par an.`, d: `Pour Switch, Switch Plus ou Premium, facturé annuellement (de ${m(SW.priceMonthly)} à ${m(PREM.priceMonthly)} par mois). Votre énergie, vous la payez à votre fournisseur.`, fn: 6 },
       { q: 'Et si ça ne rapporte pas ?', a: `${m(G.amount)} remboursés.`, d: `Garantie de gain avec Switch Plus : si vous n’économisez pas plus que le prix de votre abonnement sur une année, vous récupérez ${m(G.amount)}.`, fn: 4 },
     ],
@@ -88,6 +108,19 @@ const page = localise((L, m) => {
       stay: ['Sans rien', 'faire'], june: ['Avec June'], step: ['Fin de la remise', 'de bienvenue'], gap: ['Le prix de', 'la fidélité'],
       legend: 'June compare à nouveau et change : automatiquement, ou après votre accord.',
       method: 'Évolution simplifiée, sans prix réels du marché. Source avant la mise en ligne : données tarifaires de la CREG, de la CWaPE et de Brugel.',
+    },
+    product: {
+      kicker: 'Ce que vous voyez ensuite', h2: 'Vous voyez ce que June fait pour vous. Chaque mois.',
+      body: 'Dans l’app June, vous voyez votre consommation, votre contrat et ce qu’un changement vous a rapporté. Avec Premium et le June Dongle, vous le voyez même en direct.',
+      points: ['Switch et Switch Plus : votre consommation et votre contrat dans l’app', 'Switch Plus : chaque année un rapport d’économies, la base de votre garantie de gain', 'Premium : June Dongle inclus, consommation et injection en direct via le port P1'],
+      link: 'Premium et le June Dongle', cap: 'L’app June actuelle et le June Dongle.',
+      alt: { phone: 'Écran Consommation de l’app June avec un graphique en barres par jour et des tuiles pour le prélèvement et l’injection', dongle: 'Le June Dongle : un boîtier blanc avec un câble vert en forme de feuille' },
+    },
+    tile: {
+      label: 'Recommandé', plan: 'Switch Plus', price: m(SWP.priceYearly), per: 'par an', monthly: `${SWP.priceDisplay.fr.main}, facturé annuellement`,
+      guarantee: `Garantie de gain : ${m(G.amount)} remboursés si, sur une année d’abonnement, vous n’économisez pas plus que le prix de votre abonnement.`,
+      checked: 'Contrôlé chaque mois', months: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'], monthsLabel: 'Douze contrôles par an, un par mois',
+      control: 'Automatiquement, ou après votre accord', link: 'Tous les abonnements',
     },
     how: {
       n: '01', kicker: 'Ce que fait June',
@@ -118,7 +151,8 @@ const page = localise((L, m) => {
         faq('not-a-supplier'),
         faq('independence', 'June vit des abonnements de ses clients. Nous ne sommes pas fournisseur et choisissons le contrat sur la base de votre consommation.', 5),
         faq('exit-fee'),
-        faq('no-interruption'),
+        faq('meters'),
+        { id: 'cancel', q: faqById('cancel').q.fr, a: CANCEL.fr },
       ],
     },
   };

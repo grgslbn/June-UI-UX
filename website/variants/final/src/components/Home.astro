@@ -1,10 +1,11 @@
 ---
-// Variant C "Honest Market" — homepage (NL + FR share this template; copy in i18n/home.js).
-// Order: hero (promise + form + 3-question ledger + illustrative chart) → what June does → who pays + prices
-// → guarantee → reviews → 4 sceptic FAQs → summary + form. Depth lives on Hoe werkt het / Abonnementen / FAQ.
-import { Image } from 'astro:assets';
+// Home (NL + FR share this template; copy in i18n/home.js).
+// Hero: manifesto H1 (+ one squiggle) · three-question ledger (directly under the H1 on small screens) · postcode form
+// with proof · value/status tile (A) + the self-drawing "prijs van trouw" chart. Then: what June does → who pays
+// (money flow + prices) → product band → guarantee → rating → 5 sceptic FAQs → green closing field.
 import Site from '../layouts/Site.astro';
 import '../styles/home.css';
+import { Image } from 'astro:assets';
 import pointing from '@shared/assets/character/june-character-pointing.png';
 import MarketChart from './MarketChart.astro';
 import PostcodeForm from './PostcodeForm.astro';
@@ -18,6 +19,9 @@ import Guarantee from './Guarantee.astro';
 import Reviews from './Reviews.astro';
 import FaqList from './FaqList.astro';
 import FinalCta from './FinalCta.astro';
+import HeroTile from './HeroTile.astro';
+import Squiggle from './Squiggle.astro';
+import HomeProduct from './HomeProduct.astro';
 import { homeCopy } from '../i18n/home.js';
 import { href } from '@shared/routes.mjs';
 interface Props { locale: 'nl-be' | 'fr-be'; }
@@ -31,9 +35,20 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
   <!-- ── HERO ─────────────────────────────────────────── -->
   <section class="hero" aria-labelledby="h1">
     <div class="wrap hero-grid">
-      <div class="hero-copy">
+      <div class="hero-head">
         <p class="kicker"><span>{c.hero.kicker}</span></p>
-        <h1 id="h1">{c.hero.h1a} <span class="h1-turn">{c.hero.h1b}</span></h1>
+        <h1 id="h1">{c.hero.h1a} <span class="h1-turn"><Squiggle>{c.hero.h1b}</Squiggle></span></h1>
+      </div>
+      <ol class="ledger">
+        {c.ledger.map((r: any) => (
+          <li>
+            <span class="q">{r.q}</span>
+            <span class="a">{r.a}</span>
+            <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
+          </li>
+        ))}
+      </ol>
+      <div class="hero-body">
         <p class="lead">{c.hero.lead}</p>
         <p class="hero-cost">{c.hero.saving[0]}<strong>{c.hero.saving[1]}</strong>{c.hero.saving[2]}<Fn n={1} L={L} /></p>
         <div data-sticky-hide id="bereken">
@@ -42,15 +57,7 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
         <Trust c={c} id="hero" />
       </div>
       <div class="hero-fig">
-        <ol class="ledger">
-          {c.ledger.map((r: any) => (
-            <li>
-              <span class="q">{r.q}</span>
-              <span class="a">{r.a}</span>
-              <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
-            </li>
-          ))}
-        </ol>
+        <HeroTile c={c} plansUrl={href('plans', locale, base)} />
         <MarketChart c={c} />
       </div>
     </div>
@@ -72,7 +79,7 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
       </ol>
       <div class="section-foot">
         <div class="tip">
-          <Image src={pointing} alt="" widths={[96, 192]} sizes="96px" class="tip-char" loading="eager" fetchpriority="low" />
+          <Image src={pointing} alt="" widths={[96, 192]} sizes="96px" class="tip-char" loading="lazy" />
           <p class="honest-limit"><span set:html={c.how.limit} /></p>
         </div>
         <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.how.more}<Icon name="arrow-r" /></a>
@@ -110,14 +117,17 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
         </div>
       </div>
     </div>
-    <div class="wrap"><MoneyFlow c={c} row /></div>
+    <div class="wrap"><MoneyFlow c={c} /></div>
   </section>
+
+  <!-- ── PRODUCT: the app + leaf dongle ──────────────── -->
+  <HomeProduct c={c} locale={locale} />
 
   <!-- ── 03 THE HONEST PROMISE ───────────────────────── -->
   <Guarantee c={c} locale={locale} n="03" cta="more" />
 
   <!-- ── 04 REVIEWS ──────────────────────────────────── -->
-  <Reviews c={c} n={c.reviews.n} />
+  <Reviews c={c} n="04" />
 
   <!-- ── 05 FAQ ──────────────────────────────────────── -->
   <section class="section section--deep" id="faq" aria-labelledby="faq-h">

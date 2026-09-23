@@ -1,21 +1,22 @@
 ---
-// Abonnementen / Abonnements — yearly price first, recommended plan obvious, then the honest context:
-// helper → full table → Premium & dongle → June vs doing it yourself → how June earns money → pricing FAQ → close.
-import { Image } from 'astro:assets';
+// Abonnementen / Abonnements. Yearly price first, recommended plan obvious, then the honest context:
+// hero (+ 3 facts: yearly price · approve each switch yourself · guarantee with its condition)
+// → two-question helper + "what do you keep?" (method, or the visitor's own estimate) → 3 cards (ledger only with an
+// estimate) → full table → Premium product band → June vs doing it yourself → what you pay June → pricing FAQ → close.
 import Site from '../../layouts/Site.astro';
 import '../../styles/plans.css';
 import SectionHead from '../SectionHead.astro';
 import Icon from '../Icon.astro';
 import Fn from '../Fn.astro';
-import MoneyFlow from '../MoneyFlow.astro';
+import Stars from '../Stars.astro';
 import FaqList from '../FaqList.astro';
 import FinalCta from '../FinalCta.astro';
 import Check from '../Check.astro';
+import PlanHelper from '../PlanHelper.astro';
+import PlanLedger from '../PlanLedger.astro';
+import ProductBand from '../ProductBand.astro';
 import { plansCopy } from '../../i18n/pages.js';
 import { href, abs } from '@shared/routes.mjs';
-import dongle from '@shared/assets/dongle/dongle-leaf-closeup.png';
-import phoneNl from '@shared/assets/app/app-phone-nl.png';
-import phoneFr from '@shared/assets/app/app-phone-fr.png';
 interface Props { locale: 'nl-be' | 'fr-be'; }
 const { locale } = Astro.props;
 const c = plansCopy(locale);
@@ -23,44 +24,59 @@ const L = c.L;
 const base = import.meta.env.BASE_URL;
 const signup = href('signup', locale, base);
 const canonical = abs('plans', locale);
+const faqCancel = `${href('faq', locale, base)}#cancel`;
+// Switch Plus's value proposition in facts.json ("gegarandeerd resultaat") overstates the guarantee: use the qualified line.
+const valueOf = (p: any) => p.slug === 'switch-plus' ? (L === 'fr' ? 'Économisez, avec garantie de gain.' : 'Besparen, met winstgarantie.') : p.value;
 const ld = c.plans.map((p: any) => ({
   '@type': 'Product', '@id': `${canonical}#${p.slug}`, name: p.full, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
-  description: p.value,
+  description: valueOf(p),
   offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=${p.slug}`, price: p.yearlyN.toFixed(2), priceCurrency: 'EUR', availability: 'https://schema.org/InStock',
     eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
     priceSpecification: { '@type': 'UnitPriceSpecification', price: p.yearlyN.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, billingDuration: 'P1Y', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' } } },
 }));
-const colNames = c.plans.map((p: any) => p.name);
+const e = c.earn;
 ---
 <Site locale={locale} routeKey="plans" title={c.meta.title} description={c.meta.description} ld={ld}
-  sticky={{ strong: `Switch Plus · ${c.plans[1].yearly} ${c.card.perYear}`, sub: c.card.billed, label: `${c.card.choose} Switch Plus`, url: `${signup}?plan=switch-plus` }}>
-  <section class="page-hero" aria-labelledby="h1">
+  sticky={{ strong: `Switch Plus · ${c.plans[1].yearly} ${c.card.perYear}`, sub: `${c.plans[1].monthly} · ${c.card.billed}`, label: `${c.card.choose} Switch Plus`, url: `${signup}?plan=switch-plus` }}>
+  <section class="page-hero plans-hero" aria-labelledby="h1">
     <div class="wrap">
       <p class="kicker"><span>{c.hero.kicker}</span></p>
       <h1 id="h1">{c.hero.h1}</h1>
       <p class="lead">{c.hero.lead}<Fn n={6} L={L} /></p>
+      <ul class="hero-facts" role="list">
+        {c.hero.facts.map(([ic, t]: string[], i: number) => <li><Icon name={ic} /><span>{t}{i === 2 && <Fn n={4} L={L} />}</span></li>)}
+      </ul>
     </div>
   </section>
 
-  <section class="plans-wrap" aria-label={c.hero.kicker} data-sticky-hide>
+  <section class="plans-wrap" aria-label={L === "fr" ? "Les trois abonnements" : "De drie abonnementen"}>
     <div class="wrap">
-      <ul class="plan-cards" role="list">
+      <div class="plans-tools">
+        <PlanHelper c={c} meterHref={`${href('howItWorks', locale, base)}#meter`} />
+        <PlanLedger mode="boot" c={c} signup={signup} />
+      </div>
+
+      <ul class="plan-cards" role="list" data-plan-cards data-sticky-hide>
         {c.plans.map((p: any) => {
           const rec = p.slug === 'switch-plus';
           return (
-            <li class:list={['plan', { 'plan--rec': rec }]} id={p.slug}>
+            <li class:list={['plan', `plan--${p.slug}`, { 'plan--rec': rec }]} id={p.slug}>
               {rec && <p class="plan-badge">{c.card.badge}</p>}
+              <p class="plan-fit" aria-hidden="true"><Icon name="check-circle" />{c.card.fit}</p>
+              {p.slug === 'premium' && <p class="plan-nofit" aria-hidden="true"><Icon name="info" />{c.card.notFit}</p>}
               <h2 class="plan-name">{p.name}</h2>
-              <p class="plan-value">{p.value}</p>
+              <p class="plan-value">{valueOf(p)}</p>
               <p class="plan-price"><span class="plan-yr num">{p.yearly}</span> <span class="plan-per">{c.card.perYear}</span></p>
-              <p class="plan-mo">{p.monthly} · {c.card.billed}</p>
+              <p class="plan-mo">{p.monthly} · {c.card.billed}{p.slug === 'premium' && (L === 'fr' ? ' · dongle inclus' : ' · dongle inbegrepen')}</p>
               <p class:list={['plan-g', { 'plan-g--none': p.slug === 'switch' }]}>
                 <Icon name={p.slug === 'switch' ? 'minus' : 'shield'} />
                 <span>{p.slug === 'switch' ? c.card.noGuarantee : c.card.guarantee}{p.slug !== 'switch' && <Fn n={4} L={L} />}</span>
               </p>
-              <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}`} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
+              <PlanLedger mode="card" c={c} slug={p.slug} fee={p.yearlyN} name={p.name} />
+              <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}`} data-plan-link={p.slug} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
+              <p class="proof"><Stars value={c.rating} id={`card-${p.slug}`} /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
               <h3 class="plan-fh">{c.card.features}</h3>
-              <ul class="plan-feat">
+              <ul class="plan-feat" role="list">
                 {p.features.map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
               </ul>
               {p.slug === 'premium' && <p class="plan-req"><Icon name="meter" />{c.card.needs}</p>}
@@ -69,21 +85,8 @@ const colNames = c.plans.map((p: any) => p.name);
           );
         })}
       </ul>
-      <p class="note plans-note">{c.footnotes[5].text}</p>
-    </div>
-  </section>
-
-  <section class="section" id="welk-abonnement" aria-labelledby="helper-h">
-    <div class="wrap">
-      <SectionHead kicker={c.helper.kicker} id="helper-h" title={c.helper.h2} />
-      <ol class="helper">
-        {c.helper.rows.map((r: any) => (
-          <li>
-            <p>{r.q}</p>
-            <a class="helper-a" href={`#${r.slug}`}>{r.a}<Icon name="arrow-r" /></a>
-          </li>
-        ))}
-      </ol>
+      <PlanLedger mode="fill" c={c} />
+      <p class="note plans-note">{c.footnotes[5].text} <a href={faqCancel}>{c.card.cancel}</a></p>
     </div>
   </section>
 
@@ -94,7 +97,7 @@ const colNames = c.plans.map((p: any) => p.name);
         <table class="matrix">
           <caption class="sr-only">{c.table.caption}</caption>
           <thead>
-            <tr><td></td>{c.plans.map((p: any) => <th scope="col" class:list={{ 'col-rec': p.slug === 'switch-plus' }}>{p.name}<span class="sub num">{p.yearly} {c.card.perYear}</span></th>)}</tr>
+            <tr><td></td>{c.plans.map((p: any) => <th scope="col" class:list={{ 'col-rec': p.slug === 'switch-plus' }}>{p.name}<span class="sub num"><span class="nowrap">{p.yearly}</span> {c.card.perYear}</span></th>)}</tr>
           </thead>
           <tbody>
             {c.table.rows.map((r: any[]) => (
@@ -109,24 +112,9 @@ const colNames = c.plans.map((p: any) => p.name);
     </div>
   </section>
 
-  <section class="section" id="premium-dongle" aria-labelledby="dongle-h">
-    <div class="wrap dongle" id="dongle">
-      <div>
-        <SectionHead kicker={c.dongle.kicker} id="dongle-h" title={c.dongle.h2}>
-          <p>{c.dongle.body}</p>
-        </SectionHead>
-        <p class="plan-req"><Icon name="meter" />{c.dongle.req}</p>
-        <a class="btn btn--ghost" href={`${signup}?plan=premium`} data-cta="dongle">{c.card.choose} Premium<Icon name="arrow-r" /></a>
-      </div>
-      <figure class="dongle-fig">
-        <Image src={dongle} alt={c.dongle.alt.dongle} widths={[220, 440]} sizes="(max-width: 760px) 40vw, 220px" class="dongle-img" loading="eager" fetchpriority="low" />
-        <Image src={L === 'fr' ? phoneFr : phoneNl} alt={c.dongle.alt.phone} widths={[200, 299]} sizes="(max-width: 760px) 44vw, 200px" class="phone-img" loading="eager" fetchpriority="low" />
-        <figcaption class="note">{c.dongle.app}</figcaption>
-      </figure>
-    </div>
-  </section>
+  <ProductBand locale={locale} variant="full" id="dongle" entry="plans-band" />
 
-  <section class="section" id="vergelijking" aria-labelledby="vs-h">
+  <section class="section section--deep" id="vergelijking" aria-labelledby="vs-h">
     <div class="wrap">
       <SectionHead kicker={c.vs.kicker} id="vs-h" title={c.vs.h2}><p>{c.vs.intro}</p></SectionHead>
       <table class="vs">
@@ -157,20 +145,36 @@ const colNames = c.plans.map((p: any) => p.name);
     </div>
   </section>
 
-  <section class="section section--deep" id="verdienmodel" aria-labelledby="earn-h">
-    <div class="wrap model">
-      <div>
-        <SectionHead kicker={c.earn.kicker} id="earn-h" title={c.earn.h2} />
-        <div class="prose">
-          <p><strong>{c.earn.body[0]}</strong><Fn n={5} L={L} /> {c.earn.body[1]}</p>
-          <p class="pending-line"><span class="tag tag--pending">{L === 'fr' ? 'À confirmer' : 'Wordt bevestigd'}</span> {c.earn.body[2]}</p>
+  <section class="section" id="verdienmodel" aria-labelledby="earn-h">
+    <div class="wrap">
+      <div class="earn-head">
+        <SectionHead kicker={e.kicker} id="earn-h" title={e.h2} />
+        <div class="prose earn-body">
+          <p><strong>{e.body[0]}</strong></p>
+          <p>{e.body[1]}</p>
         </div>
       </div>
-      <MoneyFlow c={c} />
+      <div class="mf" role="img" aria-label={e.aria}>
+        {e.flow.map((n: any, i: number) => (
+          <>
+            <div class:list={['mf-node', { 'mf-node--june': n.june }]}>
+              <p class="mf-who">{n.who}</p>
+              <p class="mf-what">{n.what}</p>
+            </div>
+            {i < e.edges.length && (
+              <div class:list={['mf-edge', { 'mf-edge--money': i === 0 }]}>
+                <span class="mf-label">{i === 0 && <Icon name="euro" />}{e.edges[i]}</span>
+                <span class="mf-line"></span>
+              </div>
+            )}
+          </>
+        ))}
+        <p class="mf-back"><Icon name="arrow-l" /><span>{e.back}</span></p>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="faq" aria-labelledby="faq-h">
+  <section class="section section--deep" id="faq" aria-labelledby="faq-h">
     <div class="wrap faq-split">
       <SectionHead kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
       <div>

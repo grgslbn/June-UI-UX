@@ -4,7 +4,6 @@ import Base from './Base.astro';
 import '../styles/global.css';
 import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
 import inter from '@shared/fonts/inter-latin.woff2?url';
-import logoGreen from '@shared/assets/logo/june-logo-green.svg?raw';
 import { ROUTES, abs, LOCALES } from '@shared/routes.mjs';
 interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; crumbs?: { name: string; key: string }[]; ld?: any[]; }
 const { locale, routeKey, title, description, noindex = false, crumbs = [], ld: extra = [] } = Astro.props;
@@ -14,6 +13,7 @@ const ld = mapped ? {
   '@context': 'https://schema.org',
   '@graph': [
     { '@type': 'Organization', '@id': 'https://www.june.energy/#org', name: 'June', url: 'https://www.june.energy/', areaServed: { '@type': 'Country', name: 'BE' },
+      logo: { '@type': 'ImageObject', url: 'https://www.june.energy/logo-512.png', width: 512, height: 512 },
       contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: ['nl', 'fr'] } },
     { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: 'https://www.june.energy/', name: 'June', publisher: { '@id': 'https://www.june.energy/#org' }, inLanguage: ['nl-BE', 'fr-BE'] },
     { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: LOCALES[locale].html, isPartOf: { '@id': 'https://www.june.energy/#website' },
@@ -22,7 +22,8 @@ const ld = mapped ? {
     ...extra,
   ],
 } : null;
-const favicon = `data:image/svg+xml,${encodeURIComponent(logoGreen.replace(/\s(role|aria-label)="[^"]*"/g, ''))}`;
+const base = import.meta.env.BASE_URL;
+const ogImage = `https://www.june.energy/og/june-${locale === 'fr-be' ? 'fr' : 'nl'}.png`;
 ---
 <Base locale={locale} routeKey={routeKey} title={title} description={description} noindex={noindex}>
   <Fragment slot="head">
@@ -30,11 +31,19 @@ const favicon = `data:image/svg+xml,${encodeURIComponent(logoGreen.replace(/\s(r
     <link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#f7f8f6" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href={favicon} type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon-32.png`} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
     {canonical && <meta property="og:title" content={title} />}
     {canonical && <meta property="og:description" content={description} />}
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="June" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={locale === 'fr-be' ? 'June : les fournisseurs comptent sur votre fidélité. Pas nous.' : 'June: energieleveranciers rekenen op je trouw. Wij niet.'} />
+    <meta name="twitter:image" content={ogImage} />
     <meta property="og:locale" content={locale === 'nl-be' ? 'nl_BE' : 'fr_BE'} />
     <meta property="og:locale:alternate" content={locale === 'nl-be' ? 'fr_BE' : 'nl_BE'} />
     <meta name="twitter:card" content="summary_large_image" />
@@ -65,7 +74,19 @@ const favicon = `data:image/svg+xml,${encodeURIComponent(logoGreen.replace(/\s(r
         sticky.toggleAttribute('inert', !on);
       });
       anchors.forEach((a) => so.observe(a));
+      // WCAG 2.4.11: a focused element that sits behind the visible bar is scrolled clear of it.
+      document.addEventListener('focusin', (e) => {
+        if (!sticky.classList.contains('is-on')) return;
+        const t = e.target as HTMLElement; if (sticky.contains(t)) return;
+        const r = t.getBoundingClientRect(), bar = sticky.getBoundingClientRect();
+        if (r.bottom > bar.top - 8 && r.top < bar.bottom) window.scrollBy({ top: r.bottom - bar.top + 24, behavior: 'instant' as ScrollBehavior });
+      });
     }
+
+    // Funnel language switch keeps the visitor's answers: carry the query + step hash to the other locale.
+    document.querySelectorAll<HTMLAnchorElement>('a[data-keep-state]').forEach((a) => a.addEventListener('click', () => {
+      const u = new URL(a.href, location.href); u.search = location.search; u.hash = location.hash; a.href = u.toString();
+    }));
 
     const menu = document.querySelector<HTMLDetailsElement>('details.menu');
     menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')));

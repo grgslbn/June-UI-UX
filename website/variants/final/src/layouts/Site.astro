@@ -1,16 +1,27 @@
 ---
 // Content-page shell: head + masthead + <main> + footer + sticky mobile CTA. Every indexable page uses this.
+// Props (all backward compatible):
+//   sticky     { strong, sub, label?, url? }  — full override of the sticky bar
+//   stickyPlan 'switch' | 'switch-plus' | 'premium' — plan-specific bar ("Switch Plus · € 99 per jaar" → sign-up ?plan=)
+//   crumbs / ld / ogImage as before.
 import Page from './Page.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Crumbs from '../components/Crumbs.astro';
+import StickyCta from '../components/StickyCta.astro';
 import { siteCopy } from '../i18n/site.js';
 import { href } from '@shared/routes.mjs';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; crumbs?: boolean; ld?: any[]; sticky?: { strong: string; sub: string; label?: string; url?: string }; }
-const { locale, routeKey, title, description, crumbs = true, ld = [], sticky } = Astro.props;
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; crumbs?: boolean; ld?: any[]; sticky?: { strong: string; sub: string; label?: string; url?: string }; stickyPlan?: 'switch' | 'switch-plus' | 'premium'; }
+const { locale, routeKey, title, description, crumbs = true, ld = [], sticky, stickyPlan } = Astro.props;
 const c = siteCopy(locale);
 const trail = crumbs && routeKey !== 'home' ? [{ name: c.pageNames.home, key: 'home' }, ...(routeKey === 'switchPlus' ? [{ name: c.pageNames.plans, key: 'plans' }] : []), { name: c.pageNames[routeKey], key: routeKey }] : [];
-const s = sticky || c.sticky;
+const signup = href('signup', locale, import.meta.env.BASE_URL);
+const p = stickyPlan && c.plans.find((x: any) => x.slug === stickyPlan);
+const bar = sticky
+  ? { strong: sticky.strong, sub: sticky.sub, label: sticky.label || c.ui.cta, url: sticky.url || signup }
+  : p
+    ? { strong: `${p.name} · ${p.yearly} ${c.L === 'fr' ? 'par an' : 'per jaar'}`, sub: `${c.trust.rating.split(' · ')[0]} · ${c.ui.reducer.toLowerCase()}`, label: `${c.L === 'fr' ? 'Choisir' : 'Kies'} ${p.name}`, url: `${signup}?plan=${p.slug}` }
+    : { strong: c.sticky.strong, sub: c.sticky.sub, label: c.ui.cta, url: signup };
 ---
 <Page locale={locale} routeKey={routeKey} title={title} description={description} crumbs={trail} ld={ld}>
   <Header locale={locale} routeKey={routeKey} c={c} />
@@ -19,8 +30,5 @@ const s = sticky || c.sticky;
     <slot />
   </main>
   <Footer locale={locale} routeKey={routeKey} c={c} />
-  <div class="sticky" data-sticky inert>
-    <p class="sticky-proof"><strong>{s.strong}</strong>{s.sub}</p>
-    <a class="btn" href={s.url || href('signup', locale, import.meta.env.BASE_URL)} data-cta="sticky">{s.label || c.ui.cta}</a>
-  </div>
+  <StickyCta {...bar} plan={stickyPlan} />
 </Page>

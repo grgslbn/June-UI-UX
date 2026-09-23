@@ -1,14 +1,20 @@
 ---
-// Who pays whom: You → June (subscription) → Supplier (June compares & switches); your energy bill bypasses June.
+// Who pays whom — redesigned full-width diagram: Jij → (vaste jaarprijs) → June → (vergelijkt, regelt) → Leverancier,
+// and the energy bill running back underneath, straight from supplier to you, bypassing June.
+// `row` kept for backward compatibility (the layout is always the full-width one now).
 interface Props { c: any; row?: boolean; }
-const { c, row = false } = Astro.props;
+const { c } = Astro.props;
 const f = c.flow;
+const fr = c.L === 'fr';
+const role = fr
+  ? { you: 'Choisissez votre abonnement et, si vous le souhaitez, validez chaque changement.', june: 'Ne vend pas d’énergie. Gagne sa vie avec votre abonnement, pas avec votre consommation.', sup: 'Livre votre électricité et votre gaz, et vous envoie la facture, comme aujourd’hui.' }
+  : { you: 'Kiest een abonnement en, als je wil, keurt elke overstap zelf goed.', june: 'Verkoopt geen energie. Verdient aan je abonnement, niet aan je verbruik.', sup: 'Levert je stroom en gas en stuurt je de factuur, zoals nu.' };
 ---
-<div class:list={['flow', { 'flow--row': row }]} role="img" aria-label={`${f.you} → ${f.june}: ${f.pay}. ${f.june} → ${f.sup}: ${f.work}. ${f.bill}.`}>
-  <span class="node">{f.you}</span>
-  <span class="edge edge--money"><span>{f.pay}</span></span>
-  <span class="node node--june">{f.june}</span>
-  <span class="edge"><span>{f.work}</span></span>
-  <span class="node">{f.sup}</span>
-  <span class="bypass"><span>{f.bill}</span></span>
-</div>
+<div class="mflow-c"><figure class="mflow" role="img" aria-label={`${f.you} → ${f.june}: ${f.pay}. ${f.june} → ${f.sup}: ${f.work}. ${f.bill}.`}>
+  <div class="mf-node"><span class="mf-name">{f.you}</span><span class="mf-role">{role.you}</span></div>
+  <div class="mf-edge mf-edge--money" aria-hidden="true"><span class="mf-label">{f.pay}</span><span class="mf-arrow"></span></div>
+  <div class="mf-node mf-node--june"><span class="mf-name">{f.june}</span><span class="mf-role">{role.june}</span></div>
+  <div class="mf-edge" aria-hidden="true"><span class="mf-label">{f.work}</span><span class="mf-arrow"></span></div>
+  <div class="mf-node"><span class="mf-name">{f.sup}</span><span class="mf-role">{role.sup}</span></div>
+  <div class="mf-bill" aria-hidden="true"><span class="mf-bill-line"></span><span class="mf-label">{f.bill}</span></div>
+</figure></div>

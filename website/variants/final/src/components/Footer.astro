@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { href, LOCALES } from '@shared/routes.mjs';
+import { LOGIN_URL } from '../i18n/site.js';
 interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; minimal?: boolean; }
 const { locale, routeKey, c, minimal = false } = Astro.props;
 const base = import.meta.env.BASE_URL;
@@ -40,7 +41,7 @@ const colHelp = [
           <h2 id="ft-help">{f.colHelp}</h2>
           <ul>
             {colHelp.map(([l, u]) => <li><a href={u}>{l}</a></li>)}
-            <li><a href="https://www.june.energy/" rel="noopener">{c.ui.login} ↗</a></li>
+            <li><a href={LOGIN_URL} rel="noopener">{c.ui.login} ↗</a></li>
             <li><a href={href(routeKey, other, base)} hreflang={LOCALES[other].html} lang={LOCALES[other].html}>{c.ui.langOtherName}</a></li>
           </ul>
         </nav>
@@ -54,7 +55,7 @@ const colHelp = [
     )}
     <div class="legal">
       <span>{f.legal}</span>
-      <span class="legal-links" title={f.legalNote}>{f.legalLinks.join(' · ')}</span>
+      <span class="legal-links">{f.legalLinks.join(' · ')}</span>
     </div>
   </div>
 </footer>

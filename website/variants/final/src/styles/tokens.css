@@ -14,7 +14,7 @@
   --font-text: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
 
   /* Editorial scale (site): 13 · 15 · 17/18 · 22 · 32 · 44 · 64  */
-  --fs-note: 13px;   /* footnotes, sources, chart labels (never below 12) */
+  --fs-note: 14px;   /* footnotes, sources, helper text (round 1: raised from 13 for the 60+ reader) */
   --fs-ui: 15px;     /* buttons, nav, table cells */
   --fs-body: 18px;   /* reading column */
   --fs-lead: 21px;   /* hero sub, standfirst */
@@ -52,6 +52,7 @@
   --accent-deep: #0e5f58;   /* CTA hover, green text on tinted washes  7.0:1 */
   --accent-soft: #e3f4f2;   /* highlight wash */
   --on-accent: #ffffff;     /* on --accent-strong 5.2:1 */
+  --field-green: #127a71;   /* brand field (closing band); same in dark mode, white text 5.2:1 */
 
   /* ── June Red: ONE "loyalty penalty" annotation per page ──────────── */
   --spark: #e85257;         /* squiggle stroke (graphic, 3.4:1) */

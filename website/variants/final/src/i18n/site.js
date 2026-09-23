@@ -28,6 +28,8 @@ export const localise = (build) => (locale) => {
 
 const month = { nl: 'maart 2026', fr: 'mars 2026' }; // socialProof.asOf = 2026-03
 
+export const LOGIN_URL = 'https://www.june.energy/'; // interim until facts.brand.login.url is confirmed
+
 export const siteCopy = localise((L, m) => {
   const nl = L === 'nl';
   return {
@@ -40,18 +42,19 @@ export const siteCopy = localise((L, m) => {
       features: p.features.filter((f) => f.source !== 'derived').map((f) => f[L]),
     })),
     footnotes: [
-      { id: 'fn-1', text: facts.saving.averagePerYear.footnote[L] },
+      // fn-1: the facts.json footnote still has [periode]/[aantal] placeholders; show the basis without brackets until June fills them.
+      { id: 'fn-1', text: nl ? 'Gemiddelde besparing per klant per jaar, berekend door June tegenover het contract vóór de overstap. Je persoonlijke besparing hangt af van je verbruik en de marktprijzen.' : 'Économie moyenne par client et par an, calculée par June par rapport au contrat d’avant le changement. Votre économie personnelle dépend de votre consommation et des prix du marché.' },
       { id: 'fn-2', text: nl ? `Google-score en aantal reviews op ${month.nl}.` : `Note Google et nombre d’avis en ${month.fr}.` },
       { id: 'fn-3', text: nl ? `Aantal klanten op ${month.nl}.` : `Nombre de clients en ${month.fr}.` },
       { id: 'fn-4', text: nl ? 'Winstgarantie bij Switch Plus en Premium, per abonnementsjaar. Voorwaarden in onze algemene voorwaarden.' : 'Garantie de gain avec Switch Plus et Premium, par année d’abonnement. Conditions dans nos conditions générales.' },
       { id: 'fn-5', text: nl
-        ? 'June leeft van de abonnementen van haar klanten. Of June daarnaast vergoedingen van leveranciers ontvangt, wordt vóór livegang bevestigd en dan hier vermeld.'
-        : 'June vit des abonnements de ses clients. Si June perçoit en plus des rémunérations de fournisseurs, ce sera confirmé avant la mise en ligne et mentionné ici.' },
+        ? 'June leeft van de abonnementen van haar klanten. We zijn geen energieleverancier en kiezen je contract op basis van jouw verbruik.'
+        : 'June vit des abonnements de ses clients. Nous ne sommes pas fournisseur d’énergie et choisissons votre contrat sur la base de votre consommation.' },
       { id: 'fn-6', text: nl ? 'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.' : 'Tous les prix TVA 21 % comprise. Votre consommation d’énergie est facturée par votre fournisseur.' },
     ],
     ui: nl
-      ? { skip: 'Naar de inhoud', menu: 'Menu', close: 'Sluiten', login: 'Inloggen', cta: 'Bereken je besparing', langOther: 'FR', langOtherLabel: 'Lire en français', langOtherName: 'Français', navLabel: 'Hoofdmenu', home: 'Home', crumbs: 'Kruimelpad', homeLabel: 'June, naar de startpagina', fnLabel: 'voetnoot', notIncluded: 'Niet inbegrepen', included: 'Inbegrepen' }
-      : { skip: 'Aller au contenu', menu: 'Menu', close: 'Fermer', login: 'Se connecter', cta: 'Calculez votre économie', langOther: 'NL', langOtherLabel: 'Lees in het Nederlands', langOtherName: 'Nederlands', navLabel: 'Menu principal', home: 'Accueil', crumbs: 'Fil d’Ariane', homeLabel: 'June, vers la page d’accueil', fnLabel: 'note', notIncluded: 'Non inclus', included: 'Inclus' },
+      ? { skip: 'Naar de inhoud', menu: 'Menu', close: 'Sluiten', login: 'Inloggen', cta: 'Bereken je besparing', langOther: 'FR', langOtherLabel: 'Lire en français', langOtherName: 'Français', navLabel: 'Hoofdmenu', help: 'Hulp nodig?', helpLabel: 'Hulp nodig? Naar de veelgestelde vragen', reducer: 'Vrijblijvend', loginShort: 'Inloggen', home: 'Home', crumbs: 'Kruimelpad', homeLabel: 'June, naar de startpagina', fnLabel: 'voetnoot', notIncluded: 'Niet inbegrepen', included: 'Inbegrepen' }
+      : { skip: 'Aller au contenu', menu: 'Menu', close: 'Fermer', login: 'Se connecter', cta: 'Calculez votre économie', langOther: 'NL', langOtherLabel: 'Lees in het Nederlands', langOtherName: 'Nederlands', navLabel: 'Menu principal', help: 'Besoin d’aide ?', helpLabel: 'Besoin d’aide ? Vers les questions fréquentes', reducer: 'Sans engagement', loginShort: 'Connexion', home: 'Accueil', crumbs: 'Fil d’Ariane', homeLabel: 'June, vers la page d’accueil', fnLabel: 'note', notIncluded: 'Non inclus', included: 'Inclus' },
     nav: nl
       ? { howItWorks: 'Hoe werkt het', plans: 'Prijzen', switchPlus: 'Winstgarantie', reviews: 'Reviews', faq: 'FAQ' }
       : { howItWorks: 'Comment ça marche', plans: 'Prix', switchPlus: 'Garantie de gain', reviews: 'Avis', faq: 'FAQ' },
@@ -59,8 +62,8 @@ export const siteCopy = localise((L, m) => {
       ? { home: 'Home', plans: 'Abonnementen', switchPlus: 'Switch Plus', howItWorks: 'Hoe werkt het', faq: 'Veelgestelde vragen', signup: 'Aanmelden' }
       : { home: 'Accueil', plans: 'Abonnements', switchPlus: 'Switch Plus', howItWorks: 'Comment ça marche', faq: 'Questions fréquentes', signup: 'Inscription' },
     form: nl
-      ? { label: 'Je postcode', placeholder: 'bv. 9000', help: 'Je postcode bepaalt je netbeheerder en regio. Daarna 4 vragen, geen persoonsgegevens.', error: 'Vul een Belgische postcode in van 4 cijfers, bv. 9000.' }
-      : { label: 'Votre code postal', placeholder: 'ex. 1000', help: 'Votre code postal détermine votre gestionnaire de réseau et votre région. Ensuite 4 questions, sans données personnelles.', error: 'Indiquez un code postal belge à 4 chiffres, par ex. 1000.' },
+      ? { label: 'Je postcode', placeholder: 'bv. 9000', help: 'Vrijblijvend · 4 vragen · geen persoonsgegevens', error: 'Vul een Belgische postcode in van 4 cijfers, bv. 9000.' }
+      : { label: 'Votre code postal', placeholder: 'ex. 1000', help: 'Sans engagement · 4 questions · aucune donnée personnelle', error: 'Indiquez un code postal belge à 4 chiffres, par ex. 1000.' },
     trust: {
       rating: facts.socialProof.googleRating.display[L],
       customers: facts.socialProof.customers.display[L],
@@ -72,7 +75,7 @@ export const siteCopy = localise((L, m) => {
       mission: facts.brand.mission.nl,
       colJune: 'June', colHelp: 'Hulp', notesTitle: 'Voetnoten en bronnen',
       links: { switch: 'Switch', premium: 'Premium', dongle: 'June Dongle', earn: 'Hoe June geld verdient', data: 'Je gegevens' },
-      legal: '© 2026 June Energy · KBO-nummer volgt vóór livegang',
+      legal: '© 2026 June Energy',
       legalLinks: ['Algemene voorwaarden', 'Privacy', 'Cookies'],
       legalNote: 'Algemene voorwaarden, privacyverklaring en contactgegevens worden vóór livegang gekoppeld.',
     } : {
@@ -81,7 +84,7 @@ export const siteCopy = localise((L, m) => {
       mission: facts.brand.mission.fr,
       colJune: 'June', colHelp: 'Aide', notesTitle: 'Notes et sources',
       links: { switch: 'Switch', premium: 'Premium', dongle: 'June Dongle', earn: 'Comment June gagne sa vie', data: 'Vos données' },
-      legal: '© 2026 June Energy · numéro BCE communiqué avant la mise en ligne',
+      legal: '© 2026 June Energy',
       legalLinks: ['Conditions générales', 'Confidentialité', 'Cookies'],
       legalNote: 'Conditions générales, déclaration de confidentialité et coordonnées seront liées avant la mise en ligne.',
     },
@@ -110,8 +113,8 @@ export const siteCopy = localise((L, m) => {
       terms: 'Lire les conditions', more: 'Comment fonctionne la garantie de gain',
     },
     sticky: nl
-      ? { strong: '4,3/5 op Google', sub: `${facts.socialProof.customers.display.nl} · geen leverancier` }
-      : { strong: '4,3/5 sur Google', sub: `${facts.socialProof.customers.display.fr} · pas un fournisseur` },
+      ? { strong: '4,3/5 op Google', sub: `${facts.socialProof.customers.display.nl} · vrijblijvend` }
+      : { strong: '4,3/5 sur Google', sub: `${facts.socialProof.customers.display.fr} · sans engagement` },
     finalCta: nl
       ? { h2: 'Kort samengevat.', points: [
           'June is geen leverancier. Jij betaalt ons, niet de leverancier.',

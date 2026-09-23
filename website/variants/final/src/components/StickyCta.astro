@@ -1,0 +1,11 @@
+---
+// Sticky mobile CTA (≤ 760px). Shows after the first [data-sticky-hide] block scrolls away, hides while any such block
+// (inline form, footer) is visible. Always carries proof + one risk reducer. html gets scroll-padding-bottom so a
+// focused element is never hidden underneath it (WCAG 2.4.11).
+interface Props { strong: string; sub: string; label: string; url: string; plan?: string; }
+const { strong, sub, label, url, plan } = Astro.props;
+---
+<div class="sticky" data-sticky inert>
+  <p class="sticky-proof"><strong>{strong}</strong><span>{sub}</span></p>
+  <a class="btn" href={url} data-cta={plan ? `sticky-${plan}` : 'sticky'}>{label}</a>
+</div>

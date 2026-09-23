@@ -1,35 +1,61 @@
 ---
-// Aanmelden / Inscription — minimal chrome, noindex. Step 1 (postcode, energy, household or kWh, meter & extras)
-// → indicative RANGE with its method → step 2 (plan, preference, email + separate unticked marketing consent)
-// → confirmation. One small island (script below). Without JS every question is a plain form, top to bottom.
-// Side panel "Wat we van je weten" mirrors every answer: the Honest Market voice applied to data.
+// Aanmelden / Inscription — funnel with its own minimal header (logo · "Hulp nodig?" · NL|FR that keeps the answers).
+// Three steps, each with its own URL (hash state, back/reload safe): 1 Je woning → 2 Je schatting (indicative, NET of
+// the plan fee first) → 3 Je abonnement (plan, how to switch, e-mail, separate unticked marketing consent) → confirmation.
+// Without JS every question is one plain GET form, top to bottom (estimate and confirmation panels stay hidden).
+// All maths and plan advice: src/lib/estimate.js (getEstimate). Answers/query/storage contract: src/lib/funnel-state.js.
+// Client logic: src/lib/signup-client.js. The side panel "Wat we van je weten" mirrors every answer.
 import { Image } from 'astro:assets';
 import Page from '../../layouts/Page.astro';
 import '../../styles/funnel.css';
-import Header from '../Header.astro';
+import Logo from '../Logo.astro';
 import Footer from '../Footer.astro';
 import Icon from '../Icon.astro';
 import Stars from '../Stars.astro';
 import { signupCopy } from '../../i18n/signup.js';
-import { href } from '@shared/routes.mjs';
+import { href, LOCALES } from '@shared/routes.mjs';
 import cheering from '@shared/assets/character/june-character-cheering.png';
 interface Props { locale: 'nl-be' | 'fr-be'; }
 const { locale } = Astro.props;
 const c = signupCopy(locale);
 const L = c.L;
 const base = import.meta.env.BASE_URL;
+const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
 const s1 = c.s1, s2 = c.s2;
 const energyIcon: Record<string, string> = { elec: 'bolt', both: 'flame' };
 const extraIcon: Record<string, string> = { solar: 'sun', ev: 'car', heatpump: 'heat' };
+const signupUrl = href('signup', locale, base);
 const client = {
-  L, locale, regions: c.regions, errors: c.errors, est: c.est, s2: { premAnalog: s2.premAnalog }, done: c.done, side: c.side, progress: c.progress,
+  L, locale, errors: c.errors, est: c.est, s1: { pcLine: s1.pcLine }, s2: { premAnalog: s2.premAnalog, plan: { net: s2.plan.net, perYear: s2.plan.perYear } }, done: c.done, side: c.side, progress: c.progress,
   plans: c.plans, energy: s1.energy.opts, meter: s1.meter.opts, extras: s1.extras.opts, household: s1.household,
-  labels: L === 'fr' ? { postcode: 'code postal', household: 'taille du ménage', meter: 'compteur', email: 'adresse e-mail', terms: 'conditions générales', kwh: 'consommation annuelle' } : { postcode: 'postcode', household: 'gezinsgrootte', meter: 'meter', email: 'e-mailadres', terms: 'algemene voorwaarden', kwh: 'jaarverbruik' },
-  pref: s2.pref.opts, yes: c.done.yes, no: c.done.no,
+  pref: s2.pref.opts, signupUrl: `https://www.june.energy/${locale}/${locale === 'nl-be' ? 'aanmelden' : 'inscription'}/`,
+  langBase: href('signup', other, base),
 };
 ---
 <Page locale={locale} routeKey="signup" title={c.meta.title} description={c.meta.description} noindex>
-  <Header locale={locale} routeKey="signup" c={c} minimal />
+  <a class="skip" href="#inhoud">{c.ui.skip}</a>
+  <header class="masthead masthead--minimal fhead">
+    <div class="wrap masthead-in">
+      <Logo href={href('home', locale, base)} label={c.ui.homeLabel} />
+      <div class="fhead-util">
+        <a class="fhead-help" href={href('faq', locale, base)} data-help>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.7"/><path d="M12 17.2h.01"/></svg>
+          <span>{c.help.label}</span><span class="fhead-more"><span aria-hidden="true">·</span> {c.help.more}</span>
+        </a>
+        <span class="fhead-lang">
+          <span class="lang-cur">{LOCALES[locale].label}</span>
+          <span aria-hidden="true">|</span>
+          <a href={href('signup', other, base)} hreflang={LOCALES[other].html} lang={LOCALES[other].html} aria-label={c.ui.langOtherLabel} data-lang-link>{c.ui.langOther}</a>
+        </span>
+      </div>
+    </div>
+  </header>
+  <script is:inline>
+    // Returning to a step (hash), arriving with answers (?postcode=…) or with saved answers: keep the form invisible
+    // (not collapsed) until the script has restored it, so nothing visibly jumps. Safety net: reveal after 1.5 s.
+    (function () { var d = document.documentElement, s = false; try { s = !!sessionStorage.getItem('june-signup'); } catch (e) {}
+      if (location.hash || location.search || s) { d.classList.add('su-restoring'); setTimeout(function () { d.classList.remove('su-restoring'); }, 1500); } })();
+  </script>
   <main id="inhoud" class="funnel" tabindex="-1">
     <div class="wrap funnel-grid">
       <div class="funnel-main">
@@ -37,15 +63,20 @@ const client = {
           {c.progress.steps.map((s: string, i: number) => <li data-p={i} aria-current={i === 0 ? 'step' : undefined}><span class="pn" aria-hidden="true">{i + 1}</span><span>{s}</span></li>)}
         </ol>
         <p class="progress-meta" id="progress-meta">{c.progress.meta[0]}</p>
-        <h1 id="h1" class="funnel-h1">{c.h1}</h1>
+        <h1 class="funnel-h1">{c.h1}</h1>
         <p class="funnel-intro">{c.intro}</p>
         <p class="plan-chip" id="plan-chip" hidden><Icon name="check-circle" /><span><strong>{c.planChip.label}:</strong> <span data-chip-name></span></span><span class="note">{c.planChip.change}</span></p>
         <noscript><p class="note noscript">{c.noscript}</p></noscript>
-        <p class="sr-only" id="su-live" aria-live="assertive"></p>
 
-        <form id="su" class="su" action={href('signup', locale, base)} method="get" novalidate>
-          <!-- ── STEP 1 ─────────────────────────────── -->
-          <section class="panel is-active" data-panel="s1" aria-labelledby="s1-h">
+        <form id="su" class="su" action={signupUrl} method="get">
+          <div class="err-sum" id="err-sum" tabindex="-1" aria-labelledby="err-sum-h" hidden>
+            <p class="err-sum-h" id="err-sum-h"></p>
+            <ul></ul>
+          </div>
+          <p class="sr-only" id="su-live" aria-live="polite"></p>
+
+          <!-- ── STEP 1 · Je woning ─────────────────── -->
+          <section class="panel is-active" data-panel="home" aria-labelledby="s1-h">
             <h2 id="s1-h" tabindex="-1" class="panel-h">{s1.h2}</h2>
 
             <div class="q q--pc">
@@ -58,14 +89,13 @@ const client = {
               <p class="err" id="su-pc-err" hidden></p>
             </div>
 
-            <fieldset class="q" id="q-energy" aria-describedby="energy-err">
+            <fieldset class="q" id="q-energy">
               <legend class="q-label">{s1.energy.legend}</legend>
               <div class="choices choices--2">
                 {s1.energy.opts.map(([v, l]: string[]) => (
-                  <label class="choice"><input type="radio" name="energy" value={v} checked={v === 'both'} /><span class="choice-in"><Icon name={energyIcon[v]} />{l}</span></label>
+                  <label class="choice"><input type="radio" id={`su-energy-${v}`} name="energy" value={v} checked={v === 'both'} /><span class="choice-in"><Icon name={energyIcon[v]} />{l}</span></label>
                 ))}
               </div>
-              <p class="err" id="energy-err" hidden></p>
             </fieldset>
 
             <fieldset class="q" id="q-household" aria-describedby="household-why household-err">
@@ -73,16 +103,16 @@ const client = {
               <p class="why" id="household-why">{s1.household.why}</p>
               <div class="choices choices--4">
                 {s1.household.opts.map(([v, l]: string[]) => (
-                  <label class="choice choice--num"><input type="radio" name="household" value={v} /><span class="choice-in"><span class="choice-big">{l}</span><span class="choice-sub">{v === '1' ? s1.household.unit[0] : s1.household.unit[1]}</span></span></label>
+                  <label class="choice choice--num"><input type="radio" id={`su-hh-${v}`} name="household" value={v} /><span class="choice-in"><span class="choice-big">{l}</span><span class="choice-sub">{v === '1' ? s1.household.unit[0] : s1.household.unit[1]}</span></span></label>
                 ))}
               </div>
               <details class="kwh" id="kwh">
-                <summary><Icon name="plus" />{s1.kwh.summary} <span class="note">{s1.kwh.optional}</span></summary>
+                <summary><Icon name="plus" /><span>{s1.kwh.summary} <span class="note">{s1.kwh.optional}</span></span></summary>
                 <div class="kwh-in">
                   <p class="why">{s1.kwh.note}</p>
                   <div class="kwh-fields">
-                    <div class="field"><label for="su-kwh-e">{s1.kwh.elec}</label><input class="input" id="su-kwh-e" name="kwhElec" inputmode="numeric" autocomplete="off" aria-describedby="kwh-err" /></div>
-                    <div class="field" id="kwh-gas-field"><label for="su-kwh-g">{s1.kwh.gas}</label><input class="input" id="su-kwh-g" name="kwhGas" inputmode="numeric" autocomplete="off" aria-describedby="kwh-err" /></div>
+                    <div class="field"><label for="su-kwh-e">{s1.kwh.elec}</label><input class="input" id="su-kwh-e" name="kwh_elec" inputmode="numeric" autocomplete="off" aria-describedby="kwh-err" /></div>
+                    <div class="field" id="kwh-gas-field"><label for="su-kwh-g">{s1.kwh.gas}</label><input class="input" id="su-kwh-g" name="kwh_gas" inputmode="numeric" autocomplete="off" aria-describedby="kwh-err" /></div>
                   </div>
                   <p class="err" id="kwh-err" hidden></p>
                 </div>
@@ -95,7 +125,7 @@ const client = {
               <p class="why" id="meter-why">{s1.meter.why} {s1.meter.help}</p>
               <div class="choices choices--3">
                 {s1.meter.opts.map(([v, l]: string[]) => (
-                  <label class="choice"><input type="radio" name="meter" value={v} /><span class="choice-in"><Icon name={v === 'unknown' ? 'info' : 'meter'} />{l}</span></label>
+                  <label class="choice"><input type="radio" id={`su-meter-${v}`} name="meter" value={v} required={v === 'digital'} /><span class="choice-in"><Icon name={v === 'unknown' ? 'info' : 'meter'} />{l}</span></label>
                 ))}
               </div>
               <p class="err" id="meter-err" hidden></p>
@@ -105,78 +135,99 @@ const client = {
               <legend class="q-label">{s1.extras.legend} <span class="note">{s1.extras.optional}</span></legend>
               <div class="choices choices--3">
                 {s1.extras.opts.map(([v, l]: string[]) => (
-                  <label class="choice"><input type="checkbox" name={v} value="1" /><span class="choice-in"><Icon name={extraIcon[v]} />{l}</span></label>
+                  <label class="choice"><input type="checkbox" id={`su-${v}`} name={v} value="1" /><span class="choice-in"><Icon name={extraIcon[v]} />{l}</span></label>
                 ))}
               </div>
             </fieldset>
 
             <div class="panel-foot">
-              <button class="btn btn--lg" type="submit" data-next="s1">{s1.next}<Icon name="arrow-r" /></button>
+              <button class="btn btn--lg" type="submit" data-next="home">{s1.next}<Icon name="arrow-r" /></button>
               <p class="note">{s1.reassure}</p>
+              <p class="cta-trust"><Stars value={c.rating} id="su-cta-1" /> <strong>{c.trust.rating}</strong></p>
             </div>
           </section>
 
-          <!-- ── ESTIMATE ───────────────────────────── -->
+          <!-- ── STEP 2 · Je schatting ─────────────── -->
           <section class="panel" data-panel="est" aria-labelledby="est-h" hidden>
             <div class="panel-h-row">
               <h2 id="est-h" tabindex="-1" class="panel-h">{c.est.h2}</h2>
               <span class="tag">{c.est.tag}</span>
             </div>
             <div class="est-card">
-              <p class="est-label">{c.est.grossLabel}</p>
-              <p class="est-range num" data-est-gross></p>
-              <p class="est-net"><span data-est-net-label></span> <strong class="num" data-est-net></strong></p>
-              <p class="est-net est-net--alt" data-est-alt hidden><span data-est-alt-label></span> <strong class="num" data-est-alt-v></strong></p>
-              <p class="note" data-est-basis></p>
+              <p class="est-label" data-est-label></p>
+              <p class="est-range"><span class="num" data-est-net></span> <span class="est-unit">{c.est.perYear}</span></p>
+              <dl class="est-ledger">
+                <div><dt>{c.est.ledger.gross}</dt><dd class="num" data-est-gross></dd></div>
+                <div><dt data-est-fee-label></dt><dd class="num" data-est-fee></dd></div>
+                <div class="is-total"><dt>{c.est.ledger.net}</dt><dd class="num" data-est-net2></dd></div>
+              </dl>
+              <p class="est-alt" data-est-alt hidden></p>
+              <p class="note est-basis" data-est-basis></p>
             </div>
-            <p class="est-low" data-est-low hidden><Icon name="info" /><span>{c.est.low}</span></p>
-            <div class="est-rec">
+            <p class="note est-fn">{c.est.footnote}</p>
+            <div class="est-notice" data-est-notice hidden>
+              <Icon name="info" />
+              <div>
+                <h3 class="est-notice-h" data-est-notice-h hidden></h3>
+                <p data-est-notice-p></p>
+                <p data-est-g-link hidden><a class="link-arrow" href={href('switchPlus', locale, base)}>{c.est.guaranteeLink}<Icon name="arrow-r" /></a></p>
+              </div>
+            </div>
+            <div class="est-rec" data-est-rec-box>
               <h3>{c.est.recH}</h3>
               <p data-est-rec></p>
+              <p class="note" data-est-g hidden>{s2.guaranteeNote}</p>
             </div>
-            <details class="method" open>
+            <details class="method" id="est-method">
               <summary><Icon name="plus" />{c.est.methodH}</summary>
               <ol>{c.est.method.map((m: string) => <li>{m}</li>)}</ol>
             </details>
             <div class="panel-foot panel-foot--split">
-              <button class="btn btn--lg" type="button" data-go="s2"><span data-est-next></span><Icon name="arrow-r" /></button>
-              <button class="btn btn--text" type="button" data-go="s1"><Icon name="arrow-l" />{c.est.back}</button>
+              <div class="est-actions">
+                <button class="btn btn--lg" type="button" data-go-plan><span data-est-next></span><Icon name="arrow-r" /></button>
+                <button class="btn btn--ghost btn--keep" type="button" data-keep-prem hidden>{c.est.keep}</button>
+              </div>
+              <button class="btn btn--text" type="button" data-back="home"><Icon name="arrow-l" />{c.est.back}</button>
             </div>
+            <p class="est-share"><a class="link-arrow" href="mailto:" data-share><Icon name="mail" />{c.est.share.label}</a></p>
           </section>
 
-          <!-- ── STEP 2 ─────────────────────────────── -->
-          <section class="panel" data-panel="s2" aria-labelledby="s2-h">
+          <!-- ── STEP 3 · Je abonnement ────────────── -->
+          <section class="panel" data-panel="plan" aria-labelledby="s2-h">
             <h2 id="s2-h" tabindex="-1" class="panel-h">{s2.h2}</h2>
 
-            <fieldset class="q" id="q-plan" aria-describedby="plan-err plan-warn">
+            <fieldset class="q" id="q-plan" aria-describedby="plan-g plan-warn plan-err">
               <legend class="q-label">{s2.plan.legend}</legend>
               <div class="plan-opts">
                 {c.plans.map((p: any) => (
                   <label class:list={['plan-opt', `plan-opt--${p.slug}`]}>
-                    <input type="radio" name="plan" value={p.slug} checked={p.slug === 'switch-plus'} />
+                    <input type="radio" id={`su-plan-${p.slug}`} name="plan" value={p.slug} checked={p.slug === 'switch-plus'} />
                     <span class="plan-opt-in">
-                      {p.slug === 'switch-plus' && <span class="plan-opt-badge">{s2.plan.rec}</span>}
-                      {p.slug === 'premium' && <span class="plan-opt-badge" data-prem-rec hidden>{s2.plan.recPrem}</span>}
+                      <span class="plan-opt-badge" data-rec-badge={p.slug} hidden={p.slug !== 'switch-plus'}>{s2.plan.rec}</span>
                       <span class="plan-opt-name">{p.name}</span>
                       <span class="plan-opt-price"><strong class="num">{p.yearly}</strong> {L === 'fr' ? 'par an' : 'per jaar'}</span>
                       <span class="plan-opt-mo">{p.monthly}, {s2.plan.billed}</span>
-                      <span class="plan-opt-g">{p.slug === 'switch' ? s2.plan.noGuarantee : `${s2.plan.guarantee} (${c.guaranteeAmount})`}{p.slug === 'premium' && ` · ${s2.plan.dongle}`}</span>
+                      <span class="plan-opt-net" data-net-for={p.slug} hidden></span>
+                      <span class="plan-opt-g">{p.slug === 'switch' ? s2.plan.noGuarantee : `${s2.plan.guarantee} (${c.guaranteeAmount})`}{p.slug === 'premium' && ` · ${s2.plan.dongle} · ${s2.plan.digital}`}</span>
                     </span>
                   </label>
                 ))}
               </div>
+              <p class="note plan-g" id="plan-g">{s2.guaranteeNote}</p>
               <p class="warn" id="plan-warn" aria-live="polite" hidden></p>
               <p class="err" id="plan-err" hidden></p>
             </fieldset>
 
-            <fieldset class="q" id="q-pref">
+            <fieldset class="q" id="q-pref" aria-describedby="pref-why pref-err">
               <legend class="q-label">{s2.pref.legend}</legend>
+              <p class="why" id="pref-why">{s2.pref.why}</p>
               <div class="choices choices--2 choices--tall">
-                {s2.pref.opts.map(([v, l, d]: string[]) => (
-                  <label class="choice choice--text"><input type="radio" name="pref" value={v} checked={v === 'auto'} /><span class="choice-in"><strong>{l}</strong><span>{d}</span></span></label>
+                {s2.pref.opts.map(([v, l, d]: string[], i: number) => (
+                  <label class="choice choice--text"><input type="radio" id={`su-pref-${v}`} name="pref" value={v} required={i === 0} /><span class="choice-in"><strong>{l}</strong><span>{d}</span></span></label>
                 ))}
               </div>
-              <label class="check"><input type="checkbox" name="green" value="1" /><span>{s2.green}</span></label>
+              <p class="err" id="pref-err" hidden></p>
+              <label class="check"><input type="checkbox" id="su-green" name="green" value="1" /><span>{s2.green}</span></label>
             </fieldset>
 
             <div class="q">
@@ -189,7 +240,7 @@ const client = {
             <div class="q q--consent">
               <label class="check"><input type="checkbox" id="su-terms" name="terms" value="1" required aria-describedby="su-terms-err" /><span>{s2.terms}</span></label>
               <p class="err" id="su-terms-err" hidden></p>
-              <label class="check"><input type="checkbox" name="marketing" value="1" /><span>{s2.marketing}</span></label>
+              <label class="check"><input type="checkbox" id="su-marketing" name="marketing" value="1" /><span>{s2.marketing}</span></label>
             </div>
 
             <div class="next-box">
@@ -199,10 +250,11 @@ const client = {
 
             <div class="panel-foot panel-foot--split">
               <div>
-                <button class="btn btn--lg" type="submit" data-next="s2">{s2.submit}<Icon name="arrow-r" /></button>
+                <button class="btn btn--lg" type="submit" data-next="plan">{s2.submit}<Icon name="arrow-r" /></button>
                 <p class="note">{s2.under}</p>
+                <p class="cta-trust"><Stars value={c.rating} id="su-cta-3" /> <strong>{c.trust.rating}</strong></p>
               </div>
-              <button class="btn btn--text" type="button" data-go="est"><Icon name="arrow-l" />{s2.back}</button>
+              <button class="btn btn--text" type="button" data-back="est"><Icon name="arrow-l" />{s2.back}</button>
             </div>
           </section>
 
@@ -253,192 +305,6 @@ const client = {
 </Page>
 
 <script>
-  import { estimate, net, region } from '../../lib/estimate.js';
-  const C = JSON.parse(document.getElementById('su-copy')!.textContent!);
-  const form = document.getElementById('su') as HTMLFormElement;
-  const live = document.getElementById('su-live')!;
-  const dl = ((window as any).dataLayer ||= []);
-  const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T;
-  const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => [...r.querySelectorAll(s)] as T[];
-  const fill = (t: string, v: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ''));
-  const nf = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, C.L === 'nl' ? '.' : ' ');
-  const eur = (n: number) => (C.L === 'nl' ? `€ ${nf(n)}` : `${nf(n)} €`);
-  const val = (name: string) => (form.elements.namedItem(name) as RadioNodeList | HTMLInputElement | null);
-  const radio = (name: string) => (val(name) as RadioNodeList)?.value || '';
-  const checked = (name: string) => !!(form.querySelector(`[name="${name}"]`) as HTMLInputElement)?.checked;
-  const plansBy = Object.fromEntries(C.plans.map((p: any) => [p.slug, p]));
-  const ORDER = ['s1', 'est', 's2', 'done'];
-  const PROG = { s1: 0, est: 1, s2: 2, done: 3 } as Record<string, number>;
-  let current = 's1';
-
-  // Panels: JS shows one at a time (without JS: step 1 + 2 as one plain form).
-  const panels = Object.fromEntries($$('[data-panel]').map((p) => [p.dataset.panel!, p]));
-  Object.values(panels).forEach((p) => p.removeAttribute('hidden'));
-  function show(step: string, push = true) {
-    current = step;
-    for (const [k, p] of Object.entries(panels)) p.classList.toggle('is-active', k === step);
-    const idx = PROG[step];
-    $$('.progress li').forEach((li, i) => { li.classList.toggle('is-done', i < idx); if (i === Math.min(idx, 2) && step !== 'done') li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
-    $('#progress-meta').textContent = C.progress.meta[idx];
-    document.body.dataset.step = step;
-    if (push) history.pushState({ step }, '', `#${step === 's1' ? '' : step}`);
-    const h = $(`#${step === 's1' ? 's1' : step === 'est' ? 'est' : step === 's2' ? 's2' : 'done'}-h`);
-    window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    h?.focus({ preventScroll: true });
-    dl.push({ event: 'signup_step_viewed', step: idx + 1, step_name: step });
-  }
-  history.replaceState({ step: 's1' }, '', location.pathname + location.search);
-  addEventListener('popstate', (e) => { const s = (e.state && e.state.step) || 's1'; if (s === 'done' || (s !== 's1' && !estDone)) return show('s1', false); show(s, false); });
-
-  // Errors: inline message + aria-invalid + one assertive summary; focus the first problem.
-  function setErr(id: string, msg: string | null, input?: HTMLElement | null) {
-    const e = document.getElementById(id)!; e.hidden = !msg; e.textContent = msg || '';
-    const box = e.closest('.q'); box?.classList.toggle('is-invalid', !!msg);
-    if (input) msg ? input.setAttribute('aria-invalid', 'true') : input.removeAttribute('aria-invalid');
-  }
-  function report(errs: [string, string, HTMLElement][]) {
-    errs.forEach(([id, msg, el]) => setErr(id, msg, el.tagName === 'INPUT' && (el as HTMLInputElement).type !== 'radio' ? el : null));
-    if (!errs.length) { live.textContent = ''; return true; }
-    const labels = errs.map((x) => x[2].dataset.label || '').filter(Boolean);
-    live.textContent = fill(C.errors.summary[errs.length === 1 ? 0 : 1], { n: errs.length, list: labels.join(', ') });
-    errs[0][2].focus();
-    errs.forEach(([id]) => dl.push({ event: 'signup_error', step: PROG[current] + 1, field: id.replace(/-err$/, ''), error_type: 'invalid' }));
-    return false;
-  }
-  const mark = (el: HTMLElement | null, label: string) => { if (el) el.dataset.label = label; return el as HTMLElement; };
-
-  // Postcode: region label + signup_started on the first valid postcode (once per session).
-  const pc = $<HTMLInputElement>('#su-pc');
-  const regionEl = $('#su-pc-region');
-  let started = false;
-  try { started = sessionStorage.getItem('june-su-started') === '1'; } catch {}
-  function onPostcode() {
-    const v = pc.value.replace(/\D/g, '').slice(0, 4);
-    if (v !== pc.value) pc.value = v;
-    const r = region(v);
-    regionEl.innerHTML = r ? `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>${v} · ${C.regions[r]}` : '';
-    regionEl.classList.toggle('is-on', !!r);
-    if (r) {
-      setErr('su-pc-err', null, pc);
-      if (!started) {
-        started = true;
-        try { sessionStorage.setItem('june-su-started', '1'); } catch {}
-        dl.push({ event: 'signup_started', locale: C.locale, plan: planFromUrl || 'none', postcode_region: r.toUpperCase(), entry: document.referrer ? new URL(document.referrer).pathname : 'direct' });
-      }
-    }
-    side();
-  }
-  pc.addEventListener('input', onPostcode);
-
-  // Query parameters: ?postcode=&plan=
-  const qs = new URLSearchParams(location.search);
-  const planFromUrl = ['switch', 'switch-plus', 'premium'].includes(qs.get('plan') || '') ? qs.get('plan')! : '';
-  if (qs.get('postcode')) { pc.value = qs.get('postcode')!; onPostcode(); }
-  if (planFromUrl) {
-    const chip = $('#plan-chip'); chip.hidden = false; $('[data-chip-name]', chip).textContent = plansBy[planFromUrl].name;
-    ($(`input[name="plan"][value="${planFromUrl}"]`) as HTMLInputElement).checked = true;
-  }
-
-  // Gas usage field only when gas is compared.
-  const gasField = $('#kwh-gas-field');
-  const syncEnergy = () => { gasField.hidden = radio('energy') === 'elec'; };
-  form.addEventListener('change', (e) => {
-    const t = e.target as HTMLInputElement;
-    if (t.name === 'energy') syncEnergy();
-    if (t.name === 'household') setErr('household-err', null);
-    if (t.name === 'meter') setErr('meter-err', null);
-    if (t.name === 'terms' && t.checked) setErr('su-terms-err', null, t);
-    if (t.name === 'plan' || t.name === 'meter') premWarn();
-    side();
-  });
-  form.addEventListener('input', (e) => { const t = e.target as HTMLInputElement; if (t.name === 'email' && t.getAttribute('aria-invalid')) setErr('su-email-err', null, t); if (t.name === 'kwhElec' || t.name === 'kwhGas') { setErr('kwh-err', null); setErr('household-err', null); } side(); });
-  syncEnergy();
-
-  // Live "what we know about you" ledger.
-  function side() {
-    const set = (k: string, v: string) => { const dd = $(`[data-row="${k}"] dd`); dd.textContent = v || (k === 'email' ? C.side.notAsked : C.side.empty); dd.classList.toggle('is-empty', !v); };
-    const v = pc.value; const r = region(v);
-    set('postcode', r ? v : '');
-    set('region', r ? C.regions[r] : '');
-    set('energy', (C.energy.find((o: string[]) => o[0] === radio('energy')) || [])[1] || '');
-    const e = Number((val('kwhElec') as HTMLInputElement).value), g = Number((val('kwhGas') as HTMLInputElement).value);
-    const hh = radio('household');
-    set('usage', e > 0 ? `${nf(e)} kWh${g > 0 && radio('energy') === 'both' ? ` · ${nf(g)} kWh` : ''}` : hh ? `${hh.replace('-', '–')} ${hh === '1' ? C.household.unit[0] : C.household.unit[1]}` : '');
-    set('meter', (C.meter.find((o: string[]) => o[0] === radio('meter')) || [])[1] || '');
-    set('extras', C.extras.filter((o: string[]) => checked(o[0])).map((o: string[]) => o[1]).join(', '));
-    const em = (val('email') as HTMLInputElement).value.trim();
-    set('email', current === 's2' || current === 'done' ? em : '');
-  }
-  side();
-
-  // Step 1 → estimate
-  let estDone = false;
-  function validate1() {
-    const errs: [string, string, HTMLElement][] = [];
-    const v = pc.value.trim();
-    if (!v) errs.push(['su-pc-err', C.errors.postcodeEmpty, mark(pc, C.labels.postcode)]);
-    else if (!region(v)) errs.push(['su-pc-err', C.errors.postcode, mark(pc, C.labels.postcode)]);
-    const e = (val('kwhElec') as HTMLInputElement), g = (val('kwhGas') as HTMLInputElement);
-    const bad = (i: HTMLInputElement) => i.value.trim() !== '' && !(Number(i.value) >= 100 && Number(i.value) <= 100000);
-    if (bad(e) || (radio('energy') === 'both' && bad(g))) { ($('#kwh') as HTMLDetailsElement).open = true; errs.push(['kwh-err', C.errors.kwh, mark(bad(e) ? e : g, C.labels.kwh)]); }
-    else if (!radio('household') && !(Number(e.value) > 0)) errs.push(['household-err', C.errors.household, mark($('input[name="household"]'), C.labels.household)]);
-    if (!radio('meter')) errs.push(['meter-err', C.errors.choice, mark($('input[name="meter"]'), C.labels.meter)]);
-    if (!errs.length) ['su-pc-err', 'kwh-err', 'household-err', 'meter-err'].forEach((id) => setErr(id, null));
-    return report(errs);
-  }
-  function recommended() { return planFromUrl || (radio('meter') === 'digital' && checked('solar') ? 'premium' : 'switch-plus'); }
-  function renderEstimate() {
-    const r = estimate({ energy: radio('energy') as any, household: radio('household'), kwhElec: Number((val('kwhElec') as HTMLInputElement).value) || 0, kwhGas: Number((val('kwhGas') as HTMLInputElement).value) || 0, solar: checked('solar'), ev: checked('ev'), heatpump: checked('heatpump') });
-    const slug = recommended(); const p = plansBy[slug];
-    const n = net(r.gross, p.fee);
-    $('[data-est-gross]').textContent = `${eur(r.gross[0])} – ${eur(r.gross[1])}`;
-    $('[data-est-net-label]').textContent = fill(C.est.netLabel, { name: p.name, fee: p.yearly }) + (C.L === 'fr' ? ' :' : ':');
-    $('[data-est-net]').textContent = `${eur(n[0])} – ${eur(n[1])}`;
-    $('[data-est-basis]').textContent = fill(r.gas ? C.est.basisGas : C.est.basis, { e: nf(r.elec), g: nf(r.gas), src: r.own ? C.est.own : C.est.preset });
-    const alt = $('[data-est-alt]'); alt.hidden = slug !== 'premium';
-    if (slug === 'premium') { const sp = plansBy['switch-plus']; const n2 = net(r.gross, sp.fee); $('[data-est-alt-label]').textContent = fill(C.est.netLabel, { name: sp.name, fee: sp.yearly }) + (C.L === 'fr' ? '\u202F:' : ':'); $('[data-est-alt-v]').textContent = `${eur(n2[0])} – ${eur(n2[1])}`; }
-    $('[data-est-low]').hidden = n[1] >= 50;
-    $('[data-est-rec]').textContent = planFromUrl ? fill(C.est.recPlan, { name: p.name }) : slug === 'premium' ? C.est.recPrem : C.est.recSp;
-    $('[data-est-next]').textContent = fill(C.est.next, { name: p.name });
-    // Step 2 preselection (respects ?plan=), Premium badge when it fits the home.
-    ($(`input[name="plan"][value="${slug}"]`) as HTMLInputElement).checked = true;
-    $('[data-prem-rec]').hidden = !(radio('meter') === 'digital' && checked('solar'));
-    premWarn();
-    const band = n[1] < 100 ? '0-100' : n[1] < 300 ? '100-300' : '300+';
-    dl.push({ event: 'calculator_used', band });
-    estDone = true;
-  }
-  function premWarn() {
-    const w = $('#plan-warn'); const on = radio('plan') === 'premium' && radio('meter') === 'analog';
-    w.hidden = !on; w.textContent = on ? C.s2.premAnalog : '';
-  }
-
-  // Step 2 → done
-  function validate2() {
-    const errs: [string, string, HTMLElement][] = [];
-    const em = $<HTMLInputElement>('#su-email'); const v = em.value.trim();
-    if (!v) errs.push(['su-email-err', C.errors.emailEmpty, mark(em, C.labels.email)]);
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) errs.push(['su-email-err', C.errors.email, mark(em, C.labels.email)]);
-    const t = $<HTMLInputElement>('#su-terms');
-    if (!t.checked) errs.push(['su-terms-err', C.errors.terms, mark(t, C.labels.terms)]);
-    if (!errs.length) { setErr('su-email-err', null, em); setErr('su-terms-err', null, t); }
-    return report(errs);
-  }
-  function renderDone() {
-    const em = $<HTMLInputElement>('#su-email').value.trim();
-    const body = $('[data-done-body]'); body.textContent = '';
-    const [a, b] = C.done.body.split('{email}'); const strong = document.createElement('strong'); strong.textContent = em;
-    body.append(a, strong, b);
-    $('[data-done-plan]').textContent = `${plansBy[radio('plan')].name} · ${plansBy[radio('plan')].yearly}`;
-    $('[data-done-pref]').textContent = (C.pref.find((o: string[]) => o[0] === radio('pref')) || [])[1];
-    $('[data-done-green]').textContent = checked('green') ? C.yes : C.no;
-    dl.push({ event: 'signup_submitted', plan: radio('plan'), pref: radio('pref'), marketing_optin: checked('marketing') });
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (current === 's1') { if (validate1()) { renderEstimate(); dl.push({ event: 'signup_step_completed', step: 1 }); show('est'); } }
-    else if (current === 's2') { if (validate2()) { renderDone(); dl.push({ event: 'signup_step_completed', step: 2 }); show('done'); side(); } }
-  });
-  $$('[data-go]').forEach((b) => b.addEventListener('click', () => { show(b.dataset.go!); side(); }));
+  import { initSignup } from '../../lib/signup-client.js';
+  initSignup();
 </script>

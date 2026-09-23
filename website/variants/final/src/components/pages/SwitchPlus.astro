@@ -1,18 +1,18 @@
 ---
-// Switch Plus — the guarantee page. Hero with price + guarantee facts → the guarantee as three outcomes (ink block)
-// → step by step (+ what is still to be confirmed) → annual report (real app card; FR rebuilt in HTML) → included
-// → Switch / Plus / Premium mini-table → guarantee FAQ → close (with the cheering character).
+// Switch Plus — the guarantee page. Hero with price + facts (condition stated, "approve each switch" visible)
+// → worked guarantee examples (three years, three outcomes, the condition always spelled out; ink block)
+// → step by step → annual report (real app card; FR rebuilt in HTML) → included → Switch / Plus / Premium mini-table
+// → guarantee FAQ → close ("Klaar om te besparen, met winstgarantie?").
 import { Image } from 'astro:assets';
 import Site from '../../layouts/Site.astro';
 import '../../styles/plans.css';
 import SectionHead from '../SectionHead.astro';
 import Icon from '../Icon.astro';
 import Fn from '../Fn.astro';
-import Guarantee from '../Guarantee.astro';
 import FaqList from '../FaqList.astro';
 import FinalCta from '../FinalCta.astro';
 import Check from '../Check.astro';
-import Trust from '../Trust.astro';
+import Stars from '../Stars.astro';
 import { switchPlusCopy } from '../../i18n/pages.js';
 import { href, abs } from '@shared/routes.mjs';
 import reportNl from '@shared/assets/feature/savings-report.png';
@@ -25,11 +25,13 @@ const signup = `${href('signup', locale, base)}?plan=switch-plus`;
 const p = c.plans[1];
 const ld = [{
   '@type': 'Product', '@id': `${abs('switchPlus', locale)}#product`, name: p.full, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
-  description: `${p.value} ${c.promise.summary}`,
+  description: `${L === 'fr' ? 'Économisez, avec garantie de gain.' : 'Besparen, met winstgarantie.'} ${c.promise.summary}`,
   offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=switch-plus`, price: '99.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
     priceSpecification: { '@type': 'UnitPriceSpecification', price: '99.00', priceCurrency: 'EUR', valueAddedTaxIncluded: true, billingDuration: 'P1Y', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' } } },
 }];
 const sw = c.plans[0];
+const x = c.examples;
+const fee = p.yearlyN;
 ---
 <Site locale={locale} routeKey="switchPlus" title={c.meta.title} description={c.meta.description} ld={ld}
   sticky={{ strong: `Switch Plus · ${p.yearly} ${L === 'fr' ? 'par an' : 'per jaar'}`, sub: c.hero.monthly, label: c.hero.cta, url: signup }}>
@@ -41,9 +43,9 @@ const sw = c.plans[0];
         <p class="lead">{c.hero.lead}<Fn n={4} L={L} /></p>
         <div class="sp-cta" data-sticky-hide>
           <a class="btn" href={signup} data-cta="sp-hero">{c.hero.cta}<Icon name="arrow-r" /></a>
-          <a class="link-arrow" href={`${href('plans', locale, base)}#vergelijk`}>{c.hero.secondary}</a>
+          <p class="proof"><Stars value={c.rating} id="sp-hero" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
         </div>
-        <Trust c={c} id="sp" />
+        <p><a class="link-arrow" href={`${href('plans', locale, base)}#vergelijk`}>{c.hero.secondary}<Icon name="arrow-r" /></a></p>
       </div>
       <div class="sp-card">
         <p class="sp-price"><span class="plan-yr num">{p.yearly}</span> <span class="plan-per">{c.hero.priceNote}</span></p>
@@ -55,7 +57,30 @@ const sw = c.plans[0];
     </div>
   </section>
 
-  <Guarantee c={c} locale={locale} id="garantie" cta="signup" />
+  <section class="section promise gx" id="garantie" aria-labelledby="gx-h">
+    <div class="wrap">
+      <SectionHead kicker={x.kicker} id="gx-h" title={x.h2}><p>{x.intro}<Fn n={4} L={L} /></p></SectionHead>
+      <ol class="gx-list" role="list">
+        {x.items.map((it: any) => (
+          <li class:list={['gx-item', { 'gx-item--refund': it.refund }]}>
+            <p class="gx-label">{it.label}</p>
+            <div class="gx-bar" aria-hidden="true" style={`--w:${Math.round((it.saved / 300) * 100)}%;--t:${Math.round((fee / 300) * 100)}%`}><span class="gx-fill"></span><span class="gx-t"></span></div>
+            <p class="gx-cond">{it.cond}</p>
+            <p class="gx-out"><Icon name={it.refund ? 'shield' : 'check-circle'} /><strong>{it.out}</strong></p>
+            <p class="gx-net">{it.net}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="gx-foot">
+        <p class="gx-legend"><span class="gx-legend-t" aria-hidden="true"></span>{x.threshold}</p>
+        <p class="note">{x.note} <a href="#fn-4">{L === 'fr' ? 'Conditions' : 'Voorwaarden'}</a></p>
+      </div>
+      <div class="gx-cta">
+        <a class="btn btn--light" href={signup} data-cta="sp-examples">{c.hero.cta}<Icon name="arrow-r" /></a>
+        <p class="proof"><Stars value={c.rating} id="sp-gx" /><span><strong>{c.proof.rating}</strong><Fn n={2} L={L} /></span><span class="sep" aria-hidden="true">·</span><span>{c.proof.risk}</span></p>
+      </div>
+    </div>
+  </section>
 
   <section class="section" id="stappen" aria-labelledby="gsteps-h">
     <div class="wrap">
@@ -69,7 +94,6 @@ const sw = c.plans[0];
           </li>
         ))}
       </ol>
-      <p class="honest-limit"><span class="tag tag--pending">{L === 'fr' ? 'À confirmer' : 'Wordt bevestigd'}</span><span>{c.steps.pending}</span></p>
     </div>
   </section>
 
@@ -101,6 +125,7 @@ const sw = c.plans[0];
   <section class="section" id="kiezen" aria-labelledby="choose-h">
     <div class="wrap split">
       <SectionHead kicker={c.choose.kicker} id="choose-h" title={c.choose.h2}><p>{c.choose.body}</p></SectionHead>
+      <div class="table-scroll" tabindex="0" role="region" aria-label={c.choose.caption}>
       <table class="matrix matrix--mini">
         <caption class="sr-only">{c.choose.caption}</caption>
         <thead><tr><td></td>{c.plans.map((x: any) => <th scope="col" class:list={{ 'col-rec': x.slug === 'switch-plus' }}>{x.name}</th>)}</tr></thead>
@@ -110,6 +135,7 @@ const sw = c.plans[0];
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 
