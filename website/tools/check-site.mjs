@@ -4,7 +4,8 @@
 // Output: <variant-dir>/report/check.json + check.md, screenshots in <variant-dir>/report/shots/
 // Gates: no horizontal overflow (1280, 390), no text < 12px (SVG ≥ 11px), WCAG AA text contrast,
 //        0 serious/critical axe violations, reduced-motion handled, <html lang>, <title>, meta description,
-//        hreflang alternates; with --lighthouse: mobile perf ≥ 90, a11y ≥ 95, best-practices ≥ 90, SEO ≥ 95.
+//        hreflang nl-BE/fr-BE/x-default, absolute canonical (https://www.june.energy/), lang matches route,
+//        sign-up noindex / content indexable, valid JSON-LD without AggregateRating, no broken internal links; with --lighthouse: mobile perf ≥ 90, a11y ≥ 95, best-practices ≥ 90, SEO ≥ 95.
 import { createServer } from 'node:http';
 import { readFile, stat, mkdir, writeFile, readdir } from 'node:fs/promises';
 import { join, extname, resolve } from 'node:path';
@@ -80,6 +81,10 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: 'mobile
         overflow: document.documentElement.scrollWidth - innerWidth, small, low, sizeCount: sizes.size,
         lang: document.documentElement.lang, title: document.title, desc: document.querySelector('meta[name="description"]')?.content || '',
         hreflang, h1: document.querySelectorAll('h1').length,
+        canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+        robots: document.querySelector('meta[name="robots"]')?.content || '',
+        jsonld: [...document.querySelectorAll('script[type="application/ld+json"]')].map(s => s.textContent),
+        links: [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')),
       };
     });
     const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
@@ -94,6 +99,15 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: 'mobile
     if (!r.desc) gates.push('no meta description');
     if (r.h1 !== 1) gates.push(`${r.h1} <h1>`);
     if (!(r.hreflang.includes('nl-BE') || r.hreflang.includes('nl-be')) || !(r.hreflang.includes('fr-BE') || r.hreflang.includes('fr-be'))) gates.push('hreflang nl-BE/fr-BE missing');
+    if (!r.hreflang.includes('x-default')) gates.push('hreflang x-default missing');
+    if (!/^https:\/\/www\.june\.energy\//.test(r.canonical)) gates.push(`canonical ${r.canonical ? 'not absolute production URL' : 'missing'}`);
+    const wantLang = route.startsWith('fr') ? 'fr' : 'nl';
+    if (!r.lang.toLowerCase().startsWith(wantLang)) gates.push(`lang "${r.lang}" ≠ route`);
+    const isSignup = /aanmelden|inscription/.test(route);
+    if (isSignup && !/noindex/.test(r.robots)) gates.push('sign-up page not noindex');
+    if (!isSignup && /noindex/.test(r.robots)) gates.push('content page is noindex');
+    for (const j of r.jsonld) { try { const o = JSON.parse(j); if (JSON.stringify(o).includes('"AggregateRating"')) gates.push('AggregateRating markup (policy risk)'); } catch { gates.push('invalid JSON-LD'); } }
+    for (const h of r.links) { if (!h || !h.startsWith('/') || h.startsWith('//')) continue; const path = h.split('#')[0].split('?')[0]; if (!path) continue; const st = await fetch(origin + path.replace(/^\//, '')).then(x => x.status).catch(() => 0); if (st !== 200) { gates.push(`broken link ${path} (${st})`); break; } }
     if (consoleErrors.length) gates.push(`${consoleErrors.length} console errors`);
     if (flag('--shots')) await page.screenshot({ path: join(out, 'shots', `${route.replace(/\/$/, '').replace(/\//g, '_') || 'root'}__${vp.name}${flag('--dark') ? '__dark' : ''}.png`), fullPage: true });
     results.push({ route, viewport: vp.name, status, gates, detail: { small: r.small.slice(0, 5), low: r.low.slice(0, 5), sizes: r.sizeCount, consoleErrors: consoleErrors.slice(0, 3) } });
@@ -105,9 +119,10 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: 'mobile
 const lh = [];
 if (flag('--lighthouse')) {
   const { default: lighthouse } = await import('lighthouse');
-  const lhBrowser = await chromium.launch({ args: ['--remote-debugging-port=9333'] });
+  const LH_PORT = 9300 + Math.floor(Math.random() * 600);
+  const lhBrowser = await chromium.launch({ args: [`--remote-debugging-port=${LH_PORT}`] });
   for (const route of ['nl-be/', 'nl-be/abonnementen/', 'nl-be/aanmelden/', 'fr-be/'].filter(r => ROUTES.includes(r))) {
-    const r = await lighthouse(origin + route, { port: 9333, output: 'json', logLevel: 'error', onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'], formFactor: 'mobile', screenEmulation: { mobile: true, width: 390, height: 844, deviceScaleFactor: 3, disabled: false } });
+    const r = await lighthouse(origin + route, { port: LH_PORT, output: 'json', logLevel: 'error', onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'], formFactor: 'mobile', screenEmulation: { mobile: true, width: 390, height: 844, deviceScaleFactor: 3, disabled: false } });
     const c = r.lhr.categories; const a = r.lhr.audits;
     const s = { route, perf: Math.round(c.performance.score * 100), a11y: Math.round(c.accessibility.score * 100), bp: Math.round(c['best-practices'].score * 100), seo: Math.round(c.seo.score * 100), lcp: a['largest-contentful-paint'].displayValue, cls: a['cumulative-layout-shift'].displayValue, tbt: a['total-blocking-time'].displayValue };
     s.gates = [s.perf < 90 && `perf ${s.perf}`, s.a11y < 95 && `a11y ${s.a11y}`, s.bp < 90 && `best-practices ${s.bp}`, s.seo < 95 && `SEO ${s.seo}`].filter(Boolean);
