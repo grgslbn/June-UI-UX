@@ -320,7 +320,7 @@ JuneCharts.bars('#pk-chart-month', {
 - Threshold labels go in a right gutter. Close labels are pushed apart and joined to their line with a leader. Below 480px they become a key row above the plot.
 - Mark the most important threshold with `emphasis: true` (2px line). The others are 1px ink.
 - For a spark strip, use `compact: true` with `xTicks: [0, n-1]` and `interactive: false`. See `#pk-strip`.
-- Diverging bars (Solar import/export) are not supported yet. Ask the design-system lead; do not hand-roll them.
+- Diverging bars: use `JuneCharts.diverging` (two flows around zero, optional signed net line, filter state, keyboard tooltip) — see `app/panels/solar.html` for a worked example.
 
 ### `JuneCharts.line(el, opts)`
 ```js

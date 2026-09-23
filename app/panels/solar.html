@@ -32,14 +32,12 @@
 
 /* Flow diagram — the live instrument. Nodes are HTML; lines are an SVG drawn at real size by the script below. */
 [data-tab="solar"] .sl-flow { position: relative; height: 256px; margin-top: var(--s-4); }
-[data-tab="solar"] .sl-flow svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-[data-tab="solar"] .sl-track { fill: none; stroke-linecap: round; opacity: .28; }
+[data-tab="solar"] .sl-flow > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+[data-tab="solar"] .sl-track { fill: none; stroke-linecap: round; opacity: .38; }
 [data-tab="solar"] .sl-dash { fill: none; stroke-linecap: round; animation: sl-flow 1.4s linear infinite; }
-[data-tab="solar"] .sl-head { stroke: none; }
-[data-tab="solar"] .f-exp { stroke: var(--elec); } [data-tab="solar"] .f-exp.sl-dash, [data-tab="solar"] .sl-head.f-exp { stroke: var(--elec-strong); fill: var(--elec-strong); }
-[data-tab="solar"] .f-home { stroke: var(--accent); } [data-tab="solar"] .f-home.sl-dash, [data-tab="solar"] .sl-head.f-home { stroke: var(--accent-strong); fill: var(--accent-strong); }
-[data-tab="solar"] .f-imp { stroke: var(--ink-400); } [data-tab="solar"] .f-imp.sl-dash, [data-tab="solar"] .sl-head.f-imp { stroke: var(--ink-700); fill: var(--ink-700); }
-[data-tab="solar"] .sl-head { stroke: none !important; }
+[data-tab="solar"] .sl-track.f-exp { stroke: var(--elec); } [data-tab="solar"] .sl-dash.f-exp { stroke: var(--elec-strong); } [data-tab="solar"] .sl-head.f-exp { fill: var(--elec-strong); }
+[data-tab="solar"] .sl-track.f-home { stroke: var(--accent); } [data-tab="solar"] .sl-dash.f-home { stroke: var(--accent-strong); } [data-tab="solar"] .sl-head.f-home { fill: var(--accent-strong); }
+[data-tab="solar"] .sl-track.f-imp { stroke: var(--ink-400); } [data-tab="solar"] .sl-dash.f-imp { stroke: var(--ink-700); } [data-tab="solar"] .sl-head.f-imp { fill: var(--ink-700); }
 @keyframes sl-flow { to { stroke-dashoffset: -28; } }
 @media (prefers-reduced-motion: reduce) { [data-tab="solar"] .sl-dash { animation: none; } }
 [data-tab="solar"] .sl-node { position: absolute; transform: translate(-50%, -26px); display: flex; flex-direction: column; align-items: center; text-align: center; width: 104px; }
@@ -72,13 +70,13 @@
         <div class="hero__split">
           <div class="sl-hero-left">
             <h1 class="hero__label" id="sl-title">Net exporter today</h1>
-            <p class="hero__figure hero-num">+<span class="num" data-count="3.2">3.2</span><span class="unit">kWh</span></p>
+            <p class="hero__figure hero-num"><span class="num" data-count="3.2">+3.2</span><span class="unit">kWh</span></p>
             <p class="hero__caption">sent to the grid · 18 May, so far</p>
             <p class="sl-made">Your panels made <b>8.4 kWh</b> today, and <b>5.2 kWh</b> of it powered your home.</p>
 
             <div class="stat-row sl-kpis">
               <div class="stat">
-                <p class="stat__label"><span class="mark" aria-hidden="true"></span>Used at home</p>
+                <p class="stat__label">Used at home</p>
                 <p class="stat__value"><button class="est" type="button" data-pop="sl-pop-selfuse" aria-label="About 'used at home' — how it's calculated">≈</button><span class="stat-num">62<span class="unit">%</span></span></p>
                 <p class="stat__meta">of today's solar</p>
               </div>
@@ -345,7 +343,7 @@
     series: [{ name: 'Used at home', values: yHome, tone: 'accent' }, { name: 'Exported', values: yExp, tone: 'elec' }],
     labels: months, tipLabels: monthsLong, xTicks: [0, 2, 4, 6, 8, 10],
     annotation: { index: 2, text: '620 kWh', tone: 'ink' },
-    yMax: 700, yTicks: [0, 350, 700], yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
+    yMax: 700, yTicks: [0, 350, 700], height: 300, yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
     tooltip: (i, v) => `${monthsLong[i]} · ${v} kWh made · ${yHome[i]} used at home · ${yExp[i]} exported`,
     ariaLabel: 'Stacked bar chart of monthly solar production, May 2025 to April 2026, split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months export more than half; winter months use almost all of it at home.'
   });

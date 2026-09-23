@@ -53,7 +53,7 @@
                 </div>
                 <h1 class="hero__sentence" id="cp-title">In April you used 73% more energy than similar homes.</h1>
                 <div class="cp-figure">
-                  <p class="hero-num">+<span class="num" data-count="73">73</span><span class="unit">%</span></p>
+                  <p class="hero-num"><span class="num" data-count="73">+73</span><span class="unit">%</span></p>
                   <p class="cap">442&nbsp;kWh, against 255&nbsp;kWh for similar homes</p>
                 </div>
                 <div class="cp-basis">
@@ -97,8 +97,7 @@
           <div>
             <p class="xs muted">Your best month</p>
             <p class="cp-best__month"><span class="mid-num">November 2025</span></p>
-            <p class="small secondary">You used more than <b>95.5%</b> of similar homes
-              <button class="info" type="button" data-pop="cp-pop-rank" aria-label="What does 'more than 95.5% of similar homes' mean?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
+            <p class="small secondary">You used more than <b>95.5%</b> of similar <span class="nowrap">homes <button class="info" type="button" data-pop="cp-pop-rank" aria-label="What does 'more than 95.5% of similar homes' mean?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span></p>
           </div>
           <div>
             <p class="xs muted">April vs. your best</p>
@@ -207,7 +206,7 @@
             </div>
             <h1 class="hero__sentence" id="cpp-title">You've used 9% more energy than similar homes.</h1>
             <div class="cp-figure">
-              <p class="hero-num">+<span class="num" data-count="9">9</span><span class="unit">%</span></p>
+              <p class="hero-num"><span class="num" data-count="9">+9</span><span class="unit">%</span></p>
               <p class="cap">compared on house type only</p>
             </div>
             <div class="callout accent cp-nudge">
@@ -221,7 +220,6 @@
           <div class="hero__aside">
             <p class="overline">How you compare · April</p>
             <div class="cp-bars" id="cpp-bars"></div>
-            <p class="small secondary">Exact figures appear once your profile has a few more details.</p>
             <div class="cp-basis">
               <div class="cp-basis__text">
                 <p class="xs muted">Compared using</p>
@@ -241,7 +239,7 @@
     <ul>
       <li>Not an error — a normal 200 response with a loose profile (no reason code). Soft nudge, not a block. Headline, nudge and "Compared using" verbatim; mini bars show no values (as in the mockup: heights 44 / 80 / 73 → You 80, Similar 73, Most efficient 44, ranked).</li>
       <li>⚠ Nudge names "living area", but Belgian groups filter on <b>bedrooms</b>, not living area (june-integration-notes §2). Kept verbatim — owner to decide.</li>
-      <li>Here "Update home profile" is the one primary action (it's what improves the result). Derived copy for sign-off: "Rough match" chip, "compared on house type only", "Exact figures appear once your profile has a few more details.", footnote.</li>
+      <li>Here "Update home profile" is the one primary action (it's what improves the result). Derived copy for sign-off: "Rough match" chip, "compared on house type only", footnote. Mini bars carry no kWh values, as in the approved mockup.</li>
       <li>Illustrative: separate household; April 2026 period label added for consistency.</li>
     </ul>
   </details>
@@ -342,7 +340,7 @@
             </div>
             <h1 class="hero__sentence" id="cpe-title">In April you used 73% more energy than similar homes.</h1>
             <div class="cp-figure">
-              <p class="hero-num">+<span class="num" data-count="73">73</span><span class="unit">%</span></p>
+              <p class="hero-num"><span class="num" data-count="73">+73</span><span class="unit">%</span></p>
               <p class="cap">442&nbsp;kWh, against 255&nbsp;kWh for similar homes</p>
             </div>
             <div class="cp-basis">
@@ -491,7 +489,7 @@
       { name: 'Your home', tone: 'accent', values: [408, 372, 513, 569, 520, 442], dots: true },
       { name: 'Similar homes average', tone: 'ink', values: [237, 218, 237, 255, 262, 255] }
     ],
-    yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], yLabel: 'kWh per month', unit: 'kWh', decimals: 0,
+    yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], height: 300, yLabel: 'kWh per month', unit: 'kWh', decimals: 0,
     ariaLabel: 'Line chart, November 2025 to April 2026. Your home used between 372 and 569 kWh a month; similar homes stayed between 218 and 262 kWh. The biggest gap is February: 569 against 255 kWh. In April you used 442 kWh against 255 kWh.'
   });
 

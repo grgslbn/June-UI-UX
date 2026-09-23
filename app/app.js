@@ -472,7 +472,7 @@
         top = sc.max; bot = -sc.max; ticks = sc.ticks.slice(1).map(t => -t).reverse().concat(sc.ticks);
       }
       const tdec = decOf(ticks);
-      const tickTxt = t => fmtN(Math.abs(t), tdec);
+      const tickTxt = t => t === 0 ? '0' : fmtN(Math.abs(t), tdec);
       const tickW = Math.max(...ticks.map(t => textW(tickTxt(t))));
       const regions = !narrow && (o.upLabel || o.downLabel);
       const gut = regions ? Math.ceil(Math.max(textW(o.upLabel || '', 600), textW(o.downLabel || '', 600))) + 22 : 8;

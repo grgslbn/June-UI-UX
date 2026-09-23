@@ -26,3 +26,14 @@ Collected from builders; each is also noted in the relevant panel's Spec notes d
 15. € rounding inconsistent in source (€145.80 → €150, €64.80 → €65) — pick one rule.
 16. Renames: "Save for later" → "Add to my plan", "To do" → "My plan", "Discarded" → "Dismissed", "Saved 3 days ago" → "Added 3 days ago".
 17. New copy to sign off: "Check your home profile" button (→ Breakdown), "Move back to New" on dismissed tips.
+
+## Solar
+18. **"Net exporter today" is false with canonical numbers** (import 4.4 > export 3.2 → net importer by 1.2 kWh). Frozen copy kept; suggested fix "Sent 3.2 kWh to the grid today" — or change canonical flow numbers.
+19. Hourly / weekly / monthly and 10 of 12 seasonal values are illustrative (totals match canon).
+20. Single colour mapping across Solar: export = yellow, used at home = green, grid import = neutral (mockup mixed colours).
+
+## Compare
+21. Trend series relabelled Nov 2025–Apr 2026 (was Mar–Aug) so the last point matches the April hero; month names in copy moved accordingly (widest gap Feb, "more than every home" Dec–Mar, best month Nov 2025).
+22. Gas toggle shows the approved "Still gathering the group" state (no gas data) — acceptable?
+23. Partial-profile nudge still says "living area" though Belgian groups filter on bedrooms; "Check back in a few days" has no date.
+24. New copy to sign off: "See ways to use less" (→ Advice), edge-state reassurance lines, footnotes.
