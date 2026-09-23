@@ -1,0 +1,19 @@
+---
+// Variant E layout: extends Base (lang, title, description, canonical, hreflang, robots) with fonts, tokens and JSON-LD.
+import Base from './Base.astro';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; jsonld?: object }
+const { locale, routeKey, title, description, jsonld } = Astro.props;
+const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1f7f7a"/><path d="M33 8 L17 36 L29 36 L23 58 L49 26 L35 26 L42 8 Z" fill="#fff" stroke="#14232a" stroke-width="3" stroke-linejoin="round"/></svg>')}`;
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description}>
+  <Fragment slot="head">
+    <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#1f7f7a" />
+    <link rel="icon" href={favicon} />
+    {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+  </Fragment>
+  <slot />
+</Base>

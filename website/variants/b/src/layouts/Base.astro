@@ -1,8 +1,39 @@
 ---
-// Base layout: lang, title, description, canonical, hreflang, robots. Variants extend or replace the body.
-import { LOCALES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; }
-const { locale, routeKey, title, description } = Astro.props;
+// Base layout: lang, title, description, canonical, hreflang, robots (shared head logic kept as-is),
+// extended for concept B with: self-hosted fonts (+ metric-matched fallbacks, 1 preload), OG tags,
+// JSON-LD @graph (Organization / WebSite / WebPage — no AggregateRating), skip link, global CSS.
+import { LOCALES, ROUTES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import inter from '@shared/fonts/inter-latin.woff2?url';
+import montserratApprox from '@shared/fonts/montserrat-approx.woff2?url';
+import interApprox from '@shared/fonts/inter-approx.woff2?url';
+import '../styles/global.css';
+
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; }
+const { locale, routeKey, title, description, noindex = false } = Astro.props;
+const known = routeKey in ROUTES;
+const canonical = known ? abs(routeKey, locale) : null;
+const isNoindex = noindex || NOINDEX.has(routeKey);
+const fr = locale === 'fr-be';
+
+const fonts = `
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:500 800;font-display:swap;src:url(${montserrat}) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400 700;font-display:swap;src:url(${inter}) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF,U+FFFD}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:500 800;font-display:swap;src:url(${montserratApprox}) format("woff2");unicode-range:U+2248}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400 700;font-display:swap;src:url(${interApprox}) format("woff2");unicode-range:U+2248}
+@font-face{font-family:"Montserrat Fallback";src:local("Arial");size-adjust:113.2%;ascent-override:84.95%;descent-override:22.03%;line-gap-override:0%}
+@font-face{font-family:"Inter Fallback";src:local("Arial");size-adjust:107.06%;ascent-override:90.49%;descent-override:22.56%;line-gap-override:0%}`;
+
+const org = 'https://www.june.energy/#org';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': org, name: 'June', url: 'https://www.june.energy/', areaServed: { '@type': 'Country', name: 'BE' },
+      contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: ['nl', 'fr'] } },
+    { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: 'https://www.june.energy/', name: 'June', publisher: { '@id': org }, inLanguage: ['nl-BE', 'fr-BE'] },
+    ...(canonical ? [{ '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: LOCALES[locale].html, isPartOf: { '@id': 'https://www.june.energy/#website' } }] : []),
+  ],
+};
 ---
 <!doctype html>
 <html lang={LOCALES[locale].html}>
@@ -11,10 +42,25 @@ const { locale, routeKey, title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={abs(routeKey, locale)} />
-    {alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
-    {NOINDEX.has(routeKey) && <meta name="robots" content="noindex, follow" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {known && alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {isNoindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content={fr ? 'fr_BE' : 'nl_BE'} />
+    <meta property="og:locale:alternate" content={fr ? 'nl_BE' : 'fr_BE'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} type="image/svg+xml" />
+    <link rel="preload" as="font" type="font/woff2" href={montserrat} crossorigin />
+    <style set:html={fonts}></style>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
     <slot name="head" />
   </head>
-  <body><slot /></body>
+  <body>
+    <a class="skip" href="#main">{fr ? 'Aller au contenu' : 'Naar de inhoud'}</a>
+    <slot />
+  </body>
 </html>

@@ -1,0 +1,36 @@
+---
+import { href } from '@shared/routes.mjs';
+import { copy, type Locale } from '../content/i18n';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+interface Props { locale: Locale; routeKey?: string }
+const { locale, routeKey = 'home' } = Astro.props;
+const c = copy[locale];
+const base = import.meta.env.BASE_URL;
+const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+const otherHref = href(routeKey, other, base);
+---
+<a class="skip" href="#main">{c.skip}</a>
+<header class="hdr">
+  <div class="hdr__inner wrap">
+    <Logo href={href('home', locale, base)} label={c.home} />
+    <nav class="hdr__nav" aria-label={c.navLabel}>
+      <ul>{c.nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+    </nav>
+    <div class="hdr__util">
+      <div class="lang">
+        <span class="lang__cur" aria-current="true">{c.langCurrent}</span>
+        <a class="lang__alt" href={otherHref} hreflang={other === 'fr-be' ? 'fr-BE' : 'nl-BE'} lang={other === 'fr-be' ? 'fr' : 'nl'} aria-label={c.langOther.aria}>{c.langOther.label}</a>
+      </div>
+      <a class="hdr__login" href="#" data-todo="external customer portal URL (facts.brand.login.url = null)">{c.login}</a>
+      <a class="btn btn--primary btn--sm hdr__cta" href="#start" data-focus-postcode>{c.cta}</a>
+      <details class="menu">
+        <summary aria-label={locale === 'nl-be' ? 'Menu' : 'Menu'}><Icon name="i-menu" /></summary>
+        <div class="menu__panel">
+          <ul>{c.nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+          <a class="menu__login" href="#">{c.login}</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

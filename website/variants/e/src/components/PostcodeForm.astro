@@ -1,0 +1,16 @@
+---
+import Bolt from './Bolt.astro';
+import { href } from '@shared/routes.mjs';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale; id: string; tone?: 'field' | 'light' }
+const { locale, id, tone = 'field' } = Astro.props;
+const t = copy[locale];
+---
+<form class={`pc pc--${tone}`} action={href('signup', locale, import.meta.env.BASE_URL)} method="get">
+  <label class="pc__label" for={id}>{t.hero.postcode}</label>
+  <div class="pc__row">
+    <input class="pc__input" id={id} name="postcode" type="text" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{3}" maxlength="4" required placeholder={locale === 'nl-be' ? 'bv. 9000' : 'p. ex. 4000'} aria-describedby={`${id}-help`} />
+    <button class="btn btn--ink pc__btn" type="submit"><span>{t.cta}</span><Bolt variant="line" class="btn__bolt" /></button>
+  </div>
+  <p class="pc__help" id={`${id}-help`}>{t.hero.postcodeHelp}</p>
+</form>

@@ -1,0 +1,37 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { href, LOCALES } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; }
+const { locale, routeKey, c } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+const signup = href('signup', locale, base);
+const loginUrl = 'https://www.june.energy/'; // TODO: customer portal URL (facts.brand.login.url needsConfirmation)
+---
+<a class="skip" href="#inhoud">{c.ui.skip}</a>
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <Logo href={href('home', locale, base)} label={locale === 'nl-be' ? 'June, naar de startpagina' : 'June, vers la page d’accueil'} />
+    <nav class="nav" aria-label={c.ui.navLabel}>
+      {c.nav.map(([label, h]) => <a href={h}>{label}</a>)}
+    </nav>
+    <div class="util">
+      <span class="lang">
+        <span aria-current="true">{LOCALES[locale].label}</span>
+        <span aria-hidden="true">|</span>
+        <a href={href(routeKey, other, base)} hreflang={LOCALES[other].html} lang={LOCALES[other].html} aria-label={c.ui.langOtherLabel}>{c.ui.langOther}</a>
+      </span>
+      <a class="login" href={loginUrl} rel="noopener">{c.ui.login}<Icon name="ext" /></a>
+      <a class="btn btn--sm" href={signup}>{c.ui.cta}</a>
+      <details class="menu">
+        <summary aria-label={c.ui.menu}><Icon name="menu" /></summary>
+        <div class="menu-panel">
+          {c.nav.map(([label, h]) => <a href={h}>{label}</a>)}
+          <a href={loginUrl} rel="noopener">{c.ui.login} ↗</a>
+          <a class="btn" href={signup}>{c.ui.cta}</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

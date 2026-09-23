@@ -1,0 +1,73 @@
+---
+// Site layout for variant C: Base head logic + fonts, styles, JSON-LD, the tiny enhancement script.
+import Base from './Base.astro';
+import '../styles/global.css';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import { ROUTES, abs, LOCALES } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; }
+const { locale, routeKey, title, description, noindex = false } = Astro.props;
+const mapped = routeKey in ROUTES;
+const canonical = mapped ? abs(routeKey, locale) : null;
+const ld = mapped ? {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': 'https://www.june.energy/#org', name: 'June', url: 'https://www.june.energy/', areaServed: { '@type': 'Country', name: 'BE' } },
+    { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: 'https://www.june.energy/', name: 'June', publisher: { '@id': 'https://www.june.energy/#org' }, inLanguage: ['nl-BE', 'fr-BE'] },
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, inLanguage: LOCALES[locale].html, isPartOf: { '@id': 'https://www.june.energy/#website' } },
+  ],
+} : null;
+const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#3bada8"/><path d="M18.6 5 9.4 18.4l6 .2-2.4 8.4 9.6-14.4-6-.1z" fill="#14232a"/></svg>')}`;
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description} noindex={noindex}>
+  <Fragment slot="head">
+    <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#f7f8f6" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href={favicon} />
+    {canonical && <meta property="og:title" content={title} />}
+    {canonical && <meta property="og:description" content={description} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content={locale === 'nl-be' ? 'nl_BE' : 'fr_BE'} />
+    <meta property="og:locale:alternate" content={locale === 'nl-be' ? 'fr_BE' : 'nl_BE'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {ld && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  </Fragment>
+  <slot />
+  <script>
+    // One observer set, ~1 KB: chart draw-on-view, secondary reveals, sticky CTA, postcode hint.
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add(e.target.hasAttribute('data-draw') ? 'is-drawn' : 'is-in'); io.unobserve(e.target); }
+    }, { threshold: 0.3 });
+    document.querySelectorAll('[data-draw],[data-reveal]').forEach((el) => io.observe(el));
+
+    const sticky = document.querySelector<HTMLElement>('[data-sticky]');
+    const anchors = [...document.querySelectorAll('[data-sticky-hide]')];
+    if (sticky && anchors.length) {
+      const seen = new Map<Element, boolean>();
+      let passedHero = false;
+      const so = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          seen.set(e.target, e.isIntersecting);
+          if (e.target === anchors[0] && !e.isIntersecting && e.boundingClientRect.top < 0) passedHero = true;
+          if (e.target === anchors[0] && e.isIntersecting) passedHero = false;
+        }
+        const anyVisible = [...seen.values()].some(Boolean);
+        const on = passedHero && !anyVisible;
+        sticky.classList.toggle('is-on', on);
+        sticky.toggleAttribute('inert', !on);
+      });
+      anchors.forEach((a) => so.observe(a));
+    }
+
+    document.querySelectorAll<HTMLFormElement>('form[data-pc]').forEach((f) => {
+      const input = f.querySelector('input')!; const help = f.querySelector<HTMLElement>('.pc-help')!;
+      f.addEventListener('submit', (ev) => {
+        if (!/^[1-9]\d{3}$/.test(input.value.trim())) {
+          ev.preventDefault(); input.setAttribute('aria-invalid', 'true'); help.textContent = help.dataset.error!; help.classList.add('is-error'); input.focus();
+        }
+      });
+      input.addEventListener('input', () => { if (input.getAttribute('aria-invalid')) { input.removeAttribute('aria-invalid'); help.textContent = help.dataset.help!; help.classList.remove('is-error'); } });
+    });
+  </script>
+</Base>

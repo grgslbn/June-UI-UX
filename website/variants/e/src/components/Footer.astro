@@ -1,0 +1,28 @@
+---
+import Wordmark from './Wordmark.astro';
+import Bolt from './Bolt.astro';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const fns = [t.fn.saving, t.fn.reviews, t.fn.customers, t.fn.guarantee];
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__top">
+      <div class="ftr__lockup">
+        <Wordmark class="ftr__mark" />
+        <p class="ftr__tag"><span>{t.footer.lockup[0]}</span><span>{t.footer.lockup[1]}</span></p>
+        <Bolt class="ftr__bolt" />
+      </div>
+      <div class="ftr__about">
+        <p>{t.footer.tagline}</p>
+        <ul class="ftr__links" role="list">{t.footer.links.map(l => <li><a href="#" data-placeholder="route-pending">{l}</a></li>)}</ul>
+      </div>
+    </div>
+    <section class="ftr__notes" id="voetnoten" aria-label={t.footer.notes}>
+      <ol>{fns.map((f, i) => <li id={`fn-${i + 1}`}>{f}</li>)}</ol>
+    </section>
+    <p class="ftr__legal">{t.footer.legal} · <span lang={locale === 'nl-be' ? 'nl' : 'fr'}>{t.footer.heritage}</span></p>
+  </div>
+</footer>

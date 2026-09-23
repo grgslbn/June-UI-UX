@@ -1,0 +1,93 @@
+---
+// Header: wordmark · nav (Hoe werkt het · Prijzen · Reviews · FAQ) · NL|FR (→ equivalent page via routes.mjs)
+// · Inloggen (text link) · primary CTA. Mobile menu = native Popover API (no JS).
+import { href } from '@shared/routes.mjs';
+import Logo from './Logo.astro';
+import type { Locale } from '../lib/estimate';
+import { copy } from '../content/home';
+interface Props { locale: Locale; routeKey: string; ctaHref?: string; }
+const { locale, routeKey, ctaHref } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const t = copy(locale).nav;
+const other: Locale = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+const home = href('home', locale, base);
+const cta = ctaHref ?? `${home}#bereken`;
+const links = [
+  { label: t.how, href: href('howItWorks', locale, base), key: 'howItWorks' },
+  { label: t.prices, href: href('plans', locale, base), key: 'plans' },
+  { label: t.reviews, href: `${home}#reviews`, key: 'reviews' },
+  { label: t.faq, href: href('faq', locale, base), key: 'faq' },
+];
+---
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <Logo href={home} />
+    <a class="lang" href={href(routeKey in { home: 1, plans: 1, switchPlus: 1, howItWorks: 1, faq: 1, signup: 1 } ? routeKey : 'home', other, base)} hreflang={t.other.lang} lang={t.other.lang} aria-label={t.other.aria}>
+      <span aria-hidden="true" class="lang-cur">{t.here.label}</span><span aria-hidden="true" class="lang-sep">|</span><span class="lang-other">{t.other.label}</span>
+    </a>
+    <button class="menu-btn" type="button" popovertarget="site-menu" aria-label={t.menu}>
+      <svg class="i" aria-hidden="true"><use href="#i-menu" /></svg><span>{t.menu}</span>
+    </button>
+    <div id="site-menu" class="menu" popover>
+      <button class="menu-close" type="button" popovertarget="site-menu" popovertargetaction="hide" aria-label={t.close}>
+        <svg class="i" aria-hidden="true"><use href="#i-close" /></svg>
+      </button>
+      <nav aria-label={t.main}>
+        <ul role="list" class="nav">
+          {links.map(l => <li><a href={l.href} aria-current={l.key === routeKey ? 'page' : undefined}>{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="util">
+        <a class="login" href="#inloggen" rel="noopener" data-todo="login portal URL needsConfirmation">
+          {t.login}<svg class="i" aria-hidden="true"><use href="#i-external" /></svg>
+        </a>
+        <a class="btn btn--sm hdr-cta" href={cta}>{t.cta}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.94); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--hairline); }
+  .hdr-in { display: flex; align-items: center; gap: var(--s-6); min-height: var(--header-h); }
+  .menu { display: contents; }
+  nav { order: 1; }
+  .lang { order: 2; }
+  .util { order: 3; }
+  .menu-btn, .menu-close { display: none; }
+  nav { margin-inline: auto; }
+  .nav { display: flex; gap: var(--s-1); }
+  .nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: var(--r-pill); color: var(--ink-900); font-size: var(--fs-16); font-weight: 500; text-decoration: none; }
+  .nav a:hover { background: var(--surface-sunken); }
+  .nav a[aria-current="page"] { color: var(--accent-strong); }
+  .util { display: flex; align-items: center; gap: var(--s-4); }
+  .lang { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 6px; font-size: var(--fs-14); font-weight: 600; text-decoration: none; color: var(--ink-500); }
+  .lang-cur { color: var(--ink-900); }
+  .lang-sep { color: var(--ink-200); }
+  .lang-other { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+  .login { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font-size: var(--fs-14); font-weight: 500; color: var(--ink-700); text-decoration: none; }
+  .login:hover { color: var(--ink-900); text-decoration: underline; }
+  .login .i { width: 14px; height: 14px; }
+
+  @media (max-width: 960px) {
+    .hdr-in { gap: var(--s-2); }
+    .hdr-in > :global(.logo) { margin-right: auto; }
+    .menu-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 0; border-radius: var(--r-pill); background: var(--surface-sunken); font-size: var(--fs-14); font-weight: 600; cursor: pointer; }
+    .menu-btn .i { width: 20px; height: 20px; }
+    .lang { order: 0; }
+    .menu:not(:popover-open) { display: none; }
+    .menu:popover-open { position: fixed; inset: 8px 8px auto 8px; margin: 0; width: auto; display: grid; gap: var(--s-4); padding: var(--s-6); padding-top: var(--s-16);
+      background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-2); }
+    .menu::backdrop { background: rgba(20,35,42,.4); }
+    .menu-close { display: grid; place-items: center; position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--surface-sunken); cursor: pointer; }
+    nav { margin: 0; }
+    .nav { flex-direction: column; }
+    .nav a { font-size: var(--fs-22); font-family: var(--font-display); font-weight: 600; padding: 0 var(--s-2); min-height: 52px; }
+    .util { flex-wrap: wrap; justify-content: space-between; border-top: 1px solid var(--hairline); padding-top: var(--s-4); }
+    .hdr-cta { width: 100%; min-height: 52px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .menu:popover-open { animation: menu-in var(--dur-base) var(--ease-out); }
+    @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
+  }
+</style>

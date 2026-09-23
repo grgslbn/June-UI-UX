@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 840" role="img" aria-label="[placeholder-photo] living room">
+  <!-- PLACEHOLDER: stands in for a real photo (calm Belgian home, evening light). Replace before launch. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#d9efec"/>
+      <stop offset="1" stop-color="#a9dad5"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7e0" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#f6e7bd" stop-opacity=".6"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff3cf" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#fff3cf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="720" height="840" fill="url(#bg)"/>
+  <!-- window with evening light -->
+  <rect x="96" y="120" width="300" height="380" rx="18" fill="url(#glow)"/>
+  <path d="M246 120v380M96 300h300" stroke="#bfe3df" stroke-width="10"/>
+  <rect x="96" y="120" width="300" height="380" rx="18" fill="none" stroke="#e9f6f4" stroke-width="12"/>
+  <!-- rijwoning rooflines seen through the window -->
+  <path d="M110 500V420l40-34 40 34v-26l36-30 36 30v10l34-28 36 30v94z" fill="#cfe5e2" opacity=".75"/>
+  <!-- lamp glow + lamp -->
+  <circle cx="560" cy="330" r="150" fill="url(#lamp)"/>
+  <path d="M520 300h80l-16-58h-48z" fill="#f3e3b5"/>
+  <path d="M560 300v250" stroke="#14232a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M530 552h60" stroke="#14232a" stroke-width="8" stroke-linecap="round"/>
+  <!-- blob behind sofa -->
+  <path d="M40 640c10-90 120-150 260-140s250 10 330 60 60 150-40 190-380 40-470 10S30 720 40 640z" fill="#3bada8" opacity=".22"/>
+  <!-- sofa -->
+  <rect x="70" y="560" width="440" height="120" rx="36" fill="#19736f"/>
+  <rect x="100" y="520" width="380" height="96" rx="30" fill="#2a938e"/>
+  <rect x="60" y="590" width="70" height="110" rx="30" fill="#1f827d"/>
+  <rect x="450" y="590" width="70" height="110" rx="30" fill="#1f827d"/>
+  <rect x="96" y="700" width="14" height="36" rx="6" fill="#14232a"/>
+  <rect x="470" y="700" width="14" height="36" rx="6" fill="#14232a"/>
+  <!-- cushion + open book: someone reading -->
+  <rect x="150" y="536" width="96" height="70" rx="22" fill="#e2f3f1"/>
+  <path d="M300 590c20-16 44-16 60 0 16-16 40-16 60 0v14c-20-12-44-12-60 2-16-14-40-14-60-2z" fill="#ffffff"/>
+  <!-- plant -->
+  <rect x="600" y="690" width="64" height="70" rx="12" fill="#14232a" opacity=".85"/>
+  <path d="M632 690c-40-40-40-90-10-120 6 40 20 70 10 120zM632 690c30-30 60-50 76-40-18 20-40 34-76 40zM632 690c-40-20-70-10-80 4 24 6 50 4 80-4z" fill="#23744a" opacity=".85"/>
+  <!-- floor line -->
+  <path d="M0 760h720" stroke="#14232a" stroke-opacity=".12" stroke-width="2"/>
+</svg>

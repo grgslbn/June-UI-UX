@@ -1,0 +1,230 @@
+---
+// Variant E · Bold June — homepage (concept stage: hero + 5 sections + footer).
+import Site from '../layouts/Site.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import PostcodeForm from './PostcodeForm.astro';
+import Wordmark from './Wordmark.astro';
+import Junior from './Junior.astro';
+import Blob from './Blob.astro';
+import Halftone from './Halftone.astro';
+import Squiggle from './Squiggle.astro';
+import Bolt from './Bolt.astro';
+import Stars from './Stars.astro';
+import { href, abs } from '@shared/routes.mjs';
+import { copy, lang, money, plans, steps, faqById, type Locale } from '../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const base = import.meta.env.BASE_URL;
+const signup = href('signup', locale, base);
+const ids = locale === 'nl-be'
+  ? { how: 'hoe-werkt-het', prices: 'prijzen', reviews: 'reviews', faq: 'faq' }
+  : { how: 'comment-ca-marche', prices: 'prix', reviews: 'avis', faq: 'faq' };
+const fnLabel = (n: number) => (locale === 'nl-be' ? `voetnoot ${n}` : `note ${n}`);
+const planOrder = ['switch', 'switch-plus', 'premium'];
+const cardFeatures: Record<string, number> = { switch: 3, 'switch-plus': 3, premium: 3 };
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': 'https://www.june.energy/#org', name: 'June', legalName: 'June Energy', url: 'https://www.june.energy/', slogan: t.footer.heritage },
+    { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: abs('home', locale), name: 'June', inLanguage: locale === 'nl-be' ? 'nl-BE' : 'fr-BE', publisher: { '@id': 'https://www.june.energy/#org' } },
+  ],
+};
+const stepIcons = ['meter', 'compare', 'switch'];
+const g99 = money(99, locale);
+const guarH2 = t.guarantee.h2.replace(g99, `<span class="hl">${g99}</span>`);
+---
+<Site locale={locale} routeKey="home" title={t.meta.title} description={t.meta.description} jsonld={jsonld}>
+  <div class="field-top">
+    <Header locale={locale} />
+
+    <!-- ═════ HERO ═════ -->
+    <section class="hero" id="start" aria-labelledby="hero-h1">
+      <div class="hero__in wrap">
+        <div class="hero__head">
+          <p class="eyebrow eyebrow--field">{t.hero.eyebrow}</p>
+          <h1 id="hero-h1" class={`hero__h1 ${locale === 'fr-be' ? 'hero__h1--fr' : ''}`}>
+            <span class="hero__line">{t.hero.h1a}</span>
+            <span class="hero__line">{t.hero.h1b} <span class="power">{t.hero.power}<Squiggle class="power__squiggle" /></span>{t.hero.h1end}</span>
+          </h1>
+        </div>
+        <div class="hero__copy">
+          <p class="hero__sub">{t.hero.sub}<sup><a href="#fn-1" aria-label={fnLabel(1)}>1</a></sup></p>
+          <PostcodeForm locale={locale} id="pc-hero" />
+          <p class="hero__reassure">{t.hero.reassure}</p>
+          <ul class="trust" role="list">
+            <li><Stars id="st-hero" label={t.hero.ratingAria} class="trust__stars" /><span>{t.hero.rating}<sup><a href="#fn-2" aria-label={fnLabel(2)}>2</a></sup></span></li>
+            <li><span>{t.hero.customers}<sup><a href="#fn-3" aria-label={fnLabel(3)}>3</a></sup></span></li>
+            <li><a href={`#${ids.prices}`}>{t.hero.price}</a></li>
+          </ul>
+        </div>
+
+        <div class="hero__art">
+          <Blob shape={1} dots id="hb" class="hero__blob" />
+          <Blob shape={4} class="hero__blob2" />
+          <figure class="hero__photo">
+            <img src={`${base}placeholder-hero-portrait.svg`} width="480" height="600" alt={t.hero.photoAlt} fetchpriority="high" decoding="async" />
+            <figcaption class="tag">{t.hero.photoTag}</figcaption>
+          </figure>
+          <Junior pose="happy" wave class="hero__junior" />
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main id="main">
+    <!-- ═════ HOW IT WORKS ═════ -->
+    <section class="steps sec" id={ids.how} aria-labelledby="h-steps">
+      <Halftone id="ht-steps" class="steps__dots" />
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="eyebrow">{t.steps.eyebrow}</p>
+          <h2 id="h-steps" class="display-2">{t.steps.h2a}<br />{t.steps.h2b}</h2>
+          <p class="lede">{t.steps.intro}</p>
+        </header>
+        <ol class="steps__list" role="list">
+          {steps.map((s, i) => (
+            <li class={`step step--${i + 1}`}>
+              <span class="step__num" aria-hidden="true">{s.n}</span>
+              <div class="step__icon" aria-hidden="true">
+                {stepIcons[i] === 'meter' && (
+                  <svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="36" rx="7" fill="var(--mint-2)" stroke="var(--ink)" stroke-width="2.6"/><rect x="14" y="12" width="20" height="10" rx="3" fill="#fff" stroke="var(--ink)" stroke-width="2.4"/><path d="M18 17h4m3 0h5" stroke="var(--june-green-deep)" stroke-width="2.4" stroke-linecap="round"/><circle cx="18" cy="32" r="3" fill="var(--ink)"/><circle cx="30" cy="32" r="3" fill="var(--june-red)"/></svg>
+                )}
+                {stepIcons[i] === 'compare' && (
+                  <svg viewBox="0 0 48 48"><path d="M8 38V26m9 12V18m9 20V24" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="18" r="9" fill="var(--mint-2)" stroke="var(--ink)" stroke-width="2.6"/><path d="M38.5 24.5 44 30" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round"/><path d="M28.5 18.5l2.5 2.5 4.5-5" fill="none" stroke="var(--june-green-deep)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                )}
+                {stepIcons[i] === 'switch' && <Bolt class="step__bolt" />}
+              </div>
+              <h3 class="step__title">{s.title[L]}</h3>
+              <p class="step__body">{s.body[L]}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═════ PLANS ═════ -->
+    <section class="plans sec" id={ids.prices} aria-labelledby="h-plans">
+      <div class="wrap">
+        <header class="sec__head sec__head--center">
+          <p class="eyebrow">{t.plans.eyebrow}</p>
+          <h2 id="h-plans" class="display-2">{t.plans.h2}</h2>
+          <p class="lede">{t.plans.intro}</p>
+        </header>
+        <div class="plans__grid">
+          {planOrder.map(slug => {
+            const p = plans.find(x => x.slug === slug);
+            const rec = slug === 'switch-plus';
+            return (
+              <article class={`plan ${rec ? 'plan--rec' : ''}`} aria-labelledby={`plan-${slug}`}>
+                {rec && <p class="plan__badge">{t.plans.recommended}</p>}
+                {rec && <Halftone id="ht-plan" class="plan__dots" />}
+                <h3 class="plan__name" id={`plan-${slug}`}>{p.shortName}</h3>
+                <p class="plan__vp">{p.valueProposition[L]}</p>
+                <p class="plan__price"><span class="plan__big">{money(p.priceYearly, locale)}</span> <span class="plan__per">{t.plans.perYear}</span></p>
+                <p class="plan__sub">{money(p.priceMonthly, locale)} {t.plans.perMonth} · {t.plans.billed}{slug === 'premium' && <>, {t.plans.dongle}</>}</p>
+                <ul class="plan__feat" role="list">
+                  {p.features.slice(0, cardFeatures[slug]).map((ft: any) => <li>{ft[L]}</li>)}
+                </ul>
+                <a class={`btn ${rec ? 'btn--white' : 'btn--ghost'} plan__cta`} href={`${signup}?plan=${slug}`}>{t.plans.choose} {p.shortName}</a>
+              </article>
+            );
+          })}
+        </div>
+        <p class="plans__fn">{t.plans.footnote}</p>
+      </div>
+    </section>
+
+    <!-- ═════ GUARANTEE ═════ -->
+    <section class="guar sec" aria-labelledby="h-guar">
+      <Blob shape={3} class="guar__blob" />
+      <div class="wrap guar__in">
+        <div>
+          <p class="eyebrow eyebrow--ink">{t.guarantee.eyebrow}</p>
+          <h2 id="h-guar" class="guar__h2"><Fragment set:html={guarH2} /><sup><a href="#fn-4" aria-label={fnLabel(4)}>4</a></sup></h2>
+          <p class="guar__body">{t.guarantee.body} <a href="#fn-4">{t.guarantee.terms}</a></p>
+        </div>
+        <figure class="receipt">
+          <figcaption class="receipt__label">{t.guarantee.exampleLabel}</figcaption>
+          <dl>
+            {t.guarantee.rows.map(([k, v], i) => (
+              <div class={`receipt__row ${i === 2 ? 'receipt__row--total' : ''}`}><dt>{k}</dt><dd>{v}</dd></div>
+            ))}
+          </dl>
+          <Squiggle kind="wave" class="receipt__wave" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- ═════ REVIEWS ═════ -->
+    <section class="reviews sec" id={ids.reviews} aria-labelledby="h-rev">
+      <div class="wrap reviews__in">
+        <div class="reviews__score">
+          <p class="eyebrow">{t.reviews.eyebrow}</p>
+          <h2 id="h-rev" class="display-2">{t.reviews.h2}</h2>
+          <p class="score"><span class="score__num">4,3</span> <span class="score__of">{t.reviews.of}</span></p>
+          <Stars id="st-rev" label={t.hero.ratingAria} class="score__stars" />
+          <p class="score__meta">{t.reviews.count}<sup><a href="#fn-2" aria-label={fnLabel(2)}>2</a></sup><br />{t.reviews.customers}<sup><a href="#fn-3" aria-label={fnLabel(3)}>3</a></sup></p>
+        </div>
+        <div class="reviews__cards">
+          <p class="reviews__label">{t.reviews.label}</p>
+          {[0, 1].map(i => (
+            <figure class={`rcard rcard--${i}`} data-placeholder="google-review">
+              <Stars id={`st-c${i}`} label={t.hero.ratingAria} class="rcard__stars" />
+              <div class="rcard__lines" aria-hidden="true"><span></span><span></span><span></span></div>
+              <figcaption class="rcard__ph">{t.reviews.placeholder}</figcaption>
+            </figure>
+          ))}
+          <Junior pose="celebrating" class="reviews__junior" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════ FAQ + CLOSING ═════ -->
+    <section class="faq sec" id={ids.faq} aria-labelledby="h-faq">
+      <div class="wrap faq__in">
+        <header>
+          <p class="eyebrow">{t.faq.eyebrow}</p>
+          <h2 id="h-faq" class="display-2">{t.faq.h2}</h2>
+        </header>
+        <div class="faq__list">
+          {t.faq.ids.map(id => { const q = faqById(id); return (
+            <details class="qa"><summary><span>{q.q[L]}</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><p>{q.a[L]}</p></details>
+          ); })}
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="h-close">
+      <Blob shape={2} class="closing__blob" />
+      <div class="wrap closing__in">
+        <h2 id="h-close" class="closing__h2">{t.closing.h2}</h2>
+        <p class="closing__body">{t.closing.body}</p>
+        <PostcodeForm locale={locale} id="pc-close" />
+        <p class="hero__reassure">{t.hero.reassure}</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+
+  <div class="sticky" data-sticky>
+    <a class="btn btn--ink sticky__btn" href={signup}><span>{t.cta}</span><Bolt variant="line" class="btn__bolt" /></a>
+    <p class="sticky__proof">{t.sticky.proof}</p>
+  </div>
+  <script>
+    // Sticky mobile CTA: show once the hero form has scrolled out of view (≈300 B, no framework).
+    const hero = document.getElementById('pc-hero')?.closest('form');
+    const bar = document.querySelector('[data-sticky]');
+    const close = document.getElementById('pc-close')?.closest('form');
+    if (hero && close && bar && 'IntersectionObserver' in window) {
+      let past = false, closeIn = false;
+      const sync = () => bar.classList.toggle('is-on', past && !closeIn);
+      new IntersectionObserver(([e]) => { past = !e.isIntersecting && e.boundingClientRect.top < 0; sync(); }).observe(hero);
+      new IntersectionObserver(([e]) => { closeIn = e.isIntersecting; sync(); }).observe(close);
+    }
+  </script>
+</Site>

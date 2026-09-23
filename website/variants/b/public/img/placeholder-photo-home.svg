@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="placeholder">
+  <!-- PLACEHOLDER — photo of a real Belgian home (rijwoning), warm natural light. Replace with licensed photography. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b6e3df"/><stop offset="1" stop-color="#3bada8"/></linearGradient>
+    <pattern id="ht" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.8" fill="#14232a" fill-opacity=".18"/></pattern>
+  </defs>
+  <rect width="400" height="500" fill="url(#g)"/>
+  <path d="M-20 360c60-60 140-40 210-80s150-60 230-20v260H-20z" fill="#e2f3f1" fill-opacity=".55"/>
+  <g fill="#14232a" fill-opacity=".86">
+    <path d="M40 430V270l60-62 60 62v160z"/><path d="M160 430V250l60-62 60 62v180z"/><path d="M280 430V282l52-54 52 54v148z"/>
+  </g>
+  <g fill="#f0b429"><rect x="78" y="300" width="22" height="28" rx="2"/><rect x="202" y="280" width="22" height="28" rx="2"/><rect x="236" y="340" width="22" height="28" rx="2"/><rect x="316" y="310" width="20" height="26" rx="2"/></g>
+  <rect x="0" y="430" width="400" height="70" fill="#14232a"/>
+  <rect x="250" y="0" width="150" height="150" fill="url(#ht)"/>
+  <text x="24" y="472" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff">placeholder · foto / photo</text>
+</svg>

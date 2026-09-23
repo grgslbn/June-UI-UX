@@ -1,0 +1,5 @@
+---
+interface Props { n: number; L: string; }
+const { n, L } = Astro.props;
+---
+<sup class="fn"><a href={`#fn-${n}`} aria-label={`${L === 'fr' ? 'note' : 'voetnoot'} ${n}`}>{n}</a></sup>

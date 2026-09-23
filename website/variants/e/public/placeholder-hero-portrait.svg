@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" width="480" height="600">
+  <!-- [placeholder] hero portrait: abstract evening-light scene. Replace with real, consented photography. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7c9a8"/><stop offset=".45" stop-color="#f3a07e"/><stop offset=".78" stop-color="#e8745f"/><stop offset="1" stop-color="#b85a52"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="62%" cy="58%" r="30%"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#fad145" stop-opacity=".75"/><stop offset="1" stop-color="#fad145" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="480" height="600" fill="url(#sky)"/>
+  <circle cx="300" cy="350" r="190" fill="url(#sun)"/>
+  <!-- rooftops (Belgian rijwoning silhouette) -->
+  <path d="M0 470 L0 420 L40 420 L40 392 L70 368 L100 392 L100 430 L150 430 L150 400 L185 372 L220 400 L220 440 L300 440 L300 410 L340 380 L380 410 L380 436 L480 436 L480 600 L0 600 Z" fill="#7a3f45" opacity=".55"/>
+  <!-- generic figure, arm raised: "power" -->
+  <g fill="#2a2127">
+    <circle cx="232" cy="300" r="26"/>
+    <path d="M196 600 C192 470 190 400 206 356 C214 336 250 334 262 350 C270 362 272 372 272 380 L300 300 C304 290 318 290 318 302 L292 420 C288 440 284 470 286 600 Z"/>
+    <path d="M298 304 C300 272 304 248 310 232 C314 222 330 224 328 238 C326 256 322 282 320 308 Z"/><circle cx="319" cy="226" r="11"/>
+  </g>
+</svg>

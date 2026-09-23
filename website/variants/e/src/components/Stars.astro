@@ -1,0 +1,12 @@
+---
+// Partial stars (4,3 → 86% filled). Never 5 full stars (claims register C3).
+interface Props { value?: number; id: string; label: string; class?: string }
+const { value = 4.3, id, label, class: cls = '' } = Astro.props;
+const star = (x: number) => `M${x + 10} 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z`;
+const xs = [0, 22, 44, 66, 88];
+---
+<svg class={`stars ${cls}`} viewBox="0 0 108 20" role="img" aria-label={label}>
+  <defs><clipPath id={id}><rect width={(value / 5) * 108} height="20" /></clipPath></defs>
+  <g fill="currentColor" opacity=".28">{xs.map(x => <path d={star(x)} />)}</g>
+  <g fill="currentColor" clip-path={`url(#${id})`}>{xs.map(x => <path d={star(x)} />)}</g>
+</svg>

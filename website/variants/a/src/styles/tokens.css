@@ -1,0 +1,290 @@
+/* ==========================================================================
+   June website · Variant A "Calm Confidence" — tokens
+   Layer 1 (verbatim): app/tokens.css (Soft Native). Synced copy, do not fork values.
+   Layer 2 (bottom):   site marketing layer — type scale, section rhythm, motifs.
+   ========================================================================== */
+
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 700; font-display: swap; src: url("@shared/fonts/montserrat-latin.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("@shared/fonts/inter-latin.woff2") format("woff2"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 700; font-display: swap; src: url("@shared/fonts/montserrat-approx.woff2") format("woff2"); unicode-range: U+2248; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("@shared/fonts/inter-approx.woff2") format("woff2"); unicode-range: U+2248; }
+/* Metric-matched fallbacks (avoid CLS on swap) */
+@font-face { font-family: "Montserrat Fallback"; src: local("Arial"); size-adjust: 113%; ascent-override: 85%; descent-override: 22%; line-gap-override: 0%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"); size-adjust: 107%; ascent-override: 90%; descent-override: 22.5%; line-gap-override: 0%; }
+
+:root {
+  color-scheme: light;
+
+  /* ── Type ───────────────────────────────────────────────────────────── */
+  --font-display: "Montserrat", "Montserrat Fallback", ui-sans-serif, system-ui, sans-serif; /* numerals, hero sentence */
+  --font-ui: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif; /* all UI text */
+  /* Six sizes. Nothing below 12px anywhere (chart labels are 12px too). */
+  --fs-xs: 12px;    /* captions, chips, tags, axis + chart labels */
+  --fs-sm: 14px;    /* secondary copy, table cells, buttons, tabs */
+  --fs-md: 16px;    /* body, card titles, insight sentences */
+  --fs-lg: 20px;    /* stat values in dense rows, units next to hero */
+  --fs-xl: 28px;    /* hero sentence, KPI numerals */
+  --fs-hero: 52px;  /* ONE hero numeral per view */
+  --lh-tight: 1.1;
+  --lh-snug: 1.3;
+  --lh-body: 1.5;
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+  --tracking-display: -0.02em;
+  --tracking-caps: 0.06em;
+
+  /* ── Canvas & surfaces (mint-tinted) ────────────────────────────────── */
+  --canvas: #edf4f3;          /* page */
+  --surface: #ffffff;         /* tiles (elevation 1) */
+  --surface-sunken: #f2f7f6;  /* tracks, inset panels, icon wells */
+  --surface-track: #e2ebea;   /* tab bar / segmented track on canvas */
+  --surface-raised: #ffffff;  /* popovers, thumbs (elevation 2) */
+  --hairline: #e3eaea;
+
+  /* ── Ink (ink-tinted neutrals) ──────────────────────────────────────── */
+  --ink-900: #14232a;  /* primary text          15.6:1 on white */
+  --ink-700: #435359;  /* secondary text         7.9:1 */
+  --ink-500: #56666d;  /* muted / meta text      5.9:1 on white, 5.0:1 on track */
+  --ink-400: #8c999e;  /* icons, non-text marks, secondary threshold lines */
+  --ink-200: #c9d3d5;  /* chart baseline, strong borders, future slots */
+  --ink-100: #e4eaeb;  /* gridlines, tracks */
+
+  /* ── Accent: June Green (the ONE interactive hue + "your data") ─────── */
+  --accent: #3bada8;          /* fills: bars, meters, selected marks */
+  --accent-strong: #19736f;   /* text, links, buttons, emphasised lines (5.6:1) */
+  --accent-soft: #e2f3f1;     /* selected / subtle highlight backgrounds */
+  --on-accent: #ffffff;       /* text on --accent-strong */
+  --accent-stripe: #9fd9d5;   /* forecast hatch, provisional fills */
+
+  /* ── Semantic (status only — always with a word or icon) ────────────── */
+  --alert: #c4383e;           /* June Red for text (5.3:1) — month peak / over / alerts ONLY */
+  --alert-graphic: #e85257;   /* June Red for marks: the month's peak bar, over-limit fill */
+  --alert-soft: #fdeced;
+  --positive: #23744a;
+  --positive-soft: #e4f3ea;
+  --warn: #7a5600;
+  --warn-soft: #fbf1d6;
+
+  /* ── Energy series (data only, never UI chrome) ─────────────────────── */
+  --elec: #f0b429;            /* electricity fill — always direct-labelled */
+  --elec-strong: #9a6d00;     /* electricity line / marker / swatch outline */
+  --elec-soft: #fdf3d8;
+  --gas: #1f86c4;             /* gas fill + line */
+  --gas-strong: #16689a;
+  --gas-soft: #e2f0f9;
+
+  /* ── Categorical ramp (Breakdown categories). Round 3: accent + ink tints, NO new hues.
+        cat-1 = the category the tab is about (accent); cat-2…5 + other = ink steps from mid-ink
+        fading toward the surface (light AND dark), so the accent always leads. Always text-labelled; order fixed. ── */
+  --cat-1: #3bada8;  /* accent — the lead category (e.g. Heating) */
+  --cat-2: #6b7f84;  /* ink 1 — starts at mid-ink so cat-1 always leads */
+  --cat-3: #8c9ea2;  /* ink 2 */
+  --cat-4: #adbcbf;  /* ink 3 */
+  --cat-5: #c9d4d6;  /* ink 4 */
+  --cat-other: #dde4e5; /* ink 5 — Other */
+
+  /* ── Chart roles ────────────────────────────────────────────────────── */
+  --chart-grid: var(--ink-100);
+  --chart-axis: var(--ink-200);
+  --chart-label: var(--ink-500);
+  --chart-you: var(--accent);
+  --chart-compare: var(--ink-200);       /* benchmark / similar homes */
+  --chart-muted: #cfdcdb;                /* de-emphasised bars next to a highlight */
+  --chart-rolloff: var(--ink-700);       /* the item leaving a rolling window (not red) */
+  --chart-band: rgba(59, 173, 168, 0.16);/* confidence band */
+  --tooltip-bg: var(--ink-900);
+  --tooltip-ink: #ffffff;
+
+  /* ── Ambient brand depth (behind surfaces only, one per screen) ─────── */
+  --ambient: #b6e3df;
+  --ambient-opacity: 0.9;
+  --halftone: rgba(59, 173, 168, 0.28);
+
+  /* ── Spacing: 4px scale ─────────────────────────────────────────────── */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --tile-pad: 28px;
+  --gap: 20px;
+  --content-max: 1168px;
+  --gutter: 24px;
+
+  /* ── Radii (4 values) ───────────────────────────────────────────────── */
+  --r-sm: 10px;    /* buttons, inner controls, icon wells, tooltips */
+  --r-md: 14px;    /* inset panels, popovers, callouts, rows */
+  --r-lg: 24px;    /* surfaces / tiles */
+  --r-pill: 999px; /* chips, meters, segmented, tab bar */
+
+  /* ── Elevation (2 levels) ───────────────────────────────────────────── */
+  --shadow-1: 0 1px 2px rgba(18, 52, 50, 0.04), 0 6px 20px -10px rgba(18, 52, 50, 0.10);
+  --shadow-2: 0 2px 4px rgba(18, 52, 50, 0.05), 0 18px 40px -16px rgba(18, 52, 50, 0.22);
+  --edge: inset 0 0 0 1px rgba(18, 52, 50, 0.03);
+
+  /* ── Tab bar (explicit so dark mode can make the active tab obvious) ── */
+  --tab-thumb: #ffffff;
+  --tab-thumb-ring: rgba(18, 52, 50, 0.06);
+  --tab-active-ink: var(--ink-900);
+  --tab-indicator: var(--accent);
+
+  /* ── Motion ─────────────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);      /* enter & settle (default) */
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);  /* move between two states */
+  --ease-emphasis: cubic-bezier(.2, .8, .2, 1); /* legacy alias of --ease-out (Round 3: no overshoot) */
+  --dur-instant: 90ms;   /* press, colour */
+  --dur-fast: 160ms;     /* hover, focus, popover */
+  --dur-base: 240ms;     /* panel switch, disclosure */
+  --dur-slide: 240ms;    /* thumbs (Round 3: ≤ 240ms, no overshoot) */
+  --dur-slow: 480ms;     /* chart enter */
+  --dur-draw: 700ms;     /* line draw, count-up */
+  --stagger: 16ms;       /* per-bar delay, total capped at 300ms */
+
+  --focus-ring: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent-strong);
+}
+
+/* ── Dark theme (auto) ─────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --canvas: #0a1315;
+    --surface: #121e21;
+    --surface-sunken: #0e181b;
+    --surface-track: #17262a;
+    --surface-raised: #1a292d;
+    --hairline: #1f2f33;
+    --ink-900: #e8f0f0;
+    --ink-700: #adbcbf;
+    --ink-500: #8d9da1;
+    --ink-400: #62747a;
+    --ink-200: #33464b;
+    --ink-100: #1d2c31;
+    --accent: #45bdb7;
+    --accent-strong: #62d3cc;
+    --accent-soft: #143331;
+    --on-accent: #06201e;
+    --accent-stripe: #1f5c59;
+    --alert: #ff8589;
+    --alert-graphic: #ff6b70;
+    --alert-soft: #3a1b1f;
+    --positive: #6ad49a;
+    --positive-soft: #11301f;
+    --warn: #f2c14e;
+    --warn-soft: #33290f;
+    --elec: #f0b93a;
+    --elec-strong: #f0b93a;
+    --elec-soft: #2e2710;
+    --gas: #5cb8ec;
+    --gas-strong: #5cb8ec;
+    --gas-soft: #0f2a3a;
+    --cat-1: #45bdb7;
+    --cat-2: #7d9095;
+    --cat-3: #63767b;
+    --cat-4: #4e6065;
+    --cat-5: #3e4f54;
+    --cat-other: #314145;
+    --chart-muted: #3b5358;
+    --chart-rolloff: #adbcbf;
+    --chart-band: rgba(69, 189, 183, 0.18);
+    --tooltip-bg: #e8f0f0;
+    --tooltip-ink: #0a1315;
+    --ambient: #1f8f89;
+    --ambient-opacity: 0.45;
+    --halftone: rgba(98, 211, 204, 0.22);
+    --shadow-1: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+    --shadow-2: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 48px -18px rgba(0, 0, 0, 0.85);
+    --edge: inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+    --tab-thumb: #22403f;
+    --tab-thumb-ring: rgba(98, 211, 204, 0.55);
+    --tab-active-ink: #ffffff;
+    --tab-indicator: #62d3cc;
+  }
+}
+
+/* ── Dark theme (forced) — keep identical to the block above ───────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #0a1315;
+  --surface: #121e21;
+  --surface-sunken: #0e181b;
+  --surface-track: #17262a;
+  --surface-raised: #1a292d;
+  --hairline: #1f2f33;
+  --ink-900: #e8f0f0;
+  --ink-700: #adbcbf;
+  --ink-500: #8d9da1;
+  --ink-400: #62747a;
+  --ink-200: #33464b;
+  --ink-100: #1d2c31;
+  --accent: #45bdb7;
+  --accent-strong: #62d3cc;
+  --accent-soft: #143331;
+  --on-accent: #06201e;
+  --accent-stripe: #1f5c59;
+  --alert: #ff8589;
+  --alert-graphic: #ff6b70;
+  --alert-soft: #3a1b1f;
+  --positive: #6ad49a;
+  --positive-soft: #11301f;
+  --warn: #f2c14e;
+  --warn-soft: #33290f;
+  --elec: #f0b93a;
+  --elec-strong: #f0b93a;
+  --elec-soft: #2e2710;
+  --gas: #5cb8ec;
+  --gas-strong: #5cb8ec;
+  --gas-soft: #0f2a3a;
+  --cat-1: #45bdb7;
+  --cat-2: #7d9095;
+  --cat-3: #63767b;
+  --cat-4: #4e6065;
+  --cat-5: #3e4f54;
+  --cat-other: #314145;
+  --chart-muted: #3b5358;
+  --chart-rolloff: #adbcbf;
+  --chart-band: rgba(69, 189, 183, 0.18);
+  --tooltip-bg: #e8f0f0;
+  --tooltip-ink: #0a1315;
+  --ambient: #1f8f89;
+  --ambient-opacity: 0.45;
+  --halftone: rgba(98, 211, 204, 0.22);
+  --shadow-1: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+  --shadow-2: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 48px -18px rgba(0, 0, 0, 0.85);
+  --edge: inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+  --tab-thumb: #22403f;
+  --tab-thumb-ring: rgba(98, 211, 204, 0.55);
+  --tab-active-ink: #ffffff;
+  --tab-indicator: #62d3cc;
+}
+
+/* ── Site layer (marketing scale). Tokens only; dark values inherit from the app set. ── */
+:root {
+  /* Type scale (site): 14 / 16 / 18 / 22 / 32 / 44 / 60 */
+  --t-14: 14px; --t-16: 16px; --t-18: 18px; --t-22: 22px;
+  --t-32: clamp(26px, 2.2vw + 16px, 32px);
+  --t-44: clamp(30px, 3vw + 16px, 44px);
+  --t-60: clamp(38px, 4.2vw + 12px, 60px);
+  --lh-display: 1.08;
+  --measure: 60ch;
+
+  /* Section rhythm */
+  --section-y: clamp(72px, 8vw, 128px);
+  --section-y-tight: clamp(48px, 5vw, 72px);
+  --page-max: 1200px;
+  --page-gutter: clamp(16px, 4vw, 40px);
+
+  /* Marketing surfaces */
+  --band-ink: #14232a;       /* footer band; stays ink in dark mode too */
+  --band-ink-text: #e8f0f0;
+  --band-ink-muted: #a9b8bb;
+  --band-ink-line: #26383f;
+  --recommended-wash: var(--accent-soft);
+  --placeholder-a: #cfe9e6;
+  --placeholder-b: #9fd2cd;
+  --placeholder-ink: #14232a;
+
+  --star: var(--ink-900);
+  --hdr-bg: rgba(237, 244, 243, 0.9);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --band-ink: #060d0f; --band-ink-line: #1a2a2e; --placeholder-a: #15312f; --placeholder-b: #1f4d4a; --placeholder-ink: #e8f0f0; --hdr-bg: rgba(10, 19, 21, 0.88); }
+}
+:root[data-theme="dark"] { --band-ink: #060d0f; --band-ink-line: #1a2a2e; --placeholder-a: #15312f; --placeholder-b: #1f4d4a; --placeholder-ink: #e8f0f0; --hdr-bg: rgba(10, 19, 21, 0.88); }

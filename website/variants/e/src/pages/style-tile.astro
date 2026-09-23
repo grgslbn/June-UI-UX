@@ -1,0 +1,196 @@
+---
+// Variant E · Bold June — style tile (noindex, not linked from the site).
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/style-tile.css';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import Wordmark from '../components/Wordmark.astro';
+import Junior from '../components/Junior.astro';
+import Blob from '../components/Blob.astro';
+import Halftone from '../components/Halftone.astro';
+import Squiggle from '../components/Squiggle.astro';
+import Bolt from '../components/Bolt.astro';
+import Stars from '../components/Stars.astro';
+import PostcodeForm from '../components/PostcodeForm.astro';
+import { money } from '../content/copy';
+
+const lum = (hex: string) => {
+  const c = [0, 2, 4].map(i => parseInt(hex.slice(1 + i, 3 + i), 16) / 255).map(v => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+};
+const cr = (a: string, b: string) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+const grade = (r: number) => (r >= 4.5 ? 'AA' : r >= 3 ? 'AA large / graphic' : 'decor only');
+const palette = [
+  { name: 'June Green · field', hex: '#1f7f7a', role: 'E’s signature surface. White text at every size.', on: '#ffffff' },
+  { name: 'June Green', hex: '#3bada8', role: 'Brand fill: blobs, numerals, card shadows. Never small text.', on: '#14232a' },
+  { name: 'Green · interactive', hex: '#19736f', role: 'Links, checks, focus on white (= app accent-strong).', on: '#ffffff' },
+  { name: 'Ink', hex: '#14232a', role: 'Text, primary button, guarantee band, footer.', on: '#ffffff' },
+  { name: 'June Red', hex: '#e85257', role: 'Spark: one blob per viewport, Junior. Never a CTA.', on: '#14232a' },
+  { name: 'Sunglow', hex: '#fad145', role: 'Squiggles, bolt charge, badge. Graphic only on field.', on: '#14232a' },
+  { name: 'Mint canvas', hex: '#edf4f3', role: 'Alternating section canvas (plans, FAQ).', on: '#14232a' },
+  { name: 'Mint 3', hex: '#b6e3df', role: 'Halftone dots on white.', on: '#14232a' },
+];
+const pairs = [
+  ['White on field', '#ffffff', '#1f7f7a'], ['White on June Green (rejected)', '#ffffff', '#3bada8'], ['Ink on June Green', '#14232a', '#3bada8'],
+  ['Ink on white', '#14232a', '#ffffff'], ['Ink-2 on mint', '#3c4d53', '#edf4f3'], ['Green-interactive on white', '#19736f', '#ffffff'],
+  ['Ink on Sunglow (badge)', '#14232a', '#fad145'], ['Sunglow on field (squiggle)', '#fad145', '#1f7f7a'], ['Sunglow on ink', '#fad145', '#14232a'],
+];
+const scale = [
+  ['Mega · H1', 'Montserrat 800 · 52→120 · −3.5%', 'mega', 'Nu heb je power.'],
+  ['Display 1 · H2', 'Montserrat 800 · 40→72 · −2.5%', 'd1', 'Jij de power, wij het werk.'],
+  ['Display 2', 'Montserrat 800 · 32→48', 'd2', 'Bespaar je niet meer dan je abonnement kost?'],
+  ['Title 3', 'Montserrat 800 · 22→28', 'd3', 'June vergelijkt de markt'],
+  ['Body L', 'Inter 400 · 19 / 1.55', 'bl', 'June is geen leverancier. Elke maand vergelijken we 17+ leveranciers voor jouw verbruik.'],
+  ['Body', 'Inter 400 · 17 / 1.6', 'b', 'Met een digitale meter lezen we je verbruik automatisch uit. Een analoge meter? Dan geef je je meterstanden zelf in.'],
+  ['UI / label', 'Montserrat 700 · 14–16', 'ui', 'Je postcode · Aanbevolen · met winstgarantie'],
+  ['Footnote', 'Inter 400 · 13 (minimum)', 'fn', 'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.'],
+];
+const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1f7f7a"/><path d="M33 8 L17 36 L29 36 L23 58 L49 26 L35 26 L42 8 Z" fill="#fff" stroke="#14232a" stroke-width="3" stroke-linejoin="round"/></svg>')}`;
+---
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bold June · style tile (variant E)</title>
+  <meta name="description" content="Style tile voor variant E, Bold June: kleur, type, knoppen, motieven, Junior en motion." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+  <link rel="icon" href={favicon} />
+</head>
+<body class="tile">
+  <header class="tile__hero">
+    <div class="wrap tile__hero-in">
+      <div>
+        <p class="eyebrow eyebrow--field">Variant E · concept · style tile</p>
+        <h1 class="tile__h1">Bold <span class="power">June<Squiggle class="power__squiggle" /></span></h1>
+        <p class="tile__lead">Het brandbook van 2018 op vol volume: June Green als vlak, gigantische Montserrat 800, rode blob, halftone, squiggles en Junior. Luid in idee, strak in uitvoering: één kleur per rol, AA-contrast, max. twee motieftypes per viewport.</p>
+      </div>
+      <div class="tile__lockup">
+        <Wordmark class="tile__mark" />
+        <p class="tile__tag">Jij de power,<br />wij het werk.</p>
+        <Bolt class="tile__bolt" />
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap tile__main">
+    <!-- Palette -->
+    <section class="ts" aria-labelledby="t-col">
+      <h2 id="t-col" class="ts__h">01 · Kleur</h2>
+      <div class="sw-grid">
+        {palette.map(p => (
+          <figure class="sw">
+            <div class="sw__chip" style={`background:${p.hex};color:${p.on}`}><span>Aa</span><span class="sw__ratio">{cr(p.on, p.hex).toFixed(2)}:1</span></div>
+            <figcaption><strong>{p.name}</strong><code>{p.hex}</code><span>{p.role}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+      <table class="cr">
+        <caption>Gemeten contrast (WCAG 2.x)</caption>
+        <thead><tr><th scope="col">Paar</th><th scope="col">Voorbeeld</th><th scope="col">Ratio</th><th scope="col">Gebruik</th></tr></thead>
+        <tbody>{pairs.map(([n, fg, bg]) => { const r = cr(fg, bg); return (
+          <tr><th scope="row">{n}</th><td><span class="cr__demo" aria-hidden="true" style={`color:${fg};background:${bg}`}>Aa power</span></td><td>{r.toFixed(2)}:1</td><td>{grade(r)}</td></tr>
+        ); })}</tbody>
+      </table>
+      <p class="ts__note">Beslissing: de hero is <strong>#1f7f7a</strong>, niet #3bada8. Wit op #3bada8 haalt maar 2,72:1 en faalt zelfs voor grote tekst. De heldere June Green leeft verder in blobs, cijfers en schaduwen.</p>
+    </section>
+
+    <!-- Type -->
+    <section class="ts" aria-labelledby="t-type">
+      <h2 id="t-type" class="ts__h">02 · Typografie</h2>
+      <div class="type">
+        {scale.map(([n, spec, k, sample]) => (
+          <div class="type__row"><p class="type__meta"><strong>{n}</strong><span>{spec}</span></p><p class={`type__s type__s--${k}`}>{sample}</p></div>
+        ))}
+      </div>
+      <p class="ts__note">Eén handgetekend woord per pagina (de squiggle onder “power” / “pouvoir”), als SVG, nooit als font. FR-titels krijgen een eigen, kleinere mega-schaal (FR is ±40% langer).</p>
+    </section>
+
+    <!-- Controls -->
+    <section class="ts" aria-labelledby="t-ui">
+      <h2 id="t-ui" class="ts__h">03 · Knoppen & velden</h2>
+      <div class="ui-grid">
+        <div class="ui-card ui-card--field">
+          <p class="ui-card__label">Op het groene vlak</p>
+          <PostcodeForm locale="nl-be" id="pc-tile" />
+          <div class="ui-row"><a class="btn btn--white" href="#t-ui">Bereken je besparing</a></div>
+        </div>
+        <div class="ui-card">
+          <p class="ui-card__label">Op wit / mint</p>
+          <div class="ui-row"><a class="btn btn--ink" href="#t-ui"><span>Bereken je besparing</span><Bolt variant="line" class="btn__bolt" /></a></div>
+          <div class="ui-row"><a class="btn btn--ghost" href="#t-ui">Kies Switch</a> <a class="btn btn--ink btn--sm" href="#t-ui">Kies Switch Plus</a></div>
+          <div class="ui-row"><span class="plan__badge">Aanbevolen · met winstgarantie</span></div>
+          <div class="ui-row"><span class="btn btn--ink is-focus">Focus-ring</span><span class="btn btn--ink is-hover"><span>Hover · bolt laadt</span><Bolt variant="line" class="btn__bolt is-charged" /></span></div>
+          <p class="ts__note">Primaire CTA: inkt op licht, wit op groen. Nooit rood, nooit #3bada8. Hover = 2px offset + harde schaduw (het brandbook-bliksemschaduw) en de bolt “laadt” in 240 ms.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Motifs -->
+    <section class="ts" aria-labelledby="t-mot">
+      <h2 id="t-mot" class="ts__h">04 · Motieven</h2>
+      <div class="mot-grid">
+        <figure class="mot"><div class="mot__art"><Blob shape={1} dots id="tb1" class="mot__blob" style="color:var(--june-red)" /></div><figcaption><strong>Blob + halftone</strong> Eén framingdevice (telt als één motief). Rood, max. 1 groot per viewport.</figcaption></figure>
+        <figure class="mot"><div class="mot__art mot__art--row"><Blob shape={2} class="mot__sm" style="color:var(--june-green)" /><Blob shape={3} class="mot__sm" style="color:var(--mint-3)" /><Blob shape={4} class="mot__sm" style="color:var(--june-green-field)" /></div><figcaption><strong>Blobs 2–4</strong> Tonaal groen op het vlak, mint op wit.</figcaption></figure>
+        <figure class="mot"><div class="mot__art"><Halftone id="th1" class="mot__ht" /></div><figcaption><strong>Halftone</strong> Eén patch per sectie, in een hoek, nooit achter tekst.</figcaption></figure>
+        <figure class="mot"><div class="mot__art mot__art--col"><Squiggle class="mot__sq" /><Squiggle kind="wave" class="mot__wave" /></div><figcaption><strong>Squiggles</strong> Onderlijn voor één woord; golf als accent op kaarten.</figcaption></figure>
+        <figure class="mot"><div class="mot__art mot__art--row"><Bolt class="mot__bolt" /><Bolt class="mot__bolt" style="--bolt-fill:var(--elec)" /></div><figcaption><strong>Bolt</strong> Enkel in logo, favicon, CTA-icoon en het “switch gebeurd”-moment.</figcaption></figure>
+        <figure class="mot"><div class="mot__art mot__art--row"><Stars id="ts1" label="4,3 op 5" class="mot__stars" /></div><figcaption><strong>Sterren</strong> Altijd gedeeltelijk: 4,3 = 4 + 30%.</figcaption></figure>
+      </div>
+      <h3 class="ts__h3">Junior <span>[junior-placeholder] · eigen vector-redraw, 4 houdingen</span></h3>
+      <div class="jr-grid">
+        {(['happy', 'thinking', 'celebrating', 'sleeping'] as const).map((p, i) => (
+          <figure class="jr"><Junior pose={p} class="jr__svg" /><figcaption>{['Blij · zwaait één keer (hero)', 'Denkt (FAQ, sign-up)', 'Viert (reviews, bevestiging)', 'Slaapt (“wij kijken, jij rust”)'][i]}</figcaption></figure>
+        ))}
+      </div>
+      <p class="ts__note">Regels: klein, onderaan in een hoek, één keer per sectie. Nooit naast prijzen, garantie of juridische tekst. Animatie ≤ 1,2 s en één keer.</p>
+    </section>
+
+    <!-- Icons -->
+    <section class="ts" aria-labelledby="t-ico">
+      <h2 id="t-ico" class="ts__h">05 · Iconen</h2>
+      <div class="ico-row" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="36" rx="7" fill="var(--mint-2)" stroke="var(--ink)" stroke-width="2.6"/><rect x="14" y="12" width="20" height="10" rx="3" fill="#fff" stroke="var(--ink)" stroke-width="2.4"/><path d="M18 17h4m3 0h5" stroke="var(--june-green-deep)" stroke-width="2.4" stroke-linecap="round"/><circle cx="18" cy="32" r="3" fill="var(--ink)"/><circle cx="30" cy="32" r="3" fill="var(--june-red)"/></svg>
+        <svg viewBox="0 0 48 48"><path d="M8 38V26m9 12V18m9 20V24" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="18" r="9" fill="var(--mint-2)" stroke="var(--ink)" stroke-width="2.6"/><path d="M38.5 24.5 44 30" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round"/><path d="M28.5 18.5l2.5 2.5 4.5-5" fill="none" stroke="var(--june-green-deep)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 48 48"><path d="M24 6 8 14v10c0 9 7 16 16 18 9-2 16-9 16-18V14Z" fill="var(--mint-2)" stroke="var(--ink)" stroke-width="2.6" stroke-linejoin="round"/><path d="M17 24l5 5 9-10" fill="none" stroke="var(--june-green-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 48 48"><path d="M8 20a16 16 0 0 1 29-6M40 28a16 16 0 0 1-29 6" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><path d="M37 6v8h-8M11 42v-8h8" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="5" fill="var(--june-red)"/></svg>
+      </div>
+      <p class="ts__note">Meter · vergelijken · garantie · elke maand. Inkt-lijn 2,6–3 px, afgeronde uiteinden, mint vulling en één accent (groen of rood). Geen outline-only stock-iconen, geen emoji.</p>
+    </section>
+
+    <!-- Motion -->
+    <section class="ts" aria-labelledby="t-mo">
+      <h2 id="t-mo" class="ts__h">06 · Motion</h2>
+      <ol class="motion">
+        <li><strong>Blob breathe</strong> 12–14 s loop, rotate ±6° + scale 0,97–1,04, alleen transform. Stopt onder reduced motion.</li>
+        <li><strong>Bolt laadt</strong> CTA-hover/focus: stroke tekent zich in 240 ms (ease-out) in Sunglow.</li>
+        <li><strong>Junior zwaait één keer</strong> kijkt 480 ms op, zwaait 1,1 s, en blijft dan stil.</li>
+        <li><strong>Squiggle tekent</strong> onder “power”, 700 ms na 350 ms. Nooit de H1 zelf: die is vanaf de eerste paint zichtbaar (LCP).</li>
+        <li><strong>Scroll-reveal</strong> via <code>animation-timeline: view()</code>, 16 px rise, alleen waar ondersteund. Inhoud is zichtbaar zonder JS.</li>
+        <li><strong>Reduced motion</strong> alles uit, eindtoestand direct. Geen video, geen libraries, ±0,4 KB JS (sticky CTA).</li>
+      </ol>
+    </section>
+
+    <!-- Sample section -->
+    <section class="ts" aria-labelledby="t-sample">
+      <h2 id="t-sample" class="ts__h">07 · Voorbeeldsectie (NL)</h2>
+      <div class="sample">
+        <Halftone id="ht-sample" class="sample__dots" />
+        <div class="sample__copy">
+          <p class="eyebrow">Winstgarantie · bij Switch Plus</p>
+          <h3 class="sample__h">Bespaar je niet meer dan je abonnement kost? Dan krijg je <span class="sample__hl">{money(99, 'nl-be')}</span> terug.</h3>
+          <p class="sample__body">Na elk abonnementsjaar maken we de rekening in je besparingsrapport. Voorwaarden in onze algemene voorwaarden.</p>
+          <a class="btn btn--ink" href="#t-sample"><span>Bereken je besparing</span><Bolt variant="line" class="btn__bolt" /></a>
+        </div>
+        <div class="sample__price">
+          <p class="plan__badge">Aanbevolen · met winstgarantie</p>
+          <p class="plan__name">Switch Plus</p>
+          <p class="plan__price"><span class="plan__big">{money(99, 'nl-be')}</span> <span class="plan__per">per jaar</span></p>
+          <p class="plan__sub">{money(8.25, 'nl-be')} per maand · jaarlijks gefactureerd</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

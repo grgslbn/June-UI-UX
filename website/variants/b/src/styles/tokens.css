@@ -1,0 +1,94 @@
+/* ==========================================================================
+   June · concept B "Savings First" — design tokens
+   Source of truth: app/tokens.css (Soft Native). This file re-declares the app
+   values 1:1 and adds a thin MARKETING layer (bigger type, section rhythm,
+   the ink result card). No second green, no second radius set.
+   Light only at concept stage (dark tokens = Phase 4, mirrored from app).
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* ── Type families (self-hosted, see Base.astro) ── */
+  --font-display: "Montserrat", "Montserrat Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-ui: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Marketing type scale: 14 / 16 / 18 / 22 / 32 / 48 / 72 (+ result numeral) ── */
+  --fs-12: 0.75rem;   /* legal, footnotes (never smaller) */
+  --fs-14: 0.875rem;  /* chips, helper text, buttons S */
+  --fs-16: 1rem;      /* UI, inputs */
+  --fs-18: 1.125rem;  /* body on the marketing site */
+  --fs-22: 1.375rem;  /* lead, card titles */
+  --fs-32: clamp(1.625rem, 1.2rem + 1.6vw, 2rem);      /* H3 / plan price */
+  --fs-48: clamp(2rem, 1.3rem + 2.6vw, 3rem);          /* H2 */
+  --fs-72: clamp(2.375rem, 1.2rem + 4.2vw, 4.25rem);   /* H1 */
+  --fs-numeral: clamp(2.75rem, 12cqi, 5.5rem);         /* result numeral, container-relative */
+  --lh-display: 1.06;
+  --lh-snug: 1.3;
+  --lh-body: 1.55;
+  --tracking-display: -0.02em;
+  --tracking-numeral: -0.035em;
+  --tracking-caps: 0.08em;
+
+  /* ── Canvas & surfaces ── */
+  --canvas: #ffffff;          /* B: white canvas */
+  --canvas-mint: #edf4f3;     /* app --canvas, alternate sections */
+  --surface: #ffffff;
+  --surface-sunken: #f2f7f6;
+  --surface-track: #e2ebea;
+  --hairline: #e3eaea;
+  --hairline-strong: #c9d3d5;
+
+  /* ── Ink ── */
+  --ink-900: #14232a;   /* 15.6:1 on white */
+  --ink-800: #1b2e36;   /* raised ink (inside the result card) */
+  --ink-700: #435359;   /* 7.9:1 */
+  --ink-500: #56666d;   /* 5.9:1 on white, 5.3:1 on mint */
+  --ink-400: #8c999e;   /* icons, non-text only */
+  --ink-200: #c9d3d5;
+  --ink-100: #e4eaeb;
+
+  /* ── On-ink text (result card, trust band, footer) ── */
+  --on-ink: #ffffff;                    /* 15.6:1 */
+  --on-ink-muted: rgba(255,255,255,.74);/* ≈ 9.6:1 on ink-900 */
+  --on-ink-faint: rgba(255,255,255,.16);/* tracks, hairlines — non-text */
+
+  /* ── June Green ── */
+  --accent: #3bada8;          /* fills, bar, underline; text only on ink (5.9:1) */
+  --accent-strong: #19736f;   /* THE CTA colour, links, focus (5.6:1 on white) */
+  --accent-strong-hover: #135c59;
+  --accent-soft: #e2f3f1;
+  --ambient: #b6e3df;
+  --on-accent: #ffffff;
+
+  /* ── Brand spark (sparingly; never a CTA) ── */
+  --red: #e85257;             /* graphic only: one small dot per view */
+  --red-text: #c4383e;        /* form errors only (5.3:1) */
+
+  /* ── Energy (ONLY energy toggle + breakdown) ── */
+  --elec: #f0b429;  --elec-strong: #9a6d00; --elec-soft: #fdf3d8;
+  --gas: #1f86c4;   --gas-strong: #16689a;  --gas-soft: #e2f0f9;
+
+  /* ── Space (4px scale) & layout ── */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+  --section-y: clamp(64px, 5vw + 40px, 112px);
+  --content-max: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --header-h: 68px;
+
+  /* ── Radii (app set) ── */
+  --r-sm: 10px; --r-md: 14px; --r-lg: 24px; --r-xl: 32px; --r-pill: 999px;
+
+  /* ── Elevation ── */
+  --shadow-1: 0 1px 2px rgba(18,52,50,.04), 0 6px 20px -10px rgba(18,52,50,.10);
+  --shadow-2: 0 2px 4px rgba(18,52,50,.05), 0 18px 40px -16px rgba(18,52,50,.22);
+  --shadow-ink: 0 30px 60px -30px rgba(20,35,42,.55), 0 12px 24px -12px rgba(20,35,42,.3);
+
+  /* ── Motion (app tokens, no overshoot) ── */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+  --dur-instant: 90ms; --dur-fast: 160ms; --dur-base: 240ms; --dur-resolve: 480ms; --dur-draw: 700ms;
+
+  --focus-ring: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent-strong);
+  --focus-ring-ink: 0 0 0 3px var(--ink-900), 0 0 0 5px var(--accent);
+}

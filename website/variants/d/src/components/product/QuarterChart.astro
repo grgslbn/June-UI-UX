@@ -1,0 +1,55 @@
+---
+// "The live tile": quarter-hour consumption bars (+ optional solar area) with a "Nu" marker.
+// Rendered as a scalable SVG; always decorative (the parent carries aria-hidden + a text alternative).
+// Motion (CSS): bars grow once, the Nu dot pulses once. Final state is the static render.
+import { consumption, solar } from '../../lib/demo.js';
+interface Props {
+  from?: number; to?: number; w?: number; h?: number; x?: number; y?: number;
+  now: string; showSolar?: boolean; ticks?: number[]; fs?: number; class?: string; yLabels?: boolean;
+}
+const { from = 24, to = 80, w = 460, h = 180, x, y, now, showSolar = true, ticks = [6, 9, 12, 15, 18], fs = 11, class: cls = '', yLabels = true } = Astro.props;
+const data = consumption.slice(from, to);
+const sol = solar.slice(from, to);
+const pad = { l: 2, r: yLabels ? fs * 2.6 : 8, t: fs * 2.2, b: fs * 1.9 };
+const max = 1.0;
+const n = data.length;
+const plotW = w - pad.l - pad.r;
+const plotH = h - pad.t - pad.b;
+const bw = plotW / n;
+const base = h - pad.b;
+const yOf = v => base - (v / max) * plotH;
+const bars = data.map((v, i) => ({ x: pad.l + i * bw + bw * 0.14, w: bw * 0.72, y: yOf(v), h: base - yOf(v), peak: v >= 0.95, last: i === n - 1 }));
+const solarPts = sol.map((v, i) => `${(pad.l + (i + 0.5) * bw).toFixed(1)},${yOf(v).toFixed(1)}`);
+const solarArea = `M${pad.l + 0.5 * bw},${base} L${solarPts.join(' L')} L${pad.l + (n - 0.5) * bw},${base} Z`;
+const solarLine = `M${solarPts.join(' L')}`;
+const nowX = pad.l + n * bw - bw * 0.5;
+const last = bars[n - 1];
+const fmt = v => v.toFixed(1).replace('.', ',');
+---
+<svg class:list={['qc', cls]} viewBox={`0 0 ${w} ${h}`} x={x} y={y} width={x !== undefined ? w : undefined} height={x !== undefined ? h : undefined} preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+  {[0.5, 1].map(v => (
+    <g>
+      <line x1={pad.l} x2={w - pad.r + 4} y1={yOf(v)} y2={yOf(v)} class="qc-grid" />
+      {yLabels && <text x={w - pad.r + fs * 0.6} y={yOf(v) + fs * 0.35} font-size={fs} class="qc-lbl">{fmt(v)}</text>}
+    </g>
+  ))}
+  <line x1={pad.l} x2={w - pad.r + 4} y1={base} y2={base} class="qc-axis" />
+  {showSolar && <path d={solarArea} class="qc-sun-area" />}
+  {showSolar && <path d={solarLine} class="qc-sun-line" />}
+  <g class="qc-bars">
+    {bars.map((b, i) => (
+      <rect class:list={['qc-bar', { 'qc-bar--peak': b.peak, 'qc-bar--now': b.last }]} x={b.x.toFixed(1)} y={b.y.toFixed(1)} width={b.w.toFixed(1)} height={b.h.toFixed(1)} rx={Math.min(b.w / 2, 2.5).toFixed(1)} style={`--i:${i}`} />
+    ))}
+  </g>
+  {ticks.map(hr => {
+    const qi = hr * 4 - from;
+    if (qi < 0 || qi > n) return null;
+    return <text x={(pad.l + qi * bw).toFixed(1)} y={h - fs * 0.35} font-size={fs} class="qc-lbl" text-anchor="middle">{String(hr).padStart(2, '0')}</text>;
+  })}
+  <g class="qc-now">
+    <line x1={nowX} x2={nowX} y1={pad.t - fs * 0.6} y2={base} class="qc-now-line" />
+    <text x={nowX} y={pad.t - fs * 1.0} font-size={fs} class="qc-now-lbl" text-anchor="end">{now} 20:00</text>
+    <circle class="qc-pulse" cx={nowX} cy={last.y} r={fs * 0.42} />
+    <circle class="qc-dot" cx={nowX} cy={last.y} r={fs * 0.42} />
+  </g>
+</svg>

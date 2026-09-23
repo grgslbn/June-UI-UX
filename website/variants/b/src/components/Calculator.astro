@@ -1,0 +1,434 @@
+---
+// HERO = the calculator. Works without JS as a plain GET form to the sign-up route
+// (step 1 receives postcode/housing/energy/usage). With JS (small island below) the ink
+// result card updates live: "the number resolves" (count + bar split, 480ms).
+// Estimate model: src/lib/estimate.ts (illustrative, documented there + in the ≈ popover).
+import { href } from '@shared/routes.mjs';
+import { estimate, eurRange, eur, type Locale } from '../lib/estimate';
+import { copy } from '../content/home';
+import Stars from './Stars.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const c = copy(locale);
+const t = c.calc, r = c.result, h = c.hero;
+const fr = locale === 'fr-be';
+const signup = href('signup', locale, base);
+const DEF = { housing: 'terraced', energy: 'both' } as const;
+const e = estimate(DEF);
+const mid = (e.gross[0] + e.gross[1]) / 2;
+const feeShare = Math.min(1, e.fee / mid);
+const housings = ['apartment', 'terraced', 'semi', 'detached'] as const;
+const stateLabel = `${r.example} · ${t.housing[DEF.housing]}, ${t.energy[DEF.energy].toLowerCase()}`;
+const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions, example: r.example, pcError: t.postcodeError,
+  live: '', liveLowText: r.liveLow, sticky: r.sticky, fr };
+---
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="hero-top">
+      <p class="proof-line">
+        <Stars label={h.starsLabel} />
+        <span>{h.proof}<sup><a href="#fn-2" aria-label={fr ? 'Note 2' : 'Voetnoot 2'}>2</a></sup></span>
+      </p>
+      <h1 id="hero-h"><span class="h1a">{h.h1a}</span> <span class="h1b">{h.h1b}</span></h1>
+      <p class="hero-sub">{h.sub}</p>
+    </div>
+
+    <div class="calc" id="bereken">
+      <form class="calc-form" id="calc" action={signup} method="get" data-calc>
+        <fieldset>
+          <legend class="sr-only">{t.legend}</legend>
+
+          <div class="field">
+            <label class="lbl" for="calc-pc"><span class="stepn" aria-hidden="true">1</span>{t.step[0]}</label>
+            <div class="pc">
+              <svg class="i pc-i" aria-hidden="true"><use href="#i-pin" /></svg>
+              <input id="calc-pc" name="postcode" type="text" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{3}" maxlength="4"
+                placeholder={fr ? '1000' : '2000'} aria-describedby="calc-pc-help calc-pc-status" />
+              <span class="pc-status" id="calc-pc-status" aria-live="polite"></span>
+            </div>
+            <p class="help" id="calc-pc-help">{t.postcodeHelp}</p>
+          </div>
+
+          <fieldset class="field">
+            <legend class="lbl"><span class="stepn" aria-hidden="true">2</span>{t.step[1]}</legend>
+            <div class="seg seg--4">
+              {housings.map(k => (
+                <label class="opt">
+                  <input type="radio" name="woning" value={k} checked={k === DEF.housing} />
+                  <span class="opt-in"><svg class="i" aria-hidden="true"><use href={`#h-${k}`} /></svg><span>{t.housing[k]}</span></span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend class="lbl"><span class="stepn" aria-hidden="true">3</span>{t.step[2]}</legend>
+            <div class="seg seg--2">
+              <label class="opt opt--row">
+                <input type="radio" name="energie" value="elec" />
+                <span class="opt-in"><span class="dot dot--elec" aria-hidden="true"><svg class="i"><use href="#i-zap" /></svg></span><span>{t.energy.elec}</span></span>
+              </label>
+              <label class="opt opt--row">
+                <input type="radio" name="energie" value="both" checked />
+                <span class="opt-in"><span class="dot dot--elec" aria-hidden="true"><svg class="i"><use href="#i-zap" /></svg></span><span class="dot dot--gas" aria-hidden="true"><svg class="i"><use href="#i-flame" /></svg></span><span>{t.energy.both}</span></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <details class="know">
+            <summary><svg class="i chev" aria-hidden="true"><use href="#i-chevron" /></svg>{t.know}</summary>
+            <div class="know-in">
+              <p class="help" id="calc-know-help">{t.knowHelp}</p>
+              <div class="know-grid">
+                <div class="kfield">
+                  <label for="calc-elec">{t.elecKwh} <span class="unit">({t.unit})</span></label>
+                  <input id="calc-elec" name="kwh_elek" type="number" inputmode="numeric" min="300" max="15000" step="100" aria-describedby="calc-know-help" />
+                </div>
+                <div class="kfield" data-gas-field>
+                  <label for="calc-gas">{t.gasKwh} <span class="unit">({t.unit})</span></label>
+                  <input id="calc-gas" name="kwh_gas" type="number" inputmode="numeric" min="1000" max="60000" step="500" aria-describedby="calc-know-help" />
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <div class="go">
+            <button class="btn btn--lg btn--block" type="submit" data-go>
+              {t.submit}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </button>
+            <p class="micro">{t.micro}</p>
+          </div>
+        </fieldset>
+      </form>
+
+      <div class="result on-ink" data-result data-state="example" aria-labelledby="res-label">
+        <svg class="rings" viewBox="0 0 240 240" aria-hidden="true">
+          <circle cx="120" cy="120" r="118" /><circle cx="120" cy="120" r="88" /><circle cx="120" cy="120" r="58" />
+          <circle class="rd" cx="18" cy="179" r="4" /><circle class="rd" cx="79" cy="161" r="3" /><circle class="rd rd--red" cx="90" cy="203" r="4.5" />
+        </svg>
+        <div class="res-head">
+          <p class="res-label" id="res-label">{r.label}</p>
+          <span class="res-chip">{r.illustrative}</span>
+        </div>
+        <p class="res-state" data-state-label>{stateLabel}</p>
+
+        <div class="res-fig" data-fig>
+          <button class="est" type="button" popovertarget="method-pop" aria-label={r.method}>≈</button>
+          <output class="num res-num" id="res-out" for="calc-pc calc-elec calc-gas" aria-live="off" data-num>{eurRange(e.net[0], e.net[1], locale)}</output>
+        </div>
+        <p class="res-per" data-per>{r.per}</p>
+        <div class="res-low" data-low hidden>
+          <p class="res-low-t">{r.lowTitle}</p>
+          <p class="res-low-b">{r.lowBody}</p>
+        </div>
+
+        <div class="bar" aria-hidden="true" style={`--fee:${feeShare.toFixed(3)}`} data-bar>
+          <span class="bar-fee"></span><span class="bar-you"></span>
+        </div>
+        <dl class="ledger">
+          <div><dt><span class="lg lg--elec" aria-hidden="true"></span>{r.elec}</dt><dd class="num" data-elec>{eurRange(e.elec[0], e.elec[1], locale)}</dd></div>
+          <div data-gas-row><dt><span class="lg lg--gas" aria-hidden="true"></span>{r.gas}</dt><dd class="num" data-gas>{eurRange(e.gas[0], e.gas[1], locale)}</dd></div>
+          <div><dt><span class="lg lg--fee" aria-hidden="true"></span>{r.fee}</dt><dd class="num">− {eur(e.fee, locale)}</dd></div>
+        </dl>
+
+        <div class="plan">
+          <p class="plan-rec">{r.recommended}</p>
+          <p class="plan-name">Switch Plus <span class="plan-g"><svg class="i" aria-hidden="true"><use href="#i-shield" /></svg>{r.planNote}<sup><a href="#fn-4" aria-label={fr ? 'Note 4' : 'Voetnoot 4'}>4</a></sup></span></p>
+          <p class="plan-price">{r.planPrice}</p>
+        </div>
+
+        <button class="btn btn--on-ink btn--lg btn--block res-cta" type="submit" form="calc" name="plan" value="switch-plus">
+          {r.cta}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </button>
+        <p class="res-after">{r.after} <a href="#methode">{r.methodLink}</a></p>
+        <noscript><p class="res-after">{t.noscript}</p></noscript>
+        <p class="sr-only" aria-live="polite" data-live></p>
+      </div>
+    </div>
+
+    <ul class="trust" role="list">
+      {h.trust.map(x => (
+        <li><svg class="i" aria-hidden="true"><use href={`#i-${x.icon}`} /></svg><span>{x.text}{x.fn && <sup><a href={`#fn-${x.fn}`} aria-label={fr ? `Note ${x.fn}` : `Voetnoot ${x.fn}`}>{x.fn}</a></sup>}</span></li>
+      ))}
+    </ul>
+  </div>
+
+  <div id="method-pop" class="pop" popover>
+    <p class="pop-t">{r.methodTitle}</p>
+    <ol class="pop-list">{r.methodItems.map(m => <li>{m}</li>)}</ol>
+    <p class="pop-note"><svg class="i" aria-hidden="true"><use href="#i-info" /></svg>{r.methodNote}</p>
+    <button class="btn btn--sm btn--ghost" type="button" popovertarget="method-pop" popovertargetaction="hide">{fr ? 'Fermer' : 'Sluiten'}</button>
+  </div>
+</section>
+
+<script type="application/json" id="calc-i18n" set:html={JSON.stringify(i18n)}></script>
+
+<script>
+  import { estimate, eurRange, region, type Housing, type Energy, type Locale } from '../lib/estimate';
+  const cfg = JSON.parse(document.getElementById('calc-i18n')!.textContent!);
+  const L: Locale = cfg.locale;
+  const form = document.querySelector<HTMLFormElement>('[data-calc]')!;
+  const card = document.querySelector<HTMLElement>('[data-result]')!;
+  const q = <T extends Element = HTMLElement>(s: string, root: ParentNode = card) => root.querySelector(s) as T;
+  const out = q<HTMLOutputElement>('[data-num]'), per = q('[data-per]'), low = q('[data-low]'), fig = q('[data-fig]');
+  const bar = q('[data-bar]'), stateLabel = q('[data-state-label]'), live = q('[data-live]');
+  const elecDd = q('[data-elec]'), gasDd = q('[data-gas]'), gasRow = q('[data-gas-row]');
+  const pc = q<HTMLInputElement>('#calc-pc', form), pcStatus = q('#calc-pc-status', form);
+  const gasField = q('[data-gas-field]', form), gasInput = q<HTMLInputElement>('#calc-gas', form);
+  const sticky = document.querySelector<HTMLElement>('[data-sticky]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  form.noValidate = true;
+
+  let shown = parseRange(out.textContent || '');
+  let personal = false, raf = 0, liveTimer = 0;
+
+  function parseRange(s: string): [number, number] { const m = s.replace(/[. ]/g, '').match(/\d+/g); return m && m.length > 1 ? [+m[0], +m[1]] : [0, 0]; }
+  function read() {
+    const fd = new FormData(form);
+    const n = (v: FormDataEntryValue | null) => (v && String(v).trim() ? Number(v) : null);
+    return { housing: fd.get('woning') as Housing, energy: fd.get('energie') as Energy, elecKwh: n(fd.get('kwh_elek')), gasKwh: n(fd.get('kwh_gas')) };
+  }
+  function countTo(to: [number, number]) {
+    cancelAnimationFrame(raf);
+    const from = shown.slice() as [number, number];
+    if (reduce.matches) { shown = to; out.textContent = eurRange(to[0], to[1], L); return; }
+    const t0 = performance.now(), D = 480;
+    const ease = (x: number) => 1 - Math.pow(1 - x, 3);
+    const step = (now: number) => {
+      const p = Math.min(1, (now - t0) / D), k = ease(p);
+      const v: [number, number] = [from[0] + (to[0] - from[0]) * k, from[1] + (to[1] - from[1]) * k];
+      out.textContent = eurRange(Math.round(v[0] / 5) * 5, Math.round(v[1] / 5) * 5, L);
+      if (p < 1) raf = requestAnimationFrame(step); else { shown = to; out.textContent = eurRange(to[0], to[1], L); }
+    };
+    raf = requestAnimationFrame(step);
+  }
+  function render(announce = true) {
+    const i = read();
+    const e = estimate(i);
+    const both = i.energy === 'both';
+    gasField.hidden = !both; gasInput.disabled = !both;
+    gasRow.hidden = !both;
+    elecDd.textContent = eurRange(e.elec[0], e.elec[1], L);
+    gasDd.textContent = eurRange(e.gas[0], e.gas[1], L);
+    const mid = (e.gross[0] + e.gross[1]) / 2 || 1;
+    bar.style.setProperty('--fee', String(Math.min(1, e.fee / mid)));
+    card.dataset.low = String(e.low);
+    low.hidden = !e.low; per.hidden = e.low; fig.classList.toggle('is-muted', e.low);
+    countTo(e.net);
+    fig.classList.remove('resolve'); void fig.offsetWidth; fig.classList.add('resolve');
+    const reg = region(pc.value.trim());
+    const hLabel = cfg.housing[i.housing], enLabel = cfg.energy[i.energy].toLowerCase();
+    stateLabel.textContent = personal || reg
+      ? `${hLabel}, ${enLabel}${e.custom ? ' · kWh' : ''}${reg ? ` · ${pc.value.trim()} ${cfg.regions[reg]}` : ''}`
+      : `${cfg.example} · ${hLabel}, ${enLabel}`;
+    card.dataset.state = personal || reg ? 'personal' : 'example';
+    if (sticky) sticky.querySelector('[data-sticky-num]')!.textContent = e.low ? '' : `≈ ${eurRange(e.net[0], e.net[1], L)} ${cfg.sticky}`;
+    if (announce) {
+      clearTimeout(liveTimer);
+      liveTimer = window.setTimeout(() => {
+        live.textContent = e.low ? cfg.liveLowText : `≈ ${eurRange(e.net[0], e.net[1], L)} · ${hLabel}, ${enLabel}`;
+      }, 500);
+    }
+  }
+  function checkPc(showError: boolean) {
+    const v = pc.value.trim();
+    const reg = region(v);
+    if (reg) { pc.removeAttribute('aria-invalid'); pcStatus.textContent = `✓ ${cfg.regions[reg]}`; pcStatus.className = 'pc-status ok'; return true; }
+    if (v && (showError || v.length === 4)) { pc.setAttribute('aria-invalid', 'true'); pcStatus.textContent = cfg.pcError; pcStatus.className = 'pc-status err'; }
+    else { pc.removeAttribute('aria-invalid'); pcStatus.textContent = ''; pcStatus.className = 'pc-status'; }
+    return false;
+  }
+  pc.addEventListener('input', () => { pc.value = pc.value.replace(/\D/g, '').slice(0, 4); if (checkPc(false) || !pc.value) render(); });
+  pc.addEventListener('blur', () => checkPc(true));
+  form.addEventListener('change', e => { if ((e.target as HTMLElement).id !== 'calc-pc') render(); });
+  let kt = 0;
+  form.addEventListener('input', e => { const id = (e.target as HTMLElement).id; if (id === 'calc-elec' || id === 'calc-gas') { clearTimeout(kt); kt = window.setTimeout(() => render(), 350); } });
+  form.addEventListener('submit', ev => {
+    const sub = (ev as SubmitEvent).submitter as HTMLElement | null;
+    const ok = checkPc(true);
+    if (sub?.hasAttribute('data-go')) {
+      ev.preventDefault();
+      if (!ok) { pc.focus(); return; }
+      personal = true; render();
+      (window as any).dataLayer?.push({ event: 'signup_started', entry_cta_id: 'hero_calc', lang: L.slice(0, 2), variant: 'b', postcode_region: region(pc.value.trim()) });
+      const rb = card.getBoundingClientRect();
+      if (rb.top > innerHeight * 0.6 || rb.bottom < 0) card.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+      return;
+    }
+    if (pc.value.trim() && !ok) { ev.preventDefault(); pc.focus(); }
+  });
+
+  // Sticky mobile CTA: only after the calculator has scrolled out of view, hidden near the final CTA.
+  if (sticky) {
+    const calc = document.getElementById('bereken')!;
+    const fin = document.querySelector('[data-final]');
+    let calcOut = false, finIn = false;
+    const upd = () => { sticky.dataset.on = String(calcOut && !finIn); sticky.inert = !(calcOut && !finIn); };
+    new IntersectionObserver(([en]) => { calcOut = !en.isIntersecting && en.boundingClientRect.top < 0; upd(); }).observe(calc);
+    if (fin) new IntersectionObserver(([en]) => { finIn = en.isIntersecting; upd(); }).observe(fin);
+    upd();
+  }
+</script>
+
+<style>
+  .hero { padding-block: clamp(28px, 4vw, 56px) clamp(40px, 5vw, 72px); position: relative; }
+  .hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-12); row-gap: var(--s-4); align-items: end; margin-bottom: clamp(24px, 3vw, 36px); }
+  .proof-line { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; font-size: var(--fs-14); font-weight: 600; color: var(--ink-700); }
+  .proof-line sup a { color: var(--ink-500); }
+  h1 { grid-column: 1 / -1; font-size: clamp(2.125rem, 1rem + 3.9vw, 4rem); }
+  .h1a { display: block; }
+  .h1b { display: block; color: var(--accent-strong); }
+  .hero-sub { grid-column: 1 / -1; color: var(--ink-700); font-size: var(--fs-18); max-width: 68ch; }
+
+  /* ── the calculator object: white form + ink card, one piece ── */
+  .calc { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); border-radius: var(--r-xl); background: var(--surface); box-shadow: var(--shadow-2), inset 0 0 0 1px var(--hairline); position: relative; }
+  .calc-form { padding: clamp(20px, 3vw, 36px); }
+  .calc-form > fieldset { display: grid; gap: var(--s-5); }
+  .field { display: grid; gap: var(--s-2); }
+  .lbl { display: flex; align-items: center; gap: 10px; font: 600 var(--fs-16)/1.3 var(--font-ui); color: var(--ink-900); margin-bottom: 2px; }
+  .stepn { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink-900); color: #fff; font: 700 var(--fs-12)/1 var(--font-display); flex: none; }
+  .help { font-size: var(--fs-14); color: var(--ink-500); line-height: 1.4; }
+
+  .pc { position: relative; display: flex; align-items: center; max-width: 360px; }
+  .pc-i { position: absolute; left: 14px; width: 20px; height: 20px; color: var(--ink-400); pointer-events: none; }
+  .pc input { width: 100%; height: 56px; padding: 0 16px 0 44px; border-radius: var(--r-md); border: 1.5px solid var(--hairline-strong); background: var(--surface);
+    font: 600 1.375rem/1 var(--font-display); letter-spacing: .12em; font-variant-numeric: tabular-nums; transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
+  .pc input::placeholder { color: var(--ink-400); font-weight: 500; }
+  .pc input:hover { border-color: var(--ink-400); }
+  .pc input:focus { outline: none; border-color: var(--accent-strong); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .pc input[aria-invalid="true"] { border-color: var(--red-text); }
+  .pc-status { position: absolute; left: calc(100% + 12px); white-space: nowrap; font-size: var(--fs-14); font-weight: 600; }
+  .pc-status.ok { color: var(--accent-strong); }
+  .pc-status.err { position: static; margin-left: 12px; white-space: normal; color: var(--red-text); }
+  .pc:has(.err) { max-width: none; }
+  .pc:has(.err) input { max-width: 160px; flex: none; }
+
+  /* segmented radio groups */
+  .seg { display: grid; gap: 6px; padding: 5px; border-radius: var(--r-md); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .seg--4 { grid-template-columns: repeat(4, 1fr); }
+  .seg--2 { grid-template-columns: 1fr 1.25fr; }
+  .opt { position: relative; display: block; cursor: pointer; }
+  .opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .opt-in { display: grid; justify-items: center; gap: 6px; padding: 12px 6px 10px; border-radius: var(--r-sm); font-size: var(--fs-14); font-weight: 600; color: var(--ink-700); text-align: center; line-height: 1.2;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast), box-shadow var(--dur-fast); }
+  .opt-in .i { width: 26px; height: 26px; color: var(--ink-400); transition: color var(--dur-fast); }
+  .opt--row .opt-in { display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 48px; padding: 8px 10px; }
+  .opt:hover .opt-in { color: var(--ink-900); }
+  .opt input:checked + .opt-in { background: var(--surface); color: var(--ink-900); box-shadow: var(--shadow-1), inset 0 0 0 1.5px var(--ink-900); }
+  .opt input:checked + .opt-in .i { color: var(--accent-strong); }
+  .opt input:focus-visible + .opt-in { outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+  .dot { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; flex: none; }
+  .dot .i { width: 14px; height: 14px; stroke-width: 2; }
+  .dot--elec { background: var(--elec-soft); }
+  .dot--elec .i { color: var(--elec-strong) !important; }
+  .dot--gas { background: var(--gas-soft); margin-left: -12px; box-shadow: 0 0 0 2px var(--surface-sunken); }
+  .opt input:checked + .opt-in .dot--gas { box-shadow: 0 0 0 2px var(--surface); }
+  .dot--gas .i { color: var(--gas-strong) !important; }
+
+  .know summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; font-size: var(--fs-14); font-weight: 600; color: var(--accent-strong); list-style: none; }
+  .know summary::-webkit-details-marker { display: none; }
+  .know .chev { width: 18px; height: 18px; transition: transform var(--dur-base) var(--ease-out); }
+  .know[open] .chev { transform: rotate(180deg); }
+  .know-in { display: grid; gap: var(--s-3); padding-top: var(--s-3); }
+  .know-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+  .kfield { display: grid; gap: 6px; }
+  .kfield label { font-size: var(--fs-14); font-weight: 600; }
+  .unit { font-weight: 400; color: var(--ink-500); }
+  .kfield input { height: 48px; padding: 0 12px; border-radius: var(--r-sm); border: 1.5px solid var(--hairline-strong); font-variant-numeric: tabular-nums; width: 100%; }
+  .kfield input:focus { outline: none; border-color: var(--accent-strong); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .go { display: grid; gap: var(--s-2); margin-top: var(--s-1); }
+  .micro { font-size: var(--fs-14); color: var(--ink-500); text-align: center; }
+
+  /* ── the ink result card ── */
+  .result { position: relative; overflow: hidden; margin: 10px 10px 10px 0; padding: clamp(22px, 2.6vw, 34px); border-radius: calc(var(--r-xl) - 8px); background: var(--ink-900); color: var(--on-ink);
+    box-shadow: var(--shadow-ink); container-type: inline-size; display: flex; flex-direction: column; }
+  .rings { position: absolute; width: 300px; height: 300px; right: -150px; top: -160px; pointer-events: none; }
+  .rings circle { fill: none; stroke: var(--on-ink-faint); stroke-width: 1; }
+  .rings .rd { fill: var(--accent); stroke: none; }
+  .rings .rd--red { fill: var(--red); }
+  .res-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; position: relative; padding-right: 72px; }
+  .res-label { font: 600 var(--fs-14)/1.3 var(--font-ui); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent); }
+  .res-chip { font-size: var(--fs-12); font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px rgba(255,255,255,.34); color: var(--on-ink-muted); }
+  .res-state { margin-top: 6px; font-size: var(--fs-14); color: var(--on-ink-muted); min-height: 1.4em; }
+  .res-fig { position: relative; display: flex; align-items: baseline; gap: 6px; margin-top: var(--s-4); }
+  .est { flex: none; align-self: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.1); color: var(--accent); font: 600 1.625rem/1 var(--font-display); cursor: help;
+    transition: background-color var(--dur-fast); }
+  .est:hover, .est:focus-visible { background: rgba(59,173,168,.25); }
+  .res-num { font-size: clamp(2.5rem, 13.5cqi, 5rem); font-weight: 700; line-height: 1; white-space: nowrap; color: #fff; }
+  .res-fig::after { content: ""; position: absolute; left: 50px; right: 0; bottom: -10px; height: 4px; border-radius: 4px; background: var(--accent); transform-origin: left; max-width: calc(100% - 50px); }
+  .res-fig.is-muted .res-num { font-size: clamp(2rem, 9cqi, 3.25rem); color: var(--on-ink-muted); }
+  .res-per { margin-top: 18px; font-size: var(--fs-16); color: var(--on-ink-muted); }
+  .res-low { margin-top: 18px; }
+  .res-low-t { font: 700 var(--fs-22)/1.25 var(--font-display); color: #fff; }
+  .res-low-b { margin-top: 6px; font-size: var(--fs-14); color: var(--on-ink-muted); line-height: 1.5; }
+
+  .bar { --fee: .3; position: relative; height: 10px; margin-top: var(--s-5); border-radius: var(--r-pill); overflow: hidden; background: rgba(255,255,255,.08); }
+  .bar span { position: absolute; inset: 0; transition: transform var(--dur-resolve) var(--ease-out); }
+  .bar-fee { transform-origin: left; transform: scaleX(var(--fee)); background: repeating-linear-gradient(-45deg, rgba(255,255,255,.34) 0 3px, rgba(255,255,255,.14) 3px 6px); }
+  .bar-you { transform-origin: right; transform: scaleX(calc(1 - var(--fee))); background: var(--accent); }
+  .ledger { display: grid; gap: 2px; margin-top: var(--s-3); font-size: var(--fs-14); }
+  .ledger > div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--on-ink-faint); }
+  .ledger > div[hidden] { display: none; }
+  .ledger dt { display: flex; align-items: center; gap: 8px; color: var(--on-ink-muted); }
+  .ledger dd { font-family: var(--font-ui); font-weight: 600; letter-spacing: 0; }
+  .lg { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .lg--elec { background: var(--elec); }
+  .lg--gas { background: var(--gas); }
+  .lg--fee { background: repeating-linear-gradient(-45deg, rgba(255,255,255,.6) 0 2px, rgba(255,255,255,.2) 2px 4px); }
+
+  .plan { margin-top: var(--s-5); padding: 14px 16px; border-radius: var(--r-md); background: var(--ink-800); box-shadow: inset 0 0 0 1px rgba(59,173,168,.45); }
+  .plan-rec { font-size: var(--fs-12); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent); }
+  .plan-name { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 2px; font: 700 var(--fs-22)/1.3 var(--font-display); }
+  .plan-g { display: inline-flex; align-items: center; gap: 5px; font: 600 var(--fs-14)/1.2 var(--font-ui); color: var(--on-ink-muted); }
+  .plan-g .i { width: 16px; height: 16px; color: var(--accent); }
+  .plan-g sup a, .res-after a, .result sup a { color: var(--accent); }
+  .plan-price { margin-top: 2px; font-size: var(--fs-14); color: var(--on-ink-muted); }
+  .res-cta { margin-top: var(--s-5); }
+  .res-after { margin-top: var(--s-3); font-size: var(--fs-14); color: var(--on-ink-muted); line-height: 1.45; }
+
+  /* the number resolves: numeral settles + underline redraws (transform/opacity only) */
+  @media (prefers-reduced-motion: no-preference) {
+    .res-fig.resolve::after { animation: underline var(--dur-resolve) var(--ease-out); }
+    .res-fig.resolve .res-num { animation: settle var(--dur-resolve) var(--ease-out); }
+    .result[data-state="personal"] .rings { animation: ring var(--dur-draw) var(--ease-out); }
+    @keyframes underline { from { transform: scaleX(0); } }
+    @keyframes settle { from { transform: translateY(6px); } }
+    @keyframes ring { from { transform: scale(.94) rotate(-8deg); } }
+  }
+
+  .trust { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6); margin-top: var(--s-8); }
+  .trust li { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-14); line-height: 1.45; color: var(--ink-700); }
+  .trust .i { flex: none; width: 22px; height: 22px; color: var(--accent-strong); margin-top: -1px; }
+
+  /* ≈ method popover */
+  .pop { width: min(420px, calc(100vw - 32px)); padding: var(--s-6); border: 0; border-radius: var(--r-lg); background: var(--surface); color: var(--ink-900); box-shadow: var(--shadow-2), 0 0 0 1px var(--hairline); }
+  .pop::backdrop { background: rgba(20,35,42,.35); }
+  .pop-t { font: 700 var(--fs-22)/1.3 var(--font-display); }
+  .pop-list { margin: var(--s-3) 0 0; padding-left: 1.2em; display: grid; gap: var(--s-2); font-size: var(--fs-14); line-height: 1.5; color: var(--ink-700); }
+  .pop-note { display: flex; gap: 8px; align-items: flex-start; margin: var(--s-4) 0; padding: 10px 12px; border-radius: var(--r-sm); background: var(--surface-sunken); font-size: var(--fs-14); color: var(--ink-700); }
+  .pop-note .i { width: 18px; height: 18px; flex: none; color: var(--accent-strong); margin-top: 1px; }
+
+  @media (max-width: 1080px) {
+    .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .hero-top { grid-template-columns: 1fr; }
+    .hero-sub { grid-column: 1; }
+    .calc { grid-template-columns: 1fr; }
+    .result { margin: 0 8px 8px; }
+  }
+  @media (max-width: 560px) {
+    .seg--4 { grid-template-columns: repeat(2, 1fr); }
+    .seg--2 { grid-template-columns: 1fr; }
+    .opt-in { grid-template-columns: auto 1fr; justify-items: start; align-items: center; text-align: left; padding: 10px 12px; }
+    .opt-in .i { width: 22px; height: 22px; }
+    .know-grid { grid-template-columns: 1fr; }
+    .pc { max-width: none; }
+    .pc input { max-width: 150px; flex: none; }
+    .pc-status { position: static; margin-left: 12px; white-space: normal; }
+    .trust { grid-template-columns: 1fr; gap: var(--s-3); }
+    .calc { border-radius: var(--r-lg); }
+    .result { margin: 0 6px 6px; border-radius: 20px; }
+  }
+</style>

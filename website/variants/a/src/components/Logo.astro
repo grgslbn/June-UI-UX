@@ -1,0 +1,10 @@
+---
+// Wordmark: italic Montserrat "june" + brand bolt (as the app header). Placeholder until the
+// hand-lettered logo SVG is supplied.
+interface Props { href?: string; label: string; tone?: 'default' | 'inverse' }
+const { href, label, tone = 'default' } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+<Tag class:list={['logo', tone === 'inverse' && 'logo--inverse']} href={href} aria-label={label}>
+  <span aria-hidden="true">june</span><svg class="logo__bolt" aria-hidden="true" focusable="false"><use href="#brand-bolt" /></svg>
+</Tag>

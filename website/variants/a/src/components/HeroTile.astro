@@ -1,0 +1,54 @@
+---
+// The hero object: one app-style tile ("Soft Native" hero contract) — status chip → one sentence →
+// one numeral → rows. Signature motion "the monthly check": the chip ticks from "comparing…" to
+// "checked" and the numeral counts up once (700ms). Final state is in the HTML; motion is additive.
+import { copy, eur, type Locale } from '../content/i18n';
+import Icon from './Icon.astro';
+import Fn from './Fn.astro';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale].tile;
+const CURRENT = 8; // September (index) — the month the page is built in
+const [cur, sym] = locale === 'nl-be' ? ['€', 'pre'] : ['€', 'post'];
+---
+<aside class="htile-wrap ambient" aria-label={t.label}>
+  <div class="htile surface">
+    <div class="htile__top">
+      <span class="check-chip" data-check-chip>
+        <span class="check-chip__state check-chip__state--busy" aria-hidden="true"><span class="spinner"></span>{t.checking}</span>
+        <span class="check-chip__state check-chip__state--done"><Icon name="i-check" size="sm" />{t.checked}</span>
+      </span>
+      <span class="tag">{t.example}</span>
+    </div>
+    <p class="htile__sentence">{t.sentence}</p>
+    <ol class="months" aria-label={t.monthsLabel}>
+      {t.months.map((m, i) => (
+        <li class:list={['months__m', i < CURRENT && 'is-done', i === CURRENT && 'is-now', i > CURRENT && 'is-future']}>
+          <span class="months__dot" aria-hidden="true">{i <= CURRENT && <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>}</span>
+          <span class="months__l" aria-hidden="true">{m}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="htile__figure">
+      <p class="htile__label">{t.avgLabel}<Fn n={1} locale={locale} /></p>
+      <p class="hero-num">
+        {sym === 'pre' && <span class="hero-num__cur">{cur}</span>}
+        <span class="num" data-count="326">326</span>
+        {sym === 'post' && <span class="hero-num__cur">{cur}</span>}
+        <span class="unit">{t.perYear}</span>
+      </p>
+    </div>
+    <dl class="htile__rows">
+      <div class="row">
+        <dt><span class="mark" aria-hidden="true"></span>{t.planName}</dt>
+        <dd class="row__num mid-num">{t.planMain}</dd>
+        <dd class="row__sub">{t.planSub}</dd>
+      </div>
+      <div class="row">
+        <dt><span class="mark mark--ring" aria-hidden="true"></span>{t.guarName}</dt>
+        <dd class="row__num mid-num">{t.guarMain}</dd>
+        <dd class="row__sub">{t.guarSub}<Fn n={4} locale={locale} /></dd>
+      </div>
+    </dl>
+  </div>
+</aside>

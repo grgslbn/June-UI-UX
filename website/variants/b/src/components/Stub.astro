@@ -1,0 +1,32 @@
+---
+// Concept-stage stub so header/footer links and the no-JS calculator form resolve.
+// Full pages are Phase 4 (only if concept B is selected).
+import { href } from '@shared/routes.mjs';
+import Base from '../layouts/Base.astro';
+import Icons from './Icons.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import type { Locale } from '../lib/estimate';
+interface Props { locale: Locale; routeKey: string; title: string; h1: string; description: string; }
+const { locale, routeKey, title, h1, description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description}>
+  <Icons />
+  <Header locale={locale} routeKey={routeKey} ctaHref={`${href('home', locale, base)}#bereken`} />
+  <main id="main" tabindex="-1" class="stub">
+    <div class="wrap">
+      <span class="chip chip--placeholder">{fr ? 'Concept · page à venir' : 'Concept · pagina volgt'}</span>
+      <h1>{h1}</h1>
+      <p class="lead">{description}</p>
+      <a class="btn btn--lg" href={`${href('home', locale, base)}#bereken`}>{fr ? 'Calculez votre économie' : 'Bereken je besparing'}</a>
+    </div>
+  </main>
+  <Footer locale={locale} notes={false} />
+</Base>
+<style>
+  .stub { padding-block: var(--s-24); }
+  .stub .wrap { display: grid; gap: var(--s-6); justify-items: start; }
+  .stub h1 { font-size: var(--fs-48); max-width: 20ch; }
+</style>

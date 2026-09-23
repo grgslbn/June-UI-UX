@@ -1,8 +1,15 @@
 ---
 // Base layout: lang, title, description, canonical, hreflang, robots. Variants extend or replace the body.
-import { LOCALES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; }
-const { locale, routeKey, title, description } = Astro.props;
+// Variant D additions: global tokens/styles, Montserrat preload (LCP H1), favicon, theme colour,
+// and an optional `robots` override for internal pages that are not in the route map (style tile).
+import { LOCALES, ROUTES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import '../styles/tokens.css';
+import '../styles/global.css';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; robots?: string; bodyClass?: string }
+const { locale, routeKey, title, description, robots, bodyClass } = Astro.props;
+const inMap = routeKey in ROUTES;
+const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#19736f"/><path d="M18.6 4 8.4 18.2l6.6.2-2.7 10.6L23.2 14l-6.6-.1L18.6 4z" fill="#fff"/></svg>')}`;
 ---
 <!doctype html>
 <html lang={LOCALES[locale].html}>
@@ -11,10 +18,13 @@ const { locale, routeKey, title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={abs(routeKey, locale)} />
-    {alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
-    {NOINDEX.has(routeKey) && <meta name="robots" content="noindex, follow" />}
+    {inMap && <link rel="canonical" href={abs(routeKey, locale)} />}
+    {inMap && alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {(NOINDEX.has(routeKey) || robots) && <meta name="robots" content={robots || 'noindex, follow'} />}
+    <meta name="theme-color" content="#0a1315" />
+    <link rel="icon" href={favicon} />
+    <link rel="preload" as="font" type="font/woff2" href={montserrat} crossorigin />
     <slot name="head" />
   </head>
-  <body><slot /></body>
+  <body class={bodyClass}><slot /></body>
 </html>

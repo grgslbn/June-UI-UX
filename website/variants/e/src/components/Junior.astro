@@ -1,0 +1,31 @@
+---
+// Junior — our own vector redraw of the 2018 mascot (red blob, two eyes). [junior-placeholder] until the illustrator's redraw.
+// Poses: happy (waves once), thinking, celebrating, sleeping. Always aria-hidden, small, light background.
+interface Props { pose?: 'happy' | 'thinking' | 'celebrating' | 'sleeping'; class?: string; wave?: boolean }
+const { pose = 'happy', class: cls = '', wave = false } = Astro.props;
+const R = 'var(--june-red)';
+---
+<svg class={`junior junior--${pose} ${wave ? 'junior--wave' : ''} ${cls}`} viewBox="0 0 140 140" aria-hidden="true" focusable="false" data-placeholder="junior">
+  {pose === 'happy' && <g class="junior__arm"><path d="M104 96 C116 84 124 72 123 60" stroke={R} stroke-width="13" stroke-linecap="round" fill="none" /></g>}
+  {pose === 'celebrating' && <>
+    <path d="M36 96 C24 84 16 70 17 56" stroke={R} stroke-width="13" stroke-linecap="round" fill="none" />
+    <path d="M104 96 C116 84 124 70 123 56" stroke={R} stroke-width="13" stroke-linecap="round" fill="none" />
+  </>}
+  <path d="M18 140 C12 96 20 44 62 38 C66 30 72 26 80 27 C76 31 75 35 77 39 C108 44 118 96 112 140 Z" fill={R} />
+  {pose === 'thinking' && <path d="M40 124 C52 118 58 106 56 98" stroke="#d9434a" stroke-width="12" stroke-linecap="round" fill="none" />}
+  <ellipse cx="44" cy="86" rx="7" ry="4.5" fill="#f58d91" /><ellipse cx="94" cy="86" rx="7" ry="4.5" fill="#f58d91" />
+  {pose === 'sleeping' ? <>
+    <path d="M43 71 Q52 77 61 71" stroke="var(--ink)" stroke-width="3.4" stroke-linecap="round" fill="none" />
+    <path d="M75 71 Q84 77 93 71" stroke="var(--ink)" stroke-width="3.4" stroke-linecap="round" fill="none" />
+    <path d="M63 92 Q68 95 73 92" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none" />
+    <g fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M104 20 h12 l-12 13 h12" /><path d="M124 4 h8 l-8 9 h8" /></g>
+  </> : <>
+    <circle cx="52" cy="70" r="10.5" fill="#fff" /><circle cx="84" cy="70" r="10.5" fill="#fff" />
+    {pose === 'thinking'
+      ? <><circle cx="54" cy="65.5" r="5.2" fill="var(--ink)" /><circle cx="86" cy="65.5" r="5.2" fill="var(--ink)" /><path d="M61 90 L73 88" stroke="var(--ink)" stroke-width="3.4" stroke-linecap="round" /></>
+      : <><circle cx="49.5" cy="71" r="5.2" fill="var(--ink)" /><circle cx="81.5" cy="71" r="5.2" fill="var(--ink)" />
+          <circle cx="47.5" cy="69" r="1.7" fill="#fff" /><circle cx="79.5" cy="69" r="1.7" fill="#fff" /></>}
+    {pose === 'happy' && <path d="M60 88 Q67 95 74 88" stroke="var(--ink)" stroke-width="3.4" stroke-linecap="round" fill="none" />}
+    {pose === 'celebrating' && <path d="M59 86 Q67 100 75 86 Z" fill="var(--ink)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" />}
+  </>}
+</svg>

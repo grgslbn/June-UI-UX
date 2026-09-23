@@ -1,0 +1,17 @@
+---
+// Hand-drawn bolt with the brand-book offset shadow. variant="line" = stroke-only (CTA icon that "charges").
+interface Props { variant?: 'solid' | 'line'; class?: string }
+const { variant = 'solid', class: cls = '' } = Astro.props;
+const d = 'M24 3 L8 34 L20 34 L14 61 L42 24 L28 24 L36 3 Z';
+---
+{variant === 'solid' ? (
+  <svg class={`bolt ${cls}`} viewBox="0 0 50 68" aria-hidden="true" focusable="false">
+    <path d={d} fill="var(--ink)" transform="translate(4 3)" />
+    <path d={d} fill="var(--bolt-fill, #fff)" stroke="var(--ink)" stroke-width="3.2" stroke-linejoin="round" />
+  </svg>
+) : (
+  <svg class={`bolt bolt--line ${cls}`} viewBox="0 0 50 68" aria-hidden="true" focusable="false">
+    <path class="bolt__base" d={d} fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" />
+    <path class="bolt__charge" d={d} pathLength="100" fill="none" stroke="var(--elec)" stroke-width="5" stroke-linejoin="round" />
+  </svg>
+)}

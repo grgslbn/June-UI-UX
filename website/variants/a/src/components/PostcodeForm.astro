@@ -1,0 +1,23 @@
+---
+// Inline postcode start (conversion-strategy §2.2): a valid 4-digit Belgian postcode submitted = signup_started.
+// Posts (GET) to the sign-up route with ?postcode=…; the funnel picks it up as step 1.
+import { href } from '@shared/routes.mjs';
+import { copy, type Locale } from '../content/i18n';
+import Icon from './Icon.astro';
+interface Props { locale: Locale; id: string; entry: string; tone?: 'default' | 'large' }
+const { locale, id, entry, tone = 'default' } = Astro.props;
+const c = copy[locale];
+const action = href('signup', locale, import.meta.env.BASE_URL);
+---
+<form class:list={['pc', tone === 'large' && 'pc--large']} action={action} method="get" novalidate data-postcode>
+  <label class="pc__label" for={id}>{c.hero.postcodeLabel}</label>
+  <div class="pc__row">
+    <input class="pc__input" id={id} name="postcode" type="text" inputmode="numeric" autocomplete="postal-code"
+      pattern="[1-9][0-9]{3}" maxlength="4" required placeholder={c.hero.placeholder}
+      aria-describedby={`${id}-help ${id}-err`} />
+    <input type="hidden" name="entry" value={entry} />
+    <button class="btn btn--primary pc__btn" type="submit">{c.cta}<Icon name="i-arrow-r" size="sm" class="nudge" /></button>
+  </div>
+  <p class="pc__help" id={`${id}-help`}>{c.hero.postcodeHelp}</p>
+  <p class="pc__err" id={`${id}-err`} aria-live="polite" hidden>{c.hero.postcodeError}</p>
+</form>

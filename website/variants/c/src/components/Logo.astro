@@ -1,0 +1,6 @@
+---
+// "june" wordmark + bolt, as in the app header (app/shell.html #brand-bolt).
+interface Props { href: string; label?: string; }
+const { href, label = 'June, naar de startpagina' } = Astro.props;
+---
+<a class="logo" href={href} aria-label={label}>june<svg viewBox="0 0 16 24" aria-hidden="true"><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="var(--accent)" transform="translate(1.4 1.2)"/><path d="M10.6 1.2 2.4 13.3l5.3.2-2.2 9.3 8.6-12.9-5.4-.1 1.9-8.6z" fill="currentColor"/></svg></a>

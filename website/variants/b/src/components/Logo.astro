@@ -1,0 +1,16 @@
+---
+// Wordmark placeholder: "june" set in Montserrat italic + the hand-drawn bolt (as in the app header).
+// Replace with the real hand-lettered SVG wordmark when the logo files arrive.
+interface Props { href: string; tone?: 'ink' | 'white'; }
+const { href, tone = 'ink' } = Astro.props;
+---
+<a class:list={['logo', tone]} href={href} aria-label="June, home">
+  <span aria-hidden="true">june</span><svg class="bolt" aria-hidden="true"><use href="#brand-bolt" /></svg>
+</a>
+<style>
+  .logo { display: inline-flex; align-items: flex-end; gap: 2px; min-height: 44px; padding-block: 6px; text-decoration: none;
+    font: italic 700 1.875rem/1 var(--font-display); letter-spacing: -0.05em; color: var(--accent-strong); view-transition-name: logo; }
+  .logo .bolt { width: 15px; height: 23px; color: var(--ink-900); margin-bottom: 2px; }
+  .logo.white { color: #fff; }
+  .logo.white .bolt { color: #fff; }
+</style>

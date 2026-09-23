@@ -1,8 +1,10 @@
 ---
 // Base layout: lang, title, description, canonical, hreflang, robots. Variants extend or replace the body.
-import { LOCALES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
-interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; }
-const { locale, routeKey, title, description } = Astro.props;
+// Variant C additions: optional `noindex` (style tile) and pages outside the shared route map (no canonical/hreflang).
+import { LOCALES, ROUTES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; }
+const { locale, routeKey, title, description, noindex = false } = Astro.props;
+const mapped = routeKey in ROUTES;
 ---
 <!doctype html>
 <html lang={LOCALES[locale].html}>
@@ -11,9 +13,9 @@ const { locale, routeKey, title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={abs(routeKey, locale)} />
-    {alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
-    {NOINDEX.has(routeKey) && <meta name="robots" content="noindex, follow" />}
+    {mapped && <link rel="canonical" href={abs(routeKey, locale)} />}
+    {mapped && alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {(noindex || NOINDEX.has(routeKey)) && <meta name="robots" content="noindex, follow" />}
     <slot name="head" />
   </head>
   <body><slot /></body>
