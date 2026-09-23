@@ -1,0 +1,205 @@
+---
+// Style tile · Variant D "Product Showcase". Internal review page: noindex, not linked from the site.
+import Base from '../layouts/Base.astro';
+import Icons from '../components/Icons.astro';
+import Icon from '../components/Icon.astro';
+import Wordmark from '../components/Wordmark.astro';
+import PostcodeForm from '../components/PostcodeForm.astro';
+import Stars from '../components/Stars.astro';
+import Stage from '../components/product/Stage.astro';
+import LiveTile from '../components/product/LiveTile.astro';
+import SolarTile from '../components/product/SolarTile.astro';
+import SwitchTile from '../components/product/SwitchTile.astro';
+import { copy } from '../i18n/copy.js';
+const c = copy('nl-be');
+
+// WCAG 2.x contrast, computed at build time so the numbers can't drift from the hex values.
+const lum = hex => { const v = hex.replace('#', '').match(/../g).map(h => parseInt(h, 16) / 255).map(x => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+const cr = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+const fmt = r => r.toFixed(1).replace('.', ',') + ':1';
+const light = [
+  ['--ink-900', '#14232a', 'Tekst, koppen'], ['--ink-700', '#435359', 'Secundaire tekst'], ['--ink-500', '#56666d', 'Meta, labels'],
+  ['--accent-strong', '#19736f', 'Knoppen, links, focus (enige CTA-kleur op licht)'], ['--accent', '#3bada8', 'Vlakken, grafieken — nooit tekst'],
+  ['--elec-strong', '#9a6d00', 'Elektriciteit/zon: lijnen, iconen'], ['--elec', '#f0b429', 'Zon/elektriciteit: data-vlakken'],
+  ['--canvas', '#edf4f3', 'Pagina (mint)'], ['--accent-soft', '#e2f3f1', 'Chips, highlights'],
+];
+const stage = [
+  ['--stage', '#0a1315', 'Hero, header, footer'], ['--stage-surface', '#121e21', 'Kaarten op donker'],
+  ['--stage-ink', '#e8f0f0', 'Tekst op donker'], ['--stage-ink-2', '#adbcbf', 'Secundair op donker'], ['--stage-ink-3', '#8d9da1', 'Meta op donker'],
+  ['--stage-accent', '#62d3cc', 'June Green, opgelichte tint: CTA, links'], ['--stage-elec', '#f0b93a', 'Sterren, zon-data'],
+];
+const types = [
+  ['Hero · Montserrat 600 · 54/1,05', 'hero', 'Zie wat je huis verbruikt.'],
+  ['H2 · Montserrat 600 · 48/1,1', 'h2', 'Kies hoeveel June voor je doet'],
+  ['H3 · Montserrat 600 · 32/1,15', 'h3', 'Live verbruik, je historiek per kwartier.'],
+  ['Numeraal · Montserrat 600 · 52, tabulair', 'num', '9,6 kWh'],
+  ['Lede · Inter 400 · 19/1,55', 'lede', 'Wisselen zit in elk abonnement. Met Premium zie je ook live wat je huis verbruikt.'],
+  ['Body · Inter 400 · 17/1,55', 'body', 'June is geen energieleverancier. Elke maand vergelijken we de contracten van 17+ leveranciers voor jouw verbruik.'],
+  ['UI · Inter 500–600 · 14–16', 'ui', 'Bereken je besparing · Inloggen · Analoge meter?'],
+  ['Caption · Inter 400 · 12 (minimum)', 'cap', 'Voorbeeldscherm met illustratieve gegevens.'],
+];
+const icons = ['zap', 'sun', 'home', 'repeat', 'plug', 'gauge', 'activity', 'shield', 'lock', 'building', 'check-circle', 'arrow-r', 'arrow-up-r', 'menu', 'pause'];
+---
+<Base locale="nl-be" routeKey="style-tile" title="June · Variant D · Style tile" description="Interne style tile voor concept D (Product Showcase): palet, typografie, componenten, product-tegels en motion." robots="noindex, nofollow" bodyClass="st">
+  <Icons />
+  <header class="st-top">
+    <div class="wrap st-top-in">
+      <Wordmark />
+      <div>
+        <p class="eyebrow eyebrow--stage">Concept D · Product Showcase · style tile</p>
+        <h1 class="st-h1">Zie wat je huis verbruikt. <span>June zorgt voor de beste prijs.</span></h1>
+        <p class="st-lead">Donkere “stage” waarop het lichte product gloeit. App-tokens 1:1 (Soft Native), marketing-laag erbovenop. Volume 4/10: geen blobs in de hero, halftone alleen als signaaltextuur achter de dongle.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap st-main">
+    <section class="st-sec">
+      <h2 class="st-h2">1 · Palet</h2>
+      <div class="st-pal">
+        <div>
+          <h3 class="st-h3">Licht (secties onder de hero) · contrast t.o.v. wit / canvas</h3>
+          <ul class="sw-list">
+            {light.map(([t, h, r]) => (
+              <li class="sw"><span class="sw-chip" style={`background:${h}`}></span><span class="sw-meta"><code>{t}</code> <strong>{h}</strong><br />{r}<br /><span class="sw-cr">wit {fmt(cr(h, '#ffffff'))} · canvas {fmt(cr(h, '#edf4f3'))}</span></span></li>
+            ))}
+          </ul>
+        </div>
+        <div class="st-dark">
+          <h3 class="st-h3">Stage (donker, altijd) · contrast t.o.v. #0a1315</h3>
+          <ul class="sw-list">
+            {stage.map(([t, h, r]) => (
+              <li class="sw"><span class="sw-chip" style={`background:${h}`}></span><span class="sw-meta"><code>{t}</code> <strong>{h}</strong><br />{r}<br /><span class="sw-cr">stage {fmt(cr(h, '#0a1315'))} · surface {fmt(cr(h, '#121e21'))}</span></span></li>
+            ))}
+          </ul>
+          <p class="st-note">Merk-groen #3bada8 haalt op donker geen AA voor kleine tekst in combinatie met donkere knoptekst; daarom de opgelichte tint #62d3cc (uit de app-darkmode) met tekst #06201e erop: {fmt(cr('#62d3cc', '#06201e'))}.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="st-sec">
+      <h2 class="st-h2">2 · Typografie</h2>
+      <p class="st-p">Montserrat 600 (display, numeralen) + Inter 400–600 (alles anders). Zelf gehost uit <code>@shared/fonts</code>, alleen Montserrat wordt gepreload (LCP-kop). Schaal: 12 · 14 · 16 · 17 · 19 · 22 · 32 · 48 · 54.</p>
+      <ul class="ty-list">
+        {types.map(([l, k, s]) => <li><span class="ty-l">{l}</span><span class={`ty ty--${k}`}>{s}</span></li>)}
+      </ul>
+    </section>
+
+    <section class="st-sec">
+      <h2 class="st-h2">3 · Knoppen, invoer, chips</h2>
+      <div class="st-row">
+        <div class="st-card">
+          <h3 class="st-h3">Op licht</h3>
+          <p class="st-btns"><a class="btn btn-primary" href="#knoppen">Bereken je besparing</a> <a class="btn btn-secondary" href="#knoppen">Kies Switch</a> <a class="btn btn-primary btn-sm" href="#knoppen">Klein</a></p>
+          <p class="st-btns"><span class="chip chip--soft"><Icon name="check" size={14} />Zelfde meter</span> <span class="pchip pchip--pos"><span class="pdot"></span>Actief</span> <span class="pchip pchip--accent"><span class="pdot"></span>Vandaag · elektriciteit</span> <span class="pchip pchip--soft">Voorbeeld</span></p>
+          <p class="st-btns"><span class="pseg"><span class="pseg-opt is-on">Automatisch</span><span class="pseg-opt">Na mijn akkoord</span></span></p>
+          <p class="st-btns" id="knoppen"><a class="link-arrow" href="#knoppen">Vergelijk de abonnementen<Icon name="arrow-r" size={16} /></a></p>
+        </div>
+        <div class="st-card st-card--stage">
+          <h3 class="st-h3">Op de stage</h3>
+          <p class="st-btns"><span class="chip chip--stage"><span class="live-dot"></span>Live via de June Dongle</span></p>
+          <PostcodeForm c={c} id="st-form" />
+          <p class="st-btns"><a class="link-stage" href="#knoppen">Bekijk Premium<Icon name="arrow-r" size={16} /></a> <Stars label="4,3 van 5 sterren" size={16} /> <span class="st-small">4,3/5 · nooit vijf volle sterren</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="st-sec">
+      <h2 class="st-h2">4 · Product-tegels (NL/FR, herbouwd in HTML/SVG)</h2>
+      <p class="st-p">Geen Engelse screenshots op NL/FR-pagina’s: de tegels zijn opnieuw opgebouwd in de visuele taal van de app (wit vlak, r 24, mint canvas, Montserrat-numeralen, energie-kleuren als data). Altijd <code>aria-hidden</code> + tekstalternatief, altijd het label “Voorbeeld”. Waarden = demo-waarden van de app zelf.</p>
+      <div class="st-tiles">
+        <LiveTile c={c} />
+        <SolarTile c={c} />
+        <SwitchTile c={c} />
+      </div>
+    </section>
+
+    <section class="st-sec st-sec--stage">
+      <h2 class="st-h2">5 · Toestelkaders + dongle</h2>
+      <p class="st-p">CSS-kaders (geen third-party mockups): laptop (bezel #1b2629, onderstel in lichtgrijs verloop) en telefoon (r 13%/6%). Dongle = vlakke SVG-placeholder tot er een productfoto is; halftone als “signaal” erachter.</p>
+      <div class="st-stage"><Stage c={c} /></div>
+    </section>
+
+    <section class="st-sec">
+      <h2 class="st-h2">6 · Iconen</h2>
+      <p class="st-p">De icon-set van de app: 24-grid, lijn 1,75, ronde uiteinden, <code>currentColor</code>. De bliksem blijft voor het logo.</p>
+      <ul class="ic-grid">{icons.map(n => <li><Icon name={n} size={24} /><span>{n}</span></li>)}</ul>
+    </section>
+
+    <section class="st-sec">
+      <h2 class="st-h2">7 · Motion</h2>
+      <ol class="st-motion">
+        <li><strong>Signatuur: de live-tegel.</strong> Kwartierbalken groeien één keer vanaf de basislijn (480 ms, ease-out, stagger 9 ms, max. 500 ms), daarna pulseert de “Nu”-stip één keer (1,4 s). In de hero bij het laden, lager op de pagina bij het in beeld komen.</li>
+        <li><strong>Telefoon wisselt Overzicht → Zon → Contract</strong> om de 4 s (cross-fade 480 ms, tab-duim schuift 240 ms). Pauzeert bij hover, als de hero uit beeld is, als het tabblad verborgen is en via de zichtbare pauzeknop (WCAG 2.2.2). Staat uit onder <code>prefers-reduced-motion</code>.</li>
+        <li><strong>Ondersteunend:</strong> toestellen komen 14 px omhoog (transform, geen opacity), tegels en kaarten rijzen mee met scroll-driven animatie waar ondersteund.</li>
+        <li><strong>Nooit:</strong> H1/LCP vanuit opacity 0, parallax op tekst, autoplay-video, scroll-jacking. Reduced motion → alles in eindstaat.</li>
+      </ol>
+    </section>
+
+    <section class="st-sec">
+      <h2 class="st-h2">8 · Voorbeeldsectie (NL)</h2>
+      <div class="st-sample">
+        <div class="feature feature--flip">
+          <div class="feature-copy">
+            <p class="feature-tag"><span class="feature-n">02</span>Premium</p>
+            <h3>Live verbruik, je historiek per kwartier.</h3>
+            <p>De June Dongle steek je in de P1-poort van je digitale meter. Hij stuurt je verbruik en injectie live door. In de app zie je per kwartier wanneer je huis het meest verbruikt.</p>
+            <p class="feature-note"><Icon name="plug" size={18} /><span>June Dongle inbegrepen in je Premium-abonnement.</span></p>
+          </div>
+          <div class="feature-visual" aria-hidden="true"><LiveTile c={c} /></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .st-top { background: radial-gradient(50% 80% at 90% 0%, var(--stage-glow), transparent 70%), var(--stage); color: var(--stage-ink); padding: 40px 0 56px; --focus-c: var(--stage-accent); }
+  .st-top-in { display: grid; gap: 28px; }
+  .st-h1 { font-family: var(--font-display); font-size: clamp(32px, 4vw, 54px); line-height: 1.05; letter-spacing: -0.028em; max-width: 16em; }
+  .st-h1 span { color: var(--stage-accent); }
+  .st-lead { max-width: 44em; margin: 18px 0 0; color: var(--stage-ink-2); font-size: 18px; }
+  .st-main { padding-block: 24px 96px; }
+  .st-sec { padding-block: 48px; border-bottom: 1px solid var(--ink-100); }
+  .st-sec--stage { background: var(--stage); color: var(--stage-ink); margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); border-radius: 32px; border: 0; --btn-bg: var(--stage-accent); --btn-ink: var(--stage-on-accent); --focus-c: var(--stage-accent); }
+  .st-sec--stage .st-p { color: var(--stage-ink-2); }
+  .st-h2 { font-family: var(--font-display); font-size: 28px; letter-spacing: -0.015em; margin-bottom: 20px; }
+  .st-h3 { font-size: 15px; margin-bottom: 14px; }
+  .st-p { max-width: 64em; color: var(--ink-700); }
+  .st-pal { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  .st-dark { background: var(--stage); color: var(--stage-ink); border-radius: var(--r-lg); padding: 24px; }
+  .st-dark .sw-meta { color: var(--stage-ink-2); }
+  .st-dark code { color: var(--stage-ink); }
+  .sw-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .sw { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 14px; align-items: center; }
+  .sw-chip { width: 56px; height: 56px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.3); }
+  .sw-meta { font-size: 13px; line-height: 1.45; color: var(--ink-700); }
+  .sw-cr { font-weight: 600; }
+  .st-note { margin: 16px 0 0; font-size: 13px; color: var(--stage-ink-2); }
+  .ty-list { list-style: none; margin: 0; padding: 0; }
+  .ty-list li { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--ink-100); }
+  .ty-l { font-size: 12px; color: var(--ink-500); }
+  .ty--hero { font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 4vw, 54px); line-height: 1.05; letter-spacing: -0.028em; }
+  .ty--h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 3.4vw, 48px); line-height: 1.1; letter-spacing: -0.022em; }
+  .ty--h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.15; }
+  .ty--num { font-family: var(--font-display); font-weight: 600; font-size: 52px; line-height: 1; letter-spacing: -0.02em; }
+  .ty--lede { font-size: 19px; color: var(--ink-700); }
+  .ty--ui { font-size: 15px; font-weight: 600; }
+  .ty--cap { font-size: 12px; color: var(--ink-500); }
+  .st-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  .st-card { padding: 28px; border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-1); }
+  .st-card--stage { background: var(--stage); color: var(--stage-ink); --btn-bg: var(--stage-accent); --btn-ink: var(--stage-on-accent); --focus-c: var(--stage-accent); }
+  .st-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 18px; }
+  .st-card--stage .pc-form { margin-bottom: 18px; }
+  .st-small { font-size: 13px; color: var(--stage-ink-2); }
+  .st-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+  .st-stage { max-width: 760px; margin: 12px auto 0; padding-bottom: 12px; }
+  .ic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
+  .ic-grid li { display: grid; justify-items: center; gap: 8px; padding: 16px 8px; border-radius: var(--r-md); background: var(--surface); color: var(--ink-900); font-size: 12px; }
+  .ic-grid .icon { color: var(--accent-strong); }
+  .st-motion { max-width: 64em; padding-left: 20px; color: var(--ink-700); }
+  .st-motion li { margin-bottom: 10px; }
+  .st-motion strong { color: var(--ink-900); }
+  .st-sample { background: var(--canvas); border-radius: 32px; padding: 0 clamp(16px, 4vw, 48px); }
+  @media (max-width: 959px) { .st-pal, .st-row, .st-tiles { grid-template-columns: minmax(0, 1fr); } .ty-list li { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+</style>
