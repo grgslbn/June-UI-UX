@@ -53,7 +53,7 @@ export function copy(loc) {
       cta: nl ? 'Bereken je besparing' : 'Calculez votre économie',
     },
     hero: {
-      chip: nl ? 'Live via de June Dongle · per kwartier in de app' : 'En direct via le June Dongle · par quart d’heure dans l’app',
+      chip: nl ? 'Live via de June Dongle · per kwartier' : 'En direct via le June Dongle · par quart d’heure',
       h1a: nl ? 'Zie wat je huis verbruikt.' : 'Voyez ce que consomme votre maison.',
       h1b: nl ? 'June zorgt voor de beste prijs.' : 'June s’occupe du meilleur prix.',
       sub: nl
