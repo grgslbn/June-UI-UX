@@ -1,0 +1,146 @@
+/* June Insights · Direction B "Energy Almanac" — design tokens
+   Editorial data: oversized light numerals, one accent, paper-white page.
+   Light theme is primary; dark via prefers-color-scheme and [data-theme="dark"]. */
+
+/* Fonts: Google Fonts (OFL) files, self-hosted so the page renders offline / in CI. */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url(fonts/inter-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url(fonts/inter-approx.woff2) format("woff2"); unicode-range: U+2248; }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/montserrat-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/montserrat-approx.woff2) format("woff2"); unicode-range: U+2248; }
+
+:root {
+  color-scheme: light;
+
+  /* ── Type ─────────────────────────────────────────── */
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif; /* headlines + numerals */
+  --font-ui: "Inter", "Open Sans", ui-sans-serif, system-ui, sans-serif; /* body + UI */
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace; /* spec notes only */
+
+  /* 6 sizes per viewport. Hero + headline step down on mobile. */
+  --text-xs: 12px;    /* overlines, captions, axis labels, tags */
+  --text-sm: 14px;    /* secondary copy, tabs, table cells, buttons */
+  --text-md: 16px;    /* body, row titles */
+  --text-lg: 24px;    /* section headlines, secondary stats, hero unit on mobile */
+  --text-xl: 36px;    /* page headline, hero unit */
+  --text-hero: 88px;  /* the one oversized numeral per view */
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.25;
+  --lh-body: 1.55;
+
+  --weight-light: 300;     /* hero numeral only */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  --tracking-display: -0.02em;
+  --tracking-hero: -0.04em;
+  --tracking-caps: 0.08em;
+
+  /* ── Neutrals (ink-tinted toward June Green) ──────── */
+  --ink-900: #16242a;  /* primary text */
+  --ink-700: #445559;  /* secondary text */
+  --ink-500: #5a6b71;  /* muted text, ≥ 4.5:1 on page + sunken */
+  --ink-400: #8a979c;  /* non-text: icons, threshold lines */
+  --ink-200: #cdd6d8;  /* strong hairline, chart baseline, future days */
+  --ink-100: #e5ebeb;  /* hairlines, gridlines, tracks */
+  --ink-50:  #f2f6f5;  /* sunken: segmented track, table header */
+
+  --surface: #ffffff;        /* popovers, raised */
+  --surface-page: #fbfcfb;   /* paper */
+  --surface-rail: #f5f8f7;   /* side rail wash */
+  --surface-sunken: var(--ink-50);
+
+  /* ── Accent: June Green (single interactive hue) ─── */
+  --accent: #3bada8;         /* graphic fills: bars, meters */
+  --accent-strong: #1b7773;  /* text, links, focus, "your" lines */
+  --accent-soft: #e4f4f2;    /* blob, selected wash */
+  --accent-wash: #f0f9f8;
+  --on-accent: #ffffff;
+
+  /* ── Semantic ─────────────────────────────────────── */
+  --alert: #b8323a;          /* June Red for text */
+  --alert-graphic: #e85257;  /* June Red: the peak bar only */
+  --alert-soft: #fdeced;
+  --positive: #256f45;
+  --positive-soft: #e5f3ea;
+
+  /* ── Chart roles ──────────────────────────────────── */
+  --chart-bar: var(--accent);
+  --chart-peak: var(--alert-graphic);
+  --chart-grid: var(--ink-100);
+  --chart-base: var(--ink-200);
+  --chart-future: var(--ink-200);
+  --chart-avg: var(--accent-strong);
+  --chart-ref: var(--ink-400);
+  --chart-label: var(--ink-500);
+
+  /* ── Spacing: 4px base ────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px;
+  --gutter: var(--space-6);
+  --content-max: 1120px;
+  --rail-w: 296px;
+  --section-gap: var(--space-16);
+
+  /* ── Radii (4 values) ─────────────────────────────── */
+  --radius-sm: 4px;    /* bar tops, tags */
+  --radius-md: 8px;    /* buttons, inputs, meters */
+  --radius-lg: 16px;   /* popovers, rail panels */
+  --radius-pill: 999px;
+
+  /* ── Elevation (2 levels + hairline) ──────────────── */
+  --hairline: 1px solid var(--ink-100);
+  --shadow-1: 0 1px 2px rgba(22,36,42,.05), 0 1px 1px rgba(22,36,42,.03);
+  --shadow-2: 0 12px 32px -12px rgba(22,36,42,.22), 0 2px 6px rgba(22,36,42,.06);
+
+  /* ── Motion ───────────────────────────────────────── */
+  --dur-instant: 90ms;
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 480ms;
+  --dur-draw: 700ms;
+  --dur-count: 800ms;
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+  --ease-emphasis: cubic-bezier(.3,1.3,.5,1);
+  --stagger: 16ms;
+
+  --focus-ring: 0 0 0 2px var(--surface-page), 0 0 0 4px var(--accent-strong);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --text-xl: 28px;
+    --text-hero: 56px;
+    --gutter: var(--space-4);
+    --section-gap: var(--space-12);
+  }
+}
+
+/* ── Dark theme (ink-based) ─────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink-900: #e8eef0; --ink-700: #b4c1c5; --ink-500: #93a2a7; --ink-400: #6c7d84;
+    --ink-200: #34454c; --ink-100: #243339; --ink-50: #1a282e;
+    --surface: #1a2a30; --surface-page: #101b1f; --surface-rail: #142227; --surface-sunken: #1a282e;
+    --accent: #45bab5; --accent-strong: #5fcfc9; --accent-soft: #15292b; --accent-wash: #132a2c; --on-accent: #0f1a1e;
+    --alert: #ff7a7f; --alert-graphic: #f2646a; --alert-soft: #3a1f23;
+    --positive: #6fd49a; --positive-soft: #183326;
+    --shadow-1: 0 0 0 1px rgba(255,255,255,.04);
+    --shadow-2: 0 16px 40px -12px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink-900: #e8eef0; --ink-700: #b4c1c5; --ink-500: #93a2a7; --ink-400: #6c7d84;
+  --ink-200: #34454c; --ink-100: #243339; --ink-50: #1a282e;
+  --surface: #1a2a30; --surface-page: #101b1f; --surface-rail: #142227; --surface-sunken: #1a282e;
+  --accent: #45bab5; --accent-strong: #5fcfc9; --accent-soft: #15292b; --accent-wash: #132a2c; --on-accent: #0f1a1e;
+  --alert: #ff7a7f; --alert-graphic: #f2646a; --alert-soft: #3a1f23;
+  --positive: #6fd49a; --positive-soft: #183326;
+  --shadow-1: 0 0 0 1px rgba(255,255,255,.04);
+  --shadow-2: 0 16px 40px -12px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06);
+}

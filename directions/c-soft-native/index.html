@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>June Insights · Soft Native</title>
+<!-- Fonts: Google Fonts Inter + Montserrat (OFL), latin subset self-hosted in fonts/ (see @font-face) -->
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* Google Fonts (OFL), latin subset, self-hosted copies so offline renders match */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url(fonts/inter-latin.woff2) format("woff2"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 600; font-display: swap; src: url(fonts/montserrat-latin.woff2) format("woff2"); }
+/* ── Base ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background-color: var(--canvas); }
+body {
+  margin: 0; background-color: var(--canvas); color: var(--ink-900);
+  font-family: var(--font-ui); font-size: var(--fs-md); line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--dur-base) var(--ease-out);
+}
+h1, h2, h3, p { margin: 0; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+svg { display: block; }
+.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.icon.sm { width: 16px; height: 16px; }
+.num, .tnum { font-variant-numeric: tabular-nums lining-nums; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+:focus { outline: none; }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--r-sm); }
+
+/* ── Reviewer layer (meta, outside the product frame) ─────────────────── */
+.meta-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+  max-width: 1168px; margin: 0 auto; padding: 12px 24px;
+  font-size: var(--fs-xs); color: var(--ink-700);
+}
+.meta-bar .label { font-weight: var(--w-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); }
+.meta-bar .group { display: flex; flex-wrap: wrap; gap: 4px; }
+.meta-bar button {
+  padding: 6px 10px; border-radius: var(--r-pill); border: 1px dashed var(--ink-200); color: var(--ink-700);
+  transition: background-color var(--dur-fast), color var(--dur-fast);
+}
+.meta-bar button[aria-pressed="true"] { background: var(--ink-900); color: var(--canvas); border-style: solid; border-color: var(--ink-900); }
+.meta-bar .spacer { flex: 1; }
+details.meta {
+  margin-top: var(--s-12); border: 1px dashed var(--ink-200); border-radius: var(--r-md);
+  padding: 12px 16px; font-size: var(--fs-xs); color: var(--ink-700); background: transparent;
+}
+details.meta summary { cursor: pointer; font-weight: var(--w-semibold); color: var(--ink-700); }
+details.meta ul { margin: 8px 0 0; padding-left: 18px; }
+details.meta li { margin: 4px 0; }
+details.meta h4 { margin: 12px 0 0; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+details.meta code { font-size: var(--fs-xs); }
+
+/* ── Product frame ────────────────────────────────────────────────────── */
+.frame { overflow-x: clip; padding-bottom: var(--s-16); }
+.app { max-width: 1168px; margin: 0 auto; padding: 0 24px; }
+
+.topbar { display: flex; align-items: center; gap: 16px; height: 64px; }
+.wordmark { display: flex; align-items: center; gap: 12px; }
+.wordmark .logo {
+  font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-xl);
+  letter-spacing: -0.04em; color: var(--accent-strong); line-height: 1; font-style: italic; padding-bottom: 4px;
+}
+.wordmark .divider { width: 1px; height: 20px; background: var(--ink-200); }
+.wordmark .product { font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--ink-700); }
+.topbar .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.home-chip { display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--ink-700); padding: 8px 12px; border-radius: var(--r-pill); }
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); color: var(--ink-700); box-shadow: var(--shadow-1); }
+
+/* Tab bar: one row, sliding thumb, scrolls inside itself */
+.tabs-scroll { overflow-x: auto; scrollbar-width: none; margin: 4px -4px 0; padding: 4px; }
+.tabs-scroll::-webkit-scrollbar { display: none; }
+.tabs {
+  position: relative; display: inline-flex; gap: 2px; padding: 4px;
+  background: var(--surface-track); border-radius: var(--r-pill);
+}
+.tab {
+  position: relative; z-index: 1; white-space: nowrap; padding: 8px 16px; border-radius: var(--r-pill);
+  font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--ink-500);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.tab.live { color: var(--ink-700); }
+.tab.live:hover { color: var(--ink-900); }
+.tab[aria-selected="true"] { color: var(--ink-900); }
+.tab[disabled] { cursor: default; }
+.tab:focus-visible { border-radius: var(--r-pill); }
+.tabs .thumb {
+  position: absolute; top: 4px; left: 0; height: calc(100% - 8px); width: 0; border-radius: var(--r-pill);
+  background: var(--surface-raised); box-shadow: var(--shadow-1), var(--edge);
+  transition: transform var(--dur-slide) var(--ease-in-out), width var(--dur-slide) var(--ease-in-out);
+}
+
+/* Panels */
+.panel { display: none; padding-top: var(--s-8); }
+.panel.active { display: block; animation: panel-in var(--dur-slide) var(--ease-out) backwards; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(8px); } }
+
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); }
+.span-12 { grid-column: span 12; } .span-8 { grid-column: span 8; } .span-7 { grid-column: span 7; }
+.span-5 { grid-column: span 5; } .span-4 { grid-column: span 4; }
+.stack { display: flex; flex-direction: column; gap: var(--gap); }
+
+/* Surfaces */
+.surface {
+  position: relative; background-color: var(--surface); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1), var(--edge); padding: var(--tile-pad);
+}
+.tactile {
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+@media (hover: hover) {
+  .tactile:hover { transform: translateY(-2px); box-shadow: var(--shadow-2), var(--edge); }
+}
+.tactile:active { transform: translateY(0) scale(.99); box-shadow: var(--shadow-1), var(--edge); transition-duration: var(--dur-instant); }
+
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: var(--s-4); }
+.section-title { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); display: flex; align-items: center; gap: 8px; }
+.overline { font-size: var(--fs-xs); font-weight: var(--w-medium); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); }
+.muted { color: var(--ink-500); }
+.secondary { color: var(--ink-700); }
+.small { font-size: var(--fs-sm); }
+.xs { font-size: var(--fs-xs); }
+.count { font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--ink-700); background: var(--surface-sunken); border-radius: var(--r-pill); padding: 2px 8px; }
+
+/* Numerals */
+.hero-num { font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-hero); line-height: var(--lh-tight); letter-spacing: var(--tracking-display); color: var(--ink-900); font-variant-numeric: tabular-nums lining-nums; display: flex; align-items: baseline; gap: 6px; }
+.hero-num .unit { font-family: var(--font-ui); font-size: var(--fs-lg); font-weight: var(--w-medium); color: var(--ink-500); letter-spacing: 0; }
+.stat-num { font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-xl); line-height: var(--lh-tight); letter-spacing: var(--tracking-display); font-variant-numeric: tabular-nums lining-nums; }
+.stat-num .unit, .mid-num .unit { font-family: var(--font-ui); font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--ink-500); letter-spacing: 0; margin-left: 2px; }
+.mid-num { font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-lg); line-height: var(--lh-snug); letter-spacing: -0.01em; font-variant-numeric: tabular-nums lining-nums; }
+
+/* Chips */
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: var(--w-semibold); padding: 4px 10px 4px 8px; border-radius: var(--r-pill); line-height: 1.4; white-space: nowrap; }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.chip.positive { background: var(--positive-soft); color: var(--positive); }
+.chip.alert { background: var(--alert-soft); color: var(--alert); }
+.chip.neutral { background: var(--surface-sunken); color: var(--ink-700); }
+.chip.accent { background: var(--accent-soft); color: var(--accent-strong); }
+.tag { display: inline-block; font-size: var(--fs-xs); font-weight: var(--w-medium); padding: 1px 8px; border-radius: var(--r-pill); background: var(--surface-sunken); color: var(--ink-700); white-space: nowrap; }
+.tag.alert { background: var(--alert-soft); color: var(--alert); }
+.tag.accent { background: var(--accent-soft); color: var(--accent-strong); }
+
+/* Info button + estimate marker + popover */
+.info {
+  display: inline-grid; place-items: center; width: 24px; height: 24px; margin: -4px 0; border-radius: 50%;
+  color: var(--ink-500); vertical-align: middle; transition: color var(--dur-fast), background-color var(--dur-fast);
+}
+.info:hover, .info[aria-expanded="true"] { color: var(--accent-strong); background: var(--accent-soft); }
+.info:focus-visible { border-radius: 50%; }
+.est {
+  display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px; border-radius: var(--r-pill);
+  background: var(--accent-soft); color: var(--accent-strong); font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-md);
+  transition: background-color var(--dur-fast), transform var(--dur-instant);
+}
+.est:hover { background: var(--ink-100); }
+.est:active { transform: scale(.94); }
+.est:focus-visible { border-radius: var(--r-pill); }
+.popover {
+  position: fixed; z-index: 50; width: min(320px, calc(100vw - 32px)); padding: 16px 16px 16px;
+  background-color: var(--surface-raised); color: var(--ink-900); border-radius: var(--r-md);
+  box-shadow: var(--shadow-2), var(--edge); font-size: var(--fs-sm); line-height: var(--lh-body);
+  opacity: 0; transform: translateY(4px); transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.popover[hidden] { display: none; }
+.popover.open { opacity: 1; transform: none; }
+.popover h3 { font-size: var(--fs-sm); font-weight: var(--w-semibold); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.popover p + p { margin-top: 8px; }
+.popover .note { font-size: var(--fs-xs); color: var(--ink-700); background: var(--surface-sunken); border-radius: var(--r-sm); padding: 8px 10px; margin-top: 10px; }
+
+/* Links & buttons */
+.link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-strong); font-size: var(--fs-sm); font-weight: var(--w-semibold); border-radius: var(--r-sm); }
+.link .icon { transition: transform var(--dur-fast) var(--ease-out); }
+.link:hover .icon, a:hover > .link .icon { transform: translateX(3px); }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: var(--r-pill);
+  background: var(--accent-strong); color: var(--on-accent); font-size: var(--fs-sm); font-weight: var(--w-semibold);
+  box-shadow: var(--shadow-1); transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-2); }
+.btn-primary:active { transform: scale(.98); transition-duration: var(--dur-instant); }
+.btn-primary:focus-visible { border-radius: var(--r-pill); }
+
+/* Segmented control (equal segments, sliding thumb) */
+.seg {
+  --n: 4; --i: 2; position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  padding: 3px; background: var(--surface-sunken); border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px var(--hairline);
+}
+.seg::before {
+  content: ""; position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc((100% - 6px) / var(--n));
+  transform: translateX(calc(100% * var(--i))); background: var(--surface-raised); border-radius: var(--r-pill);
+  box-shadow: var(--shadow-1), var(--edge); transition: transform var(--dur-slide) var(--ease-emphasis);
+}
+.seg button { position: relative; z-index: 1; padding: 6px 14px; font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--ink-500); border-radius: var(--r-pill); transition: color var(--dur-fast); }
+.seg button[aria-checked="true"] { color: var(--ink-900); }
+.seg button:hover { color: var(--ink-900); }
+.seg button:focus-visible { border-radius: var(--r-pill); }
+
+.navigator { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--ink-900); }
+.navigator button { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; color: var(--ink-700); transition: background-color var(--dur-fast); }
+.navigator button:hover:not([aria-disabled="true"]) { background: var(--surface-sunken); }
+.navigator button[aria-disabled="true"] { color: var(--ink-200); cursor: default; }
+.navigator button:focus-visible { border-radius: 50%; }
+.navigator span { min-width: 72px; text-align: center; }
+
+/* Ambient brand depth, behind surfaces only */
+.ambient { position: relative; isolation: isolate; }
+.ambient::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  width: 560px; height: 420px; right: -120px; top: -30px;
+  background: radial-gradient(closest-side, var(--ambient), transparent 100%);
+  border-radius: 58% 42% 55% 45% / 50% 60% 40% 50%;
+  filter: blur(28px); opacity: var(--ambient-opacity);
+}
+.ambient.left::before { right: auto; left: -80px; top: -40px; width: 460px; height: 340px; }
+.ambient.dots::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none; right: -24px; bottom: -28px; width: 180px; height: 140px;
+  background-image: radial-gradient(var(--halftone) 1.4px, transparent 1.6px); background-size: 10px 10px;
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent); mask-image: radial-gradient(closest-side, #000 30%, transparent);
+}
+
+/* ── Overview ─────────────────────────────────────────────────────────── */
+.hero { padding: 36px 40px 32px; }
+.ov-hero-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; }
+.hero-sentence { font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-xl); line-height: var(--lh-snug); letter-spacing: -0.015em; color: var(--ink-900); max-width: 22ch; margin-top: 16px; }
+.hero-sub { margin-top: 8px; color: var(--ink-700); font-size: var(--fs-md); }
+.ov-num { text-align: right; }
+.ov-num .hero-num { justify-content: flex-end; }
+.ov-num .caption { font-size: var(--fs-sm); color: var(--ink-500); margin-top: 4px; }
+
+.meter-wrap { margin-top: 28px; }
+.meter { position: relative; height: 14px; border-radius: var(--r-pill); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); }
+.meter .fill, .meter .fcast { position: absolute; top: 0; bottom: 0; left: 0; border-radius: var(--r-pill); transform-origin: left center; }
+.meter .fcast { background: repeating-linear-gradient(135deg, var(--accent-stripe) 0 4px, transparent 4px 8px), var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-stripe); }
+.meter .fill { background: var(--accent); }
+.meter .limit { position: absolute; top: -6px; bottom: -6px; width: 2px; border-radius: 1px; background: var(--ink-900); }
+.meter-key { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 16px; font-size: var(--fs-sm); color: var(--ink-700); }
+.meter-key > div { display: flex; align-items: center; gap: 8px; }
+.meter-key b { color: var(--ink-900); font-weight: var(--w-semibold); font-variant-numeric: tabular-nums; }
+.sw { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.sw.used { background: var(--accent); }
+.sw.fc { background: repeating-linear-gradient(135deg, var(--accent-stripe) 0 2px, var(--accent-soft) 2px 4px); box-shadow: inset 0 0 0 1px var(--accent-stripe); }
+.sw.lim { width: 2px; height: 14px; border-radius: 1px; background: var(--ink-900); }
+
+.attn { display: flex; flex-direction: column; gap: 12px; }
+.attn-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 20px 20px 20px 16px; border-radius: 20px; }
+.rank { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--ink-700); background: var(--surface-sunken); font-variant-numeric: tabular-nums; align-self: start; margin-top: 2px; }
+.attn-item .topic { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: var(--w-medium); color: var(--ink-500); }
+.attn-item .headline { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
+.attn-item .line { font-size: var(--fs-sm); color: var(--ink-700); margin-top: 2px; }
+.attn-item .link { margin-top: 8px; }
+.attn-item .go { color: var(--ink-400); }
+.alert-text { color: var(--alert); }
+
+.topics { padding: 12px 12px; }
+.topics .section-head { padding: 12px 12px 0; margin-bottom: 4px; }
+.topic-list { list-style: none; margin: 0; padding: 0; }
+.topic-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; column-gap: 14px;
+  grid-template-areas: "well name metric go" "well line metric go";
+  padding: 14px 12px; border-radius: var(--r-md); transition: background-color var(--dur-fast) var(--ease-out);
+}
+.topic-list li + li .topic-row { box-shadow: 0 -1px 0 var(--hairline); }
+.topic-row:hover { background: var(--surface-sunken); }
+.topic-row:hover .go { color: var(--ink-700); transform: translateX(2px); }
+.topic-row .go { color: var(--ink-400); transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast); }
+.well { width: 40px; height: 40px; border-radius: var(--r-sm); display: grid; place-items: center; background: var(--surface-sunken); color: var(--ink-700); }
+.topic-row .well { grid-area: well; } .topic-row .name { grid-area: name; } .topic-row .line { grid-area: line; } .topic-row .metric { grid-area: metric; } .topic-row .go { grid-area: go; }
+.topic-row .name { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); }
+.topic-row .line { font-size: var(--fs-sm); color: var(--ink-500); overflow: hidden; text-overflow: ellipsis; }
+.topic-row .metric { text-align: right; white-space: nowrap; }
+
+.footnote { margin-top: var(--s-8); display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-xs); color: var(--ink-500); max-width: 720px; }
+.footnote .icon { margin-top: 1px; }
+
+/* ── Peak ─────────────────────────────────────────────────────────────── */
+.pk-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 40px; align-items: center; }
+.pk-hero .label-row { display: flex; align-items: center; gap: 4px; font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--ink-700); }
+.pk-hero .hero-num { margin-top: 12px; }
+.pk-hero .tariff { display: flex; align-items: center; gap: 4px; margin-top: 8px; color: var(--ink-700); font-size: var(--fs-md); }
+.money { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }
+.money .mid-num { display: flex; align-items: baseline; gap: 2px; }
+.money .caption { font-size: var(--fs-sm); color: var(--ink-500); flex-basis: 100%; }
+.gauge-box { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.gauge { width: 100%; max-width: 340px; }
+.gauge svg { width: 100%; height: auto; overflow: visible; }
+.gauge .track { stroke: var(--ink-100); }
+.gauge .value { stroke: var(--accent); }
+.gauge .value.provisional { stroke: var(--accent-stripe); }
+.gauge .tick { stroke: var(--ink-900); }
+.gauge .tick.floor { stroke: var(--ink-400); }
+.gauge .lbl { fill: var(--ink-500); font-size: 12px; font-family: var(--font-ui); }
+.gauge .lbl-b { fill: var(--ink-900); font-size: 12px; font-weight: 600; font-family: var(--font-ui); }
+.gauge .center { fill: var(--ink-900); font-size: 20px; font-weight: 600; font-family: var(--font-display); letter-spacing: -0.01em; }
+.gauge .knob { fill: var(--surface); stroke: var(--accent); stroke-width: 3; }
+.gauge.animate .value { animation: sweep var(--dur-sweep) var(--ease-out) 120ms backwards; }
+.gauge.animate .knob-g { animation: fade var(--dur-base) var(--ease-out) 800ms backwards; }
+@keyframes sweep { from { stroke-dashoffset: var(--len); } }
+@keyframes fade { from { opacity: 0; } }
+.bench { margin-top: 8px; font-size: var(--fs-sm); color: var(--ink-700); max-width: 34ch; }
+.bench b { color: var(--ink-900); font-weight: var(--w-semibold); }
+.bench .caveat { display: block; margin-top: 6px; font-size: var(--fs-xs); color: var(--ink-500); }
+
+.chart-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.chart-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.insight { font-size: var(--fs-md); color: var(--ink-700); margin-top: 12px; max-width: 60ch; }
+.insight b { color: var(--ink-900); font-weight: var(--w-semibold); }
+.chart-caption { font-size: var(--fs-xs); color: var(--ink-500); margin-top: 20px; }
+.chart { position: relative; margin-top: 4px; min-height: 236px; }
+.chart svg { width: 100%; overflow: visible; }
+.chart .grid-l { stroke: var(--ink-100); stroke-width: 1; }
+.chart .base { stroke: var(--ink-200); stroke-width: 1; }
+.chart .tick-l { fill: var(--ink-500); font-size: 12px; font-family: var(--font-ui); font-variant-numeric: tabular-nums; }
+.chart .bar { fill: var(--accent); transform-box: fill-box; transform-origin: 50% 100%; transition: opacity var(--dur-fast); }
+.chart .bar.peak { fill: var(--alert-graphic); }
+.chart .future { fill: var(--ink-200); }
+.chart .thr-peak { stroke: var(--ink-400); stroke-width: 1; }
+.chart .thr-avg { stroke: var(--accent-strong); stroke-width: 1.5; }
+.chart .thr-name { fill: var(--ink-500); font-size: 12px; font-family: var(--font-ui); }
+.chart .thr-val { fill: var(--ink-900); font-size: 12px; font-weight: 600; font-family: var(--font-ui); font-variant-numeric: tabular-nums; }
+.chart .thr-val.avg { fill: var(--accent-strong); }
+.chart .annot { fill: var(--alert); font-size: 12px; font-weight: 600; font-family: var(--font-ui); paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+.chart .todo { fill: var(--ink-500); font-size: 12px; font-family: var(--font-ui); }
+.chart .hit { fill: transparent; cursor: default; }
+.chart svg.hovering .bar:not(.on) { opacity: .45; }
+.chart.animate .bar { animation: grow var(--dur-slow) var(--ease-out) backwards; }
+.chart.animate .late { animation: fade var(--dur-base) var(--ease-out) 420ms backwards; }
+@keyframes grow { from { transform: scaleY(0); } }
+.tooltip {
+  position: absolute; pointer-events: none; z-index: 5; padding: 6px 10px; border-radius: var(--r-sm);
+  background: var(--ink-900); color: var(--canvas); font-size: var(--fs-xs); font-weight: var(--w-medium); white-space: nowrap;
+  font-variant-numeric: tabular-nums; opacity: 0; transform: translate(-50%, -100%) translateY(4px); transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out);
+}
+.tooltip.show { opacity: 1; transform: translate(-50%, -100%); }
+
+.stats2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 24px; border-top: 1px solid var(--hairline); }
+.stats2 > div { padding: 20px 0 0; }
+.stats2 > div + div { padding-left: 24px; box-shadow: -1px 0 0 var(--hairline); }
+.stats2 .lbl { font-size: var(--fs-sm); color: var(--ink-700); display: flex; align-items: center; gap: 8px; }
+.stats2 .stat-num { margin-top: 6px; }
+.stats2 .meta-l { font-size: var(--fs-sm); color: var(--ink-500); margin-top: 4px; }
+.mark { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+.mark.peak { background: var(--alert-graphic); }
+.mark.acc { background: var(--accent); }
+
+.coming { display: flex; flex-direction: column; }
+.coming .head { display: flex; gap: 14px; align-items: flex-start; margin-top: 16px; }
+.coming .title { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); }
+.coming .sub { font-size: var(--fs-sm); color: var(--ink-700); margin-top: 2px; }
+.progress { position: relative; height: 8px; border-radius: var(--r-pill); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); margin-top: 20px; overflow: hidden; }
+.progress .bar-f { position: absolute; inset: 0 auto 0 0; border-radius: var(--r-pill); background: var(--alert-graphic); transform-origin: left center; }
+.progress-labels { display: flex; justify-content: space-between; font-size: var(--fs-xs); color: var(--ink-500); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.coming .foot { font-size: var(--fs-sm); color: var(--ink-700); margin-top: 16px; }
+.coming .foot b { color: var(--ink-900); font-weight: var(--w-semibold); }
+.whatif { margin-top: 16px; padding: 14px 16px; border-radius: var(--r-md); background: var(--surface-sunken); font-size: var(--fs-sm); color: var(--ink-700); display: flex; gap: 10px; align-items: flex-start; }
+.whatif b { color: var(--ink-900); font-weight: var(--w-semibold); }
+.whatif .icon { color: var(--accent-strong); margin-top: 1px; }
+.strip-wrap { margin-top: 20px; }
+.strip { display: flex; align-items: flex-end; gap: 4px; height: 56px; margin-top: 8px; border-bottom: 1px solid var(--ink-200); }
+.strip span { flex: 1; height: calc(var(--h) / 6 * 100%); border-radius: 3px 3px 0 0; background: var(--ink-100); transform-origin: bottom; }
+.strip span.out { background: var(--alert-graphic); }
+.strip span.new { background: var(--accent); }
+.strip-labels { display: flex; justify-content: space-between; font-size: var(--fs-xs); color: var(--ink-500); margin-top: 6px; }
+.coming .cta { margin-top: auto; padding-top: 24px; }
+.grow-anim { animation: grow-x 700ms var(--ease-out) 200ms backwards; }
+@keyframes grow-x { from { transform: scaleX(0); } }
+
+/* Disclosure */
+.disclosure { padding: 0; }
+.disc-btn { width: 100%; display: flex; align-items: center; gap: 14px; padding: 22px var(--tile-pad); text-align: left; border-radius: var(--r-lg); }
+.disc-btn .t { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); }
+.disc-btn .s { font-size: var(--fs-sm); color: var(--ink-500); }
+.disc-btn .chev { margin-left: auto; color: var(--ink-700); width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--surface-sunken); transition: transform var(--dur-base) var(--ease-in-out), background-color var(--dur-fast); }
+.disc-btn:hover .chev { background: var(--ink-100); }
+.disc-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.disc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-base) var(--ease-in-out), visibility 0s linear var(--dur-base); visibility: hidden; }
+.disc-body > div { overflow: hidden; }
+.disc-body.open { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows var(--dur-base) var(--ease-in-out); }
+.disc-inner { padding: 0 var(--tile-pad) var(--tile-pad); opacity: 0; transition: opacity var(--dur-base) var(--ease-out); }
+.disc-body.open .disc-inner { opacity: 1; }
+.explain { font-size: var(--fs-sm); color: var(--ink-700); max-width: 64ch; margin-bottom: 16px; }
+table.calc { width: 100%; max-width: 760px; border-collapse: collapse; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+table.calc th { text-align: left; font-size: var(--fs-xs); font-weight: var(--w-medium); color: var(--ink-500); padding: 8px 12px; border-bottom: 1px solid var(--hairline); }
+table.calc td { padding: 10px 12px; border-bottom: 1px solid var(--hairline); color: var(--ink-700); vertical-align: middle; }
+table.calc td:first-child { color: var(--ink-900); font-weight: var(--w-medium); }
+table.calc .r { text-align: right; }
+table.calc td.r { color: var(--ink-900); font-weight: var(--w-semibold); }
+table.calc tr.hl td { background: var(--alert-soft); }
+table.calc tr.hl td:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); }
+table.calc tr.hl td:last-child { border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+table.calc tr.hl td.r { color: var(--alert); }
+table.calc tfoot td { border-bottom: 0; font-weight: var(--w-semibold); color: var(--ink-900); padding-top: 14px; }
+table.calc .tags { display: inline-flex; gap: 4px; margin-left: 8px; flex-wrap: wrap; vertical-align: middle; }
+
+/* Readiness meter (segmented) */
+.ready-head { display: flex; gap: 14px; align-items: flex-start; }
+.segments { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; margin-top: 20px; }
+.segments .s { height: 10px; border-radius: var(--r-pill); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); transform-origin: left center; }
+.segments .s.on { background: var(--accent); box-shadow: none; }
+.seg-labels { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; margin-top: 8px; font-size: var(--fs-xs); color: var(--ink-500); text-align: center; }
+.seg-labels .on { color: var(--ink-900); font-weight: var(--w-semibold); }
+.floor-note { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 14px 16px; border-radius: var(--r-md); background: var(--surface-sunken); font-size: var(--fs-sm); color: var(--ink-700); }
+.floor-note .icon { color: var(--ink-700); margin-top: 1px; }
+.icon-well-accent { width: 40px; height: 40px; border-radius: var(--r-sm); display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-strong); flex: none; }
+.icon-well-alert { width: 40px; height: 40px; border-radius: var(--r-sm); display: grid; place-items: center; background: var(--alert-soft); color: var(--alert); flex: none; }
+.action-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .span-8, .span-7, .span-5, .span-4 { grid-column: span 12; }
+  .pk-hero { grid-template-columns: 1fr; gap: 24px; }
+  .gauge-box { border-top: 1px solid var(--hairline); padding-top: 24px; }
+}
+@media (max-width: 600px) {
+  :root { --tile-pad: 20px; --gap: 16px; }
+  .app, .meta-bar { padding-left: 16px; padding-right: 16px; }
+  .panel { padding-top: var(--s-6); }
+  .hero { padding: 24px 20px; }
+  .ov-hero-top { grid-template-columns: 1fr; gap: 20px; }
+  .ov-num { text-align: left; }
+  .ov-num .hero-num { justify-content: flex-start; }
+  .home-chip span { display: none; }
+  .attn-item { padding: 16px; gap: 12px; }
+  .topic-row { column-gap: 12px; padding: 14px 8px; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "well name metric" "well line line"; align-items: start; }
+  .topic-row .well { align-self: start; }
+  .topic-row .metric { align-self: center; }
+  .topic-row .go { display: none; }
+  .topic-row .line { white-space: normal; }
+  .chart-controls { width: 100%; justify-content: space-between; }
+  .stats2 > div + div { padding-left: 16px; }
+  .seg button { padding: 6px 10px; }
+  .seg-labels .off { visibility: hidden; }
+  .seg-labels .end { visibility: visible; }
+  table.calc th, table.calc td { padding-left: 6px; padding-right: 6px; }
+  table.calc .tags { display: flex; margin: 4px 0 0; }
+  table.calc .when { white-space: nowrap; }
+}
+
+/* ── Reduced motion: fades only ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important; transition-delay: 0ms !important; scroll-behavior: auto !important;
+  }
+  .panel.active { animation: none; }
+  .tactile:hover, .btn-primary:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG icon sprite (Lucide-style, 1.5px stroke) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+    <symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol>
+    <symbol id="i-line" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22"/><path d="M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4A2 2 0 0 0 17 6.2V2"/></symbol>
+    <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></symbol>
+    <symbol id="i-trend-up" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M4 7h16"/><path d="m4 7-2.5 6a3.5 3.5 0 0 0 5 0z"/><path d="m20 7-2.5 6a3.5 3.5 0 0 0 5 0z"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/></symbol>
+  </defs>
+</svg>
+
+<!-- ═════════ Reviewer switcher (meta, outside the product frame) ═════════ -->
+<div class="meta meta-bar" role="region" aria-label="Reviewer controls">
+  <span class="label">Direction C · Soft Native</span>
+  <div class="group" role="group" aria-label="Panel">
+    <button type="button" data-show="panel-overview" aria-pressed="true">Overview</button>
+    <button type="button" data-show="panel-peak" aria-pressed="false">Peak</button>
+    <button type="button" data-show="panel-peak-history" aria-pressed="false">Peak · insufficient history</button>
+  </div>
+  <span class="spacer"></span>
+  <div class="group" role="group" aria-label="Theme">
+    <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
+    <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+    <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+  </div>
+</div>
+
+<!-- ═════════════════════════ Product frame ═════════════════════════ -->
+<div class="frame">
+<div class="app">
+
+  <header class="topbar">
+    <div class="wordmark">
+      <span class="logo" aria-label="June">june</span>
+      <span class="divider" aria-hidden="true"></span>
+      <span class="product">Insights</span>
+    </div>
+    <div class="right">
+      <span class="home-chip"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span>Electricity</span></span>
+      <button class="avatar" type="button" aria-label="Account"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></button>
+    </div>
+  </header>
+
+  <nav class="tabs-scroll" aria-label="Insights topics">
+    <div class="tabs" role="tablist">
+      <span class="thumb" aria-hidden="true"></span>
+      <button class="tab live" role="tab" type="button" data-tab="overview" aria-selected="true">Overview</button>
+      <button class="tab" role="tab" type="button" disabled aria-disabled="true">Compare</button>
+      <button class="tab" role="tab" type="button" disabled aria-disabled="true">Solar</button>
+      <button class="tab" role="tab" type="button" disabled aria-disabled="true">Breakdown</button>
+      <button class="tab live" role="tab" type="button" data-tab="peak" aria-selected="false">Peak</button>
+      <button class="tab" role="tab" type="button" disabled aria-disabled="true">Forecast</button>
+      <button class="tab" role="tab" type="button" disabled aria-disabled="true">Advice</button>
+      <button class="tab" role="tab" type="button" disabled aria-disabled="true">Budgets</button>
+    </div>
+  </nav>
+
+  <main>
+
+  <!-- ═══════════════════════════ OVERVIEW ═══════════════════════════ -->
+  <section class="panel active" id="panel-overview" aria-label="Overview">
+    <div class="grid">
+      <div class="span-12 ambient">
+        <article class="surface hero" aria-labelledby="ov-hero-title">
+          <div class="ov-hero-top">
+            <div>
+              <span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span>
+              <h1 class="hero-sentence" id="ov-hero-title">May is on track — 290&nbsp;kWh forecast against your 300&nbsp;kWh budget.</h1>
+            </div>
+            <div class="ov-num">
+              <div class="hero-num"><span class="num" data-count="113" data-dec="0">113</span><span class="unit">kWh</span></div>
+              <p class="caption">left for the next 13 days</p>
+            </div>
+          </div>
+          <div class="meter-wrap">
+            <div class="meter" role="img" aria-label="Budget meter: 187 kWh used so far, 290 kWh forecast for the month, budget 300 kWh.">
+              <span class="fcast grow-anim" style="width: calc(290 / 320 * 100%)"></span>
+              <span class="fill grow-anim" style="width: calc(187 / 320 * 100%)"></span>
+              <span class="limit" style="left: calc(300 / 320 * 100% - 1px)"></span>
+            </div>
+            <div class="meter-key">
+              <div><span class="sw used" aria-hidden="true"></span>Used so far <b>187 kWh</b></div>
+              <div><span class="sw fc" aria-hidden="true"></span>Forecast <b>290 kWh</b></div>
+              <div><span class="sw lim" aria-hidden="true"></span>Budget <b>300 kWh</b></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <section class="span-5" aria-labelledby="attn-title">
+        <div class="section-head" style="padding: 8px 4px 0">
+          <h2 class="section-title" id="attn-title">Needs attention <span class="count">3</span></h2>
+        </div>
+        <ol class="attn" style="list-style:none;margin:0;padding:0">
+          <li>
+            <a href="#" class="surface tactile attn-item" data-inert>
+              <span class="rank" aria-hidden="true">1</span>
+              <span>
+                <span class="topic"><svg class="icon sm" aria-hidden="true"><use href="#i-users"/></svg>Compare</span>
+                <span class="headline"><span class="stat-num alert-text">+73%</span></span>
+                <span class="line" style="display:block">More than similar homes in April.</span>
+                <span class="link">See comparison <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
+              </span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#peak" class="surface tactile attn-item" data-goto="panel-peak">
+              <span class="rank" aria-hidden="true">2</span>
+              <span>
+                <span class="topic"><svg class="icon sm" aria-hidden="true"><use href="#i-activity"/></svg>Peak</span>
+                <span class="headline"><span class="stat-num">5.8<span class="unit">kW</span></span></span>
+                <span class="line" style="display:block">Your June 2025 peak drops out next month — your average may fall.</span>
+                <span class="link">See peak details <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
+              </span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="surface tactile attn-item" data-inert>
+              <span class="rank" aria-hidden="true">3</span>
+              <span>
+                <span class="topic"><svg class="icon sm" aria-hidden="true"><use href="#i-bulb"/></svg>Advice</span>
+                <span class="headline"><span class="stat-num">3 new tips</span></span>
+                <span class="line" style="display:block">Top tip saves ≈&nbsp;€150/year.</span>
+                <span class="link">See all advice <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
+              </span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section class="span-7" aria-labelledby="topics-title">
+        <div class="section-head" style="padding: 8px 4px 0">
+          <h2 class="section-title" id="topics-title">All topics</h2>
+          <span class="xs muted">May 2026</span>
+        </div>
+        <div class="surface topics">
+          <ul class="topic-list">
+            <li><a href="#" class="topic-row" data-inert>
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span>
+              <span class="name">Forecast</span><span class="line">Projected this month — 8% more than May last year (269 kWh).</span>
+              <span class="metric mid-num">290<span class="unit">kWh</span></span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See forecast</span></a></li>
+            <li><a href="#" class="topic-row" data-inert>
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg></span>
+              <span class="name">Budgets</span><span class="line">187 of 300 kWh used, 13 days left.</span>
+              <span class="metric"><span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span></span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See your budget</span></a></li>
+            <li><a href="#" class="topic-row" data-inert>
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
+              <span class="name">Compare</span><span class="line">More than similar homes in April.</span>
+              <span class="metric mid-num alert-text">+73%</span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See comparison</span></a></li>
+            <li><a href="#peak" class="topic-row" data-goto="panel-peak">
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg></span>
+              <span class="name">Peak</span><span class="line">12-month average — sets your capacity tariff.</span>
+              <span class="metric mid-num">4.0<span class="unit">kW</span></span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See peak details</span></a></li>
+            <li><a href="#" class="topic-row" data-inert>
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-pie"/></svg></span>
+              <span class="name">Breakdown</span><span class="line">Your biggest category this month.</span>
+              <span class="metric mid-num">Heating 38%</span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See full breakdown</span></a></li>
+            <li><a href="#" class="topic-row" data-inert>
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span>
+              <span class="name">Solar</span><span class="line">Net exporter today: +3.2 kWh to the grid.</span>
+              <span class="metric mid-num">62%<span class="unit">used at home</span></span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See solar flow</span></a></li>
+            <li><a href="#" class="topic-row" data-inert>
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+              <span class="name">Advice</span><span class="line">Top tip saves ≈&nbsp;€150/year.</span>
+              <span class="metric mid-num">3 new tips</span>
+              <svg class="icon go" aria-hidden="true"><use href="#i-chev-r"/></svg>
+              <span class="sr-only">See all advice</span></a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. Tip savings use an average electricity price (average, €0.27/kWh), not your own tariff.</span></p>
+
+    <details class="meta">
+      <summary>Spec notes · Overview</summary>
+      <h4>Source & approval</h4>
+      <ul>
+        <li>Content: inventory §1 (Overview tile grid, panel id <code>panel-consumption</code>). IA per ux-audit §3.1: hero status sentence → needs attention (ranked, 0–3) → all topics list.</li>
+        <li>Consumption placeholder tile removed (its insight line was designer commentary; open question "7 or 8 tiles" resolved to 7 per brief).</li>
+        <li>Hero image <code>overview-hero-v2.jpg</code> (decorative, missing from repo) replaced by the status tile; the brand blob sits behind it as ambient depth.</li>
+        <li>Tile link texts ("See full breakdown →", "See peak details →", "See your budget →", "See solar flow →", "See forecast →", "See comparison →", "See all advice →") are kept as each row's accessible link name; visible on the ranked cards.</li>
+        <li>Topic order in the list follows the demo-data table; ranking = severity (Compare over → Peak rolling-off → Advice new).</li>
+        <li>Solar row only for solar households (<code>requiredCapability: "solar"</code>).</li>
+      </ul>
+      <h4>Data changes (demo-data.md change log)</h4>
+      <ul>
+        <li>Forecast 412 → 290 kWh; line now "8% more than May last year (269 kWh)".</li>
+        <li>Compare "this month" → "in April" (last full month, April 2026).</li>
+        <li>Solar "62% self-consumed" → "62% used at home" (plain words first); "+3.2 kWh sent to the grid" → "+3.2 kWh to the grid".</li>
+        <li>Advice "Save up to 540 kWh/year with the top one." → "Top tip saves ≈ €150/year." (€ first). "3 new tips" kept (Advice tab: 3 tips + 1 illustrative upgrade).</li>
+        <li>Budgets line: "187 of 300 kWh used, 13 days left" (demo-data; source had "…this month").</li>
+      </ul>
+      <h4>Reason codes</h4>
+      <ul><li>None designed for Overview. Tile-level fallbacks should reuse each tab's own empty-state copy in short form.</li></ul>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════════ PEAK ═══════════════════════════ -->
+  <section class="panel" id="panel-peak" aria-label="Peak">
+    <div class="grid">
+      <div class="span-12 ambient">
+        <article class="surface hero pk-hero" aria-labelledby="pk-title">
+          <div>
+            <h1 class="label-row" id="pk-title">12-month rolling average
+              <button class="info" type="button" data-pop="pop-rolling" aria-label="What is a rolling average?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </h1>
+            <div class="hero-num"><span class="num" data-count="4.0" data-dec="1">4.0</span><span class="unit">kW</span></div>
+            <p class="tariff">This sets your capacity tariff
+              <button class="info" type="button" data-pop="pop-tariff" aria-label="What is the capacity tariff?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </p>
+            <div class="money">
+              <button class="est" type="button" data-pop="pop-est" aria-label="About this estimate">≈</button>
+              <span class="mid-num">€7.40<span class="unit">/ month</span></span>
+              <span class="caption">Estimated capacity charge</span>
+            </div>
+          </div>
+          <div class="gauge-box">
+            <div class="gauge" id="gauge-main" data-value="4.0" data-max="6" data-markers='[{"v":4.24,"a":"Flemish avg","b":"4.24 kW"}]' data-center="−0.24 kW" data-center-sub="vs Flemish average"
+                 role="img" aria-label="Gauge: your rolling average 4.0 kW on a 0 to 6 kW scale, just below the Flemish average of 4.24 kW."></div>
+            <p class="bench">Your rolling average is <b>4.0 kW</b> — the Flemish average is <b>4.24 kW</b>. You're just under average!</p>
+          </div>
+        </article>
+      </div>
+
+      <article class="surface span-8" aria-labelledby="chart-title">
+        <div class="chart-head">
+          <h2 class="section-title" id="chart-title">Daily peaks</h2>
+          <div class="chart-controls">
+            <div class="seg" role="radiogroup" aria-label="Period" style="--n:4;--i:2">
+              <button type="button" role="radio" aria-checked="false">Day</button>
+              <button type="button" role="radio" aria-checked="false">Week</button>
+              <button type="button" role="radio" aria-checked="true">Month</button>
+              <button type="button" role="radio" aria-checked="false">Year</button>
+            </div>
+            <div class="navigator">
+              <button type="button" aria-label="Previous month"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+              <span>May 2026</span>
+              <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <p class="insight">Your highest this month was <b>4.2 kW on 12 May at 18:30</b> — just above your 4.0 kW average.</p>
+        <p class="chart-caption" aria-hidden="true">Daily peak (kW)</p>
+        <div class="chart" id="chart-main"
+             data-values="2.6,2.1,3.0,2.4,2.8,1.9,3.1,2.2,2.7,3.3,2.5,4.2,2.9,3.4,2.3,3.0,2.6,3.8"
+             data-days="31" data-month="May" data-peak="4.2" data-peak-day="12" data-peak-when="12 May, 18:30"
+             data-avg="4.0" data-avg-name="12-month avg" data-peak-name="Month peak"></div>
+        <p class="sr-only" id="chart-main-sum">Bar chart of daily peaks for 1 to 18 May 2026; days 19 to 31 have not happened yet. Most days sit between 1.9 and 3.4 kW. The month peak is 4.2 kW on 12 May at 18:30, shown in red. Today, 18 May, reached 3.8 kW. Thresholds: month peak 4.2 kW and 12-month average 4.0 kW.</p>
+        <div class="stats2">
+          <div>
+            <p class="lbl"><span class="mark acc" aria-hidden="true"></span>Latest peak</p>
+            <p class="stat-num">3.8<span class="unit">kW</span></p>
+            <p class="meta-l">Today, 14:30–14:45</p>
+          </div>
+          <div>
+            <p class="lbl"><span class="mark peak" aria-hidden="true"></span>Month peak</p>
+            <p class="stat-num">4.2<span class="unit">kW</span></p>
+            <p class="meta-l">12 May, 18:30</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="surface span-4 coming" aria-labelledby="coming-title">
+        <p class="overline" id="coming-title">What's coming up</p>
+        <div class="head">
+          <span class="icon-well-alert"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+          <div>
+            <h2 class="title">Your biggest peak is still counting</h2>
+            <p class="sub">5.8 kW in June 2025 — the highest of your last 12 months</p>
+          </div>
+        </div>
+        <div class="progress" role="img" aria-label="Counted for 11 of its 12 months (92%)"><span class="bar-f grow-anim" style="width:92%"></span></div>
+        <div class="progress-labels"><span>Jun 2025</span><span>Rolls off after June</span></div>
+        <p class="foot">Counts toward your average for <b>1 more month</b>, then it rolls off and your average may drop.</p>
+        <div class="strip-wrap">
+          <p class="xs muted">Your last 12 monthly peaks</p>
+          <div class="strip" role="img" aria-label="Monthly peaks from June 2025 to May 2026: 5.8, 3.2, 3.8, 4.0, 3.5, 4.4, 3.3, 2.9, 4.0, 4.9, 4.2 and 4.2 kW. June 2025 rolls off next.">
+            <span class="out" style="--h:5.8"></span><span style="--h:3.2"></span><span style="--h:3.8"></span><span style="--h:4.0"></span><span style="--h:3.5"></span><span style="--h:4.4"></span><span style="--h:3.3"></span><span style="--h:2.9"></span><span style="--h:4.0"></span><span style="--h:4.9"></span><span style="--h:4.2"></span><span class="new" style="--h:4.2"></span>
+          </div>
+          <div class="strip-labels" aria-hidden="true"><span class="alert-text">Jun 2025 · 5.8 kW</span><span>May 2026</span></div>
+        </div>
+        <p class="whatif"><svg class="icon sm" aria-hidden="true"><use href="#i-trend-down"/></svg><span>If it rolled off today, your average would be about <b>3.9 kW</b>.</span></p>
+        <div class="cta">
+          <a href="#" class="btn-primary" data-inert>Lower your peak <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+          <p class="xs muted" style="margin-top:8px">Tips in Advice</p>
+        </div>
+      </article>
+
+      <article class="surface span-12 disclosure">
+        <button class="disc-btn" type="button" aria-expanded="false" aria-controls="calc-body">
+          <span class="icon-well-accent"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span>
+          <span><span class="t" style="display:block">How the 12-month average is calculated</span><span class="s" style="display:block">See the full calculation</span></span>
+          <span class="chev" aria-hidden="true"><svg class="icon sm"><use href="#i-chev-d"/></svg></span>
+        </button>
+        <div class="disc-body" id="calc-body">
+          <div><div class="disc-inner">
+            <p class="explain"><b>Your rolling average, explained.</b> Each month we take your single highest peak. Your rolling average is the mean of the last 12 of them — when a new month is added, the oldest one drops off.</p>
+            <table class="calc">
+              <thead><tr><th scope="col">Month</th><th scope="col" class="r">Peak</th><th scope="col">When</th></tr></thead>
+              <tbody>
+                <tr class="hl"><td>Jun 2025 <span class="tags"><span class="tag alert">rolls off next</span><span class="tag alert">highest</span></span></td><td class="r">5.8 kW</td><td class="when">12 Jun, 19:00</td></tr>
+                <tr><td>Jul 2025</td><td class="r">3.2 kW</td><td class="when">28 Jul, 20:15</td></tr>
+                <tr><td>Aug 2025</td><td class="r">3.8 kW</td><td class="when">14 Aug, 18:30</td></tr>
+                <tr><td>Sep 2025</td><td class="r">4.0 kW</td><td class="when">3 Sep, 19:45</td></tr>
+                <tr><td>Oct 2025</td><td class="r">3.5 kW</td><td class="when">21 Oct, 07:15</td></tr>
+                <tr><td>Nov 2025</td><td class="r">4.4 kW</td><td class="when">9 Nov, 18:00</td></tr>
+                <tr><td>Dec 2025</td><td class="r">3.3 kW</td><td class="when">24 Dec, 20:30</td></tr>
+                <tr><td>Jan 2026</td><td class="r">2.9 kW</td><td class="when">15 Jan, 07:00</td></tr>
+                <tr><td>Feb 2026</td><td class="r">4.0 kW</td><td class="when">2 Feb, 19:15</td></tr>
+                <tr><td>Mar 2026</td><td class="r">4.9 kW</td><td class="when">18 Mar, 18:45</td></tr>
+                <tr><td>Apr 2026</td><td class="r">4.2 kW</td><td class="when">7 Apr, 19:00</td></tr>
+                <tr><td>May 2026 <span class="tags"><span class="tag accent">just added</span></span></td><td class="r">4.2 kW</td><td class="when">12 May, 18:30</td></tr>
+              </tbody>
+              <tfoot><tr><td>Average of 12 months</td><td class="r">4.0 kW</td><td></td></tr></tfoot>
+            </table>
+          </div></div>
+        </div>
+      </article>
+    </div>
+
+    <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: peaks are your highest 15-minute power use. ≈ marks the estimated capacity charge — a rough regional rate, not your grid operator's bill.</span></p>
+
+    <details class="meta">
+      <summary>Spec notes · Peak</summary>
+      <h4>Approval</h4>
+      <ul>
+        <li>✓ Approved: chart + stats + rolling-average explainer (with calc table) + benchmark + capacity-charge estimate idea. Combines the built /peak-insights page's concepts with Eliq's peakpower endpoint.</li>
+        <li>IA per ux-audit §3.6: hero = 12-month rolling average (was the 3rd stat card) + ≈ € + benchmark gauge; Latest/Month peak merged into the chart tile as a 2-up row; explainer → "What's coming up"; calc table behind the disclosure.</li>
+        <li>Capacity-charge card folded into the hero € line. Its title "Estimated capacity charge", "New idea" badge (= experimental), sub "Translating the kW number into a rough € figure" and honesty note live in the ≈ popover.</li>
+        <li>Legend replaced by direct labels: "Daily peak (kW)" = axis caption, "This month's peak" = red bar + annotation, "12-month average" = labelled green line.</li>
+        <li>Threshold lines are now solid 1px/1.5px (not dashed) and plotted to scale.</li>
+        <li>Day / Week / Year and the month navigator are interactive shells in this pilot (thumb moves; data stays on May 2026). "Next month" is disabled (future).</li>
+        <li>"Lower your peak → Advice" is the one primary action. "If it rolled off today … ≈ 3.9 kW" comes from demo-data.md.</li>
+      </ul>
+      <h4>Honesty labels kept</h4>
+      <ul>
+        <li>"Rough estimate, fixed regional €/kW rate — not your grid operator's exact rate. Eliq's price formulas can't compute this component." (≈ popover)</li>
+        <li>"New idea" badge (≈ popover) · "just added", "rolls off next", "highest" tags (table).</li>
+      </ul>
+      <h4>Data changes (demo-data.md)</h4>
+      <ul>
+        <li>Month peak date 18 May → 12 May, 18:30 (clashed with "Latest peak: Today"). Table May row updated to 12 May, 18:30.</li>
+        <li>Chart: 15 mockup bars → 18 real days (1–18 May); highest bar = 4.2 kW on day 12; days 19–31 shown as "still to come".</li>
+      </ul>
+      <h4>Reason codes</h4>
+      <ul><li>peakpower endpoint; history ≥ 12 months → this state. &lt; 12 months → see "Peak · insufficient history".</li></ul>
+    </details>
+  </section>
+
+  <!-- ═════════════════ PEAK · insufficient history ═════════════════ -->
+  <section class="panel" id="panel-peak-history" aria-label="Peak, still building your average">
+    <div class="grid">
+      <div class="span-12 ambient left dots">
+        <article class="surface hero pk-hero" aria-labelledby="pkh-title">
+          <div>
+            <h1 class="label-row" id="pkh-title">Average so far
+              <button class="info" type="button" data-pop="pop-rolling" aria-label="What is a rolling average?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+            </h1>
+            <div class="hero-num"><span class="num" data-count="3.0" data-dec="1">3.0</span><span class="unit">kW</span></div>
+            <p class="tariff">Based on 3 months, not 12 yet</p>
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--hairline)">
+              <div class="ready-head">
+                <span class="icon-well-accent"><svg class="icon" aria-hidden="true"><use href="#i-trend-up"/></svg></span>
+                <div>
+                  <h2 class="section-title">Still building your 12-month average</h2>
+                  <p class="small secondary">3 of 12 months collected so far</p>
+                </div>
+              </div>
+              <div class="segments" role="img" aria-label="3 of 12 months collected: July, August and September.">
+                <span class="s on"></span><span class="s on"></span><span class="s on"></span>
+                <span class="s"></span><span class="s"></span><span class="s"></span><span class="s"></span><span class="s"></span><span class="s"></span><span class="s"></span><span class="s"></span><span class="s"></span>
+              </div>
+              <div class="seg-labels" aria-hidden="true">
+                <span class="on">Jul</span><span class="on">Aug</span><span class="on">Sep</span><span class="off">Oct</span><span class="off">Nov</span><span class="off">Dec</span><span class="off">Jan</span><span class="off">Feb</span><span class="off">Mar</span><span class="off">Apr</span><span class="off">May</span><span class="off end">Jun</span>
+              </div>
+            </div>
+          </div>
+          <div class="gauge-box">
+            <div class="gauge" id="gauge-hist" data-value="3.0" data-max="6" data-provisional="1"
+                 data-markers='[{"v":2.5,"a":"Floor","b":"2.5 kW","floor":1},{"v":4.24,"a":"Flemish avg","b":"4.24 kW"}]' data-center="3 of 12" data-center-sub="months counted"
+                 role="img" aria-label="Gauge: your average so far 3.0 kW on a 0 to 6 kW scale; the 2.5 kW regulatory floor and the 4.24 kW Flemish average are marked."></div>
+            <p class="bench">Your average so far is <b>3.0 kW</b> — the Flemish average is <b>4.24 kW</b>.
+              <span class="caveat">Take this comparison lightly — it's based on 3 months, not your full year.</span></p>
+          </div>
+        </article>
+      </div>
+
+      <article class="surface span-8" aria-labelledby="chart2-title">
+        <div class="chart-head">
+          <h2 class="section-title" id="chart2-title">Daily peaks</h2>
+          <div class="chart-controls">
+            <div class="seg" role="radiogroup" aria-label="Period" style="--n:4;--i:2">
+              <button type="button" role="radio" aria-checked="false">Day</button>
+              <button type="button" role="radio" aria-checked="false">Week</button>
+              <button type="button" role="radio" aria-checked="true">Month</button>
+              <button type="button" role="radio" aria-checked="false">Year</button>
+            </div>
+            <div class="navigator">
+              <button type="button" aria-label="Previous month"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+              <span>Sep 2025</span>
+              <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <p class="insight">Your highest this month was <b>3.4 kW on 6 Sep at 19:00</b> — above your 3.0 kW average so far.</p>
+        <p class="chart-caption" aria-hidden="true">Daily peak (kW)</p>
+        <div class="chart" id="chart-hist"
+             data-values="2.4,2.9,2.2,2.7,3.0,3.4,2.5,2.1,2.8,2.6,2.3,2.9,2.0,2.7,2.9,2.4,2.2,3.1"
+             data-days="30" data-month="Sep" data-peak="3.4" data-peak-day="6" data-peak-when="6 Sep, 19:00"
+             data-avg="3.0" data-avg-name="Average so far" data-peak-name="Month peak"></div>
+        <p class="sr-only">Bar chart of daily peaks for September 2025 so far. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today's latest peak is 3.1 kW. Thresholds: month peak 3.4 kW and average so far 3.0 kW.</p>
+        <div class="stats2">
+          <div>
+            <p class="lbl"><span class="mark acc" aria-hidden="true"></span>Latest peak</p>
+            <p class="stat-num">3.1<span class="unit">kW</span></p>
+            <p class="meta-l">Today, 08:15–08:30</p>
+          </div>
+          <div>
+            <p class="lbl"><span class="mark peak" aria-hidden="true"></span>Month peak</p>
+            <p class="stat-num">3.4<span class="unit">kW</span></p>
+            <p class="meta-l">6 Sep, 19:00</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="surface span-4 coming" aria-labelledby="coming2-title">
+        <p class="overline" id="coming2-title">What's coming up</p>
+        <div class="head">
+          <span class="icon-well-accent"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+          <div>
+            <h2 class="title">Nothing rolls off yet</h2>
+            <p class="sub">9 more months until your average is complete</p>
+          </div>
+        </div>
+        <p class="foot">Nothing "rolls off" yet — every month you have still counts. The full picture (and your real capacity-tariff number) needs a complete 12 months.</p>
+        <p class="floor-note"><svg class="icon sm" aria-hidden="true"><use href="#i-scale"/></svg><span>Belgium sets a 2.5 kW regulatory floor — if your average lands below that, 2.5 kW is what actually gets billed, not your raw number.</span></p>
+        <div class="cta">
+          <a href="#" class="btn-primary" data-inert>Lower your peak <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+          <p class="xs muted" style="margin-top:8px">Tips in Advice</p>
+        </div>
+      </article>
+    </div>
+
+    <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: peaks are your highest 15-minute power use. Your capacity-tariff figure settles once 12 months are in.</span></p>
+
+    <details class="meta">
+      <summary>Spec notes · Peak · insufficient history</summary>
+      <h4>Approval</h4>
+      <ul>
+        <li>✓ Edge case — also approved: insufficient history. "Chart, Latest peak, and Month peak stay the same as above — only the rolling-average pieces change shape."</li>
+        <li>Hero becomes "Average so far 3.0 kW · Based on 3 months, not 12 yet" + the shared readiness meter (12 segments, 3 filled, Jul–Jun). On 390px only the filled months and "Jun" are labelled; the meter's aria-label names all three.</li>
+        <li>Benchmark keeps its caveat "Take this comparison lightly — it's based on 3 months, not your full year." The gauge arc is drawn in a lighter (provisional) tone and shows the 2.5 kW floor.</li>
+        <li>No calc table and no capacity-charge (€) estimate in this state — both assume a settled 12-month figure.</li>
+        <li>"What's coming up" title "Nothing rolls off yet" and sub "9 more months…" are new short labels derived from the approved foot copy (3 of 12 months) — flag for copy review.</li>
+      </ul>
+      <h4>Data</h4>
+      <ul>
+        <li>Separate new-customer household, Sep 2025 (unchanged from mockup): Latest 3.1 kW (Today 08:15–08:30), Month peak 3.4 kW (6 Sep 19:00), Average so far 3.0 kW.</li>
+        <li>⚠ Daily bars for Sep 2025 are illustrative (not in demo-data.md); only the 3.4 kW peak on 6 Sep and 3.1 kW latest are canonical.</li>
+      </ul>
+      <h4>Reason code</h4>
+      <ul><li>History &lt; 12 months (peakpower endpoint). No named code.</li></ul>
+    </details>
+  </section>
+
+  </main>
+</div>
+</div>
+
+<!-- Popovers (moved to body level; positioned by JS) -->
+<div class="popover" id="pop-rolling" role="dialog" aria-label="Rolling average" hidden>
+  <h3>Rolling average</h3>
+  <p>Each month, your single highest 15-minute peak is recorded. Your rolling average is the mean of your last 12 monthly peaks. Every new month pushes the oldest one out.</p>
+</div>
+<div class="popover" id="pop-tariff" role="dialog" aria-label="Capacity tariff" hidden>
+  <h3>Capacity tariff</h3>
+  <p>In Flanders, part of your grid costs depends on how much power you draw at once, not only on how much energy you use in total. Your 12-month rolling average is the number that sets it.</p>
+</div>
+<div class="popover" id="pop-est" role="dialog" aria-label="Estimated capacity charge" hidden>
+  <h3>Estimated capacity charge <span class="tag accent">New idea</span></h3>
+  <p>Translating the kW number into a rough € figure.</p>
+  <p class="note">Rough estimate, fixed regional €/kW rate — not your grid operator's exact rate. Eliq's price formulas can't compute this component.</p>
+</div>
+
+<script>
+(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionOK = () => !reduce.matches;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const NS = 'http://www.w3.org/2000/svg';
+
+  /* ── Theme (reviewer control) ─────────────────────────────── */
+  $$('[data-theme-set]').forEach(b => b.addEventListener('click', () => {
+    const v = b.dataset.themeSet;
+    if (v === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', v);
+    $$('[data-theme-set]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+
+  /* ── Tab bar thumb ────────────────────────────────────────── */
+  const tabs = $('.tabs'), thumb = $('.tabs .thumb');
+  function moveThumb(instant) {
+    const active = $('.tab[aria-selected="true"]');
+    if (!active) return;
+    if (instant) thumb.style.transition = 'none';
+    thumb.style.width = active.offsetWidth + 'px';
+    thumb.style.transform = `translateX(${active.offsetLeft}px)`;
+    if (instant) requestAnimationFrame(() => thumb.style.transition = '');
+    const sc = tabs.parentElement, l = active.offsetLeft, r = l + active.offsetWidth;
+    if (l < sc.scrollLeft || r > sc.scrollLeft + sc.clientWidth) sc.scrollLeft = Math.max(0, l - 24);
+  }
+
+  /* ── Panels ───────────────────────────────────────────────── */
+  const seen = new Set();
+  function show(id, focus) {
+    $$('.panel').forEach(p => { p.classList.toggle('active', p.id === id); p.style.display = ''; });
+    const tabKey = id === 'panel-overview' ? 'overview' : 'peak';
+    $$('.tab.live').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === tabKey)));
+    $$('[data-show]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.show === id)));
+    moveThumb();
+    closePop();
+    enter($('#' + id));
+    if (focus) window.scrollTo({ top: 0, behavior: motionOK() ? 'smooth' : 'auto' });
+  }
+  $$('[data-show]').forEach(b => b.addEventListener('click', () => show(b.dataset.show)));
+  $$('.tab.live').forEach(t => t.addEventListener('click', () => show(t.dataset.tab === 'overview' ? 'panel-overview' : 'panel-peak')));
+  $$('[data-goto]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); show(a.dataset.goto, true); }));
+  $$('[data-inert]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+
+  /* ── First-view moments: count-up, gauge sweep, bar grow ──── */
+  function enter(panel) {
+    if (!panel || seen.has(panel.id)) return;
+    seen.add(panel.id);
+    if (!motionOK()) return;
+    $$('.num[data-count]', panel).forEach(countUp);
+    $$('.gauge', panel).forEach(g => g.classList.add('animate'));
+    $$('.chart', panel).forEach(c => { c.dataset.anim = '1'; });
+  }
+  function countUp(el) {
+    const to = parseFloat(el.dataset.count), dec = +el.dataset.dec || 0, dur = 800, t0 = performance.now();
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur);
+      el.textContent = (to * ease(t)).toFixed(dec);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    el.textContent = (0).toFixed(dec);
+    requestAnimationFrame(step);
+  }
+
+  /* ── Gauge (0 → max kW, 180° arc) ─────────────────────────── */
+  function drawGauge(host) {
+    const v = +host.dataset.value, max = +host.dataset.max, markers = JSON.parse(host.dataset.markers || '[]');
+    const W = 340, H = 196, cx = 170, cy = 158, r = 112, sw = 14;
+    const pt = (val, rad) => { const a = Math.PI * (1 - val / max); return [cx + rad * Math.cos(a), cy - rad * Math.sin(a)]; };
+    const arc = (a, b, rad) => { const [x1, y1] = pt(a, rad), [x2, y2] = pt(b, rad); return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${rad} ${rad} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`; };
+    const len = Math.PI * r * (v / max);
+    const [kx, ky] = pt(v, r);
+    let s = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">`;
+    s += `<path class="track" d="${arc(0, max, r)}" fill="none" stroke-width="${sw}" stroke-linecap="round"/>`;
+    s += `<path class="value${host.dataset.provisional ? ' provisional' : ''}" d="${arc(0, v, r)}" fill="none" stroke-width="${sw}" stroke-linecap="round" style="--len:${len.toFixed(1)};stroke-dasharray:${len.toFixed(1)} 999"/>`;
+    markers.forEach(m => {
+      const [x1, y1] = pt(m.v, r - sw / 2 - 5), [x2, y2] = pt(m.v, r + sw / 2 + 5);
+      const [lx, ly] = pt(m.v, r + sw / 2 + 14);
+      const right = m.v > max / 2;
+      const anchor = right ? 'start' : 'end';
+      s += `<line class="tick${m.floor ? ' floor' : ''}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke-width="2" stroke-linecap="round"/>`;
+      s += `<text class="lbl" x="${lx.toFixed(1)}" y="${(ly - 14).toFixed(1)}" text-anchor="${anchor}">${m.a}</text>`;
+      s += `<text class="lbl-b" x="${lx.toFixed(1)}" y="${(ly + 1).toFixed(1)}" text-anchor="${anchor}">${m.b}</text>`;
+    });
+    s += `<g class="knob-g"><circle class="knob" cx="${kx.toFixed(1)}" cy="${ky.toFixed(1)}" r="7"/></g>`;
+    s += `<text class="lbl" x="${cx - r}" y="${cy + 26}" text-anchor="middle">0</text>`;
+    s += `<text class="lbl" x="${cx + r}" y="${cy + 26}" text-anchor="middle">${max} kW</text>`;
+    s += `<text class="center" x="${cx}" y="${cy - 22}" text-anchor="middle">${host.dataset.center}</text>`;
+    s += `<text class="lbl" x="${cx}" y="${cy}" text-anchor="middle">${host.dataset.centerSub}</text>`;
+    s += `</svg>`;
+    host.innerHTML = s;
+  }
+  $$('.gauge').forEach(drawGauge);
+
+  /* ── Daily peak bar chart (rendered at real pixel width) ──── */
+  function drawChart(host) {
+    const W = host.clientWidth;
+    if (!W) return;
+    if (host._w === W) return;
+    host._w = W;
+    const vals = host.dataset.values.split(',').map(Number);
+    const days = +host.dataset.days, peak = +host.dataset.peak, peakDay = +host.dataset.peakDay, avg = +host.dataset.avg;
+    const mobile = W < 520;
+    const H = mobile ? 224 : 248;
+    const m = { l: 24, r: mobile ? 84 : 104, t: 26, b: 30 };
+    const pw = W - m.l - m.r, ph = H - m.t - m.b, max = 4.8;
+    const y = v => m.t + ph - (v / max) * ph;
+    const slot = pw / days, bw = Math.max(4, Math.min(slot * 0.6, 16)), rad = Math.min(4, bw / 3);
+    const cx = d => m.l + (d - 0.5) * slot;
+    const base = y(0);
+    const anim = host.dataset.anim === '1' && motionOK();
+    let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">`;
+    [1, 2, 3].forEach(g => s += `<line class="grid-l" x1="${m.l}" x2="${W - m.r}" y1="${y(g)}" y2="${y(g)}"/>`);
+    [0, 1, 2, 3].forEach(g => s += `<text class="tick-l" x="${m.l - 10}" y="${y(g) + 4}" text-anchor="end">${g}</text>`);
+    s += `<line class="base" x1="${m.l}" x2="${W - m.r}" y1="${base}" y2="${base}"/>`;
+    vals.forEach((v, i) => {
+      const d = i + 1, x0 = cx(d) - bw / 2, x1 = x0 + bw, top = y(v);
+      const path = `M${x0.toFixed(1)} ${base}V${(top + rad).toFixed(1)}Q${x0.toFixed(1)} ${top.toFixed(1)} ${(x0 + rad).toFixed(1)} ${top.toFixed(1)}H${(x1 - rad).toFixed(1)}Q${x1.toFixed(1)} ${top.toFixed(1)} ${x1.toFixed(1)} ${(top + rad).toFixed(1)}V${base}Z`;
+      s += `<path class="bar${d === peakDay ? ' peak' : ''}" data-d="${d}" d="${path}" style="animation-delay:${Math.min(i * 16, 290)}ms"/>`;
+    });
+    for (let d = vals.length + 1; d <= days; d++) s += `<circle class="future" cx="${cx(d).toFixed(1)}" cy="${base - 3}" r="1.5"/>`;
+    const futW = (days - vals.length) * slot;
+    if (futW > 150) s += `<text class="todo late" x="${(cx(vals.length + 1) - slot / 2 + futW / 2).toFixed(1)}" y="${(y(1.2)).toFixed(1)}" text-anchor="middle">Days ${vals.length + 1}–${days} still to come</text>`;
+    // thresholds, labels outside the plot on the right
+    const hi = Math.max(peak, avg), lo = Math.min(peak, avg);
+    const xl = W - m.r + 12;
+    const line = (v, cls) => `<line class="${cls} late" x1="${m.l}" x2="${W - m.r + 6}" y1="${y(v)}" y2="${y(v)}"/>`;
+    s += line(peak, 'thr-peak') + line(avg, 'thr-avg');
+    const label = (name, val, yy, cls) => `<text class="thr-name late" x="${xl}" y="${yy}">${name}</text><text class="thr-val late ${cls}" x="${xl}" y="${yy + 15}">${val}</text>`;
+    const pName = host.dataset.peakName, aName = host.dataset.avgName;
+    // higher threshold: label sits above its line; lower: below its line
+    const hiIsPeak = peak >= avg;
+    s += label(hiIsPeak ? pName : aName, (hiIsPeak ? peak : avg).toFixed(1) + ' kW', y(hi) - 20, hiIsPeak ? '' : 'avg');
+    s += label(hiIsPeak ? aName : pName, (hiIsPeak ? avg : peak).toFixed(1) + ' kW', y(lo) + 14, hiIsPeak ? 'avg' : '');
+    // peak annotation
+    const ann = `${peak.toFixed(1)} kW · ${host.dataset.peakWhen}`;
+    const ax = Math.max(m.l + 70, Math.min(W - m.r - 70, cx(peakDay)));
+    s += `<text class="annot late" x="${ax.toFixed(1)}" y="${(y(peak) - 12).toFixed(1)}" text-anchor="middle">${ann}</text>`;
+    // x ticks
+    const ticks = mobile ? [1, 8, 15, 22, 29] : [1, 5, 10, 15, 20, 25, 30];
+    ticks.filter(t => t <= days).forEach(t => s += `<text class="tick-l" x="${cx(t).toFixed(1)}" y="${H - 8}" text-anchor="middle">${t}</text>`);
+    // hit areas
+    vals.forEach((v, i) => s += `<rect class="hit" data-i="${i}" x="${(cx(i + 1) - slot / 2).toFixed(1)}" y="${m.t}" width="${slot.toFixed(1)}" height="${ph}"/>`);
+    s += `</svg><div class="tooltip" aria-hidden="true"></div>`;
+    host.classList.toggle('animate', anim);
+    host.innerHTML = s;
+    host.dataset.anim = '';
+    const svg = host.querySelector('svg'), tip = host.querySelector('.tooltip'), bars = host.querySelectorAll('.bar');
+    const month = host.dataset.month;
+    host.querySelectorAll('.hit').forEach(h => {
+      h.addEventListener('mouseenter', () => {
+        const i = +h.dataset.i; svg.classList.add('hovering');
+        bars.forEach((b, j) => b.classList.toggle('on', j === i));
+        tip.textContent = `${i + 1} ${month} · ${vals[i].toFixed(1)} kW`;
+        tip.style.left = cx(i + 1) + 'px'; tip.style.top = (y(vals[i]) - 8) + 'px';
+        tip.classList.add('show');
+      });
+      h.addEventListener('mouseleave', () => { svg.classList.remove('hovering'); bars.forEach(b => b.classList.remove('on')); tip.classList.remove('show'); });
+    });
+  }
+  const ro = new ResizeObserver(entries => entries.forEach(e => drawChart(e.target)));
+  $$('.chart').forEach(c => ro.observe(c));
+
+  /* ── Segmented controls ───────────────────────────────────── */
+  $$('.seg').forEach(seg => {
+    const btns = $$('button', seg);
+    const select = i => { btns.forEach((b, j) => { b.setAttribute('aria-checked', String(i === j)); b.tabIndex = i === j ? 0 : -1; }); seg.style.setProperty('--i', i); };
+    btns.forEach((b, i) => {
+      b.tabIndex = b.getAttribute('aria-checked') === 'true' ? 0 : -1;
+      b.addEventListener('click', () => select(i));
+      b.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault(); const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + btns.length) % btns.length; select(n); btns[n].focus();
+      });
+    });
+  });
+
+  /* ── Disclosure ───────────────────────────────────────────── */
+  $$('.disc-btn').forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    b.setAttribute('aria-expanded', String(open));
+    document.getElementById(b.getAttribute('aria-controls')).classList.toggle('open', open);
+  }));
+
+  /* ── Popovers (click + keyboard, Esc closes) ──────────────── */
+  let openPop = null, openBtn = null;
+  function closePop(restore) {
+    if (!openPop) return;
+    const p = openPop, b = openBtn;
+    p.classList.remove('open'); b.setAttribute('aria-expanded', 'false');
+    setTimeout(() => { if (!p.classList.contains('open')) p.hidden = true; }, motionOK() ? 160 : 0);
+    openPop = openBtn = null;
+    if (restore) b.focus();
+  }
+  function place(p, b) {
+    const r = b.getBoundingClientRect(), pw = p.offsetWidth, ph = p.offsetHeight, vw = document.documentElement.clientWidth;
+    let left = Math.min(Math.max(16, r.left + r.width / 2 - pw / 2), vw - pw - 16);
+    let top = r.bottom + 8;
+    if (top + ph > window.innerHeight - 8 && r.top - ph - 8 > 8) top = r.top - ph - 8;
+    p.style.left = left + 'px'; p.style.top = top + 'px';
+  }
+  $$('[data-pop]').forEach(b => {
+    b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-controls', b.dataset.pop); b.setAttribute('aria-haspopup', 'dialog');
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      const p = document.getElementById(b.dataset.pop);
+      if (openBtn === b) return closePop();
+      closePop();
+      p.hidden = false; place(p, b);
+      requestAnimationFrame(() => p.classList.add('open'));
+      b.setAttribute('aria-expanded', 'true'); openPop = p; openBtn = b;
+    });
+  });
+  document.addEventListener('click', e => { if (openPop && !openPop.contains(e.target)) closePop(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePop(true); });
+  window.addEventListener('scroll', () => openPop && place(openPop, openBtn), { passive: true });
+  window.addEventListener('resize', () => { moveThumb(true); if (openPop) place(openPop, openBtn); });
+
+  /* ── Keep chrome in sync when panels are toggled externally ─ */
+  const mo = new MutationObserver(() => {
+    const act = $('.panel.active');
+    if (!act) return;
+    const tabKey = act.id === 'panel-overview' ? 'overview' : 'peak';
+    $$('.tab.live').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === tabKey)));
+    $$('[data-show]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.show === act.id)));
+    moveThumb(true);
+  });
+  $$('.panel').forEach(p => mo.observe(p, { attributes: true, attributeFilter: ['class'] }));
+
+  /* ── Init ─────────────────────────────────────────────────── */
+  const start = location.hash === '#peak' ? 'panel-peak' : location.hash === '#peak-history' ? 'panel-peak-history' : 'panel-overview';
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveThumb(true));
+  show(start);
+  moveThumb(true);
+})();
+</script>
+</body>
+</html>
