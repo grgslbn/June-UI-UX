@@ -17,7 +17,17 @@ export const money = (n, loc) => {
 
 const month = { nl: 'maart 2026', fr: 'mars 2026' }; // socialProof.asOf = 2026-03
 
+// FR typography: narrow no-break space before ? ! : ; (Belgian/French convention), applied to every FR string.
+const frPunct = v => typeof v === 'string' ? v.replace(/ ([?!:;])/g, '\u202F$1')
+  : Array.isArray(v) ? v.map(frPunct)
+  : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, frPunct(x)])) : v;
+
 export function homeCopy(locale) {
+  const out = buildCopy(locale);
+  return locale === 'fr-be' ? frPunct(out) : out;
+}
+
+function buildCopy(locale) {
   const L = locale === 'fr-be' ? 'fr' : 'nl';
   const m = n => money(n, L);
   const common = {
@@ -68,7 +78,7 @@ export function homeCopy(locale) {
       y: 'Wat je betaalt', x: ['Jaar 1', 'Jaar 2', 'Jaar 3', 'Jaar 4'],
       stay: ['Niets doen'], june: ['Met June'], step: ['Welkomst-', 'korting stopt'], gap: ['De prijs', 'van trouw'],
       legend: 'June vergelijkt opnieuw en wisselt: automatisch, of na jouw akkoord.',
-      method: 'Illustratief, geen echte marktprijzen. Methode: een vereenvoudigd verloop van een contract waarvan de welkomstkorting na een jaar afloopt, naast een contract dat minstens elke maand opnieuw wordt vergeleken. Vóór livegang te vervangen door een grafiek op basis van tariefdata van de CREG en de VREG.',
+      method: 'Methode: vereenvoudigd verloop, geen echte marktprijzen. Een contract met een welkomstkorting die na een jaar afloopt, naast een contract dat minstens elke maand opnieuw wordt vergeleken. Bron vóór livegang: tariefdata van de CREG en de VREG.',
     },
     market: {
       n: '01', kicker: 'Hoe de markt werkt',
@@ -185,7 +195,7 @@ export function homeCopy(locale) {
       y: 'Ce que vous payez', x: ['Année 1', 'Année 2', 'Année 3', 'Année 4'],
       stay: ['Sans rien', 'faire'], june: ['Avec June'], step: ['Fin de la remise', 'de bienvenue'], gap: ['Le prix de', 'la fidélité'],
       legend: 'June compare à nouveau et change : automatiquement, ou après votre accord.',
-      method: 'Illustratif, sans prix réels du marché. Méthode : évolution simplifiée d’un contrat dont la remise de bienvenue expire après un an, face à un contrat comparé à nouveau au moins une fois par mois. À remplacer avant la mise en ligne par un graphique basé sur les données tarifaires de la CREG, de la CWaPE et de Brugel.',
+      method: 'Méthode : évolution simplifiée, sans prix réels du marché. Un contrat dont la remise de bienvenue expire après un an, face à un contrat comparé à nouveau au moins une fois par mois. Source avant la mise en ligne : données tarifaires de la CREG, de la CWaPE et de Brugel.',
     },
     market: {
       n: '01', kicker: 'Comment fonctionne le marché',

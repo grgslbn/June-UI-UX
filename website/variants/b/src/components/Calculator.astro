@@ -223,6 +223,7 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
       ? `${hLabel}, ${enLabel}${e.custom ? ' · kWh' : ''}${reg ? ` · ${pc.value.trim()} ${cfg.regions[reg]}` : ''}`
       : `${cfg.example} · ${hLabel}, ${enLabel}`;
     card.dataset.state = personal || reg ? 'personal' : 'example';
+    const eqn = document.querySelector('[data-eq-num]'); if (eqn) eqn.textContent = `≈ ${eurRange(e.net[0], e.net[1], L)}`;
     if (sticky) sticky.querySelector('[data-sticky-num]')!.textContent = e.low ? '' : `≈ ${eurRange(e.net[0], e.net[1], L)} ${cfg.sticky}`;
     if (announce) {
       clearTimeout(liveTimer);
@@ -430,5 +431,9 @@ const i18n = { locale, housing: t.housing, energy: t.energy, regions: t.regions,
     .trust { grid-template-columns: 1fr; gap: var(--s-3); }
     .calc { border-radius: var(--r-lg); }
     .result { margin: 0 6px 6px; border-radius: 20px; }
+    .rings { right: -175px; top: -205px; }
+    .hero-sub { font-size: var(--fs-16); }
+    h1 { font-size: 2.125rem; }
   }
+  @media (max-width: 420px) { .proof-line { font-size: 0.8125rem; gap: 8px; white-space: nowrap; } }
 </style>

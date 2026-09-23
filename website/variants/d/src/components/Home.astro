@@ -41,6 +41,11 @@ const [f1, f2, f3] = c.features.rows;
           <h1 id="hero-h1" class="hero-h1"><span class="h1-a">{c.hero.h1a}</span> <span class="h1-b">{c.hero.h1b}</span></h1>
           <p class="hero-sub">{c.hero.sub}<sup><a href="#fn-1" aria-label={fnLabel(1)}>1</a></sup></p>
           <PostcodeForm c={c} id="bereken" tone="stage" />
+          <ul class="trust-row">
+            <li><Stars label={c.trust.ratingAria} size={15} /><span>{c.trust.rating}<sup><a href="#fn-2" aria-label={fnLabel(2)}>2</a></sup></span></li>
+            <li><Icon name="home" size={18} /><span>{c.trust.customers}<sup><a href="#fn-3" aria-label={fnLabel(3)}>3</a></sup></span></li>
+            <li><Icon name="shield" size={18} /><span>{c.trust.guarantee}<sup><a href="#fn-4" aria-label={fnLabel(4)}>4</a></sup></span></li>
+          </ul>
           <ul class="hero-micro">
             {c.hero.micro.map(m => <li><Icon name="check" size={16} />{m}</li>)}
           </ul>
@@ -50,14 +55,6 @@ const [f1, f2, f3] = c.features.rows;
           </p>
         </div>
         <Stage c={c} />
-      </div>
-      <div class="wrap">
-        <ul class="trust-row">
-          <li><Stars label={c.trust.ratingAria} size={15} /><span>{c.trust.rating}<sup><a href="#fn-2" aria-label={fnLabel(2)}>2</a></sup></span></li>
-          <li><Icon name="home" size={18} /><span>{c.trust.customers}<sup><a href="#fn-3" aria-label={fnLabel(3)}>3</a></sup></span></li>
-          <li><Icon name="building" size={18} /><span>{c.trust.notSupplier}</span></li>
-          <li><Icon name="shield" size={18} /><span>{c.trust.guarantee}<sup><a href="#fn-4" aria-label={fnLabel(4)}>4</a></sup></span></li>
-        </ul>
       </div>
     </section>
 

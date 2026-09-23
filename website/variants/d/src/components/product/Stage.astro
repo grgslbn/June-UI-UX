@@ -48,8 +48,7 @@ const R = 70, C = 2 * Math.PI * R, selfLen = (C * t.selfPct) / 100;
             <circle cx="61" cy="140" r="3.5" class="a-accent-fill" />
             <text x="71" y="144" font-size="11" class="a-accent a-semi">{a.today}</text>
             <text x="48" y="190" font-size="15" class="a-ink7">{a.used}</text>
-            <text x="45" y="252" font-size="58" class="a-num">{t.used}</text>
-            <text x="148" y="252" font-size="19" class="a-ink7">kWh</text>
+            <text x="45" y="252" font-size="58" class="a-num">{t.used}<tspan dx="8" font-size="19" class="a-unit">kWh</tspan></text>
             <rect x="48" y="284" width="10" height="10" rx="2" class="a-accent-fill" />
             <text x="64" y="293" font-size="11" class="a-ink5">{nl ? 'Verbruik' : 'Consommation'}</text>
             <line x1="148" x2="162" y1="289" y2="289" class="a-sun-line" />
@@ -60,8 +59,7 @@ const R = 70, C = 2 * Math.PI * R, selfLen = (C * t.selfPct) / 100;
             <rect x="24" y="344" width="368" height="140" rx="18" class="a-surface a-tile" />
             <svg x="46" y="362" width="18" height="18" viewBox="0 0 24 24" class="a-icon a-elec-stroke"><use href="#i-sun" /></svg>
             <text x="72" y="376" font-size="13" class="a-ink9 a-semi">{a.solarTitle}</text>
-            <text x="46" y="422" font-size="34" class="a-num">{t.made}</text>
-            <text x="102" y="422" font-size="12.5" class="a-ink7">kWh {a.made.toLowerCase()}</text>
+            <text x="46" y="422" font-size="34" class="a-num">{t.made}<tspan dx="6" font-size="12.5" class="a-unit">kWh {a.made.toLowerCase()}</tspan></text>
             <rect x="48" y="438" width="320" height="10" rx="5" class="a-elec-fill" />
             <rect x="48" y="438" width={320 * t.selfPct / 100} height="10" rx="5" class="a-accent-fill" />
             <text x="48" y="470" font-size="11" class="a-ink7">{pct(t.selfPct)} {a.self}</text>
@@ -83,7 +81,7 @@ const R = 70, C = 2 * Math.PI * R, selfLen = (C * t.selfPct) / 100;
       <div class="laptop-base"></div>
     </div>
 
-    <!-- PHONE: 3 tiles, cycled by /scripts/stage.js -->
+    <!-- PHONE: 3 tiles, cycled by src/scripts/site.js -->
     <div class="phone" data-phone data-screen="0">
       <svg class="appsvg" viewBox="0 0 300 620" focusable="false">
         <rect width="300" height="620" class="a-canvas" />
@@ -100,13 +98,11 @@ const R = 70, C = 2 * Math.PI * R, selfLen = (C * t.selfPct) / 100;
           <rect x="32" y="120" width="158" height="22" rx="11" class="a-accent-soft" />
           <text x="44" y="135" font-size="10.5" class="a-accent a-semi">{a.today}</text>
           <text x="32" y="172" font-size="13" class="a-ink7">{a.used}</text>
-          <text x="30" y="218" font-size="44" class="a-num">{t.used}</text>
-          <text x="110" y="218" font-size="15" class="a-ink7">kWh</text>
+          <text x="30" y="218" font-size="44" class="a-num">{t.used}<tspan dx="6" font-size="15" class="a-unit">kWh</tspan></text>
           <QuarterChart x={22} y={232} w={258} h={150} now={a.now} from={48} to={80} fs={10} ticks={[12, 15, 18]} class="qc--hero" />
           <rect x="14" y="408" width="272" height="124" rx="20" class="a-surface a-tile" />
           <text x="32" y="438" font-size="12" class="a-ink5">{nl ? 'Hoogste kwartier vandaag' : 'Quart d’heure le plus élevé'}</text>
-          <text x="30" y="480" font-size="30" class="a-num">{t.peak}</text>
-          <text x="100" y="480" font-size="13" class="a-ink7">kWh</text>
+          <text x="30" y="480" font-size="30" class="a-num">{t.peak}<tspan dx="6" font-size="13" class="a-unit">kWh</tspan></text>
           <text x="32" y="510" font-size="12" class="a-ink5">{a.lastQt}</text>
         </g>
 
@@ -165,23 +161,24 @@ const R = 70, C = 2 * Math.PI * R, selfLen = (C * t.selfPct) / 100;
 
     <!-- DONGLE (placeholder render: no product photo yet) -->
     <div class="dongle" data-placeholder="dongle-render">
-      <svg viewBox="0 0 220 210" focusable="false">
+      <svg viewBox="0 0 240 230" focusable="false">
         <defs>
-          <pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="1.6" class="d-dot" /></pattern>
-          <radialGradient id="htmask-g"><stop offset="0" stop-color="#fff" /><stop offset="1" stop-color="#000" /></radialGradient>
-          <mask id="htmask"><rect width="220" height="210" fill="url(#htmask-g)" /></mask>
-          <linearGradient id="dg-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbfdfd" /><stop offset="1" stop-color="#cfd8d9" /></linearGradient>
-          <linearGradient id="dg-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#aab6b8" /><stop offset="1" stop-color="#8e9c9f" /></linearGradient>
+          <pattern id="ht" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.7" class="d-dot" /></pattern>
+          <clipPath id="ht-clip"><circle cx="150" cy="84" r="80" /></clipPath>
+          <linearGradient id="dg-top" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#ffffff" /><stop offset="1" stop-color="#dfe6e7" /></linearGradient>
+          <linearGradient id="dg-side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c4c6" /><stop offset="1" stop-color="#8d9a9d" /></linearGradient>
+          <linearGradient id="dg-cable" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3538" /><stop offset="0.75" stop-color="#2b3538" /><stop offset="1" stop-color="#2b3538" stop-opacity="0" /></linearGradient>
         </defs>
-        <rect width="220" height="210" fill="url(#ht)" mask="url(#htmask)" />
-        <path d="M112 150 C 112 178, 84 176, 70 196" class="d-cable" />
-        <rect x="58" y="186" width="24" height="18" rx="3" class="d-plug" transform="rotate(28 70 195)" />
-        <rect x="52" y="48" width="118" height="104" rx="22" fill="url(#dg-side)" />
-        <rect x="48" y="42" width="118" height="104" rx="22" fill="url(#dg-body)" class="d-body" />
-        <text x="68" y="128" class="d-word" font-size="17">june</text>
-        <svg x="108" y="113" width="9" height="15" viewBox="0 0 16 24" class="d-bolt"><use href="#brand-bolt" /></svg>
-        <circle cx="146" cy="64" r="9" class="d-led-glow" />
-        <circle cx="146" cy="64" r="3.6" class="d-led" />
+        <g clip-path="url(#ht-clip)" class="d-halftone"><rect width="240" height="230" fill="url(#ht)" /></g>
+        <path d="M112 158 C 112 190, 70 188, 58 230" class="d-cable" stroke="url(#dg-cable)" />
+        <rect x="100" y="150" width="24" height="16" rx="3" class="d-plug" />
+        <rect x="40" y="58" width="144" height="104" rx="26" fill="url(#dg-side)" />
+        <rect x="40" y="46" width="144" height="104" rx="26" fill="url(#dg-top)" class="d-body" />
+        <text x="62" y="130" class="d-word" font-size="20">june</text>
+        <svg x="109" y="113" width="11" height="18" viewBox="0 0 16 24" class="d-bolt"><use href="#brand-bolt" /></svg>
+        <circle cx="160" cy="70" r="10" class="d-led-glow" />
+        <circle cx="160" cy="70" r="4" class="d-led" />
+        <text x="62" y="76" class="d-p1" font-size="11">P1</text>
       </svg>
     </div>
   </div>

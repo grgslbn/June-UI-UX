@@ -19,7 +19,7 @@ h1, h2, h3, h4, p, ul, ol, dl, dd, figure, fieldset { margin: 0; }
 ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 fieldset { border: 0; padding: 0; min-width: 0; }
 legend { padding: 0; }
-sup { font-size: .62em; line-height: 0; vertical-align: .6em; }
+sup { font-size: max(12px, .62em); line-height: 0; vertical-align: .55em; }
 sup a { text-decoration: none; font-weight: 600; padding: 0 1px; }
 
 :focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; border-radius: 4px; }

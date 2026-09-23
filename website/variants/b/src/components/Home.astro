@@ -8,7 +8,7 @@ import Calculator from './Calculator.astro';
 import Footer from './Footer.astro';
 import Stars from './Stars.astro';
 import { copy } from '../content/home';
-import { eur, type Locale } from '../lib/estimate';
+import { eur, eurRange, estimate, type Locale } from '../lib/estimate';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const base = import.meta.env.BASE_URL;
@@ -18,6 +18,7 @@ const fnLabel = (n: number) => (fr ? `Note ${n}` : `Voetnoot ${n}`);
 const signup = href('signup', locale, base);
 const termIcons = ['gauge', 'scale', 'wallet', 'repeat'];
 const ops = ['×', '−', '='];
+const ex = estimate({ housing: 'terraced', energy: 'both' });
 ---
 <Base locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description}>
   <Icons />
@@ -54,6 +55,7 @@ const ops = ['×', '−', '='];
                 <span class="well"><svg class="i" aria-hidden="true"><use href={`#i-${termIcons[i]}`} /></svg></span>
                 <span class="eq-k">{x.k}</span>
                 <span class="eq-v">{x.v}</span>
+                {i === 3 && <span class="eq-num num" data-eq-num>≈ {eurRange(ex.net[0], ex.net[1], locale)}</span>}
               </li>
               {i < 3 && <li class="eq-op" aria-hidden="true">{ops[i]}</li>}
             </>
@@ -220,6 +222,7 @@ const ops = ['×', '−', '='];
   .eq-t--you { background: var(--ink-900); color: var(--on-ink); }
   .eq-t--you .well { background: rgba(59,173,168,.18); color: var(--accent); }
   .eq-t--you .eq-v { color: var(--on-ink-muted); }
+  .eq-num { margin-top: var(--s-2); font-size: var(--fs-32); font-weight: 700; line-height: 1; color: var(--accent); white-space: nowrap; }
   .eq-op { display: grid; place-items: center; font: 600 var(--fs-48)/1 var(--font-display); color: var(--accent-strong); min-width: 28px; }
   .steps-wrap { margin-top: var(--s-16); padding-top: var(--s-10); border-top: 1px solid var(--hairline-strong); }
   .steps-h { font-size: var(--fs-22); margin-bottom: var(--s-6); }
@@ -273,11 +276,12 @@ const ops = ['×', '−', '='];
   .reviews { display: grid; grid-template-columns: repeat(3, 1fr) .9fr; gap: var(--s-4); }
   .review { display: grid; align-content: start; gap: var(--s-3); padding: var(--s-6); border-radius: var(--r-lg); background: var(--ink-800); box-shadow: inset 0 0 0 1px var(--on-ink-faint); }
   .review .chip { justify-self: start; }
+  .reviews { align-items: start; }
   .skel { display: grid; gap: 8px; }
   .skel i { display: block; height: 10px; border-radius: 6px; background: rgba(255,255,255,.1); }
   .skel i:nth-child(2) { width: 88%; } .skel i:nth-child(3) { width: 60%; }
   .review-note { font-size: var(--fs-14); color: var(--on-ink-muted); }
-  .review--photo { padding: 0; overflow: hidden; background: var(--accent); }
+  .review--photo { padding: 0; overflow: hidden; background: var(--accent); aspect-ratio: 1; align-self: start; }
   .review--photo img { width: 100%; height: 100%; object-fit: cover; }
 
   /* FAQ */
@@ -335,6 +339,7 @@ const ops = ['×', '−', '='];
     .eq-op, .eq-op:nth-child(4) { display: grid; min-height: 28px; font-size: var(--fs-32); }
     .eq-t { grid-template-columns: auto 1fr; column-gap: var(--s-4); padding: var(--s-4) var(--s-5); }
     .eq-t .well { grid-row: span 2; margin: 0; }
+    .eq-num { grid-column: 1 / -1; }
     .reviews { grid-template-columns: 1fr; }
     .review--photo { aspect-ratio: 16 / 10; }
     .proof-v { font-size: var(--fs-32); }

@@ -8,14 +8,13 @@ const g = (x, mu, s) => Math.exp(-((x - mu) ** 2) / (2 * s * s));
 export const consumption = (() => {
   const q = Array.from({ length: 80 }, (_, i) => {
     const h = i / 4;
-    return 0.07 + 0.22 * g(h, 7.5, 0.6) + 0.18 * g(h, 12.5, 0.5) + 0.12 * g(h, 17, 1.2) + 0.42 * g(h, 18.8, 0.7)
+    return 0.07 + 0.3 * g(h, 7.4, 0.5) + 0.18 * g(h, 12.5, 0.5) + 0.12 * g(h, 17, 1.2) + 0.55 * g(h, 18.9, 0.8)
       + 0.05 * Math.sin(i * 1.7) ** 2;
   });
   q[58] = 0.95; // 14:30–14:45: washing machine + oven (the app demo's highest quarter)
-  q[59] = 0.62;
   // Scale so 00:00–20:00 = 9,6 kWh (app demo: "Home used 9.6 kWh", until 20:00).
-  const k = (9.6 - 0.95 - 0.62) / q.reduce((a, b, i) => a + (i === 58 || i === 59 ? 0 : b), 0);
-  return q.map((v, i) => (i === 58 || i === 59 ? v : +(v * k).toFixed(3)));
+  const k = (9.6 - 0.95) / q.reduce((a, b, i) => a + (i === 58 ? 0 : b), 0);
+  return q.map((v, i) => (i === 58 ? v : +(v * k).toFixed(3)));
 })();
 
 /** Solar production per quarter (kWh), bell 06:30–19:30, total ≈ 8.4 kWh. */

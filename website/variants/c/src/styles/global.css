@@ -10,8 +10,8 @@
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("@shared/fonts/inter-latin.woff2") format("woff2"); }
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("@shared/fonts/inter-approx.woff2") format("woff2"); unicode-range: U+2248; }
 /* Metric-matched fallbacks: no layout shift on swap */
-@font-face { font-family: "Montserrat Fallback"; src: local("Arial"); size-adjust: 112.8%; ascent-override: 85.8%; descent-override: 22.3%; line-gap-override: 0%; }
-@font-face { font-family: "Inter Fallback"; src: local("Arial"); size-adjust: 107.1%; ascent-override: 90.5%; descent-override: 22.6%; line-gap-override: 0%; }
+@font-face { font-family: "Montserrat Fallback"; src: local("Arial"), local("Liberation Sans"), local("Arimo"), local("Helvetica"); size-adjust: 112.8%; ascent-override: 85.8%; descent-override: 22.3%; line-gap-override: 0%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Liberation Sans"), local("Arimo"), local("Helvetica"); size-adjust: 107.1%; ascent-override: 90.5%; descent-override: 22.6%; line-gap-override: 0%; }
 
 /* ── Base ───────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
@@ -134,23 +134,24 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
 .menu-panel a:not(.btn) { color: var(--ink-900); text-decoration: none; padding: 12px 8px; border-bottom: 1px solid var(--rule); font-weight: 500; }
 .menu-panel .btn { margin-top: var(--s-3); }
 @media (max-width: 1020px) {
-  .nav, .util .login, .util .btn { display: none; }
+  .nav, .util > .login, .util > .btn { display: none; }
   .menu { display: block; }
   .util { gap: var(--s-2); }
 }
 
 /* ── Hero ───────────────────────────────────────────────────────────── */
-.hero { padding-block: clamp(32px, 5vw, 72px) clamp(48px, 6vw, 88px); }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.hero { padding-block: clamp(28px, 4vw, 56px) clamp(48px, 6vw, 88px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
 .hero-copy { display: grid; gap: var(--s-6); }
 .hero h1 { font-size: var(--fs-h1); max-width: 13ch; font-weight: 600; }
 .hero h1 .h1-turn { display: block; color: var(--accent-strong); }
-.hero .lead { max-width: 34ch; }
+.hero .lead { max-width: 40ch; }
 .hero-cost { font-size: var(--fs-ui); color: var(--ink-700); border-left: 3px solid var(--accent); padding-left: 12px; }
 .hero-cost strong { color: var(--ink-900); }
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; }
 }
+@media (max-width: 520px) { .lead { font-size: 19px; } }
 
 /* ── Chart figure ───────────────────────────────────────────────────── */
 .figure { margin: 0; border-top: 2px solid var(--rule-strong); padding-top: var(--s-4); }
@@ -186,16 +187,15 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
   .js .chart[data-draw]:not(.is-drawn) .gap { opacity: 0; }
 }
 
-/* ── Hero ledger: three questions, three answers ────────────────────── */
-.ledger { list-style: none; margin: var(--s-8) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule-strong); }
-.ledger li { padding: var(--s-4) var(--s-5) 0 0; display: grid; gap: 4px; align-content: start; }
-.ledger li + li { padding-left: var(--s-5); border-left: 1px solid var(--rule); }
-.ledger .q { font-size: 12px; font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); }
+/* ── Hero ledger: three questions, three answers (under the chart) ── */
+.ledger { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; border-top: 2px solid var(--rule-strong); }
+.ledger li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 2px var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.ledger .q { grid-row: span 2; font-size: 12px; font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); }
 .ledger .a { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.3; letter-spacing: -0.01em; }
 .ledger .d { font-size: var(--fs-note); color: var(--ink-700); line-height: 1.45; }
-@media (max-width: 700px) {
-  .ledger { grid-template-columns: 1fr; }
-  .ledger li, .ledger li + li { padding: var(--s-4) 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+@media (max-width: 480px) {
+  .ledger li { grid-template-columns: 1fr; }
+  .ledger .q { grid-row: auto; }
 }
 
 /* ── Market facts ───────────────────────────────────────────────────── */
@@ -231,7 +231,9 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
 
 /* ── Who pays June: money flow + price ledger ───────────────────────── */
 .model { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
-.flow { display: grid; grid-template-columns: 1fr; justify-items: start; margin-top: var(--s-10); }
+.flow { display: grid; grid-template-columns: 1fr; justify-items: start; margin-bottom: var(--s-10); }
+.model-lede { position: sticky; top: 100px; }
+@media (max-width: 860px) { .model-lede { position: static; } }
 .flow .node { width: 148px; font-family: var(--font-display); font-weight: 600; font-size: 17px; padding: 12px 16px; border: 1.5px solid var(--ink-900); border-radius: 8px; background: var(--surface); text-align: center; }
 .flow .node--june { background: var(--accent-soft); border-color: var(--accent-strong); color: var(--accent-strong); }
 .flow .edge { position: relative; width: 24px; height: 76px; margin: 2px 0 2px 62px; }
@@ -242,7 +244,7 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
 .flow .edge--money::after { border-color: var(--accent-strong); border-width: 0 3px 3px 0; }
 .flow .edge--money > span { color: var(--accent-strong); font-weight: 600; }
 .flow .bypass { margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1.5px dashed var(--ink-400); font-size: 14px; color: var(--ink-700); width: 100%; max-width: 420px; }
-.prices { width: 100%; border-collapse: collapse; margin-top: var(--s-6); font-size: var(--fs-ui); }
+.prices { width: 100%; border-collapse: collapse; font-size: var(--fs-ui); }
 .prices caption { text-align: left; font-family: var(--font-display); font-weight: 600; font-size: 17px; padding-bottom: var(--s-3); }
 .prices th, .prices td { text-align: left; padding: 14px 12px 14px 0; border-top: 1px solid var(--rule); vertical-align: baseline; }
 .prices thead th { font-size: 12px; font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); border-top: 2px solid var(--rule-strong); }
@@ -270,7 +272,8 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
 .vs .col-june { background: var(--accent-soft); padding-left: 16px; color: var(--ink-900); font-weight: 500; }
 .vs thead .col-june { color: var(--accent-strong); }
 .vs .col-june svg { width: 16px; height: 16px; display: inline; vertical-align: -3px; margin-right: 6px; color: var(--accent-strong); }
-.vs-caption { margin-top: var(--s-4); }
+.vs-foot { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-8); align-items: center; justify-content: space-between; }
+.vs-foot .note { max-width: 60ch; }
 @media (max-width: 760px) {
   .vs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .vs, .vs tbody, .vs tr, .vs th, .vs td { display: block; width: auto; }
@@ -345,7 +348,8 @@ sup.fn a { text-decoration: none; padding: 0 1px; }
 .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 2fr; gap: var(--s-10); }
 .footer .tagline { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--ink-900); margin-top: var(--s-4); letter-spacing: -0.01em; }
 .footer h2 { font-family: var(--font-text); font-size: 12px; font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); margin-bottom: var(--s-3); }
-.footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.footer ul a { display: inline-block; padding: 4px 0; }
 .footer ul a { color: var(--ink-900); text-decoration: none; }
 .footer ul a:hover { text-decoration: underline; }
 .footnotes { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; color: var(--ink-500); }

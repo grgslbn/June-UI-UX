@@ -92,7 +92,7 @@ export function copy(loc) {
     app: nl ? {
       product: 'Inzichten', updated: 'Bijgewerkt 20:00', tabs: ['Overzicht', 'Zon', 'Contract'],
       tabsWide: ['Overzicht', 'Vergelijk', 'Zon', 'Verdeling', 'Contract'],
-      today: 'Vandaag · elektriciteit', used: 'Verbruikt vandaag', perQ: 'kWh per kwartier', now: 'Nu',
+      today: 'Vandaag · elektriciteit', used: 'Verbruik tot nu', perQ: 'kWh per kwartier', now: 'Nu',
       live: 'Live', lastQ: 'Laatste kwartier', lastQv: '0,95 kWh', lastQt: '14:30–14:45',
       solarTitle: 'Zon vandaag', made: 'Opgewekt', exported: 'Geïnjecteerd', self: 'zelf verbruikt',
       home: 'Huis', grid: 'Net', panels: 'Panelen', imported: 'Afgenomen',
@@ -102,7 +102,7 @@ export function copy(loc) {
     } : {
       product: 'Insights', updated: 'Mis à jour 20:00', tabs: ['Aperçu', 'Solaire', 'Contrat'],
       tabsWide: ['Aperçu', 'Comparer', 'Solaire', 'Répartition', 'Contrat'],
-      today: 'Aujourd’hui · électricité', used: 'Consommé aujourd’hui', perQ: 'kWh par quart d’heure', now: 'Maintenant',
+      today: 'Aujourd’hui · électricité', used: 'Consommation jusqu’ici', perQ: 'kWh par quart d’heure', now: 'Maintenant',
       live: 'Direct', lastQ: 'Dernier quart d’heure', lastQv: '0,95 kWh', lastQt: '14:30–14:45',
       solarTitle: 'Solaire aujourd’hui', made: 'Produit', exported: 'Injecté', self: 'autoconsommé',
       home: 'Maison', grid: 'Réseau', panels: 'Panneaux', imported: 'Prélevé',

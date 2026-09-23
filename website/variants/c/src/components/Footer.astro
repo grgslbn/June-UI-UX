@@ -6,7 +6,7 @@ const { locale, c } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
 ---
-<footer class="footer">
+<footer class="footer" data-sticky-hide>
   <div class="wrap">
     <div class="footer-grid">
       <div>

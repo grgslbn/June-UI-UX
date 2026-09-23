@@ -36,18 +36,16 @@ const signup = href('signup', locale, import.meta.env.BASE_URL);
         </div>
         <div class="hero-fig">
           <MarketChart c={c} />
+          <ol class="ledger">
+            {c.ledger.map((r) => (
+              <li>
+                <span class="q">{r.q}</span>
+                <span class="a">{r.a}</span>
+                <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
+              </li>
+            ))}
+          </ol>
         </div>
-      </div>
-      <div class="wrap">
-        <ol class="ledger">
-          {c.ledger.map((r) => (
-            <li>
-              <span class="q">{r.q}</span>
-              <span class="a">{r.a}</span>
-              <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
 
@@ -101,7 +99,7 @@ const signup = href('signup', locale, import.meta.env.BASE_URL);
     <!-- ── 03 WHO PAYS JUNE ────────────────────────────── -->
     <section class="section" id="prijzen" aria-labelledby="model-h">
       <div class="wrap model">
-        <div>
+        <div class="model-lede">
           <div class="section-head">
             <p class="kicker"><span class="kicker-n">{c.model.n}</span><span>{c.model.kicker}</span></p>
             <h2 id="model-h">{c.model.h2}</h2>
@@ -110,6 +108,8 @@ const signup = href('signup', locale, import.meta.env.BASE_URL);
             <p><strong>{c.model.body[0]}</strong><Fn n={5} L={L} />{c.model.body[1]}</p>
             <p>{c.model.body[2]}</p>
           </div>
+        </div>
+        <div>
           <div class="flow" role="img" aria-label={`${c.model.flow.you} → ${c.model.flow.june}: ${c.model.flow.pay}. ${c.model.flow.june} → ${c.model.flow.sup}: ${c.model.flow.work}. ${c.model.flow.bill}.`}>
             <span class="node">{c.model.flow.you}</span>
             <span class="edge edge--money"><span>{c.model.flow.pay}</span></span>
@@ -118,8 +118,6 @@ const signup = href('signup', locale, import.meta.env.BASE_URL);
             <span class="node">{c.model.flow.sup}</span>
             <span class="bypass"><span>{c.model.flow.bill}</span></span>
           </div>
-        </div>
-        <div>
           <table class="prices">
             <caption>{c.model.caption}<Fn n={6} L={L} /></caption>
             <thead><tr>{c.model.cols.map((h) => <th scope="col">{h}</th>)}</tr></thead>
@@ -169,7 +167,10 @@ const signup = href('signup', locale, import.meta.env.BASE_URL);
             ))}
           </tbody>
         </table>
-        <p class="note vs-caption">{c.vs.caption}</p>
+        <div class="vs-foot">
+          <p class="note">{c.vs.caption}</p>
+          <a class="btn" href={signup}>{c.ui.cta}<Icon name="arrow-r" /></a>
+        </div>
       </div>
     </section>
 

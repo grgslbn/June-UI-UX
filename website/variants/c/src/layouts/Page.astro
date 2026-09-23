@@ -60,6 +60,8 @@ const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www
       anchors.forEach((a) => so.observe(a));
     }
 
+    document.querySelectorAll('.menu-panel a').forEach((a) => a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')));
+
     document.querySelectorAll<HTMLFormElement>('form[data-pc]').forEach((f) => {
       const input = f.querySelector('input')!; const help = f.querySelector<HTMLElement>('.pc-help')!;
       f.addEventListener('submit', (ev) => {
