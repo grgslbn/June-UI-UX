@@ -137,7 +137,7 @@
     <!-- Supporting: the other new tips, compact rows, quiet dismissals -->
     <article class="surface ad-card span-8" aria-labelledby="ad-more">
       <div class="ad-card__head">
-        <h2 class="section-title" id="ad-more">More tips for you</h2>
+        <h2 class="card-title" id="ad-more">More tips for you</h2>
         <span class="ad-sort"><svg class="icon sm" aria-hidden="true"><use href="#i-sliders"/></svg>Most relevant for you first</span>
       </div>
       <ul class="ad-list">
@@ -190,7 +190,7 @@
 
     <!-- Bigger investments: the heat pump, illustrative, separate from the 3 new tips -->
     <article class="surface span-4 ad-invest" data-ad-item data-status="invest" data-name="Upgrade to a heat pump" aria-labelledby="ad-invest-title">
-      <h2 class="section-title" id="ad-invest-title">Bigger investments</h2>
+      <h2 class="card-title" id="ad-invest-title">Bigger investments</h2>
       <div class="ad-invest__head">
         <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-thermo"/></svg></span>
         <div>
@@ -339,7 +339,7 @@
     </div>
 
     <article class="surface ad-card span-12" aria-labelledby="adp-list">
-      <div class="ad-card__head"><h2 class="section-title" id="adp-list">In your plan</h2></div>
+      <div class="ad-card__head"><h2 class="card-title" id="adp-list">In your plan</h2></div>
       <ul class="ad-list">
         <li data-ad-item data-status="plan" data-name="Wash clothes at a lower temperature">
           <div class="ad-fold ad-fold--main"><div>
@@ -442,7 +442,7 @@
     </div>
 
     <article class="surface ad-card span-12" aria-labelledby="add-list">
-      <div class="ad-card__head"><h2 class="section-title" id="add-list">Done</h2></div>
+      <div class="ad-card__head"><h2 class="card-title" id="add-list">Done</h2></div>
       <ul class="ad-list">
         <li>
           <div class="ad-tip">
@@ -569,10 +569,8 @@
       <div>
         <h1 class="empty__title" id="ade-title">Nothing to suggest yet</h1>
         <p class="empty__body">We don't have any personalized energy-saving tips for your home right now. This is normal early on, and usually resolves itself as more of your energy data comes in.</p>
-        <ul class="ad-when">
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>When:</b> there's no fixed date — tips appear as soon as your readings match one. When they do, you'll see them here with a count on this tab.</span></li>
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span><b>What you can do:</b> A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.</span></li>
-        </ul>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — tips appear as soon as your readings match one, and you'll see a count on this tab.</span></p>
+        <p class="callout accent ad-empty-nudge"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span>A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.</span></p>
         <div class="empty__actions">
           <a class="btn btn--secondary" href="#panel-breakdown">Check your home profile <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
@@ -586,6 +584,7 @@
     <summary>Spec notes · Advice · No advice available</summary>
     <ul>
       <li>The only empty state. Reason: <code>GET /advice</code> returns no items, or 404 "No advices found" (historically "not provisioned"). No reason code — do <b>not</b> invent differentiated states (ask #40).</li>
+      <li>Round 3: <code>.empty__when</code> "No date yet — …" matches the Overview-new Advice chip ("No date yet").</li>
       <li>Round 2 edge-state rule (what's missing · when · what to do · footnote): the "When" line states timing is unknown and why (<b>derived</b>, no date invented — ask #40); the verbatim nudge became the "What you can do" line; halftone motif removed so it never sits behind text; footnote added (<b>derived</b>).</li>
       <li>Status control hidden (all lists empty). Button "Check your home profile" → Breakdown (where the home profile lives) is a <b>derived</b> action — confirm target with product.</li>
     </ul>

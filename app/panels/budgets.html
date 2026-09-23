@@ -22,12 +22,6 @@
 [data-tab="budgets"] .bg-aside .section-title { margin-bottom: var(--s-1); }
 [data-tab="budgets"] .bg-gasnote { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-xs); color: var(--ink-500); }
 [data-tab="budgets"] .bg-bar__left { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
-[data-tab="budgets"] .bg-when { margin-top: var(--s-4); display: grid; gap: 10px; max-width: 62ch; }
-[data-tab="budgets"] .bg-when li { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-sm); color: var(--ink-700); }
-[data-tab="budgets"] .bg-when li .icon { color: var(--ink-400); margin-top: 2px; }
-/* Dark mode: past-day bars need more than the muted token gives on the dark surface (≥ 3:1) */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) [data-tab="budgets"] .jc-bar.t-muted { fill: var(--ink-400); } }
-:root[data-theme="dark"] [data-tab="budgets"] .jc-bar.t-muted { fill: var(--ink-400); }
 
 /* Chart tile */
 [data-tab="budgets"] .bg-chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
@@ -114,11 +108,10 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
-    <span class="xs muted"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg>Updated today, 20:00</span>
   </div>
 
   <div class="grid stretch">
@@ -142,7 +135,7 @@
           </div>
           <div class="hero__aside bg-aside">
             <div>
-              <h2 class="section-title">May so far</h2>
+              <h2 class="card-title">May so far</h2>
               <p class="small secondary"><b>113&nbsp;kWh left</b> of your 300&nbsp;kWh budget</p>
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9"
                    role="img" aria-label="Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
@@ -167,7 +160,7 @@
     <!-- Supporting: daily use against the pace line -->
     <article class="surface span-8" id="bg-chart-tile" aria-labelledby="bg-chart-title">
       <div class="bg-chart-head">
-        <h2 class="section-title" id="bg-chart-title">Daily use</h2>
+        <h2 class="card-title" id="bg-chart-title">Daily use</h2>
         <div class="seg" role="radiogroup" aria-label="Show" data-seg-target="#bg-chart-tile">
           <button type="button" data-value="week" aria-checked="false">Week</button>
           <button type="button" data-value="month" aria-checked="true">Month</button>
@@ -185,7 +178,7 @@
 
     <!-- Supporting: history & streak -->
     <article class="surface span-4 bg-hist" aria-labelledby="bg-hist-title">
-      <h2 class="section-title" id="bg-hist-title">History &amp; streak</h2>
+      <h2 class="card-title" id="bg-hist-title">History &amp; streak</h2>
       <div class="bg-streak">
         <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
         <div>
@@ -286,13 +279,14 @@
       <li>Streak strip: Jan "No data" (hatched + clock + word), Feb ✕ Over, Mar ✓, Apr ✓, May "So far". Demo-data sets Feb ✕; Jan becomes the no-data cell so the "gap" cell type still ships — confirm with product. Best: "Best ever (last 24mo)" → "Best ever (last 24 months)" 5 months.</li>
       <li>Manual suggestion "Suggested: 265 kWh, based on your forecast" → 290 kWh (forecast aligned).</li>
       <li>⚠ Auto = forecast +20%, yet the limit is 300 with a 290 forecast (290 × 1.2 = 348). Presumably set from the forecast on 1 May — confirm how Auto derives the limit.</li>
-      <li>"Updated today, 20:00" and the "already under the pace you need" line are <b>derived copy</b>.</li>
+      <li>The "already under the pace you need" line are <b>derived copy</b>.</li>
     </ul>
     <h4>Round 2 changes</h4>
     <ul>
       <li>Hero = one answer: the sentence carries context ("On track — keep to this week's pace and May stays within budget", <b>derived</b>), the numeral carries 8.7 kWh/day, labelled "Most you can use a day, 19–31 May". "113 kWh left" moved to the meter caption. Same pattern on Cutting it close (sentence "Cut back to stay under your May budget.") and Over budget (leads with +42 kWh over).</li>
       <li>Month chart: no full-width 8.7 line — the target is written over the remaining days only ("19–31 May: up to 8.7 kWh a day"); the insight explains why days 1–11 ran higher. Week chart keeps an 8.7 "Pace needed" line (it's the pace from here on).</li>
-      <li>Dark mode: past-day (muted) bars use <code>--ink-400</code> via a scoped override (≈ 3:1 on the dark surface) until the foundation raises dark <code>--chart-muted</code>; then this override can go.</li>
+      <li>Dark mode: past-day bars use the raised dark <code>--chart-muted</code> token (round 3); the scoped override was removed.</li>
+      <li>Round 3: in-card titles are <code>h2.card-title</code>; <code>current</code> set on both charts (today); Gas option carries <code>data-reason</code> + the visible "no gas meter linked" note; the fragment's own "Updated today, 20:00" removed (shell shows it; Over budget panel sets <code>data-updated="Updated 25 May, 20:00"</code>).</li>
       <li>Meter key is a 3-row list (no wrap). In-hero CAPS kickers replaced by sentence-case labels / card titles.</li>
       <li>Gas · Weekly: disabled with a visible reason "Gas: no gas meter linked" + ⓘ (<b>derived</b>; consistent with an electrically heated home — confirm with product; the "linking it in your account" line is an assumption).</li>
       <li>Streak tile: "Finish May under 300 kWh to make it a 3&#8209;month streak." (<b>derived</b>).</li>
@@ -310,7 +304,7 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -336,7 +330,7 @@
           </div>
           <div class="hero__aside bg-aside">
             <div>
-              <h2 class="section-title">May so far</h2>
+              <h2 class="card-title">May so far</h2>
               <p class="small secondary"><b>85&nbsp;kWh left</b> of your 300&nbsp;kWh budget</p>
               <div class="meter" style="--used: 65.2; --fcast: 96.4; --limit: 90.9"
                    role="img" aria-label="Budget meter: 215 kWh used so far, 318 kWh forecast for May, budget 300 kWh. The forecast goes past the budget.">
@@ -358,7 +352,7 @@
     </div>
 
     <article class="surface span-7" aria-labelledby="bgc-why">
-      <h2 class="section-title" id="bgc-why">Why we think you'll go over</h2>
+      <h2 class="card-title" id="bgc-why">Why we think you'll go over</h2>
       <p class="insight mt-2">Your last 7 days averaged <b>7.9&nbsp;kWh a day</b>. At that pace you'd reach about 318&nbsp;kWh by 31&nbsp;May — 18&nbsp;kWh over your budget.</p>
       <div class="bg-gap" aria-label="Your recent pace is 7.9 kWh a day; to stay under you need 6.5 kWh a day.">
         <span><span class="stat__label">Your recent pace</span><br><span class="mid-num">7.9<span class="unit">kWh/day</span></span></span>
@@ -368,7 +362,7 @@
     </article>
 
     <article class="surface span-5 bg-cta" aria-labelledby="bgc-cta">
-      <h2 class="section-title" id="bgc-cta">Ways to cut back</h2>
+      <h2 class="card-title" id="bgc-cta">Ways to cut back</h2>
       <p class="small secondary">Your top tip — adjust your indoor temperature — saves <span class="approx">≈</span>&nbsp;€150 a year.</p>
       <div class="mt-4">
         <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
@@ -398,12 +392,12 @@
 </section>
 
 <!-- ════════════════════════════ BUDGETS · Over budget ════════════════════════════ -->
-<section class="panel" id="panel-budgets-over" data-tab="budgets" data-label="Budgets · Over budget" aria-labelledby="bgo-title">
+<section class="panel" id="panel-budgets-over" data-updated="Updated 25 May, 20:00" data-tab="budgets" data-label="Budgets · Over budget" aria-labelledby="bgo-title">
   <div class="bg-bar">
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -427,7 +421,7 @@
           </div>
           <div class="hero__aside bg-aside">
             <div>
-              <h2 class="section-title">May so far</h2>
+              <h2 class="card-title">May so far</h2>
               <div class="meter over" style="--used: 95; --fcast: 0; --limit: 83.3"
                    role="img" aria-label="Budget meter: 342 kWh used so far, 42 kWh over the 300 kWh budget.">
                 <span class="meter__fill grow-x"></span>
@@ -445,7 +439,7 @@
     </div>
 
     <article class="surface span-7" aria-labelledby="bgo-next">
-      <h2 class="section-title" id="bgo-next">What happens next</h2>
+      <h2 class="card-title" id="bgo-next">What happens next</h2>
       <ul class="bg-next mt-4">
         <li><span class="well"><svg class="icon" aria-hidden="true"><use href="#i-repeat"/></svg></span>
           <p><b>A fresh budget on 1 June</b>In Auto mode we set it from your own forecast, +20% margin.</p></li>
@@ -455,7 +449,7 @@
     </article>
 
     <article class="surface span-5 bg-cta" aria-labelledby="bgo-cta">
-      <h2 class="section-title" id="bgo-cta">Get ahead of June</h2>
+      <h2 class="card-title" id="bgo-cta">Get ahead of June</h2>
       <p class="small secondary">Your top tip — adjust your indoor temperature — saves <span class="approx">≈</span>&nbsp;€150 a year.</p>
       <div class="mt-4">
         <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
@@ -487,7 +481,7 @@
       <p class="small secondary" style="margin-bottom: var(--s-3)">Budget for</p>
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget for" style="margin-bottom: var(--s-6)">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <p class="bg-gasnote" style="margin: calc(-1 * var(--s-4)) 0 var(--s-6)">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
       <fieldset class="bg-modes">
@@ -520,7 +514,7 @@
     </article>
 
     <article class="surface span-4 bg-how" aria-labelledby="bgs-how">
-      <h2 class="section-title" id="bgs-how">What you'll see</h2>
+      <h2 class="card-title" id="bgs-how">What you'll see</h2>
       <ul class="bg-next">
         <li><span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span>
           <p><b>A daily pace</b>How much you can use each day to stay under your limit.</p></li>
@@ -548,7 +542,7 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -557,14 +551,12 @@
     <article class="surface span-12 empty">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
       <div>
-        <p style="margin-bottom: var(--s-3)"><span class="chip">Setting up</span></p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Setting up</span></div>
         <h1 class="empty__title" id="bga-title">Your budget is set</h1>
         <p class="empty__body">First calculation is on its way — check back shortly and we'll show you where you stand.</p>
-        <ul class="bg-when">
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>When:</b> we can't give an exact time — the first calculation runs once your latest readings have been processed. We'll show your status here as soon as it has.</span></li>
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-check-circle"/></svg><span><b>What you can do:</b> nothing is needed. You can still change how your limit is set in the meantime.</span></li>
-        </ul>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — the first calculation runs once your latest readings have been processed; your status appears here as soon as it has.</span></p>
         <div class="empty__actions"><a class="btn btn--secondary" href="#panel-budgets-setup"><svg class="icon sm" aria-hidden="true"><use href="#i-sliders"/></svg>Budget settings</a></div>
+        <p class="empty__note">Nothing you need to do. You can still change how your limit is set in the meantime.</p>
         <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
       </div>
     </article>
@@ -577,7 +569,7 @@
     <ul>
       <li>Reason code <code>budget_awaiting_first_run</code> (<code>Budget.status.action</code>). ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38).</li>
       <li>Same chrome as source: fuel/period tabs, "Setting up" pill (neutral), config footer "Mode Auto (20% margin) · Period 1–31 May".</li>
-      <li>Round 2 edge-state rule: "When" states the timing is unknown and why (no timeframe invented, respecting ask #38); "What you can do" + a secondary "Budget settings" link; footnote. All <b>derived copy</b>.</li>
+      <li>Edge-state rule (round 3 template): <code>.empty__status</code> chip, <code>.empty__when</code> "No date yet — …" (no timeframe invented, ask #38), <code>.empty__note</code> + a secondary "Budget settings" link, footnote. All <b>derived copy</b>.</li>
     </ul>
   </details>
 </section>
@@ -588,7 +580,7 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -597,13 +589,11 @@
     <article class="surface span-12 empty">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
       <div>
-        <p style="margin-bottom: var(--s-3)"><span class="chip">Setting up</span></p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Setting up</span></div>
         <h1 class="empty__title" id="bgn-title">Still collecting your data</h1>
         <p class="empty__body">Your meter hasn't reported enough recent readings yet to track this budget. Nothing wrong with your setup — this should resolve once fresh data comes in.</p>
-        <ul class="bg-when">
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>When:</b> there's no fixed date — it depends on when your meter next reports. Last reading received: <b>14 May 2026</b>.</span></li>
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-plug"/></svg><span><b>What you can do:</b> your budget needs no changes. If still no new readings arrive by 21 May, check that your meter is connected.</span></li>
-        </ul>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — it depends on when your meter next reports. Your first readings arrived on 16 May 2026.</span></p>
+        <p class="empty__note">Nothing you need to do — your budget settings are saved and need no changes.</p>
         <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
       </div>
     </article>
@@ -616,7 +606,7 @@
     <ul>
       <li>Reason code <code>budget_not_enough_data</code>. ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38: how long this lasts — needs Hani).</li>
       <li>No readiness meter: there is no known count to show. Same chrome as "Awaiting first run".</li>
-      <li>Round 2 edge-state rule: "When" (no fixed date + ⚠ <b>illustrative</b> last reading 14 May 2026), "What you can do" (check the meter if nothing by 21 May — a 7-day rule we made up; needs product/ops sign-off, ask #38), footnote. All <b>derived</b>.</li>
+      <li>Edge-state rule (round 3 template): <code>.empty__when</code> "No date yet — it depends on when your meter next reports" (ask #38: no duration known) + first readings 16 May 2026 (new-customer timeline, matches <code>panel-overview-new</code>, where Budgets is "Ready now" once a budget is set); <code>.empty__note</code> "Nothing you need to do"; footnote. The round-2 invented "last reading 14 May / check meter by 21 May" was removed. All <b>derived</b>.</li>
     </ul>
   </details>
 </section>
@@ -629,7 +619,7 @@
   const last7 = [11, 12, 13, 14, 15, 16, 17].map(i => ({ index: i, tone: 'accent' }));
   JuneCharts.bars('#bg-chart-month', {
     values: may, slots: 31, labels: days(31), tipLabels: days(31).map(d => d + ' May'),
-    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' },
+    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' }, current: 17,
     tone: 'muted', highlight: last7, maxBar: 14,
     yMax: 15, yTicks: [0, 5, 10, 15], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
     futureLabel: '19–31 May: up to 8.7 kWh a day',
@@ -638,7 +628,7 @@
   JuneCharts.bars('#bg-chart-week', {
     values: may.slice(11), labels: ['Tue 12', 'Wed 13', 'Thu 14', 'Fri 15', 'Sat 16', 'Sun 17', 'Mon 18'],
     tipLabels: ['Tue 12 May', 'Wed 13 May', 'Thu 14 May', 'Fri 15 May', 'Sat 16 May', 'Sun 17 May', 'Today, 18 May'],
-    now: { index: 6, label: 'Today' }, maxBar: 36,
+    now: { index: 6, label: 'Today' }, current: 6, maxBar: 36,
     thresholds: [{ value: 8.7, label: 'Pace needed', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
     yMax: 10, yTicks: [0, 2, 4, 6, 8, 10], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
     ariaLabel: 'Bar chart of daily electricity use for the last 7 days, 12 to 18 May 2026: 8.4, 7.6, 8.1, 7.2, 7.9, 8.3 and 7.8 kWh. All are under the 8.7 kWh a day line; the average is 7.9 kWh.'

@@ -120,7 +120,7 @@
     <!-- Supporting: to and from the grid over time (Day / Week / Month / Year) -->
     <article class="surface span-8" id="sl-chart-tile" aria-labelledby="sl-chart-title">
       <div class="sl-chart-head">
-        <h2 class="section-title" id="sl-chart-title">To and from the grid</h2>
+        <h2 class="card-title" id="sl-chart-title">To and from the grid</h2>
         <div class="sl-controls">
           <div class="seg" role="radiogroup" aria-label="Period" data-seg-target="#sl-chart-tile">
             <button type="button" data-value="day" aria-checked="true">Day</button>
@@ -174,7 +174,7 @@
 
     <!-- Supporting: seasonal production (absolute, stacked) -->
     <article class="surface span-4 sl-season" aria-labelledby="sl-season-title">
-      <h2 class="section-title" id="sl-season-title">Seasonal production — last 12 months</h2>
+      <h2 class="card-title" id="sl-season-title">Seasonal production — last 12 months</h2>
       <p class="insight">Production peaks in July at <b>620 kWh</b> — over 9× December's 68 kWh, your quietest month.</p>
       <div id="sl-season"></div>
       <p class="sl-next"><a class="link" href="#panel-advice">Use more of your own solar <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a></p>
@@ -227,6 +227,7 @@
       <li>KPIs renamed plain-first: Self-consumption → "Used at home", Self-sufficiency → "From your panels". The technical names, the verbatim body sentences, formulas and worked examples live in the ≈ popovers. The four "Estimated" pills collapse into: one ≈ per KPI, the "Estimated" tag in each popover and one tag on the raw chart, plus the footnote.</li>
       <li>Formula card → the "About these numbers" footnote (identity equation + honesty label verbatim).</li>
       <li>Flow numbers printed once (round 2): the summary rows (Import 4.4 · Export 3.2 · Self-consumed 5.2) became the direct labels on the three flow lines ("4.4 imported", "3.2 exported", "5.2 used at home"); the Grid node no longer shows a total (it read as "grid = 4.4 in total"). Nodes: "Panels made 8.4 kWh", "Home used 9.6 kWh".</li>
+      <li>Round 3: card titles use <code>.card-title</code>; seasonal chart highlights May (so far) as the current period and labels "Used at home / Exported" directly (no legend); raw chart highlights the current hour; grid chart marks now with the "Now 20:00" line / bold "Today"·"May" tick. ≈ markers are the inline <code>.est</code> form.</li>
       <li>Next step added: "Use more of your own solar" link → Advice (new copy for sign-off).</li>
     </ul>
     <h4>Phase 4 decisions &amp; fixes</h4>
@@ -256,17 +257,18 @@
     <article class="surface span-12 empty motif sl-cal">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span>
       <div>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Calibrating</span></div>
         <h1 class="empty__title" id="slc-title">Still calibrating your solar setup</h1>
         <p class="empty__body">We need at least 7 days of import/export data to estimate your panels' production — after that, we can start showing your full solar picture.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 22 May</b> · 3 more days of readings</span></p>
         <div class="readiness" data-done="4" data-total="7" data-labels="Fri,Sat,Sun,Mon,Tue,Wed,Thu"
-             aria-label="4 of 7 days collected: Friday 15 to Monday 18 May. Ready on Thursday 21 May.">
+             aria-label="4 of 7 days of readings: Friday 15 to Monday 18 May. Ready on Friday 22 May.">
           <div class="readiness__foot">
-            <span><b>Ready on 21 May</b> · 3 more days</span>
             <span>4 of 7 days</span>
           </div>
         </div>
         <p class="callout accent"><svg class="icon sm" aria-hidden="true"><use href="#i-check-circle"/></svg><span>Import and Export themselves are already tracking fine; it's just Production and Consumption still calibrating.</span></p>
-        <p class="small secondary mt-4">There's nothing you need to do — your solar picture appears here on its own.</p>
+        <p class="empty__note">There's nothing you need to do — your solar picture appears here on its own.</p>
       </div>
     </article>
   </div>
@@ -278,7 +280,7 @@
     <h4>Structure</h4>
     <ul>
       <li>Whole-tab not-ready state (inventory §3 edge states). Title and both body sentences verbatim; the second sentence is split out as a reassurance callout (ux-audit §1.3: cut the ≈60-word block into 2 sentences + one note).</li>
-      <li>Shared readiness meter: 7 segments, 4 filled, "4 of 7 days" (verbatim). Derived copy for sign-off: "Ready on 21 May · 3 more days" (counting from 15 May with "today" = Mon 18 May), day labels Fri–Thu, "There's nothing you need to do — your solar picture appears here on its own.", and the footnote wording.</li>
+      <li>Shared readiness meter: 7 segments, 4 filled, "4 of 7 days" (verbatim). Derived copy for sign-off: "Ready on 22 May · 3 more days of readings" (round 3 readiness rule: first readings Fri 15 May, 7 days = 15–21 May, ready the morning after → Fri 22 May; "today" = Mon 18 May), day labels Fri–Thu, "There's nothing you need to do — your solar picture appears here on its own.", and the footnote wording.</li>
       <li>Icon: sun (was ☀️ emoji). Halftone motif = the one brand motif on this screen.</li>
     </ul>
     <h4>Reason code</h4>
@@ -345,7 +347,7 @@
   JuneCharts.bars('#sl-season', {
     series: [{ name: 'Used at home', values: yHome, tone: 'accent' }, { name: 'Exported', values: yExp, tone: 'elec' }],
     labels: months, tipLabels: monthsLong, xTicks: [1, 3, 5, 7, 9, 11],
-    annotation: { index: 1, text: '620 kWh', tone: 'ink' },
+    annotation: { index: 1, text: '620 kWh', tone: 'ink' }, current: 11, seriesLabels: 'direct',
     yMax: 700, yTicks: [0, 200, 400, 600], height: 300, yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
     tooltip: (i, v) => `${monthsLong[i]} · ${v} kWh made · ${yHome[i]} used at home · ${yExp[i]} exported`,
     ariaLabel: 'Stacked bar chart of monthly solar production, June 2025 to May 2026 (May so far: 170 kWh), split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months export more than half; winter months use almost all of it at home.'
@@ -357,7 +359,7 @@
       { name: 'Production', tone: 'elec', values: dProd },
       { name: 'Consumption', tone: 'ink', values: dCons }
     ],
-    yMin: 0, yMax: 1.2, yTicks: [0, 0.4, 0.8, 1.2], yLabel: 'kWh per hour (estimated)', unit: 'kWh', decimals: 2,
+    current: 19, yMin: 0, yMax: 1.2, yTicks: [0, 0.4, 0.8, 1.2], yLabel: 'kWh per hour (estimated)', unit: 'kWh', decimals: 2,
     ariaLabel: 'Line chart of estimated production and consumption per hour on 18 May, 00:00 to 20:00. Production rises from 06:00 to a peak of 1.1 kWh at 12:00 and fades by 19:00: 8.4 kWh in total. Consumption stays around 0.2 to 0.7 kWh and rises to 0.95 kWh in the evening: 9.6 kWh in total.'
   });
 

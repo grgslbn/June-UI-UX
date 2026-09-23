@@ -40,7 +40,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -61,8 +61,8 @@
                 </div>
                 <h1 class="hero__sentence" id="cp-title">In April you used 73% more energy than similar homes.</h1>
                 <div class="cp-figure">
-                  <p class="hero-num"><span class="num" data-count="73">+73</span><span class="unit">%</span></p>
-                  <p class="cap">442&nbsp;kWh, against 255&nbsp;kWh for similar homes</p>
+                  <p class="hero-num"><span class="num" data-count="442">442</span><span class="unit">kWh</span></p>
+                  <p class="cap">your April use — similar homes used 255&nbsp;kWh</p>
                 </div>
                 <div class="cp-basis">
                   <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
@@ -85,7 +85,7 @@
         <!-- Supporting: 6-month trend -->
         <article class="surface span-12" aria-labelledby="cp-trend-title">
           <div class="cp-chart-head">
-            <h2 class="section-title" id="cp-trend-title">Your usage vs. similar homes</h2>
+            <h2 class="card-title" id="cp-trend-title">Your usage vs. similar homes</h2>
             <span class="xs muted">Nov 2025 – Apr 2026</span>
           </div>
           <p class="insight cp-insight">You used between <b>372 and 569 kWh</b> a month — more than similar homes every month. The gap was widest in February (569 vs 255, more than double).</p>
@@ -112,7 +112,7 @@
                   <button class="info" type="button" data-pop="cp-pop-rank" aria-label="How is the ranking worked out?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
                 <div id="cp-rank"></div>
                 <div class="cp-best">
-                  <h3 class="section-title">Beat your personal best</h3>
+                  <h3 class="card-title">Beat your personal best</h3>
                   <p class="small secondary">Compared to your own last 6 months. Your best month was <b>November 2025</b>, when 95.5% of similar homes used less than you. In April it was 99.8% — a bit above where you've been. Get below 95.5% to set a new personal best.
                     <button class="info" type="button" data-pop="cp-pop-rank" aria-label="What do these percentages mean?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
                 </div>
@@ -127,10 +127,11 @@
         <article class="surface span-12 empty motif">
           <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
           <div>
-            <p class="overline">Gas · April 2026</p>
+            <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Gas · April 2026</span></div>
             <h2 class="empty__title">Still gathering the group</h2>
             <p class="empty__body">Not enough similar homes have reported data for this period yet. Check back in a few days.</p>
-            <p class="small secondary mt-4">There's nothing you need to do. Your electricity comparison is ready under Elec.</p>
+            <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — it depends on when other homes' April gas readings arrive.</span></p>
+            <p class="empty__note">There's nothing you need to do. Your electricity comparison is ready under Elec.</p>
           </div>
         </article>
       </div>
@@ -153,6 +154,7 @@
     <ul>
       <li>✓ Approved: Consumption + Ranking trend charts, bar comparison with the 73% figure, fuel toggle (gas parameter confirmed, not live-tested), personal-best widget. IA per ux-audit §3.5: hero (answer + 3-point comparison + profile basis) → trend → [D] ranking + personal best.</li>
       <li>Round 2: personal best moved out of view into the "Your ranking over time" disclosure, in plain words and without the trophy (a best month at 95.5% is not a trophy moment). The visible trend card ends with one line naming the best month plus the one primary action. The 90–100% number line was removed — the ranking chart already shows 95.5 vs 99.8.</li>
+      <li>Round 3: hero numeral adds information instead of repeating the sentence — 442 kWh (your April use, similar homes 255) under "73% more"; good news 250 kWh; partial profile has no numeral (no amounts at house-type-only). Card titles use <code>.card-title</code>; € option has <code>data-reason</code>; April is the highlighted current period on both charts; empty states use <code>.empty__status / __when / __note</code>; no-house-type hides the household chip (<code>data-home="none"</code>).</li>
       <li>Round 2: status chip is neutral (no amber — amber is not a second "over" colour); +73% is ink. Overview should show +73% in ink too (foundation).</li>
       <li>Round 2: trend chart uses the legend only (end labels off — "legend or direct labels, never both"); y-axis starts at 100 kWh (lines, not bars) so the gap fills the plot.</li>
       <li>Hero sentence derived from the approved headline "You've used 73% more energy than similar homes this month — the most efficient 10% use about 179 kWh." "this month" → "In April" (demo-data change #5). The 179 kWh clause moved under the bars.</li>
@@ -194,7 +196,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -209,10 +211,7 @@
               <span class="xs muted">April 2026 · electricity</span>
             </div>
             <h1 class="hero__sentence" id="cpp-title">You've used 9% more energy than similar homes.</h1>
-            <div class="cp-figure">
-              <p class="hero-num"><span class="num" data-count="9">+9</span><span class="unit">%</span></p>
-              <p class="cap">compared on house type only</p>
-            </div>
+            <p class="hero__caption">Compared on house type only, so amounts aren't shown.</p>
             <div class="callout accent cp-nudge">
               <svg class="icon sm" aria-hidden="true"><use href="#i-bulb"/></svg>
               <div>
@@ -224,7 +223,6 @@
           <div class="hero__aside">
             <p class="overline">How you compare · April</p>
             <div class="cp-bars" id="cpp-bars"></div>
-            <p class="small secondary">Amounts aren't shown for a house-type-only match.</p>
             <div class="cp-basis">
               <div class="cp-basis__text">
                 <p class="xs muted">Compared using</p>
@@ -266,7 +264,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -282,8 +280,8 @@
             </div>
             <h1 class="hero__sentence" id="cpg-title">Nice — you've used 16% less energy than similar homes in April.</h1>
             <div class="cp-figure">
-              <p class="hero-num"><span class="num" data-count="16">16</span><span class="unit">% less</span></p>
-              <p class="cap">250&nbsp;kWh, against 298&nbsp;kWh for similar homes</p>
+              <p class="hero-num"><span class="num" data-count="250">250</span><span class="unit">kWh</span></p>
+              <p class="cap">your April use — similar homes used 298&nbsp;kWh</p>
             </div>
             <div class="cp-basis">
               <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
@@ -336,7 +334,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -356,8 +354,8 @@
             </div>
             <h1 class="hero__sentence" id="cpe-title">In April you used 73% more energy than similar homes.</h1>
             <div class="cp-figure">
-              <p class="hero-num"><span class="num" data-count="73">+73</span><span class="unit">%</span></p>
-              <p class="cap">442&nbsp;kWh, against 255&nbsp;kWh for similar homes</p>
+              <p class="hero-num"><span class="num" data-count="442">442</span><span class="unit">kWh</span></p>
+              <p class="cap">your April use — similar homes used 255&nbsp;kWh</p>
             </div>
             <div class="cp-basis">
               <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
@@ -397,18 +395,19 @@
 </section>
 
 <!-- ════════════════════════ COMPARE · no house type (hard block) ════════════════════════ -->
-<section class="panel" id="panel-compare-no-house-type" data-tab="compare" data-label="Compare · No house type set" aria-labelledby="cph-title">
+<section class="panel" id="panel-compare-no-house-type" data-home="none" data-tab="compare" data-label="Compare · No house type set" aria-labelledby="cph-title">
   <div class="grid">
     <article class="surface span-12 empty motif">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
       <div>
-        <p class="overline">Compared to similar homes</p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Compared to similar homes</span></div>
         <h1 class="empty__title" id="cph-title">Set your house type to see how you compare</h1>
         <p class="empty__body">No house type set yet — this is the one field we genuinely can't compare without.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready as soon as it's set</b> — there's nothing to wait for.</span></p>
         <div class="empty__actions">
           <a class="btn btn--primary" href="#">Set house type <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
-        <p class="small secondary mt-4">Your comparison with similar homes appears as soon as it's set — there's nothing to wait for.</p>
+
       </div>
     </article>
   </div>
@@ -431,13 +430,14 @@
     <article class="surface span-12 empty motif">
       <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg></span>
       <div>
-        <p class="overline">Compared to similar homes</p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Compared to similar homes</span></div>
         <h1 class="empty__title" id="cpn-title">No matching group found</h1>
         <p class="empty__body">Your home's profile is unique enough that we can't find a comparable group right now. This isn't something completing your profile further usually fixes.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — a group forms once enough homes like yours join.</span></p>
         <div class="empty__actions">
           <a class="btn btn--secondary" href="#panel-breakdown">See what your energy goes on <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
-        <p class="small secondary mt-4">There's nothing you need to change. Breakdown and Forecast still track your own home.</p>
+        <p class="empty__note">There's nothing you need to change. Breakdown and Forecast still track your own home.</p>
       </div>
     </article>
   </div>
@@ -459,10 +459,11 @@
     <article class="surface span-12 empty motif">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
       <div>
-        <p class="overline">Compared to similar homes · April 2026</p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Compared to similar homes · April 2026</span></div>
         <h1 class="empty__title" id="cpc-title">Still gathering the group</h1>
         <p class="empty__body">Not enough similar homes have reported data for this period yet. Check back in a few days.</p>
-        <p class="small secondary mt-4">There's nothing you need to do — the comparison fills in here on its own.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — other homes' April readings are still arriving.</span></p>
+        <p class="empty__note">There's nothing you need to do — the comparison fills in here on its own.</p>
       </div>
     </article>
   </div>
@@ -502,7 +503,7 @@
       { name: 'Your home', tone: 'accent', values: [408, 372, 513, 569, 520, 442], dots: true },
       { name: 'Similar homes average', tone: 'ink', values: [237, 218, 237, 255, 262, 255] }
     ],
-    yMin: 100, yMax: 600, yTicks: [100, 200, 300, 400, 500, 600], height: 280, endLabels: false, yLabel: 'kWh per month', unit: 'kWh', decimals: 0,
+    yMin: 100, yMax: 600, yTicks: [100, 200, 300, 400, 500, 600], height: 280, endLabels: false, current: 5, yLabel: 'kWh per month', unit: 'kWh', decimals: 0,
     ariaLabel: 'Line chart, November 2025 to April 2026. Your home used between 372 and 569 kWh a month; similar homes stayed between 218 and 262 kWh. The biggest gap is February: 569 against 255 kWh. In April you used 442 kWh against 255 kWh.'
   });
 
@@ -513,7 +514,7 @@
       { value: 90, label: 'Highest users', valueText: 'top 10%', tone: 'ink' },
       { value: 10, label: 'Most efficient', valueText: 'bottom 10%', tone: 'ink' }
     ],
-    yMin: 0, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Similar homes that used less than you (%)', unit: '%', decimals: 1,
+    yMin: 0, yMax: 100, yTicks: [0, 25, 50, 75, 100], current: 5, yLabel: 'Similar homes that used less than you (%)', unit: '%', decimals: 1,
     tooltip: i => `${monLong[i]} · more than ${[95.5, 100, 100, 100, 100, 99.8][i]}% of similar homes`,
     ariaLabel: 'Line chart of your monthly ranking among similar homes, November 2025 to April 2026: 95.5, 100, 100, 100, 100 and 99.8 percent of similar homes used less than you. Every month sits in the highest-users tenth.'
   });

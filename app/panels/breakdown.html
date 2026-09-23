@@ -1,10 +1,5 @@
 <style>
 /* Breakdown — tab-specific layout only (components come from components.css) */
-/* Category tints for the "All categories" stack: accent + ink steps only (aliases of existing tokens, no new hues).
-   Light and dark use different ink steps so the four greys stay evenly spaced on each surface. */
-[data-tab="breakdown"] { --cat-bd2: var(--ink-700); --cat-bd3: var(--ink-400); --cat-bd4: var(--ink-200); --cat-bd5: var(--ink-100); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) [data-tab="breakdown"] { --cat-bd2: var(--ink-700); --cat-bd3: var(--ink-500); --cat-bd4: var(--ink-400); --cat-bd5: var(--ink-200); } }
-:root[data-theme="dark"] [data-tab="breakdown"] { --cat-bd2: var(--ink-700); --cat-bd3: var(--ink-500); --cat-bd4: var(--ink-400); --cat-bd5: var(--ink-200); }
 [data-tab="breakdown"] .bd-figure { display: flex; align-items: baseline; gap: 12px 16px; flex-wrap: wrap; margin-top: var(--s-5); }
 [data-tab="breakdown"] .bd-figure .cap { font-size: var(--fs-md); color: var(--ink-700); }
 /* Hero split bar: Heating vs everything else (two segments, both labelled below) */
@@ -28,8 +23,6 @@
 [data-tab="breakdown"] .bd-nudge__body { font-size: var(--fs-sm); color: var(--ink-700); }
 [data-tab="breakdown"] .bd-nudge .meter-ends { margin-top: 6px; }
 /* Edge states */
-[data-tab="breakdown"] .bd-when { display: flex; align-items: center; gap: 10px; margin-top: var(--s-5); font-size: var(--fs-md); color: var(--ink-900); }
-[data-tab="breakdown"] .bd-when .icon { color: var(--accent-strong); }
 [data-tab="breakdown"] .bd-progress { margin-top: var(--s-5); max-width: 420px; }
 @media (min-width: 961px) { [data-tab="breakdown"] .grid.stretch > .surface { height: 100%; } }
 @media (max-width: 960px) {
@@ -67,7 +60,7 @@
     <!-- Supporting: the ranked list IS the chart -->
     <article class="surface span-5" id="bd-list-tile" aria-labelledby="bd-list-title">
       <div class="bd-head">
-        <h2 class="section-title" id="bd-list-title">April, by category</h2>
+        <h2 class="card-title" id="bd-list-title">April, by category</h2>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit" data-seg-target="#bd-list-tile">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
           <button type="button" data-value="eur" aria-checked="false">€</button>
@@ -93,7 +86,7 @@
     <!-- Supporting: seasonal trend (April highlighted; Heating by default, all categories on demand) -->
     <article class="surface span-7" id="bd-season-tile" aria-labelledby="bd-season-title">
       <div class="bd-head">
-        <h2 class="section-title" id="bd-season-title">Seasonal trend — last 12 months</h2>
+        <h2 class="card-title" id="bd-season-title">Seasonal trend — last 12 months</h2>
         <div class="seg" role="radiogroup" aria-label="Categories shown" data-seg-target="#bd-season-tile">
           <button type="button" data-value="heating" aria-checked="true">Heating</button>
           <button type="button" data-value="all" aria-checked="false">All categories</button>
@@ -144,9 +137,9 @@
       <li>✓ Approved: glance, list and seasonal views; profile nudge; no time toggle; € via average price. IA per ux-audit §3.4: hero → ranked list + seasonal → slim profile banner.</li>
       <li>Hero contract (round-2 shared rule): sentence answers ("Heating was your biggest use in April."), the ONE numeral adds the share (38%), the split bar adds the kWh (168 vs 274). No % in the sentence; no caps kicker ("At a glance" kept as plain muted text).</li>
       <li>Donut ("At a glance · 38% Heating · Biggest category this month →") folded into the hero. "Biggest category" is now said by the h1; "this month" → April (D2).</li>
-      <li>Category list: JuneCharts.hbars in rank order with <code>highlight: 0, muteOthers</code> — Heating in accent, the rest muted; identity carried by line icons + text labels (no category hues). "Estimated" tag kept on Water heating.</li>
-      <li>Seasonal: axis May 2025 → Apr 2026 so the current period (April) sits at the end, bold tick + accent bar; other months muted. "All categories" = the printed 5-series 100% stack in accent + four ink steps (light 700/400/200/100, dark 700/500/400/200 — aliases only, defined in this fragment), legend only (no direct labels), April tick bold. The insight sentence changes with the view.</li>
-      <li>The stack merges Fridge &amp; freezer with Other ("Fridge, freezer &amp; other") as printed; the list keeps them separate. With a single muted list colour there is no colour to mismatch.</li>
+      <li>Category list: JuneCharts.hbars in rank order with the round-3 <code>--cat-*</code> tokens (cat-1 = accent for Heating, cat-2…5 + other = ink steps), 1:1 with the stack; identity carried by line icons + text labels (no category hues). "Estimated" tag kept on Water heating.</li>
+      <li>Seasonal: axis May 2025 → Apr 2026 so the current period (April) sits at the end, bold tick + accent bar; other months muted. Both views use <code>current: 11</code> (April; muted others in the Heating view, soft column band in the stack). "All categories" = the printed 5-series 100% stack in cat-1…cat-5, labelled directly at the April column (<code>seriesLabels:'direct'</code>; key row below 480px). The insight sentence changes with the view.</li>
+      <li>The stack merges Fridge &amp; freezer with Other ("Fridge, freezer &amp; other") as printed and draws it in cat-5 (Fridge &amp; freezer's tint); the list keeps Other separate in cat-other.</li>
       <li>€ honesty note in the ≈ popover (verbatim) and the footnote (verbatim). "Always on" definition is new copy — sign-off.</li>
       <li>Profile nudge: slim banner, secondary button. "2 details left" derived from the frozen body (heating type, home size) — sign-off. <code>href="#"</code> until the profile flow exists.</li>
     </ul>
@@ -176,7 +169,7 @@
           <div class="meter thin" style="--used: 30" role="img" aria-label="Home profile 30% complete"><span class="meter__fill grow-x"></span></div>
           <div class="meter-ends"><span>Home profile</span><span>30% complete</span></div>
         </div>
-        <p class="bd-when"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>Your breakdown appears <b>as soon as you've added them</b> — your readings are already in.</span></p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready as soon as you've added them</b> — your readings are already in.</span></p>
         <div class="empty__actions">
           <a class="btn btn--primary" href="#">Complete profile <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
@@ -191,7 +184,7 @@
     <ul>
       <li>Source state: "Hard block: required profile field missing". That title is a designer label and does not ship. <b>New product title</b> "Tell us about your home to see where your energy goes" — needs copy sign-off.</li>
       <li>Body, "30% complete" and "Complete profile" verbatim. Uses the shared single-tile empty pattern (round 2: the "What you'll see" preview tile was a second pattern and is removed).</li>
-      <li>"When" line is new copy and assumes history is sufficient (otherwise the "data not ready" state shows) — sign-off.</li>
+      <li>".empty__when" line is new copy and assumes history is sufficient (otherwise the "data not ready" state shows) — sign-off.</li>
       <li>Reason: required-field config. ⚠ Field names (home type, heating source) are placeholders — ask #36 (pending Hani).</li>
     </ul>
   </details>
@@ -205,9 +198,10 @@
       <div>
         <h1 class="empty__title" id="bdn-title">Data not ready yet</h1>
         <p class="empty__body">We need about 3 more weeks of daily readings before we can reliably split your usage into categories. Check back soon.</p>
-        <div class="readiness" data-done="1" data-total="4" data-labels="11 May,18 May,25 May,1 Jun"
-             aria-label="1 of 4 weeks of daily readings collected, since 11 May 2026. Your breakdown should be ready around 8 June 2026.">
-          <div class="readiness__foot"><span><b>Ready around 8 June 2026</b> · 3 more weeks</span><span>1 of 4 weeks collected</span></div>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 13 June 2026</b> · 25 more days</span></p>
+        <div class="readiness" data-done="3" data-total="28"
+             aria-label="3 of 28 days of daily readings collected, since 16 May 2026. Your breakdown is ready on 13 June 2026.">
+          <div class="readiness__foot"><span>3 of 28 days collected</span><span>First readings 16 May</span></div>
         </div>
         <p class="small secondary mt-2">Nothing to complete here — just needs time.</p>
       </div>
@@ -221,7 +215,7 @@
     <ul>
       <li>No halftone motif on Breakdown edge states (round 2: it sat behind body copy).</li>
       <li>Title, body and sub verbatim. "Check back soon." is frozen copy; a concrete date sits right under it (copy rule: dates, not "soon").</li>
-      <li>Shared readiness meter added (round 2: every time-based state has one). ⚠ <b>Derived</b>: "about 3 more weeks" read as a 4-week requirement with 1 week collected (readings since 11 May 2026 → ready around 8 June 2026). Needs the real readiness threshold from the API before build.</li>
+      <li>New-customer timeline (same household as <code>panel-overview-new</code>): first readings 16 May 2026; Breakdown needs 4 weeks (28 days) of daily readings; §0 readiness rule (unlocks the morning after the Nth day) → 16 May – 12 June → <b>ready 13 June 2026</b>, matching the Overview chip. On 18 May: 3 of 28 days, 25 more days (≈ "about 3 more weeks" in the frozen body, rounded). ⚠ The 28-day threshold is our reading of "about 3 more weeks" — needs the real API threshold.</li>
       <li>Nothing for the user to do — said explicitly (verbatim sub).</li>
       <li>Reason: insufficient daily history (~3 weeks). No API code named.</li>
     </ul>
@@ -249,9 +243,9 @@
     new MutationObserver(add).observe(host, { childList: true });
     add();
   };
-  const ranked = { highlight: 0, muteOthers: true };
-  JuneCharts.hbars('#bd-list-kwh', { ...ranked, items: cats.map(c => ({ label: c.label, value: c.kwh, note: c.note, valueText: `<b>${c.kwh} kWh</b> · ${c.pct}%` })) });
-  JuneCharts.hbars('#bd-list-eur', { ...ranked, items: cats.map(c => ({ label: c.label, value: c.eur, note: c.note, valueText: `<b><span class="approx">≈</span> €${c.eur}</b> · ${c.pct}%` })) });
+  const tone = i => i < 5 ? 'cat-' + (i + 1) : 'cat-other';
+  JuneCharts.hbars('#bd-list-kwh', { items: cats.map((c, i) => ({ label: c.label, value: c.kwh, tone: tone(i), note: c.note, valueText: `<b>${c.kwh} kWh</b> · ${c.pct}%` })) });
+  JuneCharts.hbars('#bd-list-eur', { items: cats.map((c, i) => ({ label: c.label, value: c.eur, tone: tone(i), note: c.note, valueText: `<b><span class="approx">≈</span> €${c.eur}</b> · ${c.pct}%` })) });
   withIcons('#bd-list-kwh'); withIcons('#bd-list-eur');
 
   // Last 12 months, May 2025 → April 2026 (current period last)
@@ -262,23 +256,22 @@
   const always  = [10, 12, 13, 12, 10, 9, 8, 8, 8, 8, 9, 14];
   const cooking = [12, 13, 13, 12, 11, 10, 9, 9, 9, 9, 10, 12];
   const rest    = [52, 54, 53, 53, 48, 37, 28, 21, 19, 25, 32, 16];
-  const cur = { index: 11, label: 'Apr' };
   JuneCharts.bars('#bd-season-heating', {
     values: heating, labels: months, tipLabels: monthsLong, tone: 'muted',
-    highlight: { index: 11, tone: 'accent' }, now: cur,
+    current: 11,
     annotation: { index: 11, text: '38% in April', tone: 'ink' },
     yMax: 60, yTicks: [0, 20, 40, 60], yLabel: "Heating's share of your use (%)", unit: '%', decimals: 0, maxBar: 28, height: 320,
     ariaLabel: "Bar chart of heating's share of your use per month, May 2025 to April 2026: 14, 9, 9, 11, 20, 33, 45, 52, 54, 48, 38 and 38 percent. Lowest in June and July (9%), highest in January (54%). April 2026, your last full month, is highlighted at 38%."
   });
   JuneCharts.bars('#bd-season-all', {
     series: [
-      { name: 'Heating', values: heating, tone: 'accent' },
-      { name: 'Water heating', values: water, tone: 'cat-bd2' },
-      { name: 'Always on', values: always, tone: 'cat-bd3' },
-      { name: 'Cooking', values: cooking, tone: 'cat-bd4' },
-      { name: 'Fridge, freezer & other', values: rest, tone: 'cat-bd5' }
+      { name: 'Heating', values: heating, tone: 'cat-1' },
+      { name: 'Water heating', values: water, tone: 'cat-2' },
+      { name: 'Always on', values: always, tone: 'cat-3' },
+      { name: 'Cooking', values: cooking, tone: 'cat-4' },
+      { name: 'Fridge, freezer & other', values: rest, tone: 'cat-5' }
     ],
-    labels: months, now: cur, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
+    labels: months, current: 11, seriesLabels: 'direct', yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
     tooltip: i => `${monthsLong[i]} · Heating ${heating[i]}% · Water heating ${water[i]}% · Always on ${always[i]}% · Cooking ${cooking[i]}% · Fridge, freezer & other ${rest[i]}%`,
     ariaLabel: 'Stacked 100% bars per month, May 2025 to April 2026, with five categories. Heating swings from 9% in summer to 54% in January. Water heating (10–20%), always on (8–14%) and cooking (9–13%) stay fairly flat; fridge, freezer and other are about half of your use in summer. April 2026: heating 38, water heating 20, always on 14, cooking 12, fridge, freezer and other 16 percent.'
   });
