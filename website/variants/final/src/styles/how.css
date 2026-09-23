@@ -144,3 +144,7 @@
   .pull-mark { justify-self: start; font-size: 64px; }
 }
 
+
+/* Room for the one squiggle word in the H1 when it is not on the last line. */
+.page-hero h1#h1 { line-height: 1.22; }
+.page-hero h1#h1 .sq-line { bottom: -0.16em; }

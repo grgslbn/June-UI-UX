@@ -231,3 +231,7 @@
   .matrix .txt { font-size: 12px; display: inline-block; max-width: 9ch; }
   .matrix .yes svg { width: 18px; height: 18px; }
 }
+
+/* Room for the one squiggle word in the H1 when it is not on the last line. */
+.page-hero h1#h1 { line-height: 1.22; }
+.page-hero h1#h1 .sq-line { bottom: -0.16em; }

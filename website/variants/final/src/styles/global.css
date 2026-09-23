@@ -207,8 +207,8 @@ sup.fn a { text-decoration: none; display: inline-block; min-width: 24px; min-he
 .promise-foot { margin-top: var(--s-10); display: grid; grid-template-columns: 1fr auto; gap: var(--s-6); align-items: center; border-top: 1px solid rgba(255,255,255,.18); padding-top: var(--s-6); }
 .promise-foot .note { color: var(--on-block-muted); }
 /* One inverse CTA for every dark or green field: white button, ink text (hover: mint). .btn--light is kept as an alias. */
-.btn--inverse, .btn--light, .promise .btn--light, .summary--field .btn { background: #fff; color: #14232a; }
-.btn--inverse:hover, .btn--light:hover, .promise .btn--light:hover, .summary--field .btn:hover { background: #e3f4f2; color: #14232a; }
+.btn--inverse, .btn--light, .promise .btn--inverse, .promise .btn--light, .summary--field .btn { background: #fff; color: #14232a; }
+.btn--inverse:hover, .btn--light:hover, .promise .btn--inverse:hover, .promise .btn--light:hover, .summary--field .btn:hover { background: #e3f4f2; color: #14232a; }
 @media (max-width: 860px) {
   .outcomes { grid-template-columns: 1fr; }
   .outcomes > div, .outcomes > div + div { padding: var(--s-5) 0; border-left: 0; border-bottom: 1px solid rgba(255,255,255,.18); }
