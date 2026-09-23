@@ -556,7 +556,7 @@
   const hourlyOpts = (d, hours, ticks, aria) => ({
     labels: Array.from({ length: hours + 1 }, (_, i) => hourLabel(i)),
     series: [{ name: 'Best estimate', tone: 'accent', values: d.e, band: { lo: d.lo, hi: d.hi } }],
-    now: { index: 0, label: 'Now' }, current: 0, xTicks: ticks,
+    now: { index: 0, label: 'Now' }, xTicks: ticks,
     yMin: 0, yMax: 0.6, yTicks: [0, 0.2, 0.4, 0.6], yLabel: 'kWh per hour', unit: 'kWh', decimals: 2,
     bandName: 'Likely range', tooltip: i => hourTip(i, d), ariaLabel: aria
   });
