@@ -271,7 +271,7 @@
       { name: 'Cooking', values: cooking, tone: 'cat-4' },
       { name: 'Fridge, freezer & other', values: rest, tone: 'cat-5' }
     ],
-    labels: months, current: 11, seriesLabels: 'direct', yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
+    labels: months, current: 11, seriesLabels: 'direct', xTicks: [1, 3, 5, 7, 9, 11], yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
     tooltip: i => `${monthsLong[i]} · Heating ${heating[i]}% · Water heating ${water[i]}% · Always on ${always[i]}% · Cooking ${cooking[i]}% · Fridge, freezer & other ${rest[i]}%`,
     ariaLabel: 'Stacked 100% bars per month, May 2025 to April 2026, with five categories. Heating swings from 9% in summer to 54% in January. Water heating (10–20%), always on (8–14%) and cooking (9–13%) stay fairly flat; fridge, freezer and other are about half of your use in summer. April 2026: heating 38, water heating 20, always on 14, cooking 12, fridge, freezer and other 16 percent.'
   });

@@ -460,7 +460,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -481,8 +481,8 @@
                 </div>
                 <h1 class="hero__sentence" id="cp-title">In April you used 73% more energy than similar homes.</h1>
                 <div class="cp-figure">
-                  <p class="hero-num"><span class="num" data-count="73">+73</span><span class="unit">%</span></p>
-                  <p class="cap">442&nbsp;kWh, against 255&nbsp;kWh for similar homes</p>
+                  <p class="hero-num"><span class="num" data-count="442">442</span><span class="unit">kWh</span></p>
+                  <p class="cap">your April use — similar homes used 255&nbsp;kWh</p>
                 </div>
                 <div class="cp-basis">
                   <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
@@ -505,7 +505,7 @@
         <!-- Supporting: 6-month trend -->
         <article class="surface span-12" aria-labelledby="cp-trend-title">
           <div class="cp-chart-head">
-            <h2 class="section-title" id="cp-trend-title">Your usage vs. similar homes</h2>
+            <h2 class="card-title" id="cp-trend-title">Your usage vs. similar homes</h2>
             <span class="xs muted">Nov 2025 – Apr 2026</span>
           </div>
           <p class="insight cp-insight">You used between <b>372 and 569 kWh</b> a month — more than similar homes every month. The gap was widest in February (569 vs 255, more than double).</p>
@@ -532,7 +532,7 @@
                   <button class="info" type="button" data-pop="cp-pop-rank" aria-label="How is the ranking worked out?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
                 <div id="cp-rank"></div>
                 <div class="cp-best">
-                  <h3 class="section-title">Beat your personal best</h3>
+                  <h3 class="card-title">Beat your personal best</h3>
                   <p class="small secondary">Compared to your own last 6 months. Your best month was <b>November 2025</b>, when 95.5% of similar homes used less than you. In April it was 99.8% — a bit above where you've been. Get below 95.5% to set a new personal best.
                     <button class="info" type="button" data-pop="cp-pop-rank" aria-label="What do these percentages mean?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
                 </div>
@@ -547,10 +547,11 @@
         <article class="surface span-12 empty motif">
           <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
           <div>
-            <p class="overline">Gas · April 2026</p>
+            <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Gas · April 2026</span></div>
             <h2 class="empty__title">Still gathering the group</h2>
             <p class="empty__body">Not enough similar homes have reported data for this period yet. Check back in a few days.</p>
-            <p class="small secondary mt-4">There's nothing you need to do. Your electricity comparison is ready under Elec.</p>
+            <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — it depends on when other homes' April gas readings arrive.</span></p>
+            <p class="empty__note">There's nothing you need to do. Your electricity comparison is ready under Elec.</p>
           </div>
         </article>
       </div>
@@ -573,6 +574,7 @@
     <ul>
       <li>✓ Approved: Consumption + Ranking trend charts, bar comparison with the 73% figure, fuel toggle (gas parameter confirmed, not live-tested), personal-best widget. IA per ux-audit §3.5: hero (answer + 3-point comparison + profile basis) → trend → [D] ranking + personal best.</li>
       <li>Round 2: personal best moved out of view into the "Your ranking over time" disclosure, in plain words and without the trophy (a best month at 95.5% is not a trophy moment). The visible trend card ends with one line naming the best month plus the one primary action. The 90–100% number line was removed — the ranking chart already shows 95.5 vs 99.8.</li>
+      <li>Round 3: hero numeral adds information instead of repeating the sentence — 442 kWh (your April use, similar homes 255) under "73% more"; good news 250 kWh; partial profile has no numeral (no amounts at house-type-only). Card titles use <code>.card-title</code>; € option has <code>data-reason</code>; April is the highlighted current period on both charts; empty states use <code>.empty__status / __when / __note</code>; no-house-type hides the household chip (<code>data-home="none"</code>).</li>
       <li>Round 2: status chip is neutral (no amber — amber is not a second "over" colour); +73% is ink. Overview should show +73% in ink too (foundation).</li>
       <li>Round 2: trend chart uses the legend only (end labels off — "legend or direct labels, never both"); y-axis starts at 100 kWh (lines, not bars) so the gap fills the plot.</li>
       <li>Hero sentence derived from the approved headline "You've used 73% more energy than similar homes this month — the most efficient 10% use about 179 kWh." "this month" → "In April" (demo-data change #5). The 179 kWh clause moved under the bars.</li>
@@ -614,7 +616,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -629,10 +631,7 @@
               <span class="xs muted">April 2026 · electricity</span>
             </div>
             <h1 class="hero__sentence" id="cpp-title">You've used 9% more energy than similar homes.</h1>
-            <div class="cp-figure">
-              <p class="hero-num"><span class="num" data-count="9">+9</span><span class="unit">%</span></p>
-              <p class="cap">compared on house type only</p>
-            </div>
+            <p class="hero__caption">Compared on house type only, so amounts aren't shown.</p>
             <div class="callout accent cp-nudge">
               <svg class="icon sm" aria-hidden="true"><use href="#i-bulb"/></svg>
               <div>
@@ -644,7 +643,6 @@
           <div class="hero__aside">
             <p class="overline">How you compare · April</p>
             <div class="cp-bars" id="cpp-bars"></div>
-            <p class="small secondary">Amounts aren't shown for a house-type-only match.</p>
             <div class="cp-basis">
               <div class="cp-basis__text">
                 <p class="xs muted">Compared using</p>
@@ -686,7 +684,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -702,8 +700,8 @@
             </div>
             <h1 class="hero__sentence" id="cpg-title">Nice — you've used 16% less energy than similar homes in April.</h1>
             <div class="cp-figure">
-              <p class="hero-num"><span class="num" data-count="16">16</span><span class="unit">% less</span></p>
-              <p class="cap">250&nbsp;kWh, against 298&nbsp;kWh for similar homes</p>
+              <p class="hero-num"><span class="num" data-count="250">250</span><span class="unit">kWh</span></p>
+              <p class="cap">your April use — similar homes used 298&nbsp;kWh</p>
             </div>
             <div class="cp-basis">
               <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
@@ -756,7 +754,7 @@
         </div>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true">€</button>
+          <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ needs a price formula for your contract">€</button>
         </div>
         <button class="info" type="button" data-pop="cp-pop-eur" aria-label="Why is the € view unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </div>
@@ -776,8 +774,8 @@
             </div>
             <h1 class="hero__sentence" id="cpe-title">In April you used 73% more energy than similar homes.</h1>
             <div class="cp-figure">
-              <p class="hero-num"><span class="num" data-count="73">+73</span><span class="unit">%</span></p>
-              <p class="cap">442&nbsp;kWh, against 255&nbsp;kWh for similar homes</p>
+              <p class="hero-num"><span class="num" data-count="442">442</span><span class="unit">kWh</span></p>
+              <p class="cap">your April use — similar homes used 255&nbsp;kWh</p>
             </div>
             <div class="cp-basis">
               <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
@@ -817,18 +815,19 @@
 </section>
 
 <!-- ════════════════════════ COMPARE · no house type (hard block) ════════════════════════ -->
-<section class="panel" id="panel-compare-no-house-type" data-tab="compare" data-label="Compare · No house type set" aria-labelledby="cph-title">
+<section class="panel" id="panel-compare-no-house-type" data-home="none" data-tab="compare" data-label="Compare · No house type set" aria-labelledby="cph-title">
   <div class="grid">
     <article class="surface span-12 empty motif">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
       <div>
-        <p class="overline">Compared to similar homes</p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Compared to similar homes</span></div>
         <h1 class="empty__title" id="cph-title">Set your house type to see how you compare</h1>
         <p class="empty__body">No house type set yet — this is the one field we genuinely can't compare without.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready as soon as it's set</b> — there's nothing to wait for.</span></p>
         <div class="empty__actions">
           <a class="btn btn--primary" href="#">Set house type <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
-        <p class="small secondary mt-4">Your comparison with similar homes appears as soon as it's set — there's nothing to wait for.</p>
+
       </div>
     </article>
   </div>
@@ -851,13 +850,14 @@
     <article class="surface span-12 empty motif">
       <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-building"/></svg></span>
       <div>
-        <p class="overline">Compared to similar homes</p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Compared to similar homes</span></div>
         <h1 class="empty__title" id="cpn-title">No matching group found</h1>
         <p class="empty__body">Your home's profile is unique enough that we can't find a comparable group right now. This isn't something completing your profile further usually fixes.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — a group forms once enough homes like yours join.</span></p>
         <div class="empty__actions">
           <a class="btn btn--secondary" href="#panel-breakdown">See what your energy goes on <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
-        <p class="small secondary mt-4">There's nothing you need to change. Breakdown and Forecast still track your own home.</p>
+        <p class="empty__note">There's nothing you need to change. Breakdown and Forecast still track your own home.</p>
       </div>
     </article>
   </div>
@@ -879,10 +879,11 @@
     <article class="surface span-12 empty motif">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
       <div>
-        <p class="overline">Compared to similar homes · April 2026</p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Compared to similar homes · April 2026</span></div>
         <h1 class="empty__title" id="cpc-title">Still gathering the group</h1>
         <p class="empty__body">Not enough similar homes have reported data for this period yet. Check back in a few days.</p>
-        <p class="small secondary mt-4">There's nothing you need to do — the comparison fills in here on its own.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — other homes' April readings are still arriving.</span></p>
+        <p class="empty__note">There's nothing you need to do — the comparison fills in here on its own.</p>
       </div>
     </article>
   </div>
@@ -922,7 +923,7 @@
       { name: 'Your home', tone: 'accent', values: [408, 372, 513, 569, 520, 442], dots: true },
       { name: 'Similar homes average', tone: 'ink', values: [237, 218, 237, 255, 262, 255] }
     ],
-    yMin: 100, yMax: 600, yTicks: [100, 200, 300, 400, 500, 600], height: 280, endLabels: false, yLabel: 'kWh per month', unit: 'kWh', decimals: 0,
+    yMin: 100, yMax: 600, yTicks: [100, 200, 300, 400, 500, 600], height: 280, endLabels: false, current: 5, yLabel: 'kWh per month', unit: 'kWh', decimals: 0,
     ariaLabel: 'Line chart, November 2025 to April 2026. Your home used between 372 and 569 kWh a month; similar homes stayed between 218 and 262 kWh. The biggest gap is February: 569 against 255 kWh. In April you used 442 kWh against 255 kWh.'
   });
 
@@ -933,7 +934,7 @@
       { value: 90, label: 'Highest users', valueText: 'top 10%', tone: 'ink' },
       { value: 10, label: 'Most efficient', valueText: 'bottom 10%', tone: 'ink' }
     ],
-    yMin: 0, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Similar homes that used less than you (%)', unit: '%', decimals: 1,
+    yMin: 0, yMax: 100, yTicks: [0, 25, 50, 75, 100], current: 5, yLabel: 'Similar homes that used less than you (%)', unit: '%', decimals: 1,
     tooltip: i => `${monLong[i]} · more than ${[95.5, 100, 100, 100, 100, 99.8][i]}% of similar homes`,
     ariaLabel: 'Line chart of your monthly ranking among similar homes, November 2025 to April 2026: 95.5, 100, 100, 100, 100 and 99.8 percent of similar homes used less than you. Every month sits in the highest-users tenth.'
   });
@@ -1064,7 +1065,7 @@
     <!-- Supporting: to and from the grid over time (Day / Week / Month / Year) -->
     <article class="surface span-8" id="sl-chart-tile" aria-labelledby="sl-chart-title">
       <div class="sl-chart-head">
-        <h2 class="section-title" id="sl-chart-title">To and from the grid</h2>
+        <h2 class="card-title" id="sl-chart-title">To and from the grid</h2>
         <div class="sl-controls">
           <div class="seg" role="radiogroup" aria-label="Period" data-seg-target="#sl-chart-tile">
             <button type="button" data-value="day" aria-checked="true">Day</button>
@@ -1118,7 +1119,7 @@
 
     <!-- Supporting: seasonal production (absolute, stacked) -->
     <article class="surface span-4 sl-season" aria-labelledby="sl-season-title">
-      <h2 class="section-title" id="sl-season-title">Seasonal production — last 12 months</h2>
+      <h2 class="card-title" id="sl-season-title">Seasonal production — last 12 months</h2>
       <p class="insight">Production peaks in July at <b>620 kWh</b> — over 9× December's 68 kWh, your quietest month.</p>
       <div id="sl-season"></div>
       <p class="sl-next"><a class="link" href="#panel-advice">Use more of your own solar <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a></p>
@@ -1171,6 +1172,7 @@
       <li>KPIs renamed plain-first: Self-consumption → "Used at home", Self-sufficiency → "From your panels". The technical names, the verbatim body sentences, formulas and worked examples live in the ≈ popovers. The four "Estimated" pills collapse into: one ≈ per KPI, the "Estimated" tag in each popover and one tag on the raw chart, plus the footnote.</li>
       <li>Formula card → the "About these numbers" footnote (identity equation + honesty label verbatim).</li>
       <li>Flow numbers printed once (round 2): the summary rows (Import 4.4 · Export 3.2 · Self-consumed 5.2) became the direct labels on the three flow lines ("4.4 imported", "3.2 exported", "5.2 used at home"); the Grid node no longer shows a total (it read as "grid = 4.4 in total"). Nodes: "Panels made 8.4 kWh", "Home used 9.6 kWh".</li>
+      <li>Round 3: card titles use <code>.card-title</code>; seasonal chart highlights May (so far) as the current period and labels "Used at home / Exported" directly (no legend); raw chart highlights the current hour; grid chart marks now with the "Now 20:00" line / bold "Today"·"May" tick. ≈ markers are the inline <code>.est</code> form.</li>
       <li>Next step added: "Use more of your own solar" link → Advice (new copy for sign-off).</li>
     </ul>
     <h4>Phase 4 decisions &amp; fixes</h4>
@@ -1200,17 +1202,18 @@
     <article class="surface span-12 empty motif sl-cal">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span>
       <div>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Calibrating</span></div>
         <h1 class="empty__title" id="slc-title">Still calibrating your solar setup</h1>
         <p class="empty__body">We need at least 7 days of import/export data to estimate your panels' production — after that, we can start showing your full solar picture.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 22 May</b> · 3 more days of readings</span></p>
         <div class="readiness" data-done="4" data-total="7" data-labels="Fri,Sat,Sun,Mon,Tue,Wed,Thu"
-             aria-label="4 of 7 days collected: Friday 15 to Monday 18 May. Ready on Thursday 21 May.">
+             aria-label="4 of 7 days of readings: Friday 15 to Monday 18 May. Ready on Friday 22 May.">
           <div class="readiness__foot">
-            <span><b>Ready on 21 May</b> · 3 more days</span>
             <span>4 of 7 days</span>
           </div>
         </div>
         <p class="callout accent"><svg class="icon sm" aria-hidden="true"><use href="#i-check-circle"/></svg><span>Import and Export themselves are already tracking fine; it's just Production and Consumption still calibrating.</span></p>
-        <p class="small secondary mt-4">There's nothing you need to do — your solar picture appears here on its own.</p>
+        <p class="empty__note">There's nothing you need to do — your solar picture appears here on its own.</p>
       </div>
     </article>
   </div>
@@ -1222,7 +1225,7 @@
     <h4>Structure</h4>
     <ul>
       <li>Whole-tab not-ready state (inventory §3 edge states). Title and both body sentences verbatim; the second sentence is split out as a reassurance callout (ux-audit §1.3: cut the ≈60-word block into 2 sentences + one note).</li>
-      <li>Shared readiness meter: 7 segments, 4 filled, "4 of 7 days" (verbatim). Derived copy for sign-off: "Ready on 21 May · 3 more days" (counting from 15 May with "today" = Mon 18 May), day labels Fri–Thu, "There's nothing you need to do — your solar picture appears here on its own.", and the footnote wording.</li>
+      <li>Shared readiness meter: 7 segments, 4 filled, "4 of 7 days" (verbatim). Derived copy for sign-off: "Ready on 22 May · 3 more days of readings" (round 3 readiness rule: first readings Fri 15 May, 7 days = 15–21 May, ready the morning after → Fri 22 May; "today" = Mon 18 May), day labels Fri–Thu, "There's nothing you need to do — your solar picture appears here on its own.", and the footnote wording.</li>
       <li>Icon: sun (was ☀️ emoji). Halftone motif = the one brand motif on this screen.</li>
     </ul>
     <h4>Reason code</h4>
@@ -1289,7 +1292,7 @@
   JuneCharts.bars('#sl-season', {
     series: [{ name: 'Used at home', values: yHome, tone: 'accent' }, { name: 'Exported', values: yExp, tone: 'elec' }],
     labels: months, tipLabels: monthsLong, xTicks: [1, 3, 5, 7, 9, 11],
-    annotation: { index: 1, text: '620 kWh', tone: 'ink' },
+    annotation: { index: 1, text: '620 kWh', tone: 'ink' }, current: 11, seriesLabels: 'direct',
     yMax: 700, yTicks: [0, 200, 400, 600], height: 300, yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
     tooltip: (i, v) => `${monthsLong[i]} · ${v} kWh made · ${yHome[i]} used at home · ${yExp[i]} exported`,
     ariaLabel: 'Stacked bar chart of monthly solar production, June 2025 to May 2026 (May so far: 170 kWh), split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months export more than half; winter months use almost all of it at home.'
@@ -1301,7 +1304,7 @@
       { name: 'Production', tone: 'elec', values: dProd },
       { name: 'Consumption', tone: 'ink', values: dCons }
     ],
-    yMin: 0, yMax: 1.2, yTicks: [0, 0.4, 0.8, 1.2], yLabel: 'kWh per hour (estimated)', unit: 'kWh', decimals: 2,
+    current: 19, yMin: 0, yMax: 1.2, yTicks: [0, 0.4, 0.8, 1.2], yLabel: 'kWh per hour (estimated)', unit: 'kWh', decimals: 2,
     ariaLabel: 'Line chart of estimated production and consumption per hour on 18 May, 00:00 to 20:00. Production rises from 06:00 to a peak of 1.1 kWh at 12:00 and fades by 19:00: 8.4 kWh in total. Consumption stays around 0.2 to 0.7 kWh and rises to 0.95 kWh in the evening: 9.6 kWh in total.'
   });
 
@@ -1352,11 +1355,6 @@
 <!-- ═══ breakdown ═══ -->
 <style>
 /* Breakdown — tab-specific layout only (components come from components.css) */
-/* Category tints for the "All categories" stack: accent + ink steps only (aliases of existing tokens, no new hues).
-   Light and dark use different ink steps so the four greys stay evenly spaced on each surface. */
-[data-tab="breakdown"] { --cat-bd2: var(--ink-700); --cat-bd3: var(--ink-400); --cat-bd4: var(--ink-200); --cat-bd5: var(--ink-100); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) [data-tab="breakdown"] { --cat-bd2: var(--ink-700); --cat-bd3: var(--ink-500); --cat-bd4: var(--ink-400); --cat-bd5: var(--ink-200); } }
-:root[data-theme="dark"] [data-tab="breakdown"] { --cat-bd2: var(--ink-700); --cat-bd3: var(--ink-500); --cat-bd4: var(--ink-400); --cat-bd5: var(--ink-200); }
 [data-tab="breakdown"] .bd-figure { display: flex; align-items: baseline; gap: 12px 16px; flex-wrap: wrap; margin-top: var(--s-5); }
 [data-tab="breakdown"] .bd-figure .cap { font-size: var(--fs-md); color: var(--ink-700); }
 /* Hero split bar: Heating vs everything else (two segments, both labelled below) */
@@ -1380,8 +1378,6 @@
 [data-tab="breakdown"] .bd-nudge__body { font-size: var(--fs-sm); color: var(--ink-700); }
 [data-tab="breakdown"] .bd-nudge .meter-ends { margin-top: 6px; }
 /* Edge states */
-[data-tab="breakdown"] .bd-when { display: flex; align-items: center; gap: 10px; margin-top: var(--s-5); font-size: var(--fs-md); color: var(--ink-900); }
-[data-tab="breakdown"] .bd-when .icon { color: var(--accent-strong); }
 [data-tab="breakdown"] .bd-progress { margin-top: var(--s-5); max-width: 420px; }
 @media (min-width: 961px) { [data-tab="breakdown"] .grid.stretch > .surface { height: 100%; } }
 @media (max-width: 960px) {
@@ -1419,7 +1415,7 @@
     <!-- Supporting: the ranked list IS the chart -->
     <article class="surface span-5" id="bd-list-tile" aria-labelledby="bd-list-title">
       <div class="bd-head">
-        <h2 class="section-title" id="bd-list-title">April, by category</h2>
+        <h2 class="card-title" id="bd-list-title">April, by category</h2>
         <div class="seg seg--unit" role="radiogroup" aria-label="Unit" data-seg-target="#bd-list-tile">
           <button type="button" data-value="kwh" aria-checked="true">kWh</button>
           <button type="button" data-value="eur" aria-checked="false">€</button>
@@ -1445,7 +1441,7 @@
     <!-- Supporting: seasonal trend (April highlighted; Heating by default, all categories on demand) -->
     <article class="surface span-7" id="bd-season-tile" aria-labelledby="bd-season-title">
       <div class="bd-head">
-        <h2 class="section-title" id="bd-season-title">Seasonal trend — last 12 months</h2>
+        <h2 class="card-title" id="bd-season-title">Seasonal trend — last 12 months</h2>
         <div class="seg" role="radiogroup" aria-label="Categories shown" data-seg-target="#bd-season-tile">
           <button type="button" data-value="heating" aria-checked="true">Heating</button>
           <button type="button" data-value="all" aria-checked="false">All categories</button>
@@ -1496,9 +1492,9 @@
       <li>✓ Approved: glance, list and seasonal views; profile nudge; no time toggle; € via average price. IA per ux-audit §3.4: hero → ranked list + seasonal → slim profile banner.</li>
       <li>Hero contract (round-2 shared rule): sentence answers ("Heating was your biggest use in April."), the ONE numeral adds the share (38%), the split bar adds the kWh (168 vs 274). No % in the sentence; no caps kicker ("At a glance" kept as plain muted text).</li>
       <li>Donut ("At a glance · 38% Heating · Biggest category this month →") folded into the hero. "Biggest category" is now said by the h1; "this month" → April (D2).</li>
-      <li>Category list: JuneCharts.hbars in rank order with <code>highlight: 0, muteOthers</code> — Heating in accent, the rest muted; identity carried by line icons + text labels (no category hues). "Estimated" tag kept on Water heating.</li>
-      <li>Seasonal: axis May 2025 → Apr 2026 so the current period (April) sits at the end, bold tick + accent bar; other months muted. "All categories" = the printed 5-series 100% stack in accent + four ink steps (light 700/400/200/100, dark 700/500/400/200 — aliases only, defined in this fragment), legend only (no direct labels), April tick bold. The insight sentence changes with the view.</li>
-      <li>The stack merges Fridge &amp; freezer with Other ("Fridge, freezer &amp; other") as printed; the list keeps them separate. With a single muted list colour there is no colour to mismatch.</li>
+      <li>Category list: JuneCharts.hbars in rank order with the round-3 <code>--cat-*</code> tokens (cat-1 = accent for Heating, cat-2…5 + other = ink steps), 1:1 with the stack; identity carried by line icons + text labels (no category hues). "Estimated" tag kept on Water heating.</li>
+      <li>Seasonal: axis May 2025 → Apr 2026 so the current period (April) sits at the end, bold tick + accent bar; other months muted. Both views use <code>current: 11</code> (April; muted others in the Heating view, soft column band in the stack). "All categories" = the printed 5-series 100% stack in cat-1…cat-5, labelled directly at the April column (<code>seriesLabels:'direct'</code>; key row below 480px). The insight sentence changes with the view.</li>
+      <li>The stack merges Fridge &amp; freezer with Other ("Fridge, freezer &amp; other") as printed and draws it in cat-5 (Fridge &amp; freezer's tint); the list keeps Other separate in cat-other.</li>
       <li>€ honesty note in the ≈ popover (verbatim) and the footnote (verbatim). "Always on" definition is new copy — sign-off.</li>
       <li>Profile nudge: slim banner, secondary button. "2 details left" derived from the frozen body (heating type, home size) — sign-off. <code>href="#"</code> until the profile flow exists.</li>
     </ul>
@@ -1528,7 +1524,7 @@
           <div class="meter thin" style="--used: 30" role="img" aria-label="Home profile 30% complete"><span class="meter__fill grow-x"></span></div>
           <div class="meter-ends"><span>Home profile</span><span>30% complete</span></div>
         </div>
-        <p class="bd-when"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>Your breakdown appears <b>as soon as you've added them</b> — your readings are already in.</span></p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready as soon as you've added them</b> — your readings are already in.</span></p>
         <div class="empty__actions">
           <a class="btn btn--primary" href="#">Complete profile <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
@@ -1543,7 +1539,7 @@
     <ul>
       <li>Source state: "Hard block: required profile field missing". That title is a designer label and does not ship. <b>New product title</b> "Tell us about your home to see where your energy goes" — needs copy sign-off.</li>
       <li>Body, "30% complete" and "Complete profile" verbatim. Uses the shared single-tile empty pattern (round 2: the "What you'll see" preview tile was a second pattern and is removed).</li>
-      <li>"When" line is new copy and assumes history is sufficient (otherwise the "data not ready" state shows) — sign-off.</li>
+      <li>".empty__when" line is new copy and assumes history is sufficient (otherwise the "data not ready" state shows) — sign-off.</li>
       <li>Reason: required-field config. ⚠ Field names (home type, heating source) are placeholders — ask #36 (pending Hani).</li>
     </ul>
   </details>
@@ -1557,9 +1553,10 @@
       <div>
         <h1 class="empty__title" id="bdn-title">Data not ready yet</h1>
         <p class="empty__body">We need about 3 more weeks of daily readings before we can reliably split your usage into categories. Check back soon.</p>
-        <div class="readiness" data-done="1" data-total="4" data-labels="11 May,18 May,25 May,1 Jun"
-             aria-label="1 of 4 weeks of daily readings collected, since 11 May 2026. Your breakdown should be ready around 8 June 2026.">
-          <div class="readiness__foot"><span><b>Ready around 8 June 2026</b> · 3 more weeks</span><span>1 of 4 weeks collected</span></div>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 13 June 2026</b> · 25 more days</span></p>
+        <div class="readiness" data-done="3" data-total="28"
+             aria-label="3 of 28 days of daily readings collected, since 16 May 2026. Your breakdown is ready on 13 June 2026.">
+          <div class="readiness__foot"><span>3 of 28 days collected</span><span>First readings 16 May</span></div>
         </div>
         <p class="small secondary mt-2">Nothing to complete here — just needs time.</p>
       </div>
@@ -1573,7 +1570,7 @@
     <ul>
       <li>No halftone motif on Breakdown edge states (round 2: it sat behind body copy).</li>
       <li>Title, body and sub verbatim. "Check back soon." is frozen copy; a concrete date sits right under it (copy rule: dates, not "soon").</li>
-      <li>Shared readiness meter added (round 2: every time-based state has one). ⚠ <b>Derived</b>: "about 3 more weeks" read as a 4-week requirement with 1 week collected (readings since 11 May 2026 → ready around 8 June 2026). Needs the real readiness threshold from the API before build.</li>
+      <li>New-customer timeline (same household as <code>panel-overview-new</code>): first readings 16 May 2026; Breakdown needs 4 weeks (28 days) of daily readings; §0 readiness rule (unlocks the morning after the Nth day) → 16 May – 12 June → <b>ready 13 June 2026</b>, matching the Overview chip. On 18 May: 3 of 28 days, 25 more days (≈ "about 3 more weeks" in the frozen body, rounded). ⚠ The 28-day threshold is our reading of "about 3 more weeks" — needs the real API threshold.</li>
       <li>Nothing for the user to do — said explicitly (verbatim sub).</li>
       <li>Reason: insufficient daily history (~3 weeks). No API code named.</li>
     </ul>
@@ -1601,9 +1598,9 @@
     new MutationObserver(add).observe(host, { childList: true });
     add();
   };
-  const ranked = { highlight: 0, muteOthers: true };
-  JuneCharts.hbars('#bd-list-kwh', { ...ranked, items: cats.map(c => ({ label: c.label, value: c.kwh, note: c.note, valueText: `<b>${c.kwh} kWh</b> · ${c.pct}%` })) });
-  JuneCharts.hbars('#bd-list-eur', { ...ranked, items: cats.map(c => ({ label: c.label, value: c.eur, note: c.note, valueText: `<b><span class="approx">≈</span> €${c.eur}</b> · ${c.pct}%` })) });
+  const tone = i => i < 5 ? 'cat-' + (i + 1) : 'cat-other';
+  JuneCharts.hbars('#bd-list-kwh', { items: cats.map((c, i) => ({ label: c.label, value: c.kwh, tone: tone(i), note: c.note, valueText: `<b>${c.kwh} kWh</b> · ${c.pct}%` })) });
+  JuneCharts.hbars('#bd-list-eur', { items: cats.map((c, i) => ({ label: c.label, value: c.eur, tone: tone(i), note: c.note, valueText: `<b><span class="approx">≈</span> €${c.eur}</b> · ${c.pct}%` })) });
   withIcons('#bd-list-kwh'); withIcons('#bd-list-eur');
 
   // Last 12 months, May 2025 → April 2026 (current period last)
@@ -1614,23 +1611,22 @@
   const always  = [10, 12, 13, 12, 10, 9, 8, 8, 8, 8, 9, 14];
   const cooking = [12, 13, 13, 12, 11, 10, 9, 9, 9, 9, 10, 12];
   const rest    = [52, 54, 53, 53, 48, 37, 28, 21, 19, 25, 32, 16];
-  const cur = { index: 11, label: 'Apr' };
   JuneCharts.bars('#bd-season-heating', {
     values: heating, labels: months, tipLabels: monthsLong, tone: 'muted',
-    highlight: { index: 11, tone: 'accent' }, now: cur,
+    current: 11,
     annotation: { index: 11, text: '38% in April', tone: 'ink' },
     yMax: 60, yTicks: [0, 20, 40, 60], yLabel: "Heating's share of your use (%)", unit: '%', decimals: 0, maxBar: 28, height: 320,
     ariaLabel: "Bar chart of heating's share of your use per month, May 2025 to April 2026: 14, 9, 9, 11, 20, 33, 45, 52, 54, 48, 38 and 38 percent. Lowest in June and July (9%), highest in January (54%). April 2026, your last full month, is highlighted at 38%."
   });
   JuneCharts.bars('#bd-season-all', {
     series: [
-      { name: 'Heating', values: heating, tone: 'accent' },
-      { name: 'Water heating', values: water, tone: 'cat-bd2' },
-      { name: 'Always on', values: always, tone: 'cat-bd3' },
-      { name: 'Cooking', values: cooking, tone: 'cat-bd4' },
-      { name: 'Fridge, freezer & other', values: rest, tone: 'cat-bd5' }
+      { name: 'Heating', values: heating, tone: 'cat-1' },
+      { name: 'Water heating', values: water, tone: 'cat-2' },
+      { name: 'Always on', values: always, tone: 'cat-3' },
+      { name: 'Cooking', values: cooking, tone: 'cat-4' },
+      { name: 'Fridge, freezer & other', values: rest, tone: 'cat-5' }
     ],
-    labels: months, now: cur, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
+    labels: months, current: 11, seriesLabels: 'direct', xTicks: [1, 3, 5, 7, 9, 11], yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
     tooltip: i => `${monthsLong[i]} · Heating ${heating[i]}% · Water heating ${water[i]}% · Always on ${always[i]}% · Cooking ${cooking[i]}% · Fridge, freezer & other ${rest[i]}%`,
     ariaLabel: 'Stacked 100% bars per month, May 2025 to April 2026, with five categories. Heating swings from 9% in summer to 54% in January. Water heating (10–20%), always on (8–14%) and cooking (9–13%) stay fairly flat; fridge, freezer and other are about half of your use in summer. April 2026: heating 38, water heating 20, always on 14, cooking 12, fridge, freezer and other 16 percent.'
   });
@@ -2064,7 +2060,7 @@
             <p class="hero__caption">forecast for May · 187&nbsp;kWh used so far · May 2025 was 269&nbsp;kWh</p>
           </div>
           <div class="hero__aside fc-aside">
-            <h2 class="section-title">Your budget</h2>
+            <h2 class="card-title">Your budget</h2>
             <p class="fc-aside-body">Your forecast projects <b>290 kWh</b> this month — under your <b>300 kWh</b> electricity budget.</p>
             <div class="fc-meter">
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9" role="img" aria-label="187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
@@ -2085,7 +2081,7 @@
     <!-- Supporting: Month / Year chart -->
     <article class="surface span-8" id="fc-chart-tile" aria-labelledby="fc-chart-title">
       <div class="fc-head">
-        <h2 class="section-title" id="fc-chart-title"><span data-when="month">May, day by day</span><span data-when="year" hidden>Month by month</span></h2>
+        <h2 class="card-title" id="fc-chart-title"><span data-when="month">May, day by day</span><span data-when="year" hidden>Month by month</span></h2>
         <div class="fc-controls">
           <div class="seg" role="radiogroup" aria-label="Period" data-seg-target="#fc-chart-tile">
             <button type="button" data-value="month" aria-checked="true">Month</button>
@@ -2094,7 +2090,7 @@
           <span class="fc-unit">
             <span class="seg seg--unit" role="radiogroup" aria-label="Unit">
               <button type="button" data-value="kwh" aria-checked="true">kWh</button>
-              <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" title="€ view unavailable for this contract">€</button>
+              <button type="button" data-value="eur" aria-checked="false" aria-disabled="true" data-reason="€ view unavailable — no price formula set up for this contract yet.">€</button>
             </span>
             <button class="info" type="button" data-pop="fc-pop-eur" aria-label="Why is € unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
           </span>
@@ -2113,7 +2109,7 @@
     <!-- Supporting: glance strip, each cell gated on its own readiness -->
     <article class="surface span-4 fc-glance" aria-labelledby="fc-glance-title">
       <div class="fc-glance__head">
-        <h2 class="section-title" id="fc-glance-title">At a glance</h2>
+        <h2 class="card-title" id="fc-glance-title">At a glance</h2>
         <p class="fc-sub">So far + forecast, in kWh</p>
       </div>
       <ul class="rows">
@@ -2147,7 +2143,7 @@
     <!-- Detail: next 24–48 h with a likely range -->
     <article class="surface span-12" id="fc-hourly-tile" aria-labelledby="fc-hourly-title">
       <div class="fc-head">
-        <h2 class="section-title" id="fc-hourly-title"><span data-when="24">Next 24 hours</span><span data-when="48" hidden>Next 48 hours</span></h2>
+        <h2 class="card-title" id="fc-hourly-title"><span data-when="24">Next 24 hours</span><span data-when="48" hidden>Next 48 hours</span></h2>
         <div class="fc-controls">
           <span class="xs muted">Now: 18 May, 20:00</span>
           <div class="seg" role="radiogroup" aria-label="Time span" data-seg-target="#fc-hourly-tile">
@@ -2172,7 +2168,7 @@
       </button>
       <div class="disc-body" id="fc-acc-body">
         <div><div class="disc-inner">
-          <h3 class="section-title">How good was last month's forecast?</h3>
+          <h3 class="card-title">How good was last month's forecast?</h3>
           <p class="small muted">Replaying what we predicted on 1 April</p>
           <div class="fc-acc">
             <span><span class="stat__label">Forecasted</span><span class="mid-num">417<span class="unit">kWh</span></span></span>
@@ -2181,7 +2177,7 @@
           </div>
           <p class="insight">That's <b>6% higher</b> than predicted — pretty close.</p>
           <div class="fc-acc-table">
-            <h3 class="section-title">See the last 6 months</h3>
+            <h3 class="card-title">See the last 6 months</h3>
             <table class="table mt-2">
               <thead><tr><th scope="col">Month</th><th scope="col" class="r">Forecast</th><th scope="col" class="r">Actual</th><th scope="col" class="r">Off by</th></tr></thead>
               <tbody>
@@ -2226,7 +2222,7 @@
       <li>Budget link card (6.4) = hero aside: body and "View budget →" verbatim with canonical numbers; aside heading is an in-card sentence-case title (no caps kicker).</li>
       <li>Month view: a single line (your use: solid to today, dashed forecast) plus the budget as the only labelled threshold (2px ink). No legend/end-label mix and no stacked right-edge labels (fixes the 300/290/269 collision). Last year moved out of this view — it is stated in the hero caption and drawn in the Year view.</li>
       <li>Year view: "Last year" (ink) vs "This year" (accent, dashed after April), legend only (end labels off). No confidence band on either view (binding rule).</li>
-      <li>€: disabled € option + [i] popover with the product half of the € note (verbatim). Binding meta rule: <code>unit=cost</code> silently returns €0; the app must detect this and never show "€0 projected".</li>
+      <li>€: disabled € option with <code>data-reason</code> (tooltip + accessible description) + [i] popover with the product half of the € note (verbatim). Binding meta rule: <code>unit=cost</code> silently returns €0; the app must detect this and never show "€0 projected".</li>
       <li>Band explainer + "Likely range (95% confidence)" in the [i] popover (verbatim); the chart key says "Likely range".</li>
       <li>Accuracy check behind a disclosure; the 6-month table is shown inside it ("See the last 6 months" kept as its heading). "Off by" in words.</li>
     </ul>
@@ -2267,7 +2263,7 @@
             <p class="hero__caption">over budget by 31 May · forecast 290&nbsp;kWh · to stay under, use 6.4&nbsp;kWh a day from tomorrow</p>
           </div>
           <div class="hero__aside fc-aside">
-            <h2 class="section-title">Your budget</h2>
+            <h2 class="card-title">Your budget</h2>
             <p class="fc-aside-body">Your forecast projects <b>290 kWh</b> this month — over your <b>270 kWh</b> electricity budget by about 7%.</p>
             <div class="fc-meter">
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 81.8" role="img" aria-label="187 kWh used so far, 290 kWh forecast for May, budget 270 kWh. The forecast goes 20 kWh past the budget.">
@@ -2287,7 +2283,7 @@
 
     <article class="surface span-8" aria-labelledby="fco-chart-title">
       <div class="fc-head">
-        <h2 class="section-title" id="fco-chart-title">May, day by day</h2>
+        <h2 class="card-title" id="fco-chart-title">May, day by day</h2>
       </div>
       <p class="insight fc-insight">At your recent pace of 7.9 kWh a day you'll pass your <b>270 kWh budget around 29 May</b>. Using at most <b>6.4 kWh a day</b> from tomorrow keeps you under it.</p>
       <div id="fco-chart-month"></div>
@@ -2295,7 +2291,7 @@
 
     <article class="surface span-4 fc-glance" aria-labelledby="fco-glance-title">
       <div class="fc-glance__head">
-        <h2 class="section-title" id="fco-glance-title">At a glance</h2>
+        <h2 class="card-title" id="fco-glance-title">At a glance</h2>
         <p class="fc-sub">So far + forecast, in kWh</p>
       </div>
       <ul class="rows">
@@ -2340,7 +2336,7 @@
             <p class="hero__caption">forecast for May · 187&nbsp;kWh used so far · May 2025 was 269&nbsp;kWh</p>
           </div>
           <div class="hero__aside fc-aside">
-            <h2 class="section-title">Your budget</h2>
+            <h2 class="card-title">Your budget</h2>
             <div class="fc-nobudget">
               <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span>
               <div>
@@ -2356,7 +2352,7 @@
 
     <article class="surface span-8" aria-labelledby="fcn-chart-title">
       <div class="fc-head">
-        <h2 class="section-title" id="fcn-chart-title">May, day by day</h2>
+        <h2 class="card-title" id="fcn-chart-title">May, day by day</h2>
       </div>
       <p class="insight fc-insight">Over the last 7 days you averaged <b>7.9 kWh a day</b>. At that pace May ends at about <b>290 kWh</b>.</p>
       <div id="fcn-chart-month"></div>
@@ -2364,7 +2360,7 @@
 
     <article class="surface span-4 fc-glance" aria-labelledby="fcn-glance-title">
       <div class="fc-glance__head">
-        <h2 class="section-title" id="fcn-glance-title">At a glance</h2>
+        <h2 class="card-title" id="fcn-glance-title">At a glance</h2>
         <p class="fc-sub">So far + forecast, in kWh</p>
       </div>
       <ul class="rows">
@@ -2404,11 +2400,9 @@
         </div>
         <p class="hero__caption">forecast for Monday 18 – Sunday 24 May · 6&nbsp;kWh used so far</p>
         <div class="fc-ready">
-          <h2 class="section-title">Your monthly forecast unlocks on 6 June 2026</h2>
-          <p class="small secondary">Monthly forecasts need a full month of data — you have 13 of 31 days.</p>
-          <div class="readiness" data-done="13" data-total="31" aria-label="13 of 31 days of data collected, since 6 May 2026. Monthly forecast from 6 June 2026.">
-            <div class="readiness__foot"><span><b>Ready on 6 June 2026</b> · 18 more days</span></div>
-          </div>
+          <h2 class="card-title">Your monthly forecast unlocks on 1 July 2026</h2>
+          <p class="small secondary">Monthly forecasts need one full calendar month of data — June 2026 will be your first.</p>
+          <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 1 July 2026</b> · after June</span></p>
           <p class="small secondary mt-2">There's nothing you need to do — we'll keep counting.</p>
         </div>
       </article>
@@ -2416,7 +2410,7 @@
 
     <article class="surface span-8" aria-labelledby="fcp-hourly-title">
       <div class="fc-head">
-        <h2 class="section-title" id="fcp-hourly-title">Next 24 hours</h2>
+        <h2 class="card-title" id="fcp-hourly-title">Next 24 hours</h2>
         <span class="xs muted">Now: 18 May, 20:00</span>
       </div>
       <p class="insight fc-insight">Your use should stay low overnight and rise around <b>06:30 tomorrow</b> — the shaded range is widest around your morning and evening routine.
@@ -2427,14 +2421,14 @@
 
     <article class="surface span-4 fc-glance" aria-labelledby="fcp-glance-title">
       <div class="fc-glance__head">
-        <h2 class="section-title" id="fcp-glance-title">At a glance</h2>
+        <h2 class="card-title" id="fcp-glance-title">At a glance</h2>
         <p class="fc-sub">Each forecast unlocks on its own</p>
       </div>
       <ul class="rows">
         <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">6.1 so far + 0.4 forecast</span><span class="row__meta mid-num">6.5<span class="unit">kWh</span></span></div></li>
         <li><div class="row"><span class="well accent row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">6 so far + 39 forecast</span><span class="row__meta mid-num">45<span class="unit">kWh</span></span></div></li>
-        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This month</span><span class="row__sub">Needs a bit more history yet · from 6 June</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
-        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs 12 full months · from 6 May 2027</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This month</span><span class="row__sub">Needs a bit more history yet · from 1 July</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs 12 full months · from 1 June 2027</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
       </ul>
     </article>
   </div>
@@ -2452,7 +2446,7 @@
     <ul>
       <li>Per-cell not ready, shown as a whole state: any glance cell can be "not ready" on its own ("… — needs a bit more history yet", verbatim form). Here Today and This week are ready, This month and This year are not, so the hero answers the week instead of the month.</li>
       <li>Month/Year chart and accuracy check are hidden (no monthly forecast yet); the budget link needs a monthly forecast, so it's hidden too. Hourly chart works (short-term forecasts unlock first).</li>
-      <li>⚠ <b>Illustrative household</b> (new customer, data since 6 May 2026, 13 days; now = 18 May 20:00): Today 6.5 (6.1 + 0.4), week 45 (6 + 39), hourly = main profile × 0.85. Yearly from 6 May 2027 (12 full months). Monthly unlock date 6 June 2026 derived from the guide's "a full month" threshold. "Setting up" neutral chip from the shared status-pill set. All derived copy needs sign-off.</li>
+      <li>⚠ <b>Illustrative household</b> (new customer, data since 6 May 2026, 13 days; now = 18 May 20:00): Today 6.5 (6.1 + 0.4), week 45 (6 + 39), hourly = main profile × 0.85.  Monthly unlock 1 July 2026 (§0 rule: one full calendar month → June); yearly 1 June 2027 (12 full calendar months, Jun 2026 – May 2027). "Setting up" neutral chip from the shared status-pill set. All derived copy needs sign-off.</li>
       <li>Reason: per-horizon data-readiness threshold (no API code).</li>
     </ul>
   </details>
@@ -2466,19 +2460,20 @@
       <div>
         <h1 class="empty__title" id="fce-title">Building toward your first forecast</h1>
         <p class="empty__body">Forecasting needs at least 7 days of energy data before it can predict anything — daily and short-term forecasts unlock first, monthly forecasts need a full month.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 23 May 2026</b> · 4 more days</span></p>
         <div class="readiness" data-done="3" data-total="7" data-labels="16,17,18,19,20,21,22"
              aria-label="3 of 7 days toward your first forecast: 16, 17 and 18 May 2026. First forecast on 23 May 2026.">
-          <div class="readiness__foot"><span><b>3 of 7 days toward your first forecast</b></span><span>First forecast on 23 May 2026</span></div>
+          <div class="readiness__foot"><span><b>3 of 7 days toward your first forecast</b></span><span>First readings 16 May</span></div>
         </div>
         <p class="small secondary mt-2">There's nothing you need to do — we'll keep counting.</p>
 
         <div class="fc-unlock">
-          <h2 class="section-title">What unlocks when</h2>
+          <h2 class="card-title">What unlocks when</h2>
           <ul class="rows" style="padding:8px 0 0">
             <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">From 23 May</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
             <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">From 23 May</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
-            <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span><span class="row__title">This month</span><span class="row__sub">From 16 June</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
-            <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs 12 full months · from 16 May 2027</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+            <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span><span class="row__title">This month</span><span class="row__sub">From 1 July</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+            <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs 12 full months · from 1 June 2027</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
           </ul>
         </div>
         <div class="empty__actions">
@@ -2495,7 +2490,7 @@
     <ul>
       <li>Whole tab, under 7 days. Title, body and "3 of 7 days toward your first forecast" verbatim; emoji 📈 → line icon. Shared readiness meter (7 segments, 3 filled).</li>
       <li>The 4 greyed glance cells ("Today / not ready" … "This year / not ready") are kept but turned into a "What unlocks when" list with dates, so they add information instead of repeating the message (ux-audit §1.6).</li>
-      <li>⚠ <b>Derived dates</b> (illustrative new customer, data since 16 May 2026): first forecast 23 May (after 7 days); monthly from 16 June (a full month); yearly from 16 May 2027 (12 full months). "There's nothing you need to do — we'll keep counting." reuses the Peak pattern. Optional action "Set a monthly budget meanwhile" is new copy — sign-off. All need sign-off.</li>
+      <li>⚠ <b>Derived dates</b> (illustrative new customer, data since 16 May 2026): first forecast 23 May (after 7 days); 7-day rule per COMPONENTS §0 (16–22 May → ready 23 May, matches the Overview-new chip); monthly from 1 July (one full calendar month: June); yearly from 1 June 2027. "There's nothing you need to do — we'll keep counting." reuses the Peak pattern. Optional action "Set a monthly budget meanwhile" is new copy — sign-off. All need sign-off.</li>
       <li>Reason: no API code; uses the guide's documented thresholds (7 days; a full month for monthly).</li>
     </ul>
   </details>
@@ -2517,7 +2512,7 @@
   const monthOpts = (budget, tone, aria) => ({
     labels: days, tipLabels: days.map(d => d + ' May'),
     series: [{ name: '', tone: 'accent', values: thisMay, forecastFrom: 17 }],
-    now: { index: 17, label: 'Today' },
+    now: { index: 17, label: 'Today' }, current: 17,
     thresholds: budget ? [{ value: budget, label: 'Budget', tone, emphasis: true, valueText: budget + ' kWh' }] : [],
     xTicks: [0, 9, 19, 30], yMin: 0, yMax: 320, yTicks: [0, 100, 200, 300],
     yLabel: 'Your use since 1 May (kWh)', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
@@ -2539,7 +2534,7 @@
       { name: 'Last year', tone: 'ink', values: lastYear },
       { name: 'This year', tone: 'accent', values: thisYear, forecastFrom: 5, dots: true }
     ],
-    now: { index: 6, label: 'Now' },
+    now: { index: 6, label: 'Now' }, current: 6,
     yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], yLabel: 'kWh per month', unit: 'kWh', decimals: 0, forecastName: 'Forecast', endLabels: false,
     tooltip: i => `${ymLong[i]} · ${i < 6 ? 'actual' : 'forecast'} ${thisYear[i]} kWh · a year earlier ${lastYear[i]} kWh`,
     ariaLabel: 'Line chart of monthly use from November 2025 to October 2026. Actual use falls from 512 kWh in January to 442 kWh in April. The dashed forecast continues from 290 kWh in May to a low of 240 kWh in July, rising to 350 kWh in October. Last year is shown as a grey line, slightly lower in most months.'
@@ -2724,7 +2719,7 @@
     <!-- Supporting: the other new tips, compact rows, quiet dismissals -->
     <article class="surface ad-card span-8" aria-labelledby="ad-more">
       <div class="ad-card__head">
-        <h2 class="section-title" id="ad-more">More tips for you</h2>
+        <h2 class="card-title" id="ad-more">More tips for you</h2>
         <span class="ad-sort"><svg class="icon sm" aria-hidden="true"><use href="#i-sliders"/></svg>Most relevant for you first</span>
       </div>
       <ul class="ad-list">
@@ -2777,7 +2772,7 @@
 
     <!-- Bigger investments: the heat pump, illustrative, separate from the 3 new tips -->
     <article class="surface span-4 ad-invest" data-ad-item data-status="invest" data-name="Upgrade to a heat pump" aria-labelledby="ad-invest-title">
-      <h2 class="section-title" id="ad-invest-title">Bigger investments</h2>
+      <h2 class="card-title" id="ad-invest-title">Bigger investments</h2>
       <div class="ad-invest__head">
         <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-thermo"/></svg></span>
         <div>
@@ -2926,7 +2921,7 @@
     </div>
 
     <article class="surface ad-card span-12" aria-labelledby="adp-list">
-      <div class="ad-card__head"><h2 class="section-title" id="adp-list">In your plan</h2></div>
+      <div class="ad-card__head"><h2 class="card-title" id="adp-list">In your plan</h2></div>
       <ul class="ad-list">
         <li data-ad-item data-status="plan" data-name="Wash clothes at a lower temperature">
           <div class="ad-fold ad-fold--main"><div>
@@ -3029,7 +3024,7 @@
     </div>
 
     <article class="surface ad-card span-12" aria-labelledby="add-list">
-      <div class="ad-card__head"><h2 class="section-title" id="add-list">Done</h2></div>
+      <div class="ad-card__head"><h2 class="card-title" id="add-list">Done</h2></div>
       <ul class="ad-list">
         <li>
           <div class="ad-tip">
@@ -3156,10 +3151,8 @@
       <div>
         <h1 class="empty__title" id="ade-title">Nothing to suggest yet</h1>
         <p class="empty__body">We don't have any personalized energy-saving tips for your home right now. This is normal early on, and usually resolves itself as more of your energy data comes in.</p>
-        <ul class="ad-when">
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>When:</b> there's no fixed date — tips appear as soon as your readings match one. When they do, you'll see them here with a count on this tab.</span></li>
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span><b>What you can do:</b> A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.</span></li>
-        </ul>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — tips appear as soon as your readings match one, and you'll see a count on this tab.</span></p>
+        <p class="callout accent ad-empty-nudge"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span>A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.</span></p>
         <div class="empty__actions">
           <a class="btn btn--secondary" href="#panel-breakdown">Check your home profile <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         </div>
@@ -3173,6 +3166,7 @@
     <summary>Spec notes · Advice · No advice available</summary>
     <ul>
       <li>The only empty state. Reason: <code>GET /advice</code> returns no items, or 404 "No advices found" (historically "not provisioned"). No reason code — do <b>not</b> invent differentiated states (ask #40).</li>
+      <li>Round 3: <code>.empty__when</code> "No date yet — …" matches the Overview-new Advice chip ("No date yet").</li>
       <li>Round 2 edge-state rule (what's missing · when · what to do · footnote): the "When" line states timing is unknown and why (<b>derived</b>, no date invented — ask #40); the verbatim nudge became the "What you can do" line; halftone motif removed so it never sits behind text; footnote added (<b>derived</b>).</li>
       <li>Status control hidden (all lists empty). Button "Check your home profile" → Breakdown (where the home profile lives) is a <b>derived</b> action — confirm target with product.</li>
     </ul>
@@ -3283,12 +3277,6 @@
 [data-tab="budgets"] .bg-aside .section-title { margin-bottom: var(--s-1); }
 [data-tab="budgets"] .bg-gasnote { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-xs); color: var(--ink-500); }
 [data-tab="budgets"] .bg-bar__left { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
-[data-tab="budgets"] .bg-when { margin-top: var(--s-4); display: grid; gap: 10px; max-width: 62ch; }
-[data-tab="budgets"] .bg-when li { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-sm); color: var(--ink-700); }
-[data-tab="budgets"] .bg-when li .icon { color: var(--ink-400); margin-top: 2px; }
-/* Dark mode: past-day bars need more than the muted token gives on the dark surface (≥ 3:1) */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) [data-tab="budgets"] .jc-bar.t-muted { fill: var(--ink-400); } }
-:root[data-theme="dark"] [data-tab="budgets"] .jc-bar.t-muted { fill: var(--ink-400); }
 
 /* Chart tile */
 [data-tab="budgets"] .bg-chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
@@ -3375,11 +3363,10 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
-    <span class="xs muted"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg>Updated today, 20:00</span>
   </div>
 
   <div class="grid stretch">
@@ -3403,7 +3390,7 @@
           </div>
           <div class="hero__aside bg-aside">
             <div>
-              <h2 class="section-title">May so far</h2>
+              <h2 class="card-title">May so far</h2>
               <p class="small secondary"><b>113&nbsp;kWh left</b> of your 300&nbsp;kWh budget</p>
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9"
                    role="img" aria-label="Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
@@ -3428,7 +3415,7 @@
     <!-- Supporting: daily use against the pace line -->
     <article class="surface span-8" id="bg-chart-tile" aria-labelledby="bg-chart-title">
       <div class="bg-chart-head">
-        <h2 class="section-title" id="bg-chart-title">Daily use</h2>
+        <h2 class="card-title" id="bg-chart-title">Daily use</h2>
         <div class="seg" role="radiogroup" aria-label="Show" data-seg-target="#bg-chart-tile">
           <button type="button" data-value="week" aria-checked="false">Week</button>
           <button type="button" data-value="month" aria-checked="true">Month</button>
@@ -3446,7 +3433,7 @@
 
     <!-- Supporting: history & streak -->
     <article class="surface span-4 bg-hist" aria-labelledby="bg-hist-title">
-      <h2 class="section-title" id="bg-hist-title">History &amp; streak</h2>
+      <h2 class="card-title" id="bg-hist-title">History &amp; streak</h2>
       <div class="bg-streak">
         <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
         <div>
@@ -3547,13 +3534,14 @@
       <li>Streak strip: Jan "No data" (hatched + clock + word), Feb ✕ Over, Mar ✓, Apr ✓, May "So far". Demo-data sets Feb ✕; Jan becomes the no-data cell so the "gap" cell type still ships — confirm with product. Best: "Best ever (last 24mo)" → "Best ever (last 24 months)" 5 months.</li>
       <li>Manual suggestion "Suggested: 265 kWh, based on your forecast" → 290 kWh (forecast aligned).</li>
       <li>⚠ Auto = forecast +20%, yet the limit is 300 with a 290 forecast (290 × 1.2 = 348). Presumably set from the forecast on 1 May — confirm how Auto derives the limit.</li>
-      <li>"Updated today, 20:00" and the "already under the pace you need" line are <b>derived copy</b>.</li>
+      <li>The "already under the pace you need" line are <b>derived copy</b>.</li>
     </ul>
     <h4>Round 2 changes</h4>
     <ul>
       <li>Hero = one answer: the sentence carries context ("On track — keep to this week's pace and May stays within budget", <b>derived</b>), the numeral carries 8.7 kWh/day, labelled "Most you can use a day, 19–31 May". "113 kWh left" moved to the meter caption. Same pattern on Cutting it close (sentence "Cut back to stay under your May budget.") and Over budget (leads with +42 kWh over).</li>
       <li>Month chart: no full-width 8.7 line — the target is written over the remaining days only ("19–31 May: up to 8.7 kWh a day"); the insight explains why days 1–11 ran higher. Week chart keeps an 8.7 "Pace needed" line (it's the pace from here on).</li>
-      <li>Dark mode: past-day (muted) bars use <code>--ink-400</code> via a scoped override (≈ 3:1 on the dark surface) until the foundation raises dark <code>--chart-muted</code>; then this override can go.</li>
+      <li>Dark mode: past-day bars use the raised dark <code>--chart-muted</code> token (round 3); the scoped override was removed.</li>
+      <li>Round 3: in-card titles are <code>h2.card-title</code>; <code>current</code> set on both charts (today); Gas option carries <code>data-reason</code> + the visible "no gas meter linked" note; the fragment's own "Updated today, 20:00" removed (shell shows it; Over budget panel sets <code>data-updated="Updated 25 May, 20:00"</code>).</li>
       <li>Meter key is a 3-row list (no wrap). In-hero CAPS kickers replaced by sentence-case labels / card titles.</li>
       <li>Gas · Weekly: disabled with a visible reason "Gas: no gas meter linked" + ⓘ (<b>derived</b>; consistent with an electrically heated home — confirm with product; the "linking it in your account" line is an assumption).</li>
       <li>Streak tile: "Finish May under 300 kWh to make it a 3&#8209;month streak." (<b>derived</b>).</li>
@@ -3571,7 +3559,7 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -3597,7 +3585,7 @@
           </div>
           <div class="hero__aside bg-aside">
             <div>
-              <h2 class="section-title">May so far</h2>
+              <h2 class="card-title">May so far</h2>
               <p class="small secondary"><b>85&nbsp;kWh left</b> of your 300&nbsp;kWh budget</p>
               <div class="meter" style="--used: 65.2; --fcast: 96.4; --limit: 90.9"
                    role="img" aria-label="Budget meter: 215 kWh used so far, 318 kWh forecast for May, budget 300 kWh. The forecast goes past the budget.">
@@ -3619,7 +3607,7 @@
     </div>
 
     <article class="surface span-7" aria-labelledby="bgc-why">
-      <h2 class="section-title" id="bgc-why">Why we think you'll go over</h2>
+      <h2 class="card-title" id="bgc-why">Why we think you'll go over</h2>
       <p class="insight mt-2">Your last 7 days averaged <b>7.9&nbsp;kWh a day</b>. At that pace you'd reach about 318&nbsp;kWh by 31&nbsp;May — 18&nbsp;kWh over your budget.</p>
       <div class="bg-gap" aria-label="Your recent pace is 7.9 kWh a day; to stay under you need 6.5 kWh a day.">
         <span><span class="stat__label">Your recent pace</span><br><span class="mid-num">7.9<span class="unit">kWh/day</span></span></span>
@@ -3629,7 +3617,7 @@
     </article>
 
     <article class="surface span-5 bg-cta" aria-labelledby="bgc-cta">
-      <h2 class="section-title" id="bgc-cta">Ways to cut back</h2>
+      <h2 class="card-title" id="bgc-cta">Ways to cut back</h2>
       <p class="small secondary">Your top tip — adjust your indoor temperature — saves <span class="approx">≈</span>&nbsp;€150 a year.</p>
       <div class="mt-4">
         <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
@@ -3659,12 +3647,12 @@
 </section>
 
 <!-- ════════════════════════════ BUDGETS · Over budget ════════════════════════════ -->
-<section class="panel" id="panel-budgets-over" data-tab="budgets" data-label="Budgets · Over budget" aria-labelledby="bgo-title">
+<section class="panel" id="panel-budgets-over" data-updated="Updated 25 May, 20:00" data-tab="budgets" data-label="Budgets · Over budget" aria-labelledby="bgo-title">
   <div class="bg-bar">
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -3688,7 +3676,7 @@
           </div>
           <div class="hero__aside bg-aside">
             <div>
-              <h2 class="section-title">May so far</h2>
+              <h2 class="card-title">May so far</h2>
               <div class="meter over" style="--used: 95; --fcast: 0; --limit: 83.3"
                    role="img" aria-label="Budget meter: 342 kWh used so far, 42 kWh over the 300 kWh budget.">
                 <span class="meter__fill grow-x"></span>
@@ -3706,7 +3694,7 @@
     </div>
 
     <article class="surface span-7" aria-labelledby="bgo-next">
-      <h2 class="section-title" id="bgo-next">What happens next</h2>
+      <h2 class="card-title" id="bgo-next">What happens next</h2>
       <ul class="bg-next mt-4">
         <li><span class="well"><svg class="icon" aria-hidden="true"><use href="#i-repeat"/></svg></span>
           <p><b>A fresh budget on 1 June</b>In Auto mode we set it from your own forecast, +20% margin.</p></li>
@@ -3716,7 +3704,7 @@
     </article>
 
     <article class="surface span-5 bg-cta" aria-labelledby="bgo-cta">
-      <h2 class="section-title" id="bgo-cta">Get ahead of June</h2>
+      <h2 class="card-title" id="bgo-cta">Get ahead of June</h2>
       <p class="small secondary">Your top tip — adjust your indoor temperature — saves <span class="approx">≈</span>&nbsp;€150 a year.</p>
       <div class="mt-4">
         <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
@@ -3748,7 +3736,7 @@
       <p class="small secondary" style="margin-bottom: var(--s-3)">Budget for</p>
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget for" style="margin-bottom: var(--s-6)">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <p class="bg-gasnote" style="margin: calc(-1 * var(--s-4)) 0 var(--s-6)">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></p>
       <fieldset class="bg-modes">
@@ -3781,7 +3769,7 @@
     </article>
 
     <article class="surface span-4 bg-how" aria-labelledby="bgs-how">
-      <h2 class="section-title" id="bgs-how">What you'll see</h2>
+      <h2 class="card-title" id="bgs-how">What you'll see</h2>
       <ul class="bg-next">
         <li><span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span>
           <p><b>A daily pace</b>How much you can use each day to stay under your limit.</p></li>
@@ -3809,7 +3797,7 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -3818,14 +3806,12 @@
     <article class="surface span-12 empty">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
       <div>
-        <p style="margin-bottom: var(--s-3)"><span class="chip">Setting up</span></p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Setting up</span></div>
         <h1 class="empty__title" id="bga-title">Your budget is set</h1>
         <p class="empty__body">First calculation is on its way — check back shortly and we'll show you where you stand.</p>
-        <ul class="bg-when">
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>When:</b> we can't give an exact time — the first calculation runs once your latest readings have been processed. We'll show your status here as soon as it has.</span></li>
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-check-circle"/></svg><span><b>What you can do:</b> nothing is needed. You can still change how your limit is set in the meantime.</span></li>
-        </ul>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — the first calculation runs once your latest readings have been processed; your status appears here as soon as it has.</span></p>
         <div class="empty__actions"><a class="btn btn--secondary" href="#panel-budgets-setup"><svg class="icon sm" aria-hidden="true"><use href="#i-sliders"/></svg>Budget settings</a></div>
+        <p class="empty__note">Nothing you need to do. You can still change how your limit is set in the meantime.</p>
         <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
       </div>
     </article>
@@ -3838,7 +3824,7 @@
     <ul>
       <li>Reason code <code>budget_awaiting_first_run</code> (<code>Budget.status.action</code>). ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38).</li>
       <li>Same chrome as source: fuel/period tabs, "Setting up" pill (neutral), config footer "Mode Auto (20% margin) · Period 1–31 May".</li>
-      <li>Round 2 edge-state rule: "When" states the timing is unknown and why (no timeframe invented, respecting ask #38); "What you can do" + a secondary "Budget settings" link; footnote. All <b>derived copy</b>.</li>
+      <li>Edge-state rule (round 3 template): <code>.empty__status</code> chip, <code>.empty__when</code> "No date yet — …" (no timeframe invented, ask #38), <code>.empty__note</code> + a secondary "Budget settings" link, footnote. All <b>derived copy</b>.</li>
     </ul>
   </details>
 </section>
@@ -3849,7 +3835,7 @@
     <div class="bg-bar__left">
       <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
         <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
-        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+        <button type="button" data-value="gas" aria-checked="false" aria-disabled="true" data-reason="No gas meter linked"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
       </div>
       <span class="bg-gasnote">Gas: no gas meter linked <button class="info" type="button" data-pop="bg-pop-gas" aria-label="Why is Gas unavailable?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
     </div>
@@ -3858,13 +3844,11 @@
     <article class="surface span-12 empty">
       <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
       <div>
-        <p style="margin-bottom: var(--s-3)"><span class="chip">Setting up</span></p>
+        <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Setting up</span></div>
         <h1 class="empty__title" id="bgn-title">Still collecting your data</h1>
         <p class="empty__body">Your meter hasn't reported enough recent readings yet to track this budget. Nothing wrong with your setup — this should resolve once fresh data comes in.</p>
-        <ul class="bg-when">
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>When:</b> there's no fixed date — it depends on when your meter next reports. Last reading received: <b>14 May 2026</b>.</span></li>
-          <li><svg class="icon sm" aria-hidden="true"><use href="#i-plug"/></svg><span><b>What you can do:</b> your budget needs no changes. If still no new readings arrive by 21 May, check that your meter is connected.</span></li>
-        </ul>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — it depends on when your meter next reports. Your first readings arrived on 16 May 2026.</span></p>
+        <p class="empty__note">Nothing you need to do — your budget settings are saved and need no changes.</p>
         <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
       </div>
     </article>
@@ -3877,7 +3861,7 @@
     <ul>
       <li>Reason code <code>budget_not_enough_data</code>. ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38: how long this lasts — needs Hani).</li>
       <li>No readiness meter: there is no known count to show. Same chrome as "Awaiting first run".</li>
-      <li>Round 2 edge-state rule: "When" (no fixed date + ⚠ <b>illustrative</b> last reading 14 May 2026), "What you can do" (check the meter if nothing by 21 May — a 7-day rule we made up; needs product/ops sign-off, ask #38), footnote. All <b>derived</b>.</li>
+      <li>Edge-state rule (round 3 template): <code>.empty__when</code> "No date yet — it depends on when your meter next reports" (ask #38: no duration known) + first readings 16 May 2026 (new-customer timeline, matches <code>panel-overview-new</code>, where Budgets is "Ready now" once a budget is set); <code>.empty__note</code> "Nothing you need to do"; footnote. The round-2 invented "last reading 14 May / check meter by 21 May" was removed. All <b>derived</b>.</li>
     </ul>
   </details>
 </section>
@@ -3890,7 +3874,7 @@
   const last7 = [11, 12, 13, 14, 15, 16, 17].map(i => ({ index: i, tone: 'accent' }));
   JuneCharts.bars('#bg-chart-month', {
     values: may, slots: 31, labels: days(31), tipLabels: days(31).map(d => d + ' May'),
-    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' },
+    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' }, current: 17,
     tone: 'muted', highlight: last7, maxBar: 14,
     yMax: 15, yTicks: [0, 5, 10, 15], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
     futureLabel: '19–31 May: up to 8.7 kWh a day',
@@ -3899,7 +3883,7 @@
   JuneCharts.bars('#bg-chart-week', {
     values: may.slice(11), labels: ['Tue 12', 'Wed 13', 'Thu 14', 'Fri 15', 'Sat 16', 'Sun 17', 'Mon 18'],
     tipLabels: ['Tue 12 May', 'Wed 13 May', 'Thu 14 May', 'Fri 15 May', 'Sat 16 May', 'Sun 17 May', 'Today, 18 May'],
-    now: { index: 6, label: 'Today' }, maxBar: 36,
+    now: { index: 6, label: 'Today' }, current: 6, maxBar: 36,
     thresholds: [{ value: 8.7, label: 'Pace needed', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
     yMax: 10, yTicks: [0, 2, 4, 6, 8, 10], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
     ariaLabel: 'Bar chart of daily electricity use for the last 7 days, 12 to 18 May 2026: 8.4, 7.6, 8.1, 7.2, 7.9, 8.3 and 7.8 kWh. All are under the 8.7 kWh a day line; the average is 7.9 kWh.'
