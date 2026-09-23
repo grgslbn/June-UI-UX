@@ -107,7 +107,8 @@
       <span class="product">Insights</span>
     </div>
     <div class="right">
-      <span class="home-chip"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span>Detached house · Flanders</span></span>
+      <span class="updated" data-updated-slot>Updated today, 20:00</span>
+      <span class="home-chip"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span data-home-text>Detached house · Flanders</span></span>
       <button class="avatar" type="button" aria-label="Account"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></button>
     </div>
   </header>
@@ -1278,7 +1279,7 @@
 </style>
 
 <!-- ════════════════════════════ BREAKDOWN · main ════════════════════════════ -->
-<section class="panel" id="panel-breakdown" data-tab="breakdown" data-label="Breakdown · May 2026" aria-labelledby="bd-title">
+<section class="panel" id="panel-breakdown" data-tab="breakdown" data-label="Breakdown · April 2026" aria-labelledby="bd-title">
   <div class="grid stretch">
 
     <!-- Hero: one answer (sentence) + one numeral that adds the share -->
@@ -1505,7 +1506,7 @@
     values: heating, labels: months, tipLabels: monthsLong, tone: 'muted',
     highlight: { index: 11, tone: 'accent' }, now: cur,
     annotation: { index: 11, text: '38% in April', tone: 'ink' },
-    yMax: 60, yTicks: [0, 20, 40, 60], yLabel: "Heating's share of your use (%)", unit: '%', decimals: 0, maxBar: 28, height: 280,
+    yMax: 60, yTicks: [0, 20, 40, 60], yLabel: "Heating's share of your use (%)", unit: '%', decimals: 0, maxBar: 28, height: 320,
     ariaLabel: "Bar chart of heating's share of your use per month, May 2025 to April 2026: 14, 9, 9, 11, 20, 33, 45, 52, 54, 48, 38 and 38 percent. Lowest in June and July (9%), highest in January (54%). April 2026, your last full month, is highlighted at 38%."
   });
   JuneCharts.bars('#bd-season-all', {
@@ -1516,7 +1517,7 @@
       { name: 'Cooking', values: cooking, tone: 'cat-bd4' },
       { name: 'Fridge, freezer & other', values: rest, tone: 'cat-bd5' }
     ],
-    labels: months, now: cur, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 280,
+    labels: months, now: cur, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
     tooltip: i => `${monthsLong[i]} · Heating ${heating[i]}% · Water heating ${water[i]}% · Always on ${always[i]}% · Cooking ${cooking[i]}% · Fridge, freezer & other ${rest[i]}%`,
     ariaLabel: 'Stacked 100% bars per month, May 2025 to April 2026, with five categories. Heating swings from 9% in summer to 54% in January. Water heating (10–20%), always on (8–14%) and cooking (9–13%) stay fairly flat; fridge, freezer and other are about half of your use in summer. April 2026: heating 38, water heating 20, always on 14, cooking 12, fridge, freezer and other 16 percent.'
   });
@@ -1962,7 +1963,7 @@
           </div>
           <div class="hero__aside fc-aside">
             <h2 class="section-title">Your budget</h2>
-            <p class="fc-aside-body">On track for budget. Your forecast projects <b>290 kWh</b> this month — under your <b>300 kWh</b> electricity budget.</p>
+            <p class="fc-aside-body">Your forecast projects <b>290 kWh</b> this month — under your <b>300 kWh</b> electricity budget.</p>
             <div class="fc-meter">
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9" role="img" aria-label="187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
                 <span class="meter__fcast grow-x"></span><span class="meter__fill grow-x"></span><span class="meter__limit"></span>
@@ -2119,22 +2120,24 @@
     <h4>Approval &amp; structure</h4>
     <ul>
       <li>✓ Approved: glance row gated per cell; Month/Year chart vs last year; 24–48h chart with a verified band; budget cross-reference; retrospective accuracy check (<code>allow_historic</code>). IA per ux-audit §3.2.</li>
-      <li>Hero = the month answer (frozen headline as the h1, one numeral ≈ 290 kWh) + delta chip + budget status. Budget link card (6.4) folded into the hero aside: pill, body and "View budget →" verbatim with canonical numbers. The status chip is a plain chip; the single link to Budgets is "View budget" (no two links to one place).</li>
-      <li>Glance row moved from first position to a compact side list (ux-audit: the month answer was one of four). Year cell shows the per-cell not-ready form.</li>
-      <li>Month view = May day by day, cumulative: actual solid to today, forecast dashed to 31 May, May 2025 as an ink ghost, budget line, "Today" divider, direct end labels. Year view = monthly totals Nov 2025 – Oct 2026 with "Forecasting the next 6 months" (May–Oct). No confidence band on either (binding rule).</li>
-      <li>€: disabled € option in the unit toggle + [i] popover with the product half of the € note (verbatim). Binding meta rule: the API silently returns €0 for <code>unit=cost</code>; the app must detect this and never show "€0 projected".</li>
-      <li>Band explainer + "Likely range (95% confidence)" moved into the [i] popover (verbatim); the chart key says "Likely range".</li>
-      <li>Accuracy check behind a disclosure; the 6-month table is shown inside it (no nested "▾ See the last 6 months" toggle; that label is kept as the table heading). "Off by" written in words ("6% higher") instead of signed "+6%".</li>
+      <li>Hero contract (round-2 shared rule): status chip "On track for budget" (the frozen budget pill, moved to the hero status) → sentence "You're projected to use 8% more this month than in May last year — and stay under budget." → ONE numeral ≈ 290 kWh that the sentence doesn't repeat. The frozen headline ("You're projected to use 290 kWh this month — 8% more than the same month last year.") is split between the h1 and the numeral; the separate "+8%" delta chip is dropped as a repeat.</li>
+      <li>Budget link card (6.4) = hero aside: body and "View budget →" verbatim with canonical numbers; aside heading is an in-card sentence-case title (no caps kicker).</li>
+      <li>Month view: a single line (your use: solid to today, dashed forecast) plus the budget as the only labelled threshold (2px ink). No legend/end-label mix and no stacked right-edge labels (fixes the 300/290/269 collision). Last year moved out of this view — it is stated in the hero caption and drawn in the Year view.</li>
+      <li>Year view: "Last year" (ink) vs "This year" (accent, dashed after April), legend only (end labels off). No confidence band on either view (binding rule).</li>
+      <li>€: disabled € option + [i] popover with the product half of the € note (verbatim). Binding meta rule: <code>unit=cost</code> silently returns €0; the app must detect this and never show "€0 projected".</li>
+      <li>Band explainer + "Likely range (95% confidence)" in the [i] popover (verbatim); the chart key says "Likely range".</li>
+      <li>Accuracy check behind a disclosure; the 6-month table is shown inside it ("See the last 6 months" kept as its heading). "Off by" in words.</li>
     </ul>
     <h4>Data changes (demo-data.md)</h4>
     <ul>
-      <li>Month 412 → <b>290 kWh</b> (+8% vs May 2025 = 269 kWh). Budget link 412/450 → <b>290/300 kWh</b> (inconsistency #1 resolved by demo-data change log #1).</li>
-      <li>⚠ <b>Derived glance values</b> (to match 290 and the Budgets pace of 7.9 kWh/day): Today 14.2 → <b>7.9</b> (5.2 so far + 2.7 forecast); This week 92 → <b>54</b> (Mon 18 – Sun 24 May: 5.2 so far + 49 forecast); This month 240 + 172 → <b>187 + 103</b>.</li>
-      <li>⚠ <b>Illustrative</b> daily kWh 1–18 May: 13.2, 14.0, 12.9, 12.0, 13.2, 11.8, 12.7, 12.5, 11.8, 12.4, 8.2, 7.9, 7.6, 8.1, 7.9, 7.9, 7.7, 5.2 (partial today) = 187; 11–17 May average 7.9. Forecast 19–31 May ≈ 7.7/day to 290. May 2025 daily curve illustrative, ends at 269.</li>
-      <li>⚠ <b>Accuracy check relabelled</b>: "last month" in May 2026 is April, so "Replaying what we predicted on 1 May" → "on 1 April" and rows shift one month (Apr 2026 … Nov 2025). April actual aligned with Compare (442 kWh); forecast 380 → 417 so "6% higher — pretty close" stays true. Other rows keep their printed values.</li>
+      <li>Month 412 → <b>290 kWh</b> (+8% vs May 2025 = 269 kWh). Budget link 412/450 → <b>290/300 kWh</b> (change log #1).</li>
+      <li><b>D3 "Now" = 18 May 2026, 20:00</b> (change log 12): "Now: 18 May, 14:30" → "Now: 18 May, 20:00"; hourly chart starts at 20:00; hero shows "updated today, 20:00".</li>
+      <li>Daily kWh 1–18 May = the Budgets tab's bars (12.8 … 7.8; sum 187; 12–18 May average 7.9). Forecast 19–31 May ≈ 7.9/day → 290.</li>
+      <li>⚠ <b>Derived glance values</b> at 20:00: Today <b>8.4</b> (7.8 so far + 0.6 forecast); This week <b>56</b> (Mon 18 – Sun 24 May: 7.8 + 0.6 + 6 × 7.9 ≈ 8 so far + 48 forecast); This month <b>187 + 103</b>.</li>
+      <li>⚠ "This year": printed "needs a bit more history yet" now carries a date — "ready 1 June 2026" on the rule "yearly forecasts need 12 full months of daily data" (daily data assumed from 1 June 2025, matching Peak's 12-month window). May 2025 = 269 kWh comes from monthly readings. Rule + date need product confirmation.</li>
+      <li>⚠ <b>Accuracy check relabelled</b>: last month in May 2026 is April → "on 1 April", rows Apr 2026 … Nov 2025; April actual aligned with Compare (442 kWh), forecast 417 so "6% higher — pretty close" stays true.</li>
       <li>⚠ <b>Illustrative</b> Year view: actuals Nov–Apr from the accuracy table; forecast May 290, Jun 250, Jul 240, Aug 245, Sep 280, Oct 350; last year Nov 2024 – Oct 2025: 455, 490, 520, 470, 410, 405, 269, 235, 228, 236, 268, 340 (only May 2025 = 269 is canonical).</li>
-      <li>Hourly: printed SVG geometry converted to kWh (kWh = (100 − y) × 0.006; ≈ 7.5 kWh over 24 h, consistent with ~7.7/day) and interpolated to hourly points; band shape kept (wide evening/morning, narrow overnight/midday). 48h = the same profile repeated with small variation (illustrative).</li>
-      <li>⚠ "Now: 18 May, 14:30" is frozen, while demo-data "today" is 18 May 20:00. Kept 14:30 as the forecast's data time — flag.</li>
+      <li>Hourly: printed SVG geometry → kWh ((100 − y) × 0.006 ≈ 7.5 kWh/24 h), resampled by clock time from 20:00; band shape kept (wide morning/evening, narrow overnight/midday). 48h repeats the profile with small variation (illustrative).</li>
     </ul>
     <h4>Reason codes</h4>
     <ul>
@@ -2163,7 +2166,7 @@
           </div>
           <div class="hero__aside fc-aside">
             <h2 class="section-title">Your budget</h2>
-            <p class="fc-aside-body">Forecast to exceed budget. Your forecast projects <b>290 kWh</b> this month — over your <b>270 kWh</b> electricity budget by about 7%.</p>
+            <p class="fc-aside-body">Your forecast projects <b>290 kWh</b> this month — over your <b>270 kWh</b> electricity budget by about 7%.</p>
             <div class="fc-meter">
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 81.8" role="img" aria-label="187 kWh used so far, 290 kWh forecast for May, budget 270 kWh. The forecast goes 20 kWh past the budget.">
                 <span class="meter__fcast grow-x"></span><span class="meter__fill grow-x"></span><span class="meter__limit"></span>
@@ -2207,10 +2210,11 @@
   <details class="meta">
     <summary>Spec notes · Forecast · over budget</summary>
     <ul>
-      <li>Budget link — over. Pill (amber/warn, not red: nothing is over yet, it's a forecast) "Forecast to exceed budget" and "View budget →" verbatim.</li>
-      <li>⚠ <b>Derived numbers</b>: printed 412 vs 380 kWh "by about 8%". With the canonical 290 kWh forecast, an illustrative budget of <b>270 kWh</b> gives "by about 7%" (290 ÷ 270 = 1.074). Needs sign-off.</li>
-      <li>Derived insight: cumulative forecast passes 270 kWh during 29 May (266.9 end of 28 May, 274.8 end of 29 May); (270 − 189.7 expected by midnight today) ÷ 13 days = 6.2 kWh a day. Copy needs sign-off.</li>
-      <li>Only the budget pieces change; hourly chart, € handling and accuracy check are identical to the main state and are omitted here for brevity.</li>
+      <li>Leads with the problem (round-2 rule): alert chip "Forecast to exceed budget" (verbatim pill copy) → "May is heading over your 270 kWh budget." → numeral ≈ 20 kWh over. One "over" colour: red (chip + budget line); amber is no longer used for "over".</li>
+      <li>Aside body "Your forecast projects 290 kWh this month — over your 270 kWh electricity budget by about 7%." and "View budget →" verbatim pattern.</li>
+      <li>⚠ <b>Derived numbers</b>: printed 412 vs 380 kWh "by about 8%". With the canonical 290 kWh forecast, an illustrative budget of <b>270 kWh</b> gives "by about 7%" (290 ÷ 270 = 1.074) and 20 kWh over.</li>
+      <li><b>D4</b>: daily figure uses the Budgets formula (limit − used) ÷ days left = (270 − 187) ÷ 13 = <b>6.4 kWh a day</b> (13 days = 19–31 May, as on Budgets). Crossing date: 187 + 7.9 × n ≥ 270 → n = 10.5 → during 29 May.</li>
+      <li>Hourly chart, € handling and accuracy check are identical to the main state and are omitted here.</li>
       <li>Reason: budget exists and forecast &gt; limit.</li>
     </ul>
   </details>
@@ -2276,7 +2280,7 @@
     <summary>Spec notes · Forecast · no budget</summary>
     <ul>
       <li>Budget link — no budget. Title, body and "Set up a budget →" verbatim; emoji 🎯 → target icon. Secondary button (it's an optional setup, not the tab's main job).</li>
-      <li>Month chart drops the budget line; everything else is as in the main state.</li>
+      <li>No status chip (nothing to report on); h1 without the budget clause. Month chart drops the budget line; everything else is as in the main state.</li>
       <li>Reason: no Budget configured.</li>
     </ul>
   </details>
@@ -2346,7 +2350,7 @@
     <ul>
       <li>Per-cell not ready, shown as a whole state: any glance cell can be "not ready" on its own ("… — needs a bit more history yet", verbatim form). Here Today and This week are ready, This month and This year are not, so the hero answers the week instead of the month.</li>
       <li>Month/Year chart and accuracy check are hidden (no monthly forecast yet); the budget link needs a monthly forecast, so it's hidden too. Hourly chart works (short-term forecasts unlock first).</li>
-      <li>⚠ <b>Illustrative household</b> (new customer, data since 6 May 2026, 13 days): Today 6.4 (4.1 + 2.3), week 45 (4 + 41), hourly = main profile × 0.85. Monthly unlock date 6 June 2026 derived from the guide's "a full month" threshold. "Setting up" neutral chip from the shared status-pill set. All derived copy needs sign-off.</li>
+      <li>⚠ <b>Illustrative household</b> (new customer, data since 6 May 2026, 13 days; now = 18 May 20:00): Today 6.5 (6.1 + 0.4), week 45 (6 + 39), hourly = main profile × 0.85. Yearly from 6 May 2027 (12 full months). Monthly unlock date 6 June 2026 derived from the guide's "a full month" threshold. "Setting up" neutral chip from the shared status-pill set. All derived copy needs sign-off.</li>
       <li>Reason: per-horizon data-readiness threshold (no API code).</li>
     </ul>
   </details>
@@ -2389,7 +2393,7 @@
     <ul>
       <li>Whole tab, under 7 days. Title, body and "3 of 7 days toward your first forecast" verbatim; emoji 📈 → line icon. Shared readiness meter (7 segments, 3 filled).</li>
       <li>The 4 greyed glance cells ("Today / not ready" … "This year / not ready") are kept but turned into a "What unlocks when" list with dates, so they add information instead of repeating the message (ux-audit §1.6).</li>
-      <li>⚠ <b>Derived dates</b> (illustrative new customer, data since 16 May 2026): first forecast 23 May (after 7 days); monthly from 16 June (a full month). "There's nothing you need to do — we'll keep counting." reuses the Peak pattern. Optional action "Set a monthly budget meanwhile" is new copy — sign-off. All need sign-off.</li>
+      <li>⚠ <b>Derived dates</b> (illustrative new customer, data since 16 May 2026): first forecast 23 May (after 7 days); monthly from 16 June (a full month); yearly from 16 May 2027 (12 full months). "There's nothing you need to do — we'll keep counting." reuses the Peak pattern. Optional action "Set a monthly budget meanwhile" is new copy — sign-off. All need sign-off.</li>
       <li>Reason: no API code; uses the guide's documented thresholds (7 days; a full month for monthly).</li>
     </ul>
   </details>
@@ -2398,40 +2402,29 @@
 <script>
 /* Forecast charts */
 (() => {
-  // ── May, day by day (cumulative kWh) ──
+  // ── May, day by day (cumulative kWh). Daily values = the Budgets tab's bars (1–18 May = 187 kWh). ──
   const days = Array.from({ length: 31 }, (_, i) => String(i + 1));
-  const dailyMay = [13.2, 14.0, 12.9, 12.0, 13.2, 11.8, 12.7, 12.5, 11.8, 12.4, 8.2, 7.9, 7.6, 8.1, 7.9, 7.9, 7.7, 5.2];
-  const fcRest = [2.7, 7.8, 7.6, 7.9, 7.4, 7.7, 7.9, 7.8, 7.6, 7.7, 7.8, 7.9, 7.6, 7.6]; // rest of today + 19–31 May
+  const dailyMay = [12.8, 13.4, 11.9, 12.2, 11.5, 12.6, 11.0, 10.8, 12.4, 11.7, 11.4, 8.4, 7.6, 8.1, 7.2, 7.9, 8.3, 7.8];
+  const fcRest = [0.6 + 7.9, 7.8, 7.9, 7.9, 7.8, 7.9, 7.9, 7.9, 7.8, 7.9, 7.9, 7.9, 7.9];   // rest of today + 19 May, then 20–31 May
   const cum = arr => { let s = 0; return arr.map(v => +(s += v).toFixed(1)); };
-  const actual = cum(dailyMay);                                   // … 187.0 on day 18
-  const fcast = cum([actual[17], ...fcRest]).slice(1);            // 189.7 … 290.0
-  const thisMay = actual.concat(fcast.slice(1));                  // 18 actual points (… 187 today) + 13 forecast points
-  thisMay[30] = 290;
-  const lastMayDaily = [9.2, 9.0, 9.4, 8.9, 9.1, 8.6, 8.8, 9.0, 8.7, 8.5, 8.9, 8.4, 8.6, 8.8, 8.2, 8.5, 8.7, 8.3, 8.6, 8.4, 8.8, 8.5, 8.3, 8.6, 8.4, 8.7, 8.5, 8.4, 8.8, 8.6, 8.8];
-  const lastMay = cum(lastMayDaily); lastMay[30] = 269;
-  const tipMonth = (lbl, extra) => i => {
-    const d = `${i + 1} May`;
-    const now = i < 17 ? `used ${actual[i]} kWh` : i === 17 ? `used 187 kWh so far (forecast ${thisMay[17]} by midnight)` : `forecast ${thisMay[i]} kWh`;
-    return `${d} · ${now} · May 2025 ${lastMay[i]} kWh`;
-  };
-  const monthOpts = (budget, extraAria) => ({
+  const actual = cum(dailyMay);                                            // 187.0 on 18 May (20:00)
+  const thisMay = actual.concat(cum([187, ...fcRest]).slice(1)); thisMay[30] = 290;
+  const tipMonth = i => i < 17 ? `${i + 1} May · used ${actual[i]} kWh so far`
+    : i === 17 ? '18 May (today, 20:00) · used 187 kWh so far' : `${i + 1} May · forecast ${thisMay[i]} kWh`;
+  // One line (your use, solid → dashed forecast); budget as the only labelled threshold. No legend + end-label mix.
+  const monthOpts = (budget, tone, aria) => ({
     labels: days, tipLabels: days.map(d => d + ' May'),
-    series: [
-      { name: 'May 2025', tone: 'ink', values: lastMay },
-      { name: 'May 2026', tone: 'accent', values: thisMay, forecastFrom: 17 }
-    ],
+    series: [{ name: '', tone: 'accent', values: thisMay, forecastFrom: 17 }],
     now: { index: 17, label: 'Today' },
-    thresholds: budget ? [{ value: budget, label: 'Budget', tone: 'ink', valueText: budget + ' kWh' }] : [],
+    thresholds: budget ? [{ value: budget, label: 'Budget', tone, emphasis: true, valueText: budget + ' kWh' }] : [],
     xTicks: [0, 9, 19, 30], yMin: 0, yMax: 320, yTicks: [0, 100, 200, 300],
-    yLabel: 'Used since 1 May (kWh)', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
-    tooltip: tipMonth(),
-    ariaLabel: `Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May, then a dashed forecast line to 290 kWh on 31 May. May 2025 is shown as a grey line ending at 269 kWh.${extraAria}`
+    yLabel: 'Your use since 1 May (kWh)', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
+    tooltip: tipMonth, ariaLabel: aria
   });
-  JuneCharts.line('#fc-chart-month', monthOpts(300, ' Budget line at 300 kWh; the forecast stays 10 kWh under it.'));
-  JuneCharts.line('#fcn-chart-month', monthOpts(0, ''));
-  const overOpts = monthOpts(270, ' Budget line at 270 kWh; the forecast crosses it around 29 May and ends 20 kWh over.');
-  overOpts.thresholds = [{ value: 270, label: 'Budget', tone: 'alert', valueText: '270 kWh' }];
-  JuneCharts.line('#fco-chart-month', overOpts);
+  const base = 'Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to 290 kWh on 31 May.';
+  JuneCharts.line('#fc-chart-month', monthOpts(300, 'ink', base + ' Budget line at 300 kWh; the forecast stays 10 kWh under it.'));
+  JuneCharts.line('#fcn-chart-month', monthOpts(0, 'ink', base));
+  JuneCharts.line('#fco-chart-month', monthOpts(270, 'alert', base + ' Budget line at 270 kWh in red; the forecast crosses it around 29 May and ends 20 kWh over.'));
 
   // ── Month by month (Nov 2025 – Oct 2026) ──
   const ym = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
@@ -2445,7 +2438,7 @@
       { name: 'This year', tone: 'accent', values: thisYear, forecastFrom: 5, dots: true }
     ],
     now: { index: 6, label: 'Now' },
-    yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], yLabel: 'kWh per month', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
+    yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], yLabel: 'kWh per month', unit: 'kWh', decimals: 0, forecastName: 'Forecast', endLabels: false,
     tooltip: i => `${ymLong[i]} · ${i < 6 ? 'actual' : 'forecast'} ${thisYear[i]} kWh · a year earlier ${lastYear[i]} kWh`,
     ariaLabel: 'Line chart of monthly use from November 2025 to October 2026. Actual use falls from 512 kWh in January to 442 kWh in April. The dashed forecast continues from 290 kWh in May to a low of 240 kWh in July, rising to 350 kWh in October. Last year is shown as a grey line, slightly lower in most months.'
   });
@@ -2456,19 +2449,20 @@
   const up = [49, 46, 24, 4, 14, 38, 57, 64, 60, 38, 5, 26, 52, 55, 49, 41];
   const lo = [61, 58, 52, 40, 46, 58, 67, 72, 70, 62, 45, 54, 64, 65, 63, 59];
   const k = v => (100 - v) * 0.006;
-  const interp = (src, n) => Array.from({ length: n }, (_, h) => {
-    const p = h * (src.length - 1) / (n - 1), a = Math.floor(p), b = Math.min(src.length - 1, a + 1), t = p - a;
-    return +(k(src[a]) * (1 - t) + k(src[b]) * t).toFixed(2);
-  });
-  const hourly = (hours, scale = 1, wobble = []) => {
-    const e = interp(est, 25), h = interp(up, 25), l = interp(lo, 25);
-    const rep = a => Array.from({ length: hours + 1 }, (_, i) => +((a[i % 24] * scale) * (1 + (wobble[i] || 0))).toFixed(2));
-    return { e: rep(e), hi: rep(h), lo: rep(l) };
+  // Printed profile starts at 14:30 and spans 24 h over 16 points. Sample it by clock time, starting at 20:00 ("now", D3).
+  const at = (src, hFrom1430) => {
+    const h = ((hFrom1430 % 24) + 24) % 24, p = h * 15 / 24, a = Math.floor(p), b = a + 1 > 15 ? 15 : a + 1, t = p - a;
+    return k(src[a]) * (1 - t) + k(src[b]) * t;
   };
-  const hourLabel = i => i === 0 ? 'Now' : String((14 + i) % 24).padStart(2, '0') + 'h';
+  const hourly = (hours, scale = 1, wobble = []) => {
+    const mk = src => Array.from({ length: hours + 1 }, (_, i) => +(at(src, 5.5 + i) * scale * (1 + (wobble[i] || 0))).toFixed(2));
+    return { e: mk(est), hi: mk(up), lo: mk(lo) };
+  };
+  const clock = i => (20 + i) % 24;
+  const hourLabel = i => i === 0 ? 'Now' : String(clock(i)).padStart(2, '0') + 'h';
   const hourTip = (i, d) => {
-    const hh = (14 + i) % 24, day = (14 + i) >= 48 ? 20 : (14 + i) >= 24 ? 19 : 18;
-    const when = i === 0 ? 'Now (18 May, 14:30)' : `${day} May, ${String(hh).padStart(2, '0')}:00`;
+    const day = 18 + Math.floor((20 + i) / 24);
+    const when = i === 0 ? 'Now (18 May, 20:00)' : `${day} May, ${String(clock(i)).padStart(2, '0')}:00`;
     return `${when} · best estimate ${d.e[i].toFixed(2)} kWh · likely ${d.lo[i].toFixed(2)}–${d.hi[i].toFixed(2)} kWh`;
   };
   const hourlyOpts = (d, hours, ticks, aria) => ({
@@ -2478,16 +2472,13 @@
     yMin: 0, yMax: 0.6, yTicks: [0, 0.2, 0.4, 0.6], yLabel: 'kWh per hour', unit: 'kWh', decimals: 2,
     bandName: 'Likely range', tooltip: i => hourTip(i, d), ariaLabel: aria
   });
-  const d24 = hourly(24);
-  JuneCharts.line('#fc-hourly-24', hourlyOpts(d24, 24, [2, 6, 10, 14, 18, 22],
-    'Line chart of your expected use per hour for the next 24 hours from 18 May, 14:30, with a shaded likely range. Use peaks around 19:00 tonight at about 0.47 kWh and again around 06:30 tomorrow; it is lowest overnight at about 0.2 kWh. The range is widest in the evening and early morning and narrowest overnight and at midday.'));
+  JuneCharts.line('#fc-hourly-24', hourlyOpts(hourly(24), 24, [4, 8, 12, 16, 20],
+    'Line chart of your expected use per hour for the next 24 hours from 18 May, 20:00, with a shaded likely range. Use stays low overnight at about 0.2 kWh an hour, rises to a morning peak of about 0.45 kWh around 06:30 and an evening peak of about 0.47 kWh around 19:00 tomorrow. The range is widest around those peaks and narrowest overnight and at midday.'));
   const wob = Array.from({ length: 49 }, (_, i) => i > 24 ? ((i * 7) % 5 - 2) * 0.02 : 0);
-  const d48 = hourly(48, 1, wob);
-  JuneCharts.line('#fc-hourly-48', hourlyOpts(d48, 48, [6, 18, 30, 42],
-    'Line chart of your expected use per hour for the next 48 hours from 18 May, 14:30, with a shaded likely range. The same daily rhythm repeats: peaks in the evening around 19:00 and the morning around 06:30, lows overnight and at midday. The range is widest around those routines.'));
-  const dp = hourly(24, 0.85);
-  JuneCharts.line('#fcp-hourly', hourlyOpts(dp, 24, [2, 6, 10, 14, 18, 22],
-    'Line chart of your expected use per hour for the next 24 hours from 18 May, 14:30, with a shaded likely range. Use peaks around 19:00 tonight at about 0.4 kWh and is lowest overnight. The range is widest in the evening and early morning.'));
+  JuneCharts.line('#fc-hourly-48', hourlyOpts(hourly(48, 1, wob), 48, [4, 16, 28, 40],
+    'Line chart of your expected use per hour for the next 48 hours from 18 May, 20:00, with a shaded likely range. The same daily rhythm repeats: peaks in the morning around 06:30 and the evening around 19:00, lows overnight and at midday. The range is widest around those routines.'));
+  JuneCharts.line('#fcp-hourly', hourlyOpts(hourly(24, 0.85), 24, [4, 8, 12, 16, 20],
+    'Line chart of your expected use per hour for the next 24 hours from 18 May, 20:00, with a shaded likely range. Use stays low overnight, peaks around 06:30 and 19:00 at about 0.4 kWh, and the range is widest around those peaks.'));
 })();
 </script>
 
@@ -3368,7 +3359,7 @@
         <li class="bg-month under"><span class="bg-month__m">Apr</span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Under</span></li>
         <li class="bg-month now"><span class="bg-month__m">May</span><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg><span>So far</span></li>
       </ol>
-      <p class="small secondary">Finish May under 300&nbsp;kWh to make it a 3-month streak.</p>
+      <p class="small secondary">Finish May under 300&nbsp;kWh to make it a 3&#8209;month streak.</p>
       <p class="bg-best"><svg class="icon sm" aria-hidden="true"><use href="#i-trophy"/></svg>Best ever (last 24 months)<b>5 months</b></p>
     </article>
 
@@ -3455,6 +3446,15 @@
       <li>Manual suggestion "Suggested: 265 kWh, based on your forecast" → 290 kWh (forecast aligned).</li>
       <li>⚠ Auto = forecast +20%, yet the limit is 300 with a 290 forecast (290 × 1.2 = 348). Presumably set from the forecast on 1 May — confirm how Auto derives the limit.</li>
       <li>"Updated today, 20:00" and the "already under the pace you need" line are <b>derived copy</b>.</li>
+    </ul>
+    <h4>Round 2 changes</h4>
+    <ul>
+      <li>Hero = one answer: the sentence carries context ("On track — keep to this week's pace and May stays within budget", <b>derived</b>), the numeral carries 8.7 kWh/day, labelled "Most you can use a day, 19–31 May". "113 kWh left" moved to the meter caption. Same pattern on Cutting it close (sentence "Cut back to stay under your May budget.") and Over budget (leads with +42 kWh over).</li>
+      <li>Month chart: no full-width 8.7 line — the target is written over the remaining days only ("19–31 May: up to 8.7 kWh a day"); the insight explains why days 1–11 ran higher. Week chart keeps an 8.7 "Pace needed" line (it's the pace from here on).</li>
+      <li>Dark mode: past-day (muted) bars use <code>--ink-400</code> via a scoped override (≈ 3:1 on the dark surface) until the foundation raises dark <code>--chart-muted</code>; then this override can go.</li>
+      <li>Meter key is a 3-row list (no wrap). In-hero CAPS kickers replaced by sentence-case labels / card titles.</li>
+      <li>Gas · Weekly: disabled with a visible reason "Gas: no gas meter linked" + ⓘ (<b>derived</b>; consistent with an electrically heated home — confirm with product; the "linking it in your account" line is an assumption).</li>
+      <li>Streak tile: "Finish May under 300 kWh to make it a 3&#8209;month streak." (<b>derived</b>).</li>
     </ul>
     <h4>Motion</h4>
     <ul><li>8.7 counts up; meter fills grow from the left; bars grow on first reveal. Settings: Manual reveals the limit field (grid-rows 240ms). Reduced motion: static.</li></ul>
@@ -3735,7 +3735,8 @@
     <summary>Spec notes · Budgets · Awaiting first run</summary>
     <ul>
       <li>Reason code <code>budget_awaiting_first_run</code> (<code>Budget.status.action</code>). ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38).</li>
-      <li>Same chrome as source: fuel/period tabs, "Setting up" pill (neutral), config footer "Mode Auto (20% margin) · Period 1–31 May". Nothing for the person to do — no action shown.</li>
+      <li>Same chrome as source: fuel/period tabs, "Setting up" pill (neutral), config footer "Mode Auto (20% margin) · Period 1–31 May".</li>
+      <li>Round 2 edge-state rule: "When" states the timing is unknown and why (no timeframe invented, respecting ask #38); "What you can do" + a secondary "Budget settings" link; footnote. All <b>derived copy</b>.</li>
     </ul>
   </details>
 </section>
@@ -3774,6 +3775,7 @@
     <ul>
       <li>Reason code <code>budget_not_enough_data</code>. ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38: how long this lasts — needs Hani).</li>
       <li>No readiness meter: there is no known count to show. Same chrome as "Awaiting first run".</li>
+      <li>Round 2 edge-state rule: "When" (no fixed date + ⚠ <b>illustrative</b> last reading 14 May 2026), "What you can do" (check the meter if nothing by 21 May — a 7-day rule we made up; needs product/ops sign-off, ask #38), footnote. All <b>derived</b>.</li>
     </ul>
   </details>
 </section>
@@ -3787,17 +3789,16 @@
   JuneCharts.bars('#bg-chart-month', {
     values: may, slots: 31, labels: days(31), tipLabels: days(31).map(d => d + ' May'),
     xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' },
-    tone: 'muted', highlight: last7,
-    thresholds: [{ value: 8.7, label: 'Stay under', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
+    tone: 'muted', highlight: last7, maxBar: 14,
     yMax: 15, yTicks: [0, 5, 10, 15], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
-    futureLabel: '19–31 May still to come',
-    ariaLabel: 'Bar chart of daily electricity use, 1 to 18 May 2026; 19 to 31 May have not happened yet. The first 11 days were between 10.8 and 13.4 kWh. Since 12 May every day has been under the 8.7 kWh a day line that keeps May within budget, averaging 7.9 kWh.'
+    futureLabel: '19–31 May: up to 8.7 kWh a day',
+    ariaLabel: 'Bar chart of daily electricity use, 1 to 18 May 2026; 19 to 31 May have not happened yet. The first 11 days were between 10.8 and 13.4 kWh. Since 12 May every day has been under 8.7 kWh, averaging 7.9 kWh. For the remaining days, 19 to 31 May, up to 8.7 kWh a day keeps May within budget.'
   });
   JuneCharts.bars('#bg-chart-week', {
     values: may.slice(11), labels: ['Tue 12', 'Wed 13', 'Thu 14', 'Fri 15', 'Sat 16', 'Sun 17', 'Mon 18'],
     tipLabels: ['Tue 12 May', 'Wed 13 May', 'Thu 14 May', 'Fri 15 May', 'Sat 16 May', 'Sun 17 May', 'Today, 18 May'],
     now: { index: 6, label: 'Today' }, maxBar: 36,
-    thresholds: [{ value: 8.7, label: 'Stay under', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
+    thresholds: [{ value: 8.7, label: 'Pace needed', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
     yMax: 10, yTicks: [0, 2, 4, 6, 8, 10], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
     ariaLabel: 'Bar chart of daily electricity use for the last 7 days, 12 to 18 May 2026: 8.4, 7.6, 8.1, 7.2, 7.9, 8.3 and 7.8 kWh. All are under the 8.7 kWh a day line; the average is 7.9 kWh.'
   });

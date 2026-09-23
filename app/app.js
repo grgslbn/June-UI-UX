@@ -184,7 +184,9 @@
        xTicks (0-based), now {index,label}, highlight (index | [{index,tone}]), muteOthers,
        tone, thresholds[{value,label,tone,emphasis,valueText}], annotation {index,text,tone},
        futureLabel, yMax, yTicks, yLabel, unit, decimals, height, compact, tooltip(i,v)→str,
-       ariaLabel, thresholdLabels ('auto'|'key'|'gutter')                                 */
+       ariaLabel, thresholdLabels ('auto'|'key'|'gutter'),
+       current (index | {from,to}: accent bar / band + bold x label), currentTone,
+       seriesLabels: 'direct' (stacked: label segments in the right gutter instead of a legend), seriesValues */
     function bars(host, o, W) {
       const series = o.series || [{ name: o.name || '', values: o.values || [], tone: o.tone || 'accent' }];
       const stacked = series.length > 1;
@@ -205,7 +207,12 @@
       if (o.yTicks) sc.ticks = o.yTicks;
       const yMax = sc.max;
       const tickW = compact ? 0 : Math.max(...sc.ticks.map(t => textW(fmtN(t, decOf(sc.ticks)))));
-      const gItems = thr.map(t => ({ name: t.label, val: t.valueText }));
+      // stacked series can be direct-labelled at the current (or last) column instead of a legend
+      const direct = stacked && !compact && (o.seriesLabels === 'direct') && !narrow;
+      const lastData = (() => { for (let i = nData - 1; i >= 0; i--) if (tot[i] != null) return i; return -1; })();
+      const labelCol = o.current != null ? curRange(o.current).to : lastData;
+      const sItems = direct && labelCol >= 0 ? series.map(sr => ({ name: sr.name, val: sr.values[labelCol] != null && o.seriesValues ? fmtN(sr.values[labelCol], dec) + unit : '' , v: sr.values[labelCol] })).filter(it => it.v) : [];
+      const gItems = thr.map(t => ({ name: t.label, val: t.valueText })).concat(sItems);
       const single = singleLine(W);
       const gut = mode === 'gutter' ? Math.max(gutterWidth(gItems, single), 8) : (compact ? 0 : 8);
       const capH = o.yLabel && !compact ? 24 : 0;
@@ -259,7 +266,11 @@
         const cls = `jc-thr jc-late t-${t.tone || 'ink'}${t.emphasis ? ' em' : ''}`;
         s += `<line class="${cls}" x1="${m.l}" x2="${(W - m.r + (mode === 'gutter' ? 4 : 0)).toFixed(1)}" y1="${y(t.value).toFixed(1)}" y2="${y(t.value).toFixed(1)}"/>`;
       });
-      if (mode === 'gutter' && thr.length) s += gutterLabels(thr.map(t => ({ y: y(t.value), name: t.label, val: t.valueText, valCls: t.tone === 'accent' ? 't-accent' : '' })), W - m.r, 4, H - 4, single);
+      if (mode === 'gutter' && (thr.length || sItems.length)) {
+        let acc = 0; const segY = sItems.map(it => { const mid = y(acc + it.v / 2); acc += it.v; return mid; });
+        s += gutterLabels(thr.map(t => ({ y: y(t.value), name: t.label, val: t.valueText, valCls: t.tone === 'accent' ? 't-accent' : '' }))
+          .concat(sItems.map((it, k) => ({ y: segY[k], name: it.name, val: it.val }))), W - m.r, 4, H - 4, single);
+      }
       // annotation
       if (o.annotation && tot[o.annotation.index] != null && !compact) {
         const a = o.annotation, tw = textW(a.text, 600);
@@ -276,7 +287,7 @@
       for (let i = 0; i < nData; i++) if (tot[i] != null) s += `<rect class="jc-hit" data-i="${i}" x="${(cx(i) - slot / 2).toFixed(1)}" y="${m.t}" width="${slot.toFixed(1)}" height="${ph}"/>`;
       s += `</svg><div class="jc-tip" aria-hidden="true"></div>`;
       const keyEntries = [];
-      if (stacked) series.forEach(sr => keyEntries.push({ swatch: `<i class="dot" style="background:${fillVar(sr.tone)}"></i>`, name: sr.name }));
+      if (stacked && !sItems.length) series.forEach(sr => keyEntries.push({ swatch: `<i class="dot" style="background:${fillVar(sr.tone)}"></i>`, name: sr.name }));
       if (mode === 'key') thr.forEach(t => keyEntries.push({ swatch: `<i class="ln${t.emphasis ? '' : ' thin'}" style="border-color:${toneVar(t.tone)}"></i>`, name: t.label, val: t.valueText }));
       host.innerHTML = keyHTML(keyEntries) + s;
       const svg = host.querySelector('svg'), barsEls = $$('.jc-bar', svg);
@@ -671,8 +682,8 @@
     function headerContext(panel) {
       if (!panel) return;
       const h = panel.dataset.home, u = panel.dataset.updated;
-      if (homeChip) { homeChip.hidden = h === ''; if (homeText) homeText.textContent = h || homeDefault; }
-      if (updatedEl) { updatedEl.hidden = u === ''; updatedEl.textContent = u || updatedDefault; }
+      if (homeChip) { homeChip.hidden = h === '' || h === 'none'; if (homeText) homeText.textContent = (h && h !== 'none') ? h : homeDefault; }
+      if (updatedEl) { updatedEl.hidden = u === '' || u === 'none'; updatedEl.textContent = (u && u !== 'none') ? u : updatedDefault; }
     }
     // Tab bar scroll cue: fade whichever edge has more tabs behind it
     const tabScroller = $('.tabs-scroll');

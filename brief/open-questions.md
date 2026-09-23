@@ -37,3 +37,8 @@ Collected from builders; each is also noted in the relevant panel's Spec notes d
 22. Gas toggle shows the approved "Still gathering the group" state (no gas data) — acceptable?
 23. Partial-profile nudge still says "living area" though Belgian groups filter on bedrooms; "Check back in a few days" has no date.
 24. New copy to sign off: "See ways to use less" (→ Advice), edge-state reassurance lines, footnotes.
+
+## Round 3 additions
+25. Heating fuel of the demo home: heat-pump card assumes electric heating, but Compare offers a Gas toggle and Budgets has "no gas meter linked". Decide: all-electric home (hide Gas) or gas-heated home (rework heat-pump copy).
+26. Budgets "Gas: no gas meter linked" reason and "link it in your account" line are assumptions.
+27. Budgets not-enough-data: "last reading 14 May" and "check your meter if nothing arrives by 21 May" are invented.

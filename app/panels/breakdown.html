@@ -39,7 +39,7 @@
 </style>
 
 <!-- ════════════════════════════ BREAKDOWN · main ════════════════════════════ -->
-<section class="panel" id="panel-breakdown" data-tab="breakdown" data-label="Breakdown · May 2026" aria-labelledby="bd-title">
+<section class="panel" id="panel-breakdown" data-tab="breakdown" data-label="Breakdown · April 2026" aria-labelledby="bd-title">
   <div class="grid stretch">
 
     <!-- Hero: one answer (sentence) + one numeral that adds the share -->
@@ -266,7 +266,7 @@
     values: heating, labels: months, tipLabels: monthsLong, tone: 'muted',
     highlight: { index: 11, tone: 'accent' }, now: cur,
     annotation: { index: 11, text: '38% in April', tone: 'ink' },
-    yMax: 60, yTicks: [0, 20, 40, 60], yLabel: "Heating's share of your use (%)", unit: '%', decimals: 0, maxBar: 28, height: 280,
+    yMax: 60, yTicks: [0, 20, 40, 60], yLabel: "Heating's share of your use (%)", unit: '%', decimals: 0, maxBar: 28, height: 320,
     ariaLabel: "Bar chart of heating's share of your use per month, May 2025 to April 2026: 14, 9, 9, 11, 20, 33, 45, 52, 54, 48, 38 and 38 percent. Lowest in June and July (9%), highest in January (54%). April 2026, your last full month, is highlighted at 38%."
   });
   JuneCharts.bars('#bd-season-all', {
@@ -277,7 +277,7 @@
       { name: 'Cooking', values: cooking, tone: 'cat-bd4' },
       { name: 'Fridge, freezer & other', values: rest, tone: 'cat-bd5' }
     ],
-    labels: months, now: cur, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 280,
+    labels: months, now: cur, yMax: 100, yTicks: [0, 25, 50, 75, 100], yLabel: 'Share of your use (%)', unit: '%', decimals: 0, maxBar: 28, height: 320,
     tooltip: i => `${monthsLong[i]} · Heating ${heating[i]}% · Water heating ${water[i]}% · Always on ${always[i]}% · Cooking ${cooking[i]}% · Fridge, freezer & other ${rest[i]}%`,
     ariaLabel: 'Stacked 100% bars per month, May 2025 to April 2026, with five categories. Heating swings from 9% in summer to 54% in January. Water heating (10–20%), always on (8–14%) and cooking (9–13%) stay fairly flat; fridge, freezer and other are about half of your use in summer. April 2026: heating 38, water heating 20, always on 14, cooking 12, fridge, freezer and other 16 percent.'
   });
