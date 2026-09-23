@@ -1,0 +1,3399 @@
+{
+ "panel-overview": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 97,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "See your budget",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 136,
+    "h": 24,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "1 Compare +73% more than similar homes A",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 455,
+    "h": 128,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "2 Peak Your June 2025 peak drops out on ",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 455,
+    "h": 128,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "3 Advice 3 new tips Top tip saves ≈ €150",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 455,
+    "h": 108,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast Projected this month — 8% more ",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 73,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets 187 of 300 kWh used, 13 days lef",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 73,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare More than similar homes in April",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 73,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak 12-month average — sets your capaci",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 73,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown Your biggest category in April",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 73,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar 3.2 kWh sent to the grid today. 62",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 73,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice Top tip saves ≈ €150/year. 3new t",
+    "where": "panel-overview",
+    "meta": false,
+    "ring": true,
+    "w": 629,
+    "h": 74,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-compare": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 95,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Previous month",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 36,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Next month",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 36,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Elec",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 70,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "kWh",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 55,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Why is the € view unavailable?",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Update home profile",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 205,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Line chart, November 2025 to April 2026.",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 1064,
+    "h": 308,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "See ways to use less",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 208,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Your ranking over time Month by month, a",
+    "where": "panel-compare",
+    "meta": false,
+    "ring": true,
+    "w": 1120,
+    "h": 89,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-solar": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 68,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About 'used at home' — how it's calculat",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 28,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About 'from your panels' — how it's calc",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 28,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Day",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 70,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Previous day",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 36,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Next day",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 36,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Import",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 109,
+    "h": 32,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Export",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 109,
+    "h": 32,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Diverging bar chart for 18 May, 00:00 to",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 684,
+    "h": 260,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Stacked bar chart of monthly solar produ",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 304,
+    "h": 328,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Use more of your own solar",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 215,
+    "h": 24,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Show raw production & consumption Today,",
+    "where": "panel-solar",
+    "meta": false,
+    "ring": true,
+    "w": 1120,
+    "h": 89,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-breakdown": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 110,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "kWh",
+    "where": "panel-breakdown",
+    "meta": false,
+    "ring": true,
+    "w": 55,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "What does 'always on' mean?",
+    "where": "panel-breakdown",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Heating",
+    "where": "panel-breakdown",
+    "meta": false,
+    "ring": true,
+    "w": 121,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Bar chart of heating's share of your use",
+    "where": "panel-breakdown",
+    "meta": false,
+    "ring": true,
+    "w": 589,
+    "h": 320,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Complete profile",
+    "where": "panel-breakdown",
+    "meta": false,
+    "ring": true,
+    "w": 179,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-peak": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "What is a rolling average?",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "What is the capacity tariff?",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About this estimate",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Month",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 73,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Previous month",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 36,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Next month",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 36,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Bar chart of daily peaks, 1 to 18 May 20",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 684,
+    "h": 240,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Lower your peak",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 180,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "How the 12-month average is calculated S",
+    "where": "panel-peak",
+    "meta": false,
+    "ring": true,
+    "w": 1120,
+    "h": 89,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-forecast": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About this forecast",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 28,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "View budget",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 109,
+    "h": 24,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Month",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 73,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "kWh",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 55,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Why is € unavailable?",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Line chart of your cumulative use in May",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 684,
+    "h": 240,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Next 24h",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 91,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "What is the likely range?",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Line chart of your expected use per hour",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 1064,
+    "h": 268,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "How accurate are our forecasts? April: f",
+    "where": "panel-forecast",
+    "meta": false,
+    "ring": true,
+    "w": 1120,
+    "h": 89,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-advice": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 88,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "New 3",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 125,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About this estimate",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 43,
+    "h": 52,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Add to my plan",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 169,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Already do this",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 153,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Not relevant",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 133,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About this estimate",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Add to my plan",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 169,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Already do this",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 153,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Not relevant",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 133,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About this estimate",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Add to my plan",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 169,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Already do this",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 153,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Not relevant",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 133,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "About this estimate",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Add to my plan",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 169,
+    "h": 44,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Not relevant",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 109,
+    "h": 36,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "How we pick and price your tips Why this",
+    "where": "panel-advice",
+    "meta": false,
+    "ring": true,
+    "w": 1120,
+    "h": 89,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "panel-budgets": {
+  "stops": [
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Overview",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 96,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Compare",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 92,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Solar",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 66,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Breakdown",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 107,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Peak",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 65,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Forecast",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Advice",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 79,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "Budgets",
+    "where": "tabs",
+    "meta": false,
+    "ring": true,
+    "w": 89,
+    "h": 37,
+    "exp": null,
+    "chk": null,
+    "cur": "page"
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Electricity · Monthly",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 179,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Why is Gas unavailable?",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "How is this worked out?",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 24,
+    "h": 24,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "a",
+    "role": null,
+    "name": "See your full forecast",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 360,
+    "h": 24,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": "radio",
+    "name": "Month",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 73,
+    "h": 32,
+    "exp": null,
+    "chk": "true",
+    "cur": null
+   },
+   {
+    "tag": "div",
+    "role": "img",
+    "name": "Bar chart of daily electricity use, 1 to",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 684,
+    "h": 240,
+    "exp": null,
+    "chk": null,
+    "cur": null
+   },
+   {
+    "tag": "button",
+    "role": null,
+    "name": "Budget settings Auto (20% margin) · Mont",
+    "where": "panel-budgets",
+    "meta": false,
+    "ring": true,
+    "w": 1120,
+    "h": 89,
+    "exp": "false",
+    "chk": null,
+    "cur": null
+   }
+  ],
+  "noRing": []
+ },
+ "perPanel": {
+  "panel-overview": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "See your budget 136x24"
+   ],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:May is on track — 290 kWh fore",
+    "H2:Your May budget",
+    "H2:Worth a look\n3",
+    "H2:All topics"
+   ],
+   "hCount": 4,
+   "emptyNames": []
+  },
+  "panel-overview-new": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:We're still getting to know yo",
+    "H2:While you wait",
+    "H2:When each topic is ready"
+   ],
+   "hCount": 3,
+   "emptyNames": []
+  },
+  "panel-compare": {
+   "jc": [
+    {
+     "label": "",
+     "role": null,
+     "labelled": false,
+     "tab": -1
+    },
+    {
+     "label": "Line chart, November 2025 to April 2026. Your home used betw",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    },
+    {
+     "label": "Line chart of your monthly ranking among similar homes, Nove",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "Elec 62x40",
+    "Gas 62x40",
+    "kWh 52x40",
+    "€ 52x40",
+    "Why is the € view unavailable? 24x24",
+    "How is the ranking worked out? 24x24",
+    "What do these percentages mean 24x24"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "Why is the € view unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "How is the ranking worked out?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "What do these percentages mean?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [
+    {
+     "exp": "false",
+     "ctrl": true
+    }
+   ],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Energy",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Unit",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:In April you used 73% more ene",
+    "H2:Your usage vs. similar homes",
+    "H3:",
+    "H2:Still gathering the group"
+   ],
+   "hCount": 5,
+   "emptyNames": []
+  },
+  "panel-compare-partial": {
+   "jc": [
+    {
+     "label": "",
+     "role": null,
+     "labelled": false,
+     "tab": -1
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "Elec 62x40",
+    "Gas 62x40",
+    "kWh 52x40",
+    "€ 52x40",
+    "Why is the € view unavailable? 24x24"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "Why is the € view unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Energy",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Unit",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:You've used 9% more energy tha"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-compare-good": {
+   "jc": [
+    {
+     "label": "",
+     "role": null,
+     "labelled": false,
+     "tab": -1
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "Elec 62x40",
+    "Gas 62x40",
+    "kWh 52x40",
+    "€ 52x40",
+    "Why is the € view unavailable? 24x24"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "Why is the € view unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Energy",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Unit",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Nice — you've used 16% less en"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-compare-eur": {
+   "jc": [
+    {
+     "label": "",
+     "role": null,
+     "labelled": false,
+     "tab": -1
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "Elec 62x40",
+    "Gas 62x40",
+    "kWh 52x40",
+    "€ 52x40",
+    "Why is the € view unavailable? 24x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "Why is the € view unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Energy",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Unit",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:In April you used 73% more ene",
+    "H3:€ view unavailable"
+   ],
+   "hCount": 2,
+   "emptyNames": []
+  },
+  "panel-compare-no-house-type": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [
+    44
+   ],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Set your house type to see how"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-compare-no-group": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:No matching group found"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-compare-contributors": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Still gathering the group"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-solar": {
+   "jc": [
+    {
+     "label": "Diverging bar chart for 18 May, 00:00 to 20:00. Export above",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    },
+    {
+     "label": "Stacked bar chart of monthly solar production, June 2025 to ",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    },
+    {
+     "label": "Line chart of estimated production and consumption per hour ",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "About 'used at home' — how it' 24x28",
+    "About 'from your panels' — how 24x28",
+    "Day 62x40",
+    "Week 62x40",
+    "Month 62x40",
+    "Year 62x40",
+    "Import 109x32",
+    "Export 109x32",
+    "Use more of your own solar 215x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About 'used at home' — how it's calculat",
+     "exp": "false",
+     "w": 24,
+     "h": 28
+    },
+    {
+     "name": "About 'from your panels' — how it's calc",
+     "exp": "false",
+     "w": 24,
+     "h": 28
+    }
+   ],
+   "discs": [
+    {
+     "exp": "false",
+     "ctrl": true
+    }
+   ],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Period",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:Sent to the grid today",
+    "H2:To and from the grid",
+    "H2:Seasonal production — last 12 ",
+    "H3:Used at home Estimated"
+   ],
+   "hCount": 5,
+   "emptyNames": []
+  },
+  "panel-solar-calibrating": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Still calibrating your solar s"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-breakdown": {
+   "jc": [
+    {
+     "label": "",
+     "role": null,
+     "labelled": false,
+     "tab": -1
+    },
+    {
+     "label": "Bar chart of heating's share of your use per month, May 2025",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "kWh 52x40",
+    "€ 52x40",
+    "What does 'always on' mean? 24x24",
+    "Heating 113x40",
+    "All categories 113x40"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About these € values",
+     "exp": "false",
+     "w": 0,
+     "h": 0
+    },
+    {
+     "name": "What does 'always on' mean?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Unit",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Categories shown",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Heating was your biggest use i",
+    "H2:April, by category",
+    "H2:Seasonal trend — last 12 month",
+    "H2:Home profile"
+   ],
+   "hCount": 6,
+   "emptyNames": []
+  },
+  "panel-breakdown-profile": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [
+    44
+   ],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Tell us about your home to see"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-breakdown-not-ready": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Data not ready yet"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-peak": {
+   "jc": [
+    {
+     "label": "Comparison on a 0 to 5 kW scale: your rolling average 4.0 kW",
+     "role": "img",
+     "labelled": true,
+     "tab": -1
+    },
+    {
+     "label": "Bar chart of daily peaks, 1 to 18 May 2026; 19 to 31 May hav",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "What is a rolling average? 24x24",
+    "What is the capacity tariff? 24x24",
+    "About this estimate 24x24",
+    "Day 65x40",
+    "Week 65x40",
+    "Month 65x40",
+    "Year 65x40"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "What is a rolling average?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "What is the capacity tariff?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [
+    {
+     "exp": "false",
+     "ctrl": true
+    }
+   ],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Period",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:Your peaks are 0.24 kW below t",
+    "H2:How you compare",
+    "H2:Daily peaks",
+    "H2:Your biggest peak is still cou"
+   ],
+   "hCount": 7,
+   "emptyNames": []
+  },
+  "panel-peak-history": {
+   "jc": [
+    {
+     "label": "Comparison on a 0 to 5 kW scale: your average so far, 3.0 kW",
+     "role": "img",
+     "labelled": true,
+     "tab": -1
+    },
+    {
+     "label": "Bar chart of daily peaks, 1 to 15 September 2025; the rest o",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "What is a rolling average? 24x24",
+    "Day 65x40",
+    "Week 65x40",
+    "Month 65x40",
+    "Year 65x40"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "What is a rolling average?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Period",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:You're building your first 12-",
+    "H2:Still building your 12-month a",
+    "H2:How you compare",
+    "H2:Daily peaks"
+   ],
+   "hCount": 5,
+   "emptyNames": []
+  },
+  "panel-forecast": {
+   "jc": [
+    {
+     "label": "Line chart of your cumulative use in May 2026: 187 kWh used ",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    },
+    {
+     "label": "Line chart of your expected use per hour for the next 24 hou",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "About this forecast 24x28",
+    "View budget 109x24",
+    "Month 65x40",
+    "Year 65x40",
+    "kWh 52x40",
+    "€ 52x40",
+    "Why is € unavailable? 24x24",
+    "Next 24h 83x40",
+    "Next 48h 83x40",
+    "What is the likely range? 24x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About this forecast",
+     "exp": "false",
+     "w": 24,
+     "h": 28
+    },
+    {
+     "name": "Why is € unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "What is the likely range?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [
+    {
+     "exp": "false",
+     "ctrl": true
+    }
+   ],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Period",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Unit",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Time span",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:You're projected to use 8% mor",
+    "H2:Your budget",
+    "H2:May, day by day",
+    "H2:At a glance"
+   ],
+   "hCount": 10,
+   "emptyNames": []
+  },
+  "panel-forecast-over-budget": {
+   "jc": [
+    {
+     "label": "Line chart of your cumulative use in May 2026: 187 kWh used ",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "About this forecast 24x28",
+    "View budget 109x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About this forecast",
+     "exp": "false",
+     "w": 24,
+     "h": 28
+    }
+   ],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:May is heading over your 270 k",
+    "H2:Your budget",
+    "H2:May, day by day",
+    "H2:At a glance"
+   ],
+   "hCount": 4,
+   "emptyNames": []
+  },
+  "panel-forecast-no-budget": {
+   "jc": [
+    {
+     "label": "Line chart of your cumulative use in May 2026: 187 kWh used ",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "About this forecast 24x28"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About this forecast",
+     "exp": "false",
+     "w": 24,
+     "h": 28
+    }
+   ],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:You're projected to use 8% mor",
+    "H2:Your budget",
+    "H2:No budget set up yet",
+    "H2:May, day by day"
+   ],
+   "hCount": 5,
+   "emptyNames": []
+  },
+  "panel-forecast-partly-ready": {
+   "jc": [
+    {
+     "label": "Line chart of your expected use per hour for the next 24 hou",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [],
+   "small44": [
+    "About this forecast 24x28",
+    "What is the likely range? 24x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About this forecast",
+     "exp": "false",
+     "w": 24,
+     "h": 28
+    },
+    {
+     "name": "What is the likely range?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Your first forecasts are ready",
+    "H2:Your monthly forecast unlocks ",
+    "H2:Next 24 hours",
+    "H2:At a glance"
+   ],
+   "hCount": 5,
+   "emptyNames": []
+  },
+  "panel-forecast-not-enough-data": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Building toward your first for",
+    "H2:What unlocks when"
+   ],
+   "hCount": 2,
+   "emptyNames": []
+  },
+  "panel-advice": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "About this estimate 40x48",
+    "Already do this 153x36",
+    "Not relevant 133x36",
+    "BUTTON 85x36",
+    "About this estimate 24x24",
+    "Already do this 153x36",
+    "Not relevant 133x36",
+    "BUTTON 85x36",
+    "About this estimate 24x24",
+    "Already do this 153x36",
+    "Not relevant 133x36",
+    "BUTTON 85x36",
+    "About this estimate 24x24",
+    "Not relevant 109x36",
+    "BUTTON 85x36"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 40,
+     "h": 48
+    },
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [
+    {
+     "exp": "false",
+     "ctrl": true
+    }
+   ],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Show tips",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:Adjust your indoor temperature",
+    "H2:More tips for you",
+    "H3:Wash clothes at a lower temper",
+    "H3:Carpets help insulate your flo"
+   ],
+   "hCount": 11,
+   "emptyNames": [
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm",
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm",
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm",
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm"
+   ]
+  },
+  "panel-advice-plan": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "About this estimate 40x48",
+    "About this estimate 24x24",
+    "Move back to New 176x36",
+    "BUTTON 85x36"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 40,
+     "h": 48
+    },
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Show tips",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:One step left to start saving:",
+    "H2:In your plan",
+    "H3:Wash clothes at a lower temper"
+   ],
+   "hCount": 3,
+   "emptyNames": [
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm"
+   ]
+  },
+  "panel-advice-plan-empty": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Show tips",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:Your plan is empty"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-advice-done": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "About this estimate 40x48",
+    "About this estimate 24x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 40,
+     "h": 48
+    },
+    {
+     "name": "About this estimate",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Show tips",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:You've put a tip into practice",
+    "H2:Done",
+    "H3:Replace old lamps with LED lig"
+   ],
+   "hCount": 3,
+   "emptyNames": []
+  },
+  "panel-advice-dismissed": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "Move back to New 176x36",
+    "BUTTON 85x36",
+    "Move back to New 176x36",
+    "BUTTON 85x36",
+    "Move back to New 176x36",
+    "BUTTON 85x36"
+   ],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Show tips",
+     "n": 4
+    }
+   ],
+   "h": [
+    "H1:Tips you've set aside",
+    "H2:Optimize outdoor lighting",
+    "H2:Draught-proof your windows",
+    "H2:Use a smart power strip"
+   ],
+   "hCount": 4,
+   "emptyNames": [
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm",
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm",
+    "<button class=\"btn btn--quiet\" type=\"button\" data-ad-undo=\"\"><svg class=\"icon sm"
+   ]
+  },
+  "panel-advice-empty": {
+   "jc": [],
+   "small24": [],
+   "small44": [],
+   "primSmall": [],
+   "pops": [],
+   "discs": [],
+   "segs": [],
+   "h": [
+    "H1:Nothing to suggest yet"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-budgets": {
+   "jc": [
+    {
+     "label": "Bar chart of daily electricity use, 1 to 18 May 2026; 19 to ",
+     "role": "img",
+     "labelled": true,
+     "tab": 0
+    }
+   ],
+   "small24": [
+    "INPUT 20x20",
+    "INPUT 20x20"
+   ],
+   "small44": [
+    "Electricity · Monthly 176x40",
+    "Gas · Weekly 176x40",
+    "Why is Gas unavailable? 24x24",
+    "How is this worked out? 24x24",
+    "See your full forecast 318x24",
+    "Week 65x40",
+    "Month 65x40",
+    "INPUT 64x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "Why is Gas unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "How is this worked out?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [
+    {
+     "exp": "false",
+     "ctrl": true
+    }
+   ],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Budget",
+     "n": 2
+    },
+    {
+     "role": "radiogroup",
+     "label": "Show",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:On track — keep to this week's",
+    "H2:May so far",
+    "H2:Daily use",
+    "H2:History & streak"
+   ],
+   "hCount": 6,
+   "emptyNames": [
+    "<input type=\"radio\" name=\"bg-mode-main\" value=\"auto\" checked=\"\">",
+    "<input type=\"radio\" name=\"bg-mode-main\" value=\"manual\">",
+    "<input id=\"bg-limit-main\" type=\"number\" inputmode=\"numeric\" min=\"1\" step=\"1\" val",
+    "<button class=\"btn btn--secondary\" type=\"button\"><svg class=\"icon sm\" aria-hidde"
+   ]
+  },
+  "panel-budgets-close": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "Electricity · Monthly 176x40",
+    "Gas · Weekly 176x40",
+    "Why is Gas unavailable? 24x24",
+    "How is this worked out? 24x24",
+    "See your full forecast 318x24"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "Why is Gas unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    },
+    {
+     "name": "How is this worked out?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Budget",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Cut back to stay under your Ma",
+    "H2:May so far",
+    "H2:Why we think you'll go over",
+    "H2:Ways to cut back"
+   ],
+   "hCount": 5,
+   "emptyNames": []
+  },
+  "panel-budgets-over": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "Electricity · Monthly 176x40",
+    "Gas · Weekly 176x40",
+    "Why is Gas unavailable? 24x24"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "Why is Gas unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Budget",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Already over — May's budget is",
+    "H2:May so far",
+    "H2:What happens next",
+    "H2:Get ahead of June"
+   ],
+   "hCount": 4,
+   "emptyNames": []
+  },
+  "panel-budgets-setup": {
+   "jc": [],
+   "small24": [
+    "INPUT 20x20",
+    "INPUT 20x20"
+   ],
+   "small44": [
+    "Electricity · Monthly 156x40",
+    "Gas · Weekly 156x40",
+    "Why is Gas unavailable? 24x24",
+    "INPUT 64x24"
+   ],
+   "primSmall": [
+    44
+   ],
+   "pops": [
+    {
+     "name": "Why is Gas unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Budget for",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Setting up a new budget",
+    "H2:What you'll see"
+   ],
+   "hCount": 2,
+   "emptyNames": [
+    "<input type=\"radio\" name=\"bg-mode-setup\" value=\"auto\" checked=\"\">",
+    "<input type=\"radio\" name=\"bg-mode-setup\" value=\"manual\">",
+    "<input id=\"bg-limit-setup\" type=\"number\" inputmode=\"numeric\" min=\"1\" step=\"1\" va"
+   ]
+  },
+  "panel-budgets-awaiting": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "Electricity · Monthly 176x40",
+    "Gas · Weekly 176x40",
+    "Why is Gas unavailable? 24x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "Why is Gas unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Budget",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Your budget is set"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  },
+  "panel-budgets-nodata": {
+   "jc": [],
+   "small24": [],
+   "small44": [
+    "Electricity · Monthly 176x40",
+    "Gas · Weekly 176x40",
+    "Why is Gas unavailable? 24x24"
+   ],
+   "primSmall": [],
+   "pops": [
+    {
+     "name": "Why is Gas unavailable?",
+     "exp": "false",
+     "w": 24,
+     "h": 24
+    }
+   ],
+   "discs": [],
+   "segs": [
+    {
+     "role": "radiogroup",
+     "label": "Budget",
+     "n": 2
+    }
+   ],
+   "h": [
+    "H1:Still collecting your data"
+   ],
+   "hCount": 1,
+   "emptyNames": []
+  }
+ },
+ "popovers": [
+  {
+   "pid": "panel-peak",
+   "name": "What is a rolling average?",
+   "open": true,
+   "visible": "1",
+   "text": "Rolling average Each month, your single highest 15-minute peak is recorded. Your rolling ",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-peak",
+   "name": "What is the capacity tariff?",
+   "open": true,
+   "visible": "1",
+   "text": "Capacity tariff In Flanders, part of your grid costs depends on how much power you draw a",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-peak",
+   "name": "About this estimate",
+   "open": true,
+   "visible": "1",
+   "text": "Estimated capacity charge Translating the kW number into a rough € figure. Rough estimat",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-solar",
+   "name": "About 'used at home' — how it's calculated",
+   "open": true,
+   "visible": "1",
+   "text": "Used at home Estimated Of the power your panels made today, 62% was used in the home — th",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-solar",
+   "name": "About 'from your panels' — how it's calculated",
+   "open": true,
+   "visible": "1",
+   "text": "From your panels Estimated 54% of today's usage came from your own panels — the rest was ",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-breakdown",
+   "name": "About these € values",
+   "open": false,
+   "visible": null,
+   "text": null,
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": false,
+   "expOpen": "false",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": false
+  },
+  {
+   "pid": "panel-breakdown",
+   "name": "What does 'always on' mean?",
+   "open": true,
+   "visible": "1",
+   "text": "Always on Things that draw power around the clock, even when you're not using them — the ",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-forecast",
+   "name": "About this forecast",
+   "open": true,
+   "visible": "1",
+   "text": "About this forecast Estimated What you've used so far this month, plus our best estimate ",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-forecast",
+   "name": "Why is € unavailable?",
+   "open": true,
+   "visible": "1",
+   "text": "Why € isn't available € view unavailable — no price formula set up for this contract yet.",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  },
+  {
+   "pid": "panel-forecast",
+   "name": "What is the likely range?",
+   "open": true,
+   "visible": "1",
+   "text": "Likely range (95% confidence) Eliq is 95% confident your actual usage each hour will fall",
+   "focusInside": false,
+   "focusables": 0,
+   "labelled": true,
+   "expOpen": "true",
+   "afterTab": {
+    "inPop": false,
+    "stillOpen": false
+   },
+   "expAfterEsc": "false",
+   "focusReturned": true
+  }
+ ],
+ "adviceTask": {
+  "afterAdd": {
+   "focus": "Undo",
+   "live": "Adjust your indoor temperature: Added to your plan.",
+   "planCount": "1",
+   "newCount": "2"
+  },
+  "afterUndo": {
+   "focus": "Add to my plan",
+   "live": "Adjust your indoor temperature: undone.",
+   "planCount": "0"
+  }
+ },
+ "overviewLinks": [
+  "#panel-budgets | See your budget",
+  "#panel-compare | 1 Compare +73% more than similar homes April 2026:",
+  "#panel-peak | 2 Peak Your June 2025 peak drops out on 1 June At ",
+  "#panel-advice | 3 Advice 3 new tips Top tip saves ≈ €150/year. See",
+  "#panel-forecast | Forecast Projected this month — 8% more than May l",
+  "#panel-budgets | Budgets 187 of 300 kWh used, 13 days left. On trac",
+  "#panel-compare | Compare More than similar homes in April. +73% See",
+  "#panel-peak | Peak 12-month average — sets your capacity tariff.",
+  "#panel-breakdown | Breakdown Your biggest category in April. Heating3",
+  "#panel-solar | Solar 3.2 kWh sent to the grid today. 62%used at h",
+  "#panel-advice | Advice Top tip saves ≈ €150/year. 3new tips See al"
+ ],
+ "deadLinks": [
+  "panel-compare: Update home profile",
+  "panel-compare-partial: Update home profile",
+  "panel-compare-good: Update home profile",
+  "panel-compare-eur: Update home profile",
+  "panel-compare-no-house-type: Set house type",
+  "panel-breakdown: Complete profile",
+  "panel-breakdown-profile: Complete profile"
+ ],
+ "disclosure": {
+  "exp": "true",
+  "name": "How the 12-month average is calculated See the full calculation"
+ },
+ "anim_reduce": 0,
+ "anim_no-preference": 1,
+ "segTest": {
+  "focused": "Year",
+  "checked": "true",
+  "group": "Period"
+ }
+}

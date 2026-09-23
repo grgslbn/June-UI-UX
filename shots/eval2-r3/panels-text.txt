@@ -1,0 +1,871 @@
+=== panel-overview
+On track
+May 2026 · electricity
+May is on track — 290 kWh forecast against your 300 kWh budget.
+99
+kWh left
+for the next 13 days — about 8.7 kWh a day keeps you on track.
+Your May budget
+Used so far
+187 kWh
+Forecast for May
+290 kWh
+Budget
+300 kWh
+See your budget
+Worth a look
+3
+1
+Compare
++73% more than similar homes
+April 2026: you used 442 kWh, similar homes 255 kWh.
+See comparison
+2
+Peak
+Your June 2025 peak drops out on 1 June
+At 5.8 kW it's your highest — your average may fall to about 3.9 kW.
+See peak details
+3
+Advice
+3 new tips
+Top tip saves ≈ €150/year.
+See all advice
+All topics
+May 2026
+Forecast
+Projected this month — 8% more than May last year (269 kWh).
+290kWh
+See forecast
+Budgets
+187 of 300 kWh used, 13 days left.
+On track
+See your budget
+Compare
+More than similar homes in April.
++73%
+See comparison
+Peak
+12-month average — sets your capacity tariff.
+4.0kW
+See peak details
+Breakdown
+Your biggest category in April.
+Heating38%
+See full breakdown
+Solar
+3.2 kWh sent to the grid today.
+62%used at home
+See solar flow
+Advice
+Top tip saves ≈ €150/year.
+3new tips
+See all advice
+About these numbers: ≈ marks an estimate. Tip savings use an average electricity price (average, €0.27/kWh), not your own tariff.
+Spec notes · Overview
+=== panel-overview-new
+Setting up
+We're still getting to know your home.
+3
+of 7 days
+of readings so far, since 16 May 2026.
+16
+17
+18
+22
+First insights on 23 May · forecast and solar
+4 more days
+There's nothing you need to do — each topic switches on by itself as your data comes in.
+While you wait
+A budget works from day one — set a monthly limit and we'll track it for you.
+Set a budget
+When each topic is ready
+Forecast
+Your projected use for the month — needs 7 days of readings.
+From 23 May
+Solar
+How much of your solar power you use at home — needs 7 days to calibrate.
+From 23 May
+Breakdown
+Where your energy goes, by category — needs 4 weeks of daily readings.
+From 13 June
+Peak
+Your peak average builds month by month; it's complete after 12 months.
+From 1 June
+Compare
+How you compare with similar homes — needs one full calendar month.
+From 1 July
+Advice
+Tips for your home — they appear as we learn your patterns; we can't give a date yet.
+No date yet
+Budgets
+Set a monthly limit and we'll track it from day one.
+Ready now
+About these dates: a topic that needs 7 days unlocks the morning after the 7th day of readings (counting from your first day, today included). Dates can move if your meter misses readings.
+Spec notes · Overview · new customer
+=== panel-compare
+April 2026
+Elec
+Gas
+kWh
+€
+Above similar homes
+April 2026 · electricity
+In April you used 73% more energy than similar homes.
+442
+kWh
+your April use — similar homes used 255 kWh
+Compared using
+Detached house, 1–2 bedrooms, 1–2 persons, no electric cars
+Update home profile
+How you compare · April
+The most efficient 10% of similar homes use about 179 kWh — less than half of your 442 kWh.
+Your usage vs. similar homes
+Nov 2025 – Apr 2026
+You used between 372 and 569 kWh a month — more than similar homes every month. The gap was widest in February (569 vs 255, more than double).
+Your closest month to similar homes was November 2025. See your ranking over time below.
+See ways to use less
+Your ranking over time
+Month by month, and your personal best
+About these numbers: similar homes are matched on your home profile. "Most efficient" means the lowest-using 10% of that group. All figures are metered kWh for whole months.
+Spec notes · Compare
+=== panel-compare-partial
+April 2026
+Elec
+Gas
+kWh
+€
+Rough match
+April 2026 · electricity
+You've used 9% more energy than similar homes.
+Compared on house type only, so amounts aren't shown.
+Comparing on house type only — add living area and household size for a tighter match.
+Update home profile
+How you compare · April
+Compared using
+Detached house
+About these numbers: with only your house type, the group of similar homes is broad, so the comparison is looser than usual.
+Spec notes · Compare · partial profile
+=== panel-compare-good
+April 2026
+Elec
+Gas
+kWh
+€
+Below similar homes
+April 2026 · electricity
+Nice — you've used 16% less energy than similar homes in April.
+250
+kWh
+your April use — similar homes used 298 kWh
+Compared using
+Detached house, 1–2 bedrooms, 1–2 persons, no electric cars
+Update home profile
+How you compare · April
+You're 70 kWh from the most efficient homes.
+Keep it going
+More ways to save, in Advice
+About these numbers: similar homes are matched on your home profile. "Most efficient" means the lowest-using 10% of that group.
+Spec notes · Compare · good news
+=== panel-compare-eur
+April 2026
+Elec
+Gas
+kWh
+€
+€ view unavailable. Cost comparison needs a price formula for your contract — the kWh view still works fine.
+Above similar homes
+April 2026 · electricity
+In April you used 73% more energy than similar homes.
+442
+kWh
+your April use — similar homes used 255 kWh
+Compared using
+Detached house, 1–2 bedrooms, 1–2 persons, no electric cars
+Update home profile
+How you compare · April
+The most efficient 10% of similar homes use about 179 kWh — less than half of your 442 kWh.
+About these numbers: similar homes are matched on your home profile. "Most efficient" means the lowest-using 10% of that group. All figures are metered kWh for whole months.
+Spec notes · Compare · € unavailable
+=== panel-compare-no-house-type
+Compared to similar homes
+Set your house type to see how you compare
+No house type set yet — this is the one field we genuinely can't compare without.
+Ready as soon as it's set — there's nothing to wait for.
+Set house type
+About these numbers: we compare you with homes of the same type, so the house type is the one detail we need before we can start.
+Spec notes · Compare · no house type set
+=== panel-compare-no-group
+Compared to similar homes
+No matching group found
+Your home's profile is unique enough that we can't find a comparable group right now. This isn't something completing your profile further usually fixes.
+No date yet — a group forms once enough homes like yours join.
+See what your energy goes on
+There's nothing you need to change. Breakdown and Forecast still track your own home.
+About these numbers: a comparison needs enough homes like yours to be fair. We'd rather show nothing than compare you with the wrong homes.
+Spec notes · Compare · no matching group
+=== panel-compare-contributors
+Compared to similar homes · April 2026
+Still gathering the group
+Not enough similar homes have reported data for this period yet. Check back in a few days.
+No date yet — other homes' April readings are still arriving.
+There's nothing you need to do — the comparison fills in here on its own.
+About these numbers: other homes' meter readings arrive over the first days of a month, so the group for April fills in gradually.
+Spec notes · Compare · not enough contributors
+=== panel-solar
+Solar today
+18 May 2026 · until 20:00
+Sent to the grid today
+3.2
+kWh
+Your panels made 8.4 kWh and 5.2 kWh of it powered your home. You also drew 4.4 kWh from the grid, mostly this evening.
+Used at home
+≈
+62%
+of today's solar
+From your panels
+≈
+54%
+of today's use
+Today's flow
+Panels made
+8.4kWh
+Grid
+Home used
+9.6kWh
+3.2 exported
+5.2 used at home
+4.4 imported
+To and from the grid
+Day
+Week
+Month
+Year
+18 May
+Import
+Export
+Net
+Your panels covered the middle of the day: 3.2 kWh exported, mostly between 10:00 and 15:00. Mornings and evenings drew 4.4 kWh from the grid.
+Net (Production − Consumption) — above zero = exporting surplus, below = importing a deficit
+Seasonal production — last 12 months
+Production peaks in July at 620 kWh — over 9× December's 68 kWh, your quietest month.
+Use more of your own solar
+Show raw production & consumption
+Today, hour by hour
+About these numbers: ≈ marks an estimate. How the four streams relate: Consumption = Import + Production − Export — Import/Export are metered, Production/Consumption are our estimate.
+Spec notes · Solar
+=== panel-solar-calibrating
+Calibrating
+Still calibrating your solar setup
+We need at least 7 days of import/export data to estimate your panels' production — after that, we can start showing your full solar picture.
+Ready on 22 May · 3 more days of readings
+Fri
+Sat
+Sun
+Mon
+Thu
+4 of 7 days
+Import and Export themselves are already tracking fine; it's just Production and Consumption still calibrating.
+There's nothing you need to do — your solar picture appears here on its own.
+About these numbers: import and export come straight from your meter. Production and consumption are estimated from them, which takes a week of data to settle.
+Spec notes · Solar · still calibrating
+=== panel-breakdown
+At a glance · April 2026, your last full month · electricity
+Heating was your biggest use in April.
+38
+%
+of your 442 kWh went on heating
+Heating
+168 kWh
+Everything else
+274 kWh
+April, by category
+kWh
+€
+Heating, water heating and always-on together make up 72% of your use.
+What counts as "always on"?
+Seasonal trend — last 12 months
+Heating
+All categories
+Heating went from 9% of your usage in July to 54% in January — your biggest seasonal swing. In April it was 38%.
+Patterns vary by home.
+Home profile
+A few more details (heating type, home size) sharpen your category breakdown.
+70% complete
+2 details left
+Complete profile
+About these numbers: we show April because it's your last full month. Categories are worked out from your total use. "Estimated" marks a category we can't measure directly. € values use an average Belgian price estimate — not your actual tariff.
+Spec notes · Breakdown
+=== panel-breakdown-profile
+Tell us about your home to see where your energy goes
+We need a couple of basics — home type and heating source — before we can break your energy down into categories.
+Home profile
+30% complete
+Ready as soon as you've added them — your readings are already in.
+Complete profile
+About these numbers: your breakdown is worked out from your total use and your home profile, so it can't start without the basics.
+Spec notes · Breakdown · profile needed
+=== panel-breakdown-not-ready
+Data not ready yet
+We need about 3 more weeks of daily readings before we can reliably split your usage into categories. Check back soon.
+Ready on 13 June 2026 · 25 more days
+3 of 28 days collected
+First readings 16 May
+Nothing to complete here — just needs time.
+About these numbers: categories are worked out from daily readings, so we wait until there are enough of them to be reliable.
+Spec notes · Breakdown · data not ready yet
+=== panel-peak
+Your peaks are 0.24 kW below the Flemish average.
+12-month rolling average
+4.0
+kW
+This sets your capacity tariff
+≈
+€7.40/ month
+Estimated capacity charge
+How you compare
+Your rolling average is 4.0 kW — the Flemish average is 4.24 kW. You're just under average!
+Daily peaks
+Day
+Week
+Month
+Year
+May 2026
+Your highest this month was 4.2 kW on 12 May at 18:30 — just above your 4.0 kW average.
+Latest peak
+3.8kW
+Today, 14:30–14:45
+Month peak
+4.2kW
+12 May, 18:30
+Your biggest peak is still counting
+5.8 kW in June 2025 — the highest of your last 12 months
+Counting since Jun 2025
+Drops out 1 Jun 2026
+Counts toward your average for 1 more month, then it rolls off and your average may drop.
+If it rolled off today, your average would be about 3.9 kW.
+Today
+4.0kW
+Without June 2025
+≈ 3.9kW
+Lower your peak
+Tips to spread heavy appliances, in Advice
+How the 12-month average is calculated
+See the full calculation
+About these numbers: a peak is your highest 15-minute power use. ≈ marks the estimated capacity charge — a rough regional rate, not your grid operator's bill.
+Spec notes · Peak
+=== panel-peak-history
+You're building your first 12-month peak average.
+Average so far
+3.0
+kW
+Based on 3 months, not 12 yet
+Still building your 12-month average
+3 of 12 months collected so far
+Jul
+Aug
+Sep
+Jun
+Complete after June 2026 · 9 more months
+There's nothing you need to do — we'll keep counting.
+How you compare
+Your average so far is 3.0 kW — the Flemish average is 4.24 kW.
+Take this comparison lightly — it's based on 3 months, not your full year.
+Daily peaks
+Day
+Week
+Month
+Year
+Sep 2025
+Your highest this month was 3.4 kW on 6 Sep at 19:00 — above your 3.0 kW average so far.
+Latest peak
+3.1kW
+Today, 08:15–08:30
+Month peak
+3.4kW
+6 Sep, 19:00
+What's coming up
+Nothing "rolls off" yet — every month you have still counts. The full picture (and your real capacity-tariff number) needs a complete 12 months.
+Belgium sets a 2.5 kW regulatory floor — if your average lands below that, 2.5 kW is what actually gets billed, not your raw number.
+Lower your peak
+Tips to spread heavy appliances, in Advice
+About these numbers: a peak is your highest 15-minute power use. Your capacity-tariff figure settles once 12 months are in.
+Spec notes · Peak · insufficient history
+=== panel-forecast
+On track for budget
+May 2026 · electricity
+You're projected to use 8% more this month than in May last year — and stay under budget.
+≈
+290
+kWh
+forecast for May · 187 kWh used so far · May 2025 was 269 kWh
+Your budget
+Your forecast projects 290 kWh this month — under your 300 kWh electricity budget.
+Used
+187
+Forecast
+290
+Budget
+300 kWh
+View budget
+May, day by day
+Month
+Year
+kWh
+€
+Over the last 7 days you averaged 7.9 kWh a day. At that pace May ends at about 290 kWh — 10 kWh under your budget.
+At a glance
+So far + forecast, in kWh
+Today
+7.8 so far + 0.6 forecast
+8.4kWh
+This week
+8 so far + 48 forecast
+56kWh
+This month
+187 so far + 103 forecast
+290kWh
+This year
+Needs a bit more history yet · ready 1 June 2026
+Not ready
+Next 24 hours
+Now: 18 May, 20:00
+Next 24h
+Next 48h
+Your use should stay low overnight, rise around 06:30 tomorrow and peak again around 19:00 — the hours we're least sure about. 
+How accurate are our forecasts?
+April: forecast 417 kWh, actual 442 kWh — pretty close
+About these numbers: ≈ marks a forecast — our best estimate from your own recent use, not a promise. The shaded likely range is shown for the next 24–48 hours only. € view unavailable — no price formula set up for this contract yet.
+Spec notes · Forecast
+=== panel-forecast-over-budget
+Forecast to exceed budget
+May 2026 · electricity
+May is heading over your 270 kWh budget.
+≈
+20
+kWh over
+over budget by 31 May · forecast 290 kWh · to stay under, use 6.4 kWh a day from tomorrow
+Your budget
+Your forecast projects 290 kWh this month — over your 270 kWh electricity budget by about 7%.
+Used
+187
+Forecast
+290
+Budget
+270 kWh
+View budget
+May, day by day
+At your recent pace of 7.9 kWh a day you'll pass your 270 kWh budget around 29 May. Using at most 6.4 kWh a day from tomorrow keeps you under it.
+At a glance
+So far + forecast, in kWh
+Today
+7.8 so far + 0.6 forecast
+8.4kWh
+This week
+8 so far + 48 forecast
+56kWh
+This month
+187 so far + 103 forecast
+290kWh
+This year
+Needs a bit more history yet · ready 1 June 2026
+Not ready
+About these numbers: ≈ marks a forecast — our best estimate from your own recent use, not a promise.
+Spec notes · Forecast · over budget
+=== panel-forecast-no-budget
+May 2026 · electricity
+You're projected to use 8% more this month than in May last year.
+≈
+290
+kWh
+forecast for May · 187 kWh used so far · May 2025 was 269 kWh
+Your budget
+No budget set up yet
+Set a monthly budget and we'll tell you here whether this forecast keeps you under it.
+Set up a budget
+May, day by day
+Over the last 7 days you averaged 7.9 kWh a day. At that pace May ends at about 290 kWh.
+At a glance
+So far + forecast, in kWh
+Today
+7.8 so far + 0.6 forecast
+8.4kWh
+This week
+8 so far + 48 forecast
+56kWh
+This month
+187 so far + 103 forecast
+290kWh
+This year
+Needs a bit more history yet · ready 1 June 2026
+Not ready
+About these numbers: ≈ marks a forecast — our best estimate from your own recent use, not a promise.
+Spec notes · Forecast · no budget
+=== panel-forecast-partly-ready
+Setting up
+Week of 18 May 2026 · electricity
+Your first forecasts are ready — here's your week.
+≈
+45
+kWh
+forecast for Monday 18 – Sunday 24 May · 6 kWh used so far
+Your monthly forecast unlocks on 1 July 2026
+Monthly forecasts need one full calendar month of data — June 2026 will be your first.
+Ready on 1 July 2026 · after June
+There's nothing you need to do — we'll keep counting.
+Next 24 hours
+Now: 18 May, 20:00
+Your use should stay low overnight and rise around 06:30 tomorrow — the shaded range is widest around your morning and evening routine. 
+At a glance
+Each forecast unlocks on its own
+Today
+6.1 so far + 0.4 forecast
+6.5kWh
+This week
+6 so far + 39 forecast
+45kWh
+This month
+Needs a bit more history yet · from 1 July
+Not ready
+This year
+Needs 12 full months · from 1 June 2027
+Not ready
+About these numbers: ≈ marks a forecast — our best estimate from your own recent use, not a promise. Short-term forecasts unlock after 7 days of data; monthly forecasts need a full month.
+Spec notes · Forecast · partly ready
+=== panel-forecast-not-enough-data
+Building toward your first forecast
+Forecasting needs at least 7 days of energy data before it can predict anything — daily and short-term forecasts unlock first, monthly forecasts need a full month.
+Ready on 23 May 2026 · 4 more days
+16
+17
+18
+22
+3 of 7 days toward your first forecast
+First readings 16 May
+There's nothing you need to do — we'll keep counting.
+What unlocks when
+Today
+From 23 May
+Not ready
+This week
+From 23 May
+Not ready
+This month
+From 1 July
+Not ready
+This year
+Needs 12 full months · from 1 June 2027
+Not ready
+Set a monthly budget meanwhile
+About these numbers: we count a day once it has a full set of readings. Forecasts appear here automatically as each one unlocks.
+Spec notes · Forecast · not enough data
+=== panel-advice
+New
+3
+My plan
+Done
+1
+Dismissed
+3
+Top tip for you
+Heating
+Adjust your indoor temperature
+Lowering your indoor temperature slightly can meaningfully cut heating energy use without a noticeable comfort difference.
+Why this one first: it fits your home best — heating is your biggest category. The carpet tip further down saves more (≈ €180 a year) but fits your home less closely.
+You could save
+≈
+€150
+a year
+540 kWh less electricity a year
+Add to my plan
+Already do this
+Not relevant
+More tips for you
+Most relevant for you first
+Wash clothes at a lower temperature
+Most laundry gets just as clean at a lower wash temperature, using noticeably less energy per load.
+Washing
+≈ €65a year
+240 kWh a year
+Add to my plan
+Already do this
+Not relevant
+Carpets help insulate your floor
+Carpets aren't just comfortable underfoot — they also help insulate the floor, reducing heat loss.
+Heating
+≈ €180a year
+650 kWh a year
+Add to my plan
+Already do this
+Not relevant
+Bigger investments
+Upgrade to a heat pump
+Heating
+Financing available
+Replacing your current electric heating with a heat pump can substantially cut your heating energy use over time.
+≈ €1,134a year (illustrative)
+≈ 4,200 kWh less electricity a year, at the average price
+Investment
+€8,000–12,000
+Pays off in
+≈ 9–11 years
+Add to my plan
+Not relevant
+How we pick and price your tips
+Why this order, and where the € figures come from
+About these numbers: ≈ marks an estimate. Savings in € use an average electricity price (average, €0.27/kWh), not your own tariff. The heat pump figures are illustrative.
+Spec notes · Advice
+=== panel-advice-plan
+New
+2
+My plan
+1
+Done
+1
+Dismissed
+3
+1 tip in your plan
+One step left to start saving: mark your tip as done.
+Once it's part of your routine, mark it done — it moves to Done and counts toward your savings.
+When you've done it
+≈
+€65
+a year
+240 kWh less electricity a year
+In your plan
+Wash clothes at a lower temperature
+Most laundry gets just as clean at a lower wash temperature, using noticeably less energy per load.
+Washing
+ Added 3 days ago
+≈ €65a year
+240 kWh a year
+Mark as done
+Move back to New
+About these numbers: ≈ marks an estimate. Savings in € use an average electricity price (average, €0.27/kWh), not your own tariff.
+Spec notes · Advice · My plan
+=== panel-advice-plan-empty
+New
+3
+My plan
+Done
+1
+Dismissed
+3
+Your plan is empty
+Pick the tips you want to try and they'll wait here until you've done them. You have 3 new tips ready now.
+See your 3 new tips
+About these numbers: tips you add stay in your plan until you mark them done or move them back.
+Spec notes · Advice · My plan (empty)
+=== panel-advice-done
+New
+3
+My plan
+Done
+1
+Dismissed
+3
+1 tip done
+You've put a tip into practice — and it keeps paying back.
+Only tips you've actually done are counted here. Tips you already did before we suggested them sit under Dismissed.
+Saving you
+≈
+€200
+a year
+730 kWh less electricity a year
+Done
+Replace old lamps with LED lighting
+Completed
+Lighting
+Marked done 2 weeks ago — was on your plan first
+≈ €200a year
+Saved 730 kWh a year
+About these numbers: ≈ marks an estimate. Savings in € use an average electricity price (average, €0.27/kWh), not your own tariff.
+Spec notes · Advice · Done
+=== panel-advice-dismissed
+New
+3
+My plan
+Done
+1
+Dismissed
+3
+Tips you've set aside
+Things you already do, didn't fit your home, or skipped. Bring any of them back if something changes.
+Optimize outdoor lighting
+Already doing this
+Lighting
+Move back to New
+Draught-proof your windows
+Not relevant
+Heating
+Move back to New
+Use a smart power strip
+Skipped
+Always on
+Move back to New
+About these tips: set-aside tips don't count toward your savings. Moving one back puts it with your new tips again.
+Spec notes · Advice · Dismissed
+=== panel-advice-empty
+Nothing to suggest yet
+We don't have any personalized energy-saving tips for your home right now. This is normal early on, and usually resolves itself as more of your energy data comes in.
+No date yet — tips appear as soon as your readings match one, and you'll see a count on this tab.
+A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.
+Check your home profile
+About tips: they're picked from your own readings and home profile. Savings are shown in € with an average electricity price (average, €0.27/kWh).
+Spec notes · Advice · No advice available
+=== panel-budgets
+Electricity · Monthly
+Gas · Weekly
+Gas: no gas meter linked
+On track
+May 2026 · electricity
+On track — keep to this week's pace and May stays within budget.
+Most you can use a day, 19–31 May
+8.7
+kWh/day
+Keep usage under this for the remaining 13 days and you'll stay within budget. 
+May so far
+113 kWh left of your 300 kWh budget
+Used so far
+187 kWh
+Forecast
+290 kWh
+Budget
+300 kWh
+1–31 May · day 18, 13 days left
+Your last 7 days averaged 7.9 kWh/day — already under the pace you need.
+See your full forecast
+Daily use
+Week
+Month
+The first 11 days ran higher, about 12 kWh a day. Since 12 May you've averaged 7.9 kWh a day — so up to 8.7 kWh a day for 19–31 May keeps you within budget.
+History & streak
+2-month streak
+Under budget since March
+Jan
+No data
+Feb
+Over
+Mar
+Under
+Apr
+Under
+May
+So far
+Finish May under 300 kWh to make it a 3‑month streak.
+Best ever (last 24 months)
+5 months
+Budget settings
+Auto (20% margin) · Monthly, 1–31 May · 300 kWh
+About these numbers: the daily figure is what's left of your budget divided by the days left. The forecast is our estimate of your total for May. Assumes fairly even usage the rest of the period.
+Spec notes · Budgets
+=== panel-budgets-close
+Electricity · Monthly
+Gas · Weekly
+Gas: no gas meter linked
+Forecast to exceed budget
+May 2026 · electricity
+Cut back to stay under your May budget.
+Most you can use a day, 19–31 May
+6.5
+kWh/day
+Forecast to go over — drop to this for the rest of the period. 
+May so far
+85 kWh left of your 300 kWh budget
+Used so far
+215 kWh
+Forecast
+318 kWh
+Budget
+300 kWh
+1–31 May · day 18, 13 days left
+See your full forecast
+Why we think you'll go over
+Your last 7 days averaged 7.9 kWh a day. At that pace you'd reach about 318 kWh by 31 May — 18 kWh over your budget.
+Your recent pace
+7.9kWh/day
+To stay under
+6.5kWh/day
+Ways to cut back
+Your top tip — adjust your indoor temperature — saves ≈ €150 a year.
+See tips to use less
+Personal tips, in Advice
+About these numbers: the daily figure is what's left of your budget divided by the days left. Assumes fairly even usage the rest of the period.
+Spec notes · Budgets · Cutting it close
+=== panel-budgets-over
+Electricity · Monthly
+Gas · Weekly
+Gas: no gas meter linked
+Over budget
+May 2026 · electricity
+Already over — May's budget is used up.
+Over your 300 kWh budget by
++42
+kWh over
+Nothing to pace now — a fresh budget starts in 6 days, on 1 June.
+May so far
+Used so far
+342 kWh
+Budget
+300 kWh
+1–31 May · day 25, 6 days left
+What happens next
+A fresh budget on 1 June
+In Auto mode we set it from your own forecast, +20% margin.
+May still counts in your history
+It will show as over budget in your history and streak.
+Get ahead of June
+Your top tip — adjust your indoor temperature — saves ≈ €150 a year.
+See tips to use less
+Personal tips, in Advice
+About these numbers: "over" is your metered use so far minus this month's budget (342 − 300 = 42 kWh).
+Spec notes · Budgets · Over budget
+=== panel-budgets-setup
+New budget
+Setting up a new budget
+Budget for
+Electricity · Monthly
+Gas · Weekly
+ 
+Gas: no gas meter linked
+How should we set your limit?
+Auto
+Recommended
+We set your limit each period from your own forecast, +20% margin. No number to guess — it adapts as your usage changes.
+Manual
+Pick your own fixed limit. Stays the same every period until you change it.
+Start my budget
+What you'll see
+A daily pace
+How much you can use each day to stay under your limit.
+A forecast check
+Whether you're on track, so there are no surprises at the end of the month.
+Your streak
+Every period you stay under counts.
+Spec notes · Budgets · Setup
+=== panel-budgets-awaiting
+Electricity · Monthly
+Gas · Weekly
+Gas: no gas meter linked
+Setting up
+Your budget is set
+First calculation is on its way — check back shortly and we'll show you where you stand.
+No date yet — the first calculation runs once your latest readings have been processed; your status appears here as soon as it has.
+Budget settings
+Nothing you need to do. You can still change how your limit is set in the meantime.
+ModeAuto (20% margin)
+Period1–31 May
+About this budget: your limit, daily pace and forecast appear after the first calculation. Your settings are saved.
+Spec notes · Budgets · Awaiting first run
+=== panel-budgets-nodata
+Electricity · Monthly
+Gas · Weekly
+Gas: no gas meter linked
+Setting up
+Still collecting your data
+Your meter hasn't reported enough recent readings yet to track this budget. Nothing wrong with your setup — this should resolve once fresh data comes in.
+No date yet — it depends on when your meter next reports. Your first readings arrived on 16 May 2026.
+Nothing you need to do — your budget settings are saved and need no changes.
+ModeAuto (20% margin)
+Period1–31 May
+About this budget: we track it from your meter's daily readings. Your settings are saved and nothing is lost while readings catch up.
+Spec notes · Budgets · Not enough data
