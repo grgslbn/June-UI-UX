@@ -1,0 +1,374 @@
+[
+  {
+    "id": "panel-overview",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-overview__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare-partial",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-partial__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare-good",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-good__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare-eur",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-eur__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare-no-house-type",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-no-house-type__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare-no-group",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-no-group__desktop__dark.png"
+  },
+  {
+    "id": "panel-compare-contributors",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-contributors__desktop__dark.png"
+  },
+  {
+    "id": "panel-solar",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-solar__desktop__dark.png"
+  },
+  {
+    "id": "panel-solar-calibrating",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-solar-calibrating__desktop__dark.png"
+  },
+  {
+    "id": "panel-breakdown",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-breakdown__desktop__dark.png"
+  },
+  {
+    "id": "panel-breakdown-profile",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-breakdown-profile__desktop__dark.png"
+  },
+  {
+    "id": "panel-breakdown-not-ready",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-breakdown-not-ready__desktop__dark.png"
+  },
+  {
+    "id": "panel-peak",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-peak__desktop__dark.png"
+  },
+  {
+    "id": "panel-peak-history",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-peak-history__desktop__dark.png"
+  },
+  {
+    "id": "panel-forecast",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast__desktop__dark.png"
+  },
+  {
+    "id": "panel-forecast-over-budget",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-over-budget__desktop__dark.png"
+  },
+  {
+    "id": "panel-forecast-no-budget",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-no-budget__desktop__dark.png"
+  },
+  {
+    "id": "panel-forecast-partly-ready",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-partly-ready__desktop__dark.png"
+  },
+  {
+    "id": "panel-forecast-not-enough-data",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-not-enough-data__desktop__dark.png"
+  },
+  {
+    "id": "panel-advice",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice__desktop__dark.png"
+  },
+  {
+    "id": "panel-advice-plan",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-plan__desktop__dark.png"
+  },
+  {
+    "id": "panel-advice-done",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-done__desktop__dark.png"
+  },
+  {
+    "id": "panel-advice-dismissed",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-dismissed__desktop__dark.png"
+  },
+  {
+    "id": "panel-advice-empty",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-empty__desktop__dark.png"
+  },
+  {
+    "id": "panel-budgets",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets__desktop__dark.png"
+  },
+  {
+    "id": "panel-budgets-close",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-close__desktop__dark.png"
+  },
+  {
+    "id": "panel-budgets-over",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-over__desktop__dark.png"
+  },
+  {
+    "id": "panel-budgets-setup",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-setup__desktop__dark.png"
+  },
+  {
+    "id": "panel-budgets-awaiting",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-awaiting__desktop__dark.png"
+  },
+  {
+    "id": "panel-budgets-nodata",
+    "viewport": "desktop",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-nodata__desktop__dark.png"
+  },
+  {
+    "id": "panel-overview",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-overview__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare-partial",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-partial__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare-good",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-good__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare-eur",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-eur__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare-no-house-type",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-no-house-type__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare-no-group",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-no-group__mobile__dark.png"
+  },
+  {
+    "id": "panel-compare-contributors",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-compare-contributors__mobile__dark.png"
+  },
+  {
+    "id": "panel-solar",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-solar__mobile__dark.png"
+  },
+  {
+    "id": "panel-solar-calibrating",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-solar-calibrating__mobile__dark.png"
+  },
+  {
+    "id": "panel-breakdown",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-breakdown__mobile__dark.png"
+  },
+  {
+    "id": "panel-breakdown-profile",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-breakdown-profile__mobile__dark.png"
+  },
+  {
+    "id": "panel-breakdown-not-ready",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-breakdown-not-ready__mobile__dark.png"
+  },
+  {
+    "id": "panel-peak",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-peak__mobile__dark.png"
+  },
+  {
+    "id": "panel-peak-history",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-peak-history__mobile__dark.png"
+  },
+  {
+    "id": "panel-forecast",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast__mobile__dark.png"
+  },
+  {
+    "id": "panel-forecast-over-budget",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-over-budget__mobile__dark.png"
+  },
+  {
+    "id": "panel-forecast-no-budget",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-no-budget__mobile__dark.png"
+  },
+  {
+    "id": "panel-forecast-partly-ready",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-partly-ready__mobile__dark.png"
+  },
+  {
+    "id": "panel-forecast-not-enough-data",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-forecast-not-enough-data__mobile__dark.png"
+  },
+  {
+    "id": "panel-advice",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice__mobile__dark.png"
+  },
+  {
+    "id": "panel-advice-plan",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-plan__mobile__dark.png"
+  },
+  {
+    "id": "panel-advice-done",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-done__mobile__dark.png"
+  },
+  {
+    "id": "panel-advice-dismissed",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-dismissed__mobile__dark.png"
+  },
+  {
+    "id": "panel-advice-empty",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-advice-empty__mobile__dark.png"
+  },
+  {
+    "id": "panel-budgets",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets__mobile__dark.png"
+  },
+  {
+    "id": "panel-budgets-close",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-close__mobile__dark.png"
+  },
+  {
+    "id": "panel-budgets-over",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-over__mobile__dark.png"
+  },
+  {
+    "id": "panel-budgets-setup",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-setup__mobile__dark.png"
+  },
+  {
+    "id": "panel-budgets-awaiting",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-awaiting__mobile__dark.png"
+  },
+  {
+    "id": "panel-budgets-nodata",
+    "viewport": "mobile",
+    "horizontalOverflowPx": 0,
+    "file": "shots/eval1-r2/index__panel-budgets-nodata__mobile__dark.png"
+  }
+]
