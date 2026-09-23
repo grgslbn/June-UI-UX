@@ -1,0 +1,178 @@
+/* ==========================================================================
+   June Insights · Direction A · "Calm Ledger" — design tokens
+   Light is primary. Dark via prefers-color-scheme or [data-theme="dark"].
+   ========================================================================== */
+
+/* Self-hosted Google Fonts (latin subset, variable) — identical files to fonts.gstatic.com */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("fonts/montserrat-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  color-scheme: light;
+
+  /* ── Type ───────────────────────────────────────────────────────────── */
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif; /* numerals + statements */
+  --font-ui: "Inter", "Open Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Six sizes, nothing below 12px (11px allowed only for SVG ticks, unused here) */
+  --text-xs: 12px;   /* captions, axis labels, overlines, table tags          */
+  --text-sm: 14px;   /* secondary copy, rows, buttons, table cells            */
+  --text-md: 16px;   /* body, insight sentences                               */
+  --text-lg: 20px;   /* section titles, row metrics                           */
+  --text-xl: 28px;   /* statement sentence, secondary figures (€, stats)      */
+  --text-hero: 44px; /* one hero numeral per view (40px on phones)            */
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.3;
+  --lh-body: 1.55;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --tracking-display: -0.02em;
+  --tracking-hero: -0.03em;
+  --tracking-caps: 0.06em;
+
+  /* ── Neutrals: ink-tinted, leaning toward June Green ──────────────── */
+  --ink-900: #16242a;  /* primary text                        ~15.6:1 */
+  --ink-700: #43545b;  /* secondary text                      ~7.9:1  */
+  --ink-500: #5a6a71;  /* meta text                            ~5.5:1  */
+  --ink-400: #869398;  /* icons, disabled graphics (non-text)          */
+  --ink-300: #b3bfc2;  /* strong rules, baseline                        */
+  --ink-200: #d4dcdd;  /* track, future slots                           */
+  --ink-100: #e5ebea;  /* hairlines, gridlines                          */
+  --ink-50:  #f1f5f4;  /* sunken wells, hover fill                      */
+
+  --surface-page: #fafcfb;   /* near-white, faint mint                  */
+  --surface: #ffffff;        /* popovers, raised thumb                   */
+  --surface-sunken: #f2f6f5; /* segmented track, table head              */
+  --surface-review: #eef2f1; /* reviewer chrome (meta only)             */
+
+  /* ── Accent: June Green — interaction + "your data" only ─────────── */
+  --accent: #3bada8;          /* bar fills, meters, focus                */
+  --accent-strong: #1b7773;   /* links, buttons, selected text  5.4:1    */
+  --accent-soft: #e5f3f2;     /* selected row / chip fill                */
+  --accent-faint: #a9dcd9;    /* forecast/remaining fill (with label)    */
+  --on-accent: #ffffff;
+
+  /* ── Semantic ───────────────────────────────────────────────────── */
+  --alert: #c3363c;           /* June Red, text-safe   5.3:1 on page     */
+  --alert-graphic: #e85257;   /* June Red, peak marks                    */
+  --alert-soft: #fcebeb;
+  --positive: #256e44;        /* on-track text          6.0:1            */
+  --positive-soft: #e6f3eb;
+  --info-soft: #eef4f6;
+
+  /* ── Spacing: 4px base ──────────────────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px;
+  --gutter: 32px;             /* page gutter desktop (16px on phones)    */
+  --content-max: 1120px;
+
+  /* ── Radii (4 values) ───────────────────────────────────────────── */
+  --radius-sm: 4px;    /* bars, tags                                    */
+  --radius-md: 8px;    /* buttons, segmented, popovers                  */
+  --radius-lg: 12px;   /* the rare container                            */
+  --radius-pill: 999px;
+
+  /* ── Rules & elevation (hairlines + 2 levels) ────────────────────── */
+  --rule: 1px solid var(--ink-100);
+  --rule-strong: 1px solid var(--ink-300);
+  --shadow-1: 0 1px 2px rgba(22, 36, 42, .06), 0 0 0 1px rgba(22, 36, 42, .04);
+  --shadow-2: 0 12px 32px -12px rgba(22, 36, 42, .22), 0 2px 6px rgba(22, 36, 42, .06), 0 0 0 1px rgba(22, 36, 42, .05);
+
+  /* ── Motion ─────────────────────────────────────────────────────── */
+  --dur-instant: 90ms;
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 480ms;
+  --dur-count: 700ms;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-emphasis: cubic-bezier(.3, 1.25, .5, 1); /* toggle thumb only */
+  --stagger: 14ms;
+
+  --focus-ring: 0 0 0 2px var(--surface-page), 0 0 0 4px var(--accent-strong);
+
+  /* ── Chart ──────────────────────────────────────────────────────── */
+  --chart-bar: var(--accent);
+  --chart-peak: var(--alert-graphic);
+  --chart-grid: var(--ink-100);
+  --chart-base: var(--ink-300);
+  --chart-avg: var(--ink-900);
+  --chart-future: var(--ink-200);
+  --halftone: rgba(59, 173, 168, .38);
+}
+
+/* ── Dark theme: ink-based, never neutral black ─────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink-900: #e7eef0;
+    --ink-700: #b3c0c4;
+    --ink-500: #93a2a7;
+    --ink-400: #6c7d84;
+    --ink-300: #4a5a61;
+    --ink-200: #334349;
+    --ink-100: #23333a;
+    --ink-50:  #1a2a30;
+    --surface-page: #0f1a1e;
+    --surface: #17262c;
+    --surface-sunken: #152328;
+    --surface-review: #0b1417;
+    --accent: #4fc4bf;
+    --accent-strong: #62d0cb;
+    --accent-soft: #163a3a;
+    --accent-faint: #2a6b69;
+    --on-accent: #0b1417;
+    --alert: #ff8589;
+    --alert-graphic: #ff6b70;
+    --alert-soft: #3a1f23;
+    --positive: #6fd39a;
+    --positive-soft: #183329;
+    --info-soft: #172a30;
+    --shadow-1: 0 0 0 1px rgba(255, 255, 255, .06);
+    --shadow-2: 0 16px 40px -12px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .08);
+    --chart-avg: #e7eef0;
+    --halftone: rgba(79, 196, 191, .34);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink-900: #e7eef0;
+  --ink-700: #b3c0c4;
+  --ink-500: #93a2a7;
+  --ink-400: #6c7d84;
+  --ink-300: #4a5a61;
+  --ink-200: #334349;
+  --ink-100: #23333a;
+  --ink-50:  #1a2a30;
+  --surface-page: #0f1a1e;
+  --surface: #17262c;
+  --surface-sunken: #152328;
+  --surface-review: #0b1417;
+  --accent: #4fc4bf;
+  --accent-strong: #62d0cb;
+  --accent-soft: #163a3a;
+  --accent-faint: #2a6b69;
+  --on-accent: #0b1417;
+  --alert: #ff8589;
+  --alert-graphic: #ff6b70;
+  --alert-soft: #3a1f23;
+  --positive: #6fd39a;
+  --positive-soft: #183329;
+  --info-soft: #172a30;
+  --shadow-1: 0 0 0 1px rgba(255, 255, 255, .06);
+  --shadow-2: 0 16px 40px -12px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .08);
+  --chart-avg: #e7eef0;
+  --halftone: rgba(79, 196, 191, .34);
+}
+
+@media (max-width: 640px) {
+  :root { --text-hero: 40px; --gutter: 16px; }
+}
