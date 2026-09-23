@@ -72,7 +72,7 @@ const icons = ['zap', 'sun', 'home', 'repeat', 'plug', 'gauge', 'activity', 'shi
               <li class="sw"><span class="sw-chip" style={`background:${h}`}></span><span class="sw-meta"><code>{t}</code> <strong>{h}</strong><br />{r}<br /><span class="sw-cr">stage {fmt(cr(h, '#0a1315'))} · surface {fmt(cr(h, '#121e21'))}</span></span></li>
             ))}
           </ul>
-          <p class="st-note">Merk-groen #3bada8 haalt op donker geen AA voor kleine tekst in combinatie met donkere knoptekst; daarom de opgelichte tint #62d3cc (uit de app-darkmode) met tekst #06201e erop: {fmt(cr('#62d3cc', '#06201e'))}.</p>
+          <p class="st-note">Merk-groen #3bada8 draagt geen witte knoptekst ({fmt(cr('#3bada8', '#ffffff'))}) en #19736f is op donker te zwak ({fmt(cr('#19736f', '#0a1315'))}). Op de stage gebruiken we daarom de opgelichte tint uit de app-darkmode, #62d3cc: als tekst {fmt(cr('#62d3cc', '#0a1315'))}, als knop met tekst #06201e {fmt(cr('#62d3cc', '#06201e'))}.</p>
         </div>
       </div>
     </section>

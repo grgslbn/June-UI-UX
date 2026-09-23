@@ -1,9 +1,10 @@
 ---
 // Base layout: lang, title, description, canonical, hreflang, robots. Variants extend or replace the body.
-// Variant D additions: global tokens/styles, Montserrat preload (LCP H1), favicon, theme colour,
+// Variant D additions: global tokens/styles, Montserrat + Inter preload (no swap reflow in the hero), favicon, theme colour,
 // and an optional `robots` override for internal pages that are not in the route map (style tile).
 import { LOCALES, ROUTES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
 import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import inter from '@shared/fonts/inter-latin.woff2?url';
 import '../styles/tokens.css';
 import '../styles/global.css';
 interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; robots?: string; bodyClass?: string }
@@ -24,6 +25,7 @@ const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www
     <meta name="theme-color" content="#0a1315" />
     <link rel="icon" href={favicon} />
     <link rel="preload" as="font" type="font/woff2" href={montserrat} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={inter} crossorigin />
     <slot name="head" />
   </head>
   <body class={bodyClass}><slot /></body>
