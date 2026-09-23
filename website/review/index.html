@@ -1,4 +1,4 @@
-<title>June.energy Concepts</title>
+<title>June.energy Redesign</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -138,58 +138,118 @@ footer{padding-top:28px;border-top:1px solid var(--line);color:var(--ink-3);font
   .mobile .shots{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.prog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pr{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:8px;align-content:start}
+.pr.now{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.pr .k{font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between;align-items:center}
+.pr .s{font:300 38px/1 var(--display);letter-spacing:-.02em}
+.pr .s small{font:500 14px var(--ui);color:var(--ink-3)}
+.pr p{font-size:13.5px;color:var(--ink-2)}
+.chip{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:99px;background:var(--green-soft);color:var(--green-strong);text-transform:none;letter-spacing:0}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.2 var(--ui);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);background:var(--sunken)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hl td{background:var(--green-soft);font-weight:600}
+.pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+.fr{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden auto;max-height:640px}
+.fr img{display:block;width:100%;height:auto}
+.cap{font-size:13px;color:var(--ink-3);margin-top:6px}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:10px;align-content:start}
+.box ul,.box ol{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px;color:var(--ink-2)}
+@media (max-width:820px){.prog,.cols,.pair{grid-template-columns:1fr}}
 </style>
 <div class="wrap">
 <header>
-  <span class="eyebrow">june.energy redesign · checkpoint 2 · concepts</span>
-  <h1>Five ways to sell <span class="squig">automatic switching</span>.</h1>
-  <p class="lede">Each concept is a working Astro homepage in Dutch and French, plus a style tile. All five share the same facts, rules and quality bar. They differ in idea, hero, how loud the brand is, and how they persuade. Pick 3–4 to build in full: the plans page, the Switch Plus page, how it works, the FAQ and sign-up steps 1–2.</p>
+  <span class="eyebrow">june.energy redesign · final review</span>
+  <h1>One site, <span class="squig">built from five ideas</span>, scored by five evaluators.</h1>
+  <p class="lede">This is a complete Astro website in Dutch and French: home, plans, Switch Plus, how it works, FAQ and a working sign-up flow up to the savings estimate. It started from research by six specialists and five concepts. Four concepts were built in full and scored. The final site combines the winner (C · Honest Market) with the strongest parts of A, B and E, and was scored again.</p>
 </header>
 
-<section aria-labelledby="h-g">
-  <h2 id="h-g">Quality bar, verified independently</h2>
-  <div class="gates" role="list">
-    <div class="gate" role="listitem"><b class="num">0</b><span>hard-gate failures across all 5 concepts, NL + FR, desktop + mobile</span></div>
-    <div class="gate" role="listitem"><b class="num">97–100</b><span>Lighthouse mobile performance</span></div>
-    <div class="gate" role="listitem"><b class="num">100</b><span>accessibility, best practices and SEO, on every page</span></div>
-    <div class="gate" role="listitem"><b class="num">≤ 2.1 s</b><span>largest contentful paint (mobile, throttled)</span></div>
+<section aria-labelledby="h-p">
+  <h2 id="h-p">How the score moved</h2>
+  <div class="prog">
+    <article class="pr"><div class="k">Round 1 · best of 4 builds</div><div class="s">4.24 <small>/ 5</small></div><p>C · Honest Market. A 4.03 · B 3.78 · E 3.70. None of them was June at its best: C was the most trusted but the least recognisably June.</p></article>
+    <article class="pr"><div class="k">Round 2 · final site</div><div class="s">4.46 <small>/ 5</small></div><p>Design 4.25 · UX 4.50 · Conversion 4.68 · Technical 4.37. Every simulated persona rated it at least as high as their round-1 favourite.</p></article>
+    <article class="pr now"><div class="k">After final polish <span class="chip">Ship bar met</span></div><div class="s">0 <small>gate failures</small></div><p>36/36 route × width (1280/390/320), Lighthouse mobile 97–99 perf, 100 a11y/BP/SEO, LCP ≤ 2.3 s, CLS 0, e2e sign-up 93/93.</p></article>
+  </div>
+</section>
+
+<section aria-labelledby="h-s">
+  <h2 id="h-s">The final site, page by page</h2>
+  <p class="sub">Desktop on the left, mobile on the right. Each frame scrolls. Placeholder data is never shown as fact: unconfirmed items use the safe wording from the claims register.</p>
+  <div class="tabs" role="group" aria-label="Page"><button class="tab" data-p="nl-be" aria-pressed="true">Home NL</button><button class="tab" data-p="nl-be_abonnementen" aria-pressed="false">Abonnementen</button><button class="tab" data-p="nl-be_switch-plus" aria-pressed="false">Switch Plus</button><button class="tab" data-p="nl-be_hoe-werkt-het" aria-pressed="false">Hoe werkt het</button><button class="tab" data-p="nl-be_veelgestelde-vragen" aria-pressed="false">FAQ</button><button class="tab" data-p="nl-be_aanmelden" aria-pressed="false">Aanmelden</button><button class="tab" data-p="fr-be" aria-pressed="false">Accueil FR</button><button class="tab" data-p="fr-be_abonnements" aria-pressed="false">Abonnements</button><button class="tab" data-p="fr-be_switch-plus" aria-pressed="false">Switch Plus FR</button><button class="tab" data-p="fr-be_comment-ca-marche" aria-pressed="false">Comment ça marche</button><button class="tab" data-p="fr-be_questions-frequentes" aria-pressed="false">Questions fréquentes</button><button class="tab" data-p="fr-be_inscription" aria-pressed="false">Inscription</button></div>
+  <div class="pair">
+    <div><div class="fr"><img id="d" alt="Desktop screenshot" loading="lazy"></div><p class="cap">Desktop · 1280px</p></div>
+    <div><div class="fr"><img id="m" alt="Mobile screenshot" loading="lazy"></div><p class="cap">Mobile · 390px</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-t">
+  <h2 id="h-t">Scores</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>Build</th><th class="n">Design 30%</th><th class="n">UX 25%</th><th class="n">Conversion 30%</th><th class="n">Technical 15%</th><th class="n">Weighted</th><th class="n">Personas*</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>Final site (round 2)</td><td class="n">4.25</td><td class="n">4.50</td><td class="n">4.68</td><td class="n">4.37</td><td class="n">4.46</td><td class="n">4.4</td></tr>
+      <tr><td>C · Honest Market (round 1)</td><td class="n">3.97</td><td class="n">4.34</td><td class="n">4.52</td><td class="n">4.03</td><td class="n">4.24</td><td class="n">4.1</td></tr>
+      <tr><td>A · Calm Confidence</td><td class="n">3.88</td><td class="n">4.14</td><td class="n">4.30</td><td class="n">3.60</td><td class="n">4.03</td><td class="n">3.9</td></tr>
+      <tr><td>B · Savings First</td><td class="n">3.53</td><td class="n">3.74</td><td class="n">4.12</td><td class="n">3.67</td><td class="n">3.78</td><td class="n">3.1</td></tr>
+      <tr><td>E · Bold June</td><td class="n">3.95</td><td class="n">3.54</td><td class="n">3.58</td><td class="n">3.70</td><td class="n">3.70</td><td class="n">2.6</td></tr>
+    </tbody></table></div>
+  <p class="sub">*Simulated persona panel (Saver NL mobile, Prudent FR, Tech enthusiast NL, sceptical senior FR). It is useful for finding problems, but it is not user research.</p>
+</section>
+
+<section aria-labelledby="h-w">
+  <h2 id="h-w">What the final site took from each concept</h2>
+  <div class="cols">
+    <div class="box"><h3>From C · the base</h3><ul><li>Manifesto hero: "Energieleveranciers rekenen op je trouw. Wij niet."</li><li>Three questions answered in the hero, and who pays June</li><li>A market chart that draws itself, footnotes, editorial type</li><li>The "Wat we van je weten" panel in sign-up</li></ul></div>
+    <div class="box"><h3>From A and B</h3><ul><li>A: hero tile with price, guarantee and "checked monthly", the Premium band with the real leaf dongle, and postcode → town and grid operator</li><li>B: "what you keep" per plan (only after an estimate), per-step URLs, and answers that survive the NL↔FR switch</li></ul></div>
+    <div class="box"><h3>From E and the assets</h3><ul><li>One hand-drawn squiggle per page and the button hover</li><li>The teal June character: pointing in the FAQ, cheering on confirmation</li><li>The official SVG logo, logo green #1CA498, the real NL/FR app mockups and the animated brand icons</li></ul></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-ab">
+  <h2 id="h-ab">Next: prove it with real traffic</h2>
+  <p class="sub">Primary metric is sign-up started (first valid postcode). Each test needs roughly 18.5k sessions per arm to detect a 10% relative lift at an 8% base rate. Run each for at least 2 weeks, stratified by language and device.</p>
+  <div class="tablebox"><table><thead><tr><th>#</th><th>Test</th><th>Challenger</th><th>Metric</th></tr></thead><tbody>
+    <tr><td>1</td><td>Mobile hero order</td><td>Form directly under the H1 (now the default) vs the three-question panel first</td><td>Mobile starts</td></tr>
+    <tr><td>2</td><td>Headline</td><td>A's outcome headline vs C's manifesto</td><td>Starts, NL and FR read separately</td></tr>
+    <tr><td>3</td><td>Premium for high savers</td><td>Switch Plus plus a Premium upgrade vs the current rule</td><td>Plan mix, ARPU, 14-day cancellations</td></tr>
+    <tr><td>4</td><td>Estimate headline</td><td>Gross first vs net first</td><td>Start → submitted</td></tr>
+    <tr><td>5</td><td>Proof inside the CTA group</td><td>Rating and guarantee on the button line vs separate lines</td><td>Starts</td></tr>
+    <tr><td>6</td><td>Cost of waiting</td><td>"Elke maand wachten ≈ € X" vs none</td><td>Submitted</td></tr>
+    <tr><td>7</td><td>FR-specific proof</td><td>FR reviews with a Walloon/Brussels example (once reviews exist)</td><td>FR starts</td></tr>
+  </tbody></table></div>
+</section>
+
+<section aria-labelledby="h-o">
+  <h2 id="h-o">Needed from June before launch</h2>
+  <div class="cols">
+    <div class="box"><h3>Facts to confirm</h3><ol><li>Phone or contact route for prospects</li><li>KBO/BCE number and address</li><li>Supplier commissions yes/no (the independence claim depends on it)</li><li>Basis of the €326 average</li><li>Premium guarantee amount, cancellation terms</li></ol></div>
+    <div class="box"><h3>Sign-offs and content</h3><ol><li>Legal sign-off on the in-browser estimate, or June's pricing engine behind <code>getEstimate()</code></li><li>Real Google reviews</li><li>Native Belgian-French proofread</li><li>Lifestyle photography and explainer video</li></ol></div>
+    <div class="box"><h3>Production plumbing</h3><ol><li>Sign-up backend (POST) and the rest of the funnel</li><li>Analytics and consent banner (hooks exist)</li><li>Host redirects for old URLs, security headers, 404 status</li><li>Rich Results check on live URLs</li></ol></div>
   </div>
 </section>
 
 <section aria-labelledby="h-c">
-  <h2 id="h-c">Compare the homepages</h2>
-  <p class="sub">Every frame scrolls through the full page. Placeholders (photos, reviews, the KBO number, footnote periods) are labelled deliberately. No quotes, people or figures were invented.</p>
-  <div class="tabs" role="group" aria-label="View">
-    <button class="tab" data-view="nl-be__desktop" aria-pressed="true">NL · desktop</button>
-    <button class="tab" data-view="nl-be__mobile" aria-pressed="false">NL · mobile</button>
-    <button class="tab" data-view="fr-be__desktop" aria-pressed="false">FR · desktop</button>
-    <button class="tab" data-view="fr-be__mobile" aria-pressed="false">FR · mobile</button>
-    <button class="tab" data-view="style-tile" aria-pressed="false">Style tiles</button>
-  </div>
-  <div class="grid5" id="grid"><article class="cc" data-v="a"><div class="frame"><img data-src="a" alt="A · Calm Confidence concept" loading="lazy"></div><h3>A · Calm Confidence</h3><p class="meta">The Insights app scaled into a story. Hero tile ticks from "comparing…" to "✓ checked this month".</p><span class="lh">Lighthouse mobile 100 · 100 · 100 · 100 · LCP 1.7 s · 0 gate failures</span></article><article class="cc" data-v="b"><div class="frame"><img data-src="b" alt="B · Savings First concept" loading="lazy"></div><h3>B · Savings First</h3><p class="meta">The hero is the calculator: postcode, home type, energy → an indicative saving range after the fee.</p><span class="lh">Lighthouse mobile 97 · 100 · 100 · 100 · LCP 2.1 s · 0 gate failures</span></article><article class="cc" data-v="c"><div class="frame"><img data-src="c" alt="C · Honest Market concept" loading="lazy"></div><h3>C · Honest Market</h3><p class="meta">Editorial. "Energieleveranciers rekenen op je trouw. Wij niet." with a self-drawing market chart.</p><span class="lh">Lighthouse mobile 100 · 100 · 100 · 100 · LCP 1.7 s · 0 gate failures</span></article><article class="cc" data-v="d"><div class="frame"><img data-src="d" alt="D · Product Showcase concept" loading="lazy"></div><h3>D · Product Showcase</h3><p class="meta">Dark stage with localised Insights tiles, dongle and live data. Premium upsell, switching stays the headline.</p><span class="lh">Lighthouse mobile 99 · 100 · 100 · 100 · LCP 2.0 s · 0 gate failures</span></article><article class="cc" data-v="e"><div class="frame"><img data-src="e" alt="E · Bold June concept" loading="lazy"></div><h3>E · Bold June</h3><p class="meta">The brand book at full volume: "Je had energie. Nu heb je power." on June Green, blobs, Junior.</p><span class="lh">Lighthouse mobile 99 · 100 · 100 · 100 · LCP 1.8 s · 0 gate failures</span></article></div>
+  <h2 id="h-c">Where it started: the five concepts</h2>
+  <p class="sub">Checkpoint 2 homepages (NL desktop), before real assets arrived.</p>
+  <div class="grid5" id="grid"><article class="cc" data-v="a"><div class="frame"><img data-src="a" alt="Concept A · Calm Confidence" loading="lazy"></div><h3>A · Calm Confidence</h3></article><article class="cc" data-v="b"><div class="frame"><img data-src="b" alt="Concept B · Savings First" loading="lazy"></div><h3>B · Savings First</h3></article><article class="cc" data-v="c"><div class="frame"><img data-src="c" alt="Concept C · Honest Market" loading="lazy"></div><h3>C · Honest Market</h3></article><article class="cc" data-v="d"><div class="frame"><img data-src="d" alt="Concept D · Product Showcase" loading="lazy"></div><h3>D · Product Showcase</h3></article><article class="cc" data-v="e"><div class="frame"><img data-src="e" alt="Concept E · Bold June" loading="lazy"></div><h3>E · Bold June</h3></article></div>
 </section>
 
-<section aria-labelledby="h-a">
-  <h2 id="h-a">Coordinator's read</h2>
-  <div class="pick">
-    <div class="pk"><span class="v">A · Calm Confidence</span><span class="rec">Build</span><span class="lbl">Strong</span><ul><li>Most polished, and continuous with the app</li><li>Answers the three questions above the fold</li><li>Worked guarantee example</li></ul><span class="lbl">Watch</span><ul><li>Least memorable; could be any fintech</li></ul></div>
-    <div class="pk"><span class="v">B · Savings First</span><span class="rec">Build</span><span class="lbl">Strong</span><ul><li>Carries the most high-impact conversion hypotheses</li><li>The "use × price gap − subscription" strip is honest and clear</li></ul><span class="lbl">Watch</span><ul><li>The browser estimate conflicts with claims rule C17; needs pricing and legal sign-off or real data</li></ul></div>
-    <div class="pk"><span class="v">C · Honest Market</span><span class="rec">Build</span><span class="lbl">Strong</span><ul><li>The most distinctive message ("who pays June?")</li><li>One-off vs always-on table</li><li>Best for sceptics and SEO</li></ul><span class="lbl">Watch</span><ul><li>The longest page</li><li>The chart needs real CREG/VREG data</li></ul></div>
-    <div class="pk"><span class="v">D · Product Showcase</span><span class="alt">Fold into A</span><span class="lbl">Strong</span><ul><li>The most premium look</li><li>Meter chooser that highlights Premium</li><li>Localised app tiles</li></ul><span class="lbl">Watch</span><ul><li>Overlaps with A</li><li>"de beste prijs" is an unqualified superlative</li><li>Needs a dongle photo</li></ul></div>
-    <div class="pk"><span class="v">E · Bold June</span><span class="rec">Build</span><span class="lbl">Strong</span><ul><li>Unmistakably June and surprisingly premium (offset "pop" shadows, darker green field that passes AA)</li><li>Best memorability</li></ul><span class="lbl">Watch</span><ul><li>Continuity gap with the quiet app</li><li>Needs an illustrator for Junior</li></ul></div>
-  </div>
-  <p class="sub">Recommendation: build <b>A, B, C and E</b> in full, and fold D's product story (the live tiles and the meter chooser) into A as its Premium section. That tests four genuinely different conversion hypotheses: trust, a personal number, transparency and distinctiveness.</p>
-</section>
-
-<footer>Source: <code>website/variants/a–e</code> on branch <code>claude/june-energy-ui-design-mnsn2a</code>. Briefs: <code>website/brief/</code>. Checks: <code>node tools/check-site.mjs variants/&lt;x&gt; --lighthouse</code>.</footer>
+<footer>Code: <code>website/variants/final</code> (Astro) on branch <code>claude/june-energy-ui-design-mnsn2a</code>, PR grgslbn/June-UI-UX#1. Briefs: <code>website/brief/</code>. Evaluations: <code>website/evaluations/</code>. Run checks with <code>node tools/check-site.mjs variants/final --narrow --site-files --lighthouse-all</code>.</footer>
 </div>
 <script>
-let view='nl-be__desktop';
+let p='nl-be';
 function render(){
-  document.querySelectorAll('#grid img').forEach(i=>{i.src=`concepts/${i.dataset.src}-${view}.png`;i.closest('.frame').scrollTop=0;});
-  document.querySelectorAll('.cc').forEach(c=>c.classList.toggle('mob',view.includes('mobile')));
-  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===view));
+  document.getElementById('d').src=`final/${p}__desktop.png`;
+  document.getElementById('m').src=`final/${p}__mobile.png`;
+  document.querySelectorAll('.fr').forEach(f=>f.scrollTop=0);
+  document.querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===p));
 }
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;render()});
+document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{p=b.dataset.p;render()});
 render();
+document.querySelectorAll('#grid img').forEach(i=>i.src=`concepts/${i.dataset.src}-nl-be__desktop.png`);
 </script>
