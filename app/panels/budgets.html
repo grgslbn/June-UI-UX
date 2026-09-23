@@ -75,6 +75,9 @@
 [data-tab="budgets"] .bg-dl dd { margin: 0; color: var(--ink-900); font-weight: var(--w-semibold); text-align: right; }
 [data-tab="budgets"] .bg-settings-actions { margin-top: var(--s-5); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 
+[data-tab="budgets"] .bg-fallback { margin-top: var(--s-3); }
+[data-tab="budgets"] .bg-fallback .link { text-align: left; }
+
 /* Variants */
 [data-tab="budgets"] .bg-gap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: var(--s-5); }
 [data-tab="budgets"] .bg-gap .stat__label { font-size: var(--fs-xs); color: var(--ink-500); }
@@ -557,6 +560,7 @@
         <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — the first calculation runs once your latest readings have been processed; your status appears here as soon as it has.</span></p>
         <div class="empty__actions"><a class="btn btn--secondary" href="#panel-budgets-setup"><svg class="icon sm" aria-hidden="true"><use href="#i-sliders"/></svg>Budget settings</a></div>
         <p class="empty__note">Nothing you need to do. You can still change how your limit is set in the meantime.</p>
+        <p class="bg-fallback"><button class="link" type="button" data-pop="bg-pop-meter-a">Nothing after a few days? Check your meter connection <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></button></p>
         <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
       </div>
     </article>
@@ -564,9 +568,16 @@
 
   <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About this budget: your limit, daily pace and forecast appear after the first calculation. Your settings are saved.</span></p>
 
+  <div class="popover" id="bg-pop-meter-a" aria-label="Check your meter connection" hidden>
+    <h3>Check your meter connection</h3>
+    <p>Your readings come from your digital meter's user port. Check that its port is still switched on and that any reader plugged into it has power and Wi‑Fi.</p>
+    <p>Still nothing after that? Contact us and we'll look into it with your grid operator.</p>
+  </div>
+
   <details class="meta">
     <summary>Spec notes · Budgets · Awaiting first run</summary>
     <ul>
+      <li>Round 4 fallback: "Nothing after a few days? Check your meter connection" opens a tip (user port switched on, reader powered, then contact us). No exact date (ask #38). There is no meter/support page in the product yet, so the tip holds the steps instead of a dead link — <b>derived copy</b>; confirm steps and support route with product.</li>
       <li>Reason code <code>budget_awaiting_first_run</code> (<code>Budget.status.action</code>). ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38).</li>
       <li>Same chrome as source: fuel/period tabs, "Setting up" pill (neutral), config footer "Mode Auto (20% margin) · Period 1–31 May".</li>
       <li>Edge-state rule (round 3 template): <code>.empty__status</code> chip, <code>.empty__when</code> "No date yet — …" (no timeframe invented, ask #38), <code>.empty__note</code> + a secondary "Budget settings" link, footnote. All <b>derived copy</b>.</li>
@@ -594,6 +605,7 @@
         <p class="empty__body">Your meter hasn't reported enough recent readings yet to track this budget. Nothing wrong with your setup — this should resolve once fresh data comes in.</p>
         <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — it depends on when your meter next reports. Your first readings arrived on 16 May 2026.</span></p>
         <p class="empty__note">Nothing you need to do — your budget settings are saved and need no changes.</p>
+        <p class="bg-fallback"><button class="link" type="button" data-pop="bg-pop-meter-n">Nothing after a few days? Check your meter connection <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></button></p>
         <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
       </div>
     </article>
@@ -601,9 +613,16 @@
 
   <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About this budget: we track it from your meter's daily readings. Your settings are saved and nothing is lost while readings catch up.</span></p>
 
+  <div class="popover" id="bg-pop-meter-n" aria-label="Check your meter connection" hidden>
+    <h3>Check your meter connection</h3>
+    <p>Your readings come from your digital meter's user port. Check that its port is still switched on and that any reader plugged into it has power and Wi‑Fi.</p>
+    <p>Still nothing after that? Contact us and we'll look into it with your grid operator.</p>
+  </div>
+
   <details class="meta">
     <summary>Spec notes · Budgets · Not enough data</summary>
     <ul>
+      <li>Round 4 fallback: "Nothing after a few days? Check your meter connection" opens a tip (user port switched on, reader powered, then contact us). No exact date (ask #38). There is no meter/support page in the product yet, so the tip holds the steps instead of a dead link — <b>derived copy</b>; confirm steps and support route with product.</li>
       <li>Reason code <code>budget_not_enough_data</code>. ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38: how long this lasts — needs Hani).</li>
       <li>No readiness meter: there is no known count to show. Same chrome as "Awaiting first run".</li>
       <li>Edge-state rule (round 3 template): <code>.empty__when</code> "No date yet — it depends on when your meter next reports" (ask #38: no duration known) + first readings 16 May 2026 (new-customer timeline, matches <code>panel-overview-new</code>, where Budgets is "Ready now" once a budget is set); <code>.empty__note</code> "Nothing you need to do"; footnote. The round-2 invented "last reading 14 May / check meter by 21 May" was removed. All <b>derived</b>.</li>

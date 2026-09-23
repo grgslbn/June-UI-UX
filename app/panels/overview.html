@@ -199,7 +199,7 @@
             <div class="ov-new-when">
               <div class="readiness" data-done="3" data-total="7" data-labels="16,17,18,19,20,21,22"
                    aria-label="3 of 7 days of readings: 16, 17 and 18 May 2026. Your first forecast and solar view arrive on 23 May.">
-                <div class="readiness__foot"><span><b>First insights on 23 May</b> · forecast and solar</span><span>4 more days</span></div>
+                <div class="readiness__foot"><span><b>First insights on 23 May</b> · daily forecast and solar</span><span>4 more days</span></div>
               </div>
               <p class="small secondary mt-2">There's nothing you need to do — each topic switches on by itself as your data comes in.</p>
             </div>
@@ -222,7 +222,7 @@
           <li><a href="#panel-forecast-not-enough-data" class="row">
             <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span>
             <span class="row__title">Forecast</span>
-            <span class="row__sub">Your projected use for the month — needs 7 days of readings.</span>
+            <span class="row__sub">Daily and weekly forecasts from 23 May (7 days of readings); your monthly forecast from 1 July (after June, your first full month).</span>
             <span class="row__meta"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>From 23 May</span></span>
             <svg class="icon row__go" aria-hidden="true"><use href="#i-chev-r"/></svg></a></li>
           <li><a href="#panel-solar-calibrating" class="row">
@@ -278,7 +278,7 @@
     </ul>
     <h4>Data (derived — flag for product review)</h4>
     <ul>
-      <li>Household: first readings 16 May 2026; "now" = 18 May 2026, 20:00 (D3). Readiness rule (COMPONENTS.md): N-day features unlock the morning after the Nth day of readings → 16–22 May → 23 May (matches Forecast "not enough data").</li>
+      <li>Household: first readings 16 May 2026; "now" = 18 May 2026, 20:00 (D3). Readiness rule (COMPONENTS.md): N-day features unlock the morning after the Nth day of readings → 16–22 May → daily/short-term forecasts 23 May (matches Forecast "not enough data"); the monthly forecast needs one full calendar month (June) → 1 July (matches Forecast "partly ready").</li>
       <li>Solar: same 7-day rule → 23 May (the Solar calibrating state is a different household, first readings 15 May).</li>
       <li>Breakdown needs 4 weeks of daily readings (Breakdown not-ready state: 11 May start → ready around 8 June) → 16 May + 4 weeks → from 13 June. Peak: the "average so far" appears once the first monthly peak is final (end of May) → from 1 June. Compare needs one full calendar month (June) → from 1 July.</li>
       <li>Advice: no reason code or timing exists ("usually resolves as more data comes in") → chip "No date yet" with the reason in the row.</li>

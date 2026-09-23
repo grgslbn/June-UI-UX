@@ -211,7 +211,7 @@
       <li>✓ Approved: glance row gated per cell; Month/Year chart vs last year; 24–48h chart with a verified band; budget cross-reference; retrospective accuracy check (<code>allow_historic</code>). IA per ux-audit §3.2.</li>
       <li>Hero contract (round-2 shared rule): status chip "On track for budget" (the frozen budget pill, moved to the hero status) → sentence "You're projected to use 8% more this month than in May last year — and stay under budget." → ONE numeral ≈ 290 kWh that the sentence doesn't repeat. The frozen headline ("You're projected to use 290 kWh this month — 8% more than the same month last year.") is split between the h1 and the numeral; the separate "+8%" delta chip is dropped as a repeat.</li>
       <li>Budget link card (6.4) = hero aside: body and "View budget →" verbatim with canonical numbers; aside heading is an in-card sentence-case title (no caps kicker).</li>
-      <li>Month view: a single line (your use: solid to today, dashed forecast) plus the budget as the only labelled threshold (2px ink). No legend/end-label mix and no stacked right-edge labels (fixes the 300/290/269 collision). Last year moved out of this view — it is stated in the hero caption and drawn in the Year view.</li>
+      <li>Month view (round 3 polish): your use (solid to today, dashed forecast) + May 2025 ghost (ink) + budget threshold (2px ink). Direct one-line end labels "May 2025 · 269", "May 2026 ≈ 290", "Budget 300 kWh", de-collided by JuneCharts; no legend on wide charts (key row only below 480px). Current day (18 May) highlighted. The over-budget variant omits the ghost (269 would sit on the 270 budget line).</li>
       <li>Year view: "Last year" (ink) vs "This year" (accent, dashed after April), legend only (end labels off). No confidence band on either view (binding rule).</li>
       <li>€: disabled € option with <code>data-reason</code> (tooltip + accessible description) + [i] popover with the product half of the € note (verbatim). Binding meta rule: <code>unit=cost</code> silently returns €0; the app must detect this and never show "€0 projected".</li>
       <li>Band explainer + "Likely range (95% confidence)" in the [i] popover (verbatim); the chart key says "Likely range".</li>
@@ -243,7 +243,7 @@
         <div class="hero__split">
           <div>
             <div class="hero__status">
-              <span class="chip alert"><span class="dot" aria-hidden="true"></span>Forecast to exceed budget</span>
+              <span class="chip warn"><span class="dot" aria-hidden="true"></span>Forecast to exceed budget</span>
               <span class="xs muted">May 2026 · electricity</span>
             </div>
             <h1 class="hero__sentence" id="fco-title">May is heading over your 270&nbsp;kWh budget.</h1>
@@ -299,7 +299,7 @@
   <details class="meta">
     <summary>Spec notes · Forecast · over budget</summary>
     <ul>
-      <li>Leads with the problem (round-2 rule): alert chip "Forecast to exceed budget" (verbatim pill copy) → "May is heading over your 270 kWh budget." → numeral ≈ 20 kWh over. One "over" colour: red (chip + budget line); amber is no longer used for "over".</li>
+      <li>Leads with the problem: warn (amber) chip "Forecast to exceed budget" (verbatim pill copy) → "May is heading over your 270 kWh budget." → numeral ≈ 20 kWh over. Per COMPONENTS §0, amber = at risk (not over yet), red = actually over; nothing is over yet, so no red on this state (budget line is 2px ink).</li>
       <li>Aside body "Your forecast projects 290 kWh this month — over your 270 kWh electricity budget by about 7%." and "View budget →" verbatim pattern.</li>
       <li>⚠ <b>Derived numbers</b>: printed 412 vs 380 kWh "by about 8%". With the canonical 290 kWh forecast, an illustrative budget of <b>270 kWh</b> gives "by about 7%" (290 ÷ 270 = 1.074) and 20 kWh over.</li>
       <li><b>D4</b>: daily figure uses the Budgets formula (limit − used) ÷ days left = (270 − 187) ÷ 13 = <b>6.4 kWh a day</b> (13 days = 19–31 May, as on Budgets). Crossing date: 187 + 7.9 × n ≥ 270 → n = 10.5 → during 29 May.</li>
@@ -497,22 +497,26 @@
   const cum = arr => { let s = 0; return arr.map(v => +(s += v).toFixed(1)); };
   const actual = cum(dailyMay);                                            // 187.0 on 18 May (20:00)
   const thisMay = actual.concat(cum([187, ...fcRest]).slice(1)); thisMay[30] = 290;
-  const tipMonth = i => i < 17 ? `${i + 1} May · used ${actual[i]} kWh so far`
-    : i === 17 ? '18 May (today, 20:00) · used 187 kWh so far' : `${i + 1} May · forecast ${thisMay[i]} kWh`;
-  // One line (your use, solid → dashed forecast); budget as the only labelled threshold. No legend + end-label mix.
-  const monthOpts = (budget, tone, aria) => ({
+  const lastMayDaily = [9.2, 9.0, 9.4, 8.9, 9.1, 8.6, 8.8, 9.0, 8.7, 8.5, 8.9, 8.4, 8.6, 8.8, 8.2, 8.5, 8.7, 8.3, 8.6, 8.4, 8.8, 8.5, 8.3, 8.6, 8.4, 8.7, 8.5, 8.4, 8.8, 8.6, 8.8];
+  const lastMay = cum(lastMayDaily); lastMay[30] = 269;               // May 2025 (illustrative curve, canonical total 269)
+  const tipMonth = i => (i < 17 ? `${i + 1} May · used ${actual[i]} kWh so far`
+    : i === 17 ? '18 May (today, 20:00) · used 187 kWh so far' : `${i + 1} May · forecast ${thisMay[i]} kWh`) + ` · May 2025 ${lastMay[i]} kWh`;
+  // Direct end labels (one-line, de-collided by JuneCharts): "May 2025 · 269", "May 2026 ≈ 290", "Budget 300 kWh". No legend on wide charts.
+  const monthOpts = (budget, ghost, aria) => ({
     labels: days, tipLabels: days.map(d => d + ' May'),
-    series: [{ name: '', tone: 'accent', values: thisMay, forecastFrom: 17 }],
+    series: (ghost ? [{ name: 'May 2025 ·', tone: 'ink', values: lastMay }] : [])
+      .concat([{ name: 'May 2026 ≈', tone: 'accent', values: thisMay, forecastFrom: 17 }]),
     now: { index: 17, label: 'Today' }, current: 17,
-    thresholds: budget ? [{ value: budget, label: 'Budget', tone, emphasis: true, valueText: budget + ' kWh' }] : [],
+    thresholds: budget ? [{ value: budget, label: 'Budget', tone: 'ink', emphasis: true, valueText: budget + ' kWh' }] : [],
     xTicks: [0, 9, 19, 30], yMin: 0, yMax: 320, yTicks: [0, 100, 200, 300],
-    yLabel: 'Your use since 1 May (kWh)', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
-    tooltip: tipMonth, ariaLabel: aria
+    yLabel: 'Your use since 1 May (kWh)', unit: '', decimals: 0, forecastName: 'Forecast', forecastWord: ' ',
+    tooltip: ghost ? tipMonth : i => tipMonth(i).split(' · May 2025')[0], ariaLabel: aria
   });
-  const base = 'Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to 290 kWh on 31 May.';
-  JuneCharts.line('#fc-chart-month', monthOpts(300, 'ink', base + ' Budget line at 300 kWh; the forecast stays 10 kWh under it.'));
-  JuneCharts.line('#fcn-chart-month', monthOpts(0, 'ink', base));
-  JuneCharts.line('#fco-chart-month', monthOpts(270, 'alert', base + ' Budget line at 270 kWh in red; the forecast crosses it around 29 May and ends 20 kWh over.'));
+  const base = 'Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to about 290 kWh on 31 May.';
+  const ghostAria = ' May 2025 is shown as a grey line ending at 269 kWh.';
+  JuneCharts.line('#fc-chart-month', monthOpts(300, true, base + ghostAria + ' Budget line at 300 kWh; the forecast stays 10 kWh under it.'));
+  JuneCharts.line('#fcn-chart-month', monthOpts(0, true, base + ghostAria));
+  JuneCharts.line('#fco-chart-month', monthOpts(270, false, base + ' Budget line at 270 kWh; the forecast crosses it around 29 May and ends 20 kWh over.'));
 
   // ── Month by month (Nov 2025 – Oct 2026) ──
   const ym = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];

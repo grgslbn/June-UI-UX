@@ -80,6 +80,16 @@
   [data-tab="advice"] .ad-actions .btn--primary, [data-tab="advice"] .ad-actions .btn--secondary { margin-right: 0; }
   [data-tab="advice"] .ad-note .btn--quiet { margin-left: 0; }
 }
+/* Mobile: the two dismissals sit behind one "More options" toggle so "Add to my plan" stands alone */
+[data-tab="advice"] .ad-more-btn { display: none; }
+[data-tab="advice"] .ad-more-btn .icon { transition: transform var(--dur-fast) var(--ease-out); }
+[data-tab="advice"] .ad-more-btn[aria-expanded="true"] .icon { transform: rotate(180deg); }
+[data-tab="advice"] .ad-more { display: contents; }
+@media (max-width: 600px) {
+  [data-tab="advice"] .ad-more-btn { display: inline-flex; }
+  [data-tab="advice"] .ad-more { display: none; flex-basis: 100%; gap: 4px; flex-wrap: wrap; }
+  [data-tab="advice"] .ad-more.open { display: flex; }
+}
 /* Reduced motion: no fold transition at all, so the Undo button is focusable immediately */
 @media (prefers-reduced-motion: reduce) {
   [data-tab="advice"] .ad-fold, [data-tab="advice"] .ad-fold--note,
@@ -122,8 +132,11 @@
           <div class="ad-fold ad-fold--main"><div>
             <div class="ad-actions">
               <button class="btn btn--primary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
-              <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
-              <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+              <button class="btn btn--quiet ad-more-btn" type="button" aria-expanded="false" aria-controls="ad-more-1">More options<svg class="icon sm" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+              <div class="ad-more" id="ad-more-1">
+                <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
+                <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+              </div>
             </div>
           </div></div>
           <div class="ad-fold ad-fold--note"><div>
@@ -153,8 +166,11 @@
               <p class="ad-tip__save"><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button>&nbsp;€65<span class="unit">a year</span></span><span class="xs">240&nbsp;kWh a year</span></p>
               <div class="ad-tip__actions ad-actions">
                 <button class="btn btn--secondary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
-                <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
-                <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+                <button class="btn btn--quiet ad-more-btn" type="button" aria-expanded="false" aria-controls="ad-more-3">More options<svg class="icon sm" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+                <div class="ad-more" id="ad-more-3">
+                  <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
+                  <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+                </div>
               </div>
             </div>
           </div></div>
@@ -175,8 +191,11 @@
               <p class="ad-tip__save"><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button>&nbsp;€180<span class="unit">a year</span></span><span class="xs">650&nbsp;kWh a year</span></p>
               <div class="ad-tip__actions ad-actions">
                 <button class="btn btn--secondary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
-                <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
-                <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+                <button class="btn btn--quiet ad-more-btn" type="button" aria-expanded="false" aria-controls="ad-more-4">More options<svg class="icon sm" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+                <div class="ad-more" id="ad-more-4">
+                  <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
+                  <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+                </div>
               </div>
             </div>
           </div></div>
@@ -290,6 +309,7 @@
     </ul>
     <h4>Interaction</h4>
     <ul>
+      <li>Round 4: on phones (≤ 600px) "Already do this" / "Not relevant" sit behind one quiet "More options" toggle (<code>aria-expanded</code>/<code>aria-controls</code>), so "Add to my plan" stands alone; desktop unchanged. Undo re-opens the overflow before returning focus to the dismissal button.</li>
       <li>Row actions fold the tip away (grid-rows 1fr→0fr, 240ms, ease-in-out) and fold in a one-line confirmation with Undo; focus moves to Undo and back. Counts update live. The status control opens the matching status view.</li>
       <li>API: status change = <code>PATCH /advice/{id}</code> with JSON-Patch <code>[{op:"replace",path:"/status",value:"…"}]</code>. Add to my plan → <code>todo</code>; Already do this → <code>already_implemented</code> (goes to Dismissed, never Done); Not relevant → <code>not_relevant</code>.</li>
     </ul>
@@ -640,6 +660,16 @@
     b.textContent = v; b.hidden = v === 0;
   }
 
+  // Mobile overflow: "More options" shows the two dismissals
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.ad-more-btn');
+    if (!t) return;
+    const box = document.getElementById(t.getAttribute('aria-controls'));
+    const open = t.getAttribute('aria-expanded') !== 'true';
+    t.setAttribute('aria-expanded', String(open));
+    box?.classList.toggle('open', open);
+  });
+
   document.addEventListener('click', e => {
     const move = e.target.closest('[data-ad-move]');
     const undo = e.target.closest('[data-ad-undo]');
@@ -663,7 +693,13 @@
       item.classList.remove('is-moved');
       bump(panel, from, +1); bump(panel, DEST[act], -1);
       if (live) live.textContent = `${item.dataset.name}: undone.`;
-      focusWhenVisible(item.querySelector(`[data-ad-move="${act}"]`));
+      const back = item.querySelector(`[data-ad-move="${act}"]`);
+      const box = back?.closest('.ad-more');
+      if (box && getComputedStyle(box).display === 'none') {
+        box.classList.add('open');
+        document.querySelector(`[aria-controls="${box.id}"]`)?.setAttribute('aria-expanded', 'true');
+      }
+      focusWhenVisible(back);
       delete item.dataset.moved;
     }
   });
