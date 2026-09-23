@@ -798,7 +798,7 @@
       openPop = openBtn = null;
       if (restore) b.focus();
     }
-    function place(p, b) {
+    function place(p, b, opening) {
       const vw = document.documentElement.clientWidth;
       const sheet = vw < 600; p.classList.toggle('sheet', sheet);
       if (sheet) { p.style.left = ''; p.style.top = ''; p.style.width = ''; return; }
@@ -811,12 +811,20 @@
       // Prefer below. Stay inside the card vertically when possible (never spill into the next card):
       // below-in-card → above-in-card → below-in-viewport → above-in-viewport.
       const vh = window.innerHeight, bTop = r.bottom + 10, aTop = r.top - ph - 10;
-      const cardBottom = Math.min(card.bottom - 8, vh - 8), cardTop = Math.max(card.top + 8, 8);
       let top = bTop, above = false;
-      if (bTop + ph <= cardBottom) top = bTop;
-      else if (aTop >= cardTop) { top = aTop; above = true; }
-      else if (bTop + ph <= vh - 8) top = bTop;
-      else if (aTop >= 8) { top = aTop; above = true; }
+      if (bTop + ph <= card.bottom - 8) {                     // fits below inside its card
+        if (opening && bTop + ph > vh - 8) {                   // …but not on screen: scroll it into view once
+          const d = Math.min(bTop + ph - (vh - 8), Math.max(0, r.top - 72));
+          window.scrollBy(0, d); return place(p, b, false);
+        }
+      } else if (aTop >= card.top + 8 && aTop >= 8) { top = aTop; above = true; }
+      else {                                                   // doesn't fit in the card either way:
+        const cardEl = b.closest('.surface');                  // spill only onto the canvas, never onto another card
+        const other = (t, h) => [left + 8, left + w / 2, left + w - 8].some(x => [t + 4, t + h / 2, t + h - 4].some(y =>
+          y > 0 && y < vh && document.elementsFromPoint(x, y).some(el => !p.contains(el) && el.classList.contains('surface') && el !== cardEl && !el.contains(cardEl))));
+        if (other(bTop, ph) && aTop >= 8 && !other(aTop, ph)) { top = aTop; above = true; }
+        else if (bTop + ph > vh - 8 && aTop >= 8) { top = aTop; above = true; }
+      }
       p.style.left = left + 'px'; p.style.top = top + 'px';
       p.classList.toggle('above', above);
       let caret = p.querySelector(':scope > .caret');
@@ -829,7 +837,7 @@
       const host = b.closest(BLOCKS) || b;
       if (host.matches('li, td, th, dd, dt')) { if (host.lastElementChild !== p) host.append(p); } // keep list/table semantics
       else if (host.nextElementSibling !== p) host.after(p);   // reading order: right after its trigger's block
-      p.hidden = false; place(p, b);
+      p.hidden = false; place(p, b, true);
       requestAnimationFrame(() => p.classList.add('open'));
       b.setAttribute('aria-expanded', 'true'); openPop = p; openBtn = b;
     }

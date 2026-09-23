@@ -93,7 +93,8 @@
 /* Reduced motion: no fold transition at all, so the Undo button is focusable immediately */
 @media (prefers-reduced-motion: reduce) {
   [data-tab="advice"] .ad-fold, [data-tab="advice"] .ad-fold--note,
-  [data-tab="advice"] .is-moved .ad-fold--main, [data-tab="advice"] .is-moved .ad-fold--note { transition: none !important; }
+  [data-tab="advice"] .is-moved .ad-fold--main, [data-tab="advice"] .is-moved .ad-fold--note,
+  [data-tab="advice"] .ad-fold * { transition: none !important; } /* descendants too: the global 1ms rule would otherwise delay their inherited visibility */
 }
 </style>
 
@@ -625,7 +626,7 @@
       el.focus({ preventScroll: true });
       if (document.activeElement !== el && tries > 0) setTimeout(() => go(tries - 1), 40);
     };
-    if (reduce()) requestAnimationFrame(() => requestAnimationFrame(() => go(5)));
+    if (reduce()) { void el.offsetHeight; go(8); } // no transitions under reduced motion: style is final after a reflow
     else setTimeout(() => go(5), 260);
   }
 

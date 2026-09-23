@@ -44,3 +44,4 @@ Collected from builders; each is also noted in the relevant panel's Spec notes d
 27. Budgets not-enough-data: "last reading 14 May" and "check your meter if nothing arrives by 21 May" are invented.
 28. Breakdown not-ready: "1 of 4 weeks, ready around 8 June 2026" is derived.
 29. Forecast "This year" readiness rule: ready 1 June 2026 (main); new customers "needs 12 full months".
+30. Budgets not-ready fallback tip steps ("user port switched on, reader has power and Wi-Fi, then contact us") are new copy.
