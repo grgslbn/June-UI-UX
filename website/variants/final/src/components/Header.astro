@@ -41,7 +41,7 @@ const lang = { cur: LOCALES[locale].label, url: href(routeKey, other, base), hl:
       ) : (
         <>
           <a class="login" href={LOGIN_URL} rel="noopener"><Icon name="user" /><span class="login-t">{c.ui.login}</span></a>
-          <a class="btn btn--sm header-cta" href={signup} data-cta="nav">{c.ui.cta}</a>
+          <a class="btn btn--sm header-cta" href={`${signup}?entry=nav-${routeKey}`} data-cta="nav">{c.ui.cta}</a>
           <details class="menu">
             <summary aria-label={c.ui.menu}><Icon name="menu" /></summary>
             <div class="menu-panel">
@@ -49,7 +49,7 @@ const lang = { cur: LOCALES[locale].label, url: href(routeKey, other, base), hl:
                 {items.map((i) => <a href={i.url} aria-current={i.key === routeKey ? 'page' : undefined}>{i.label}</a>)}
                 <a href={LOGIN_URL} rel="noopener">{c.ui.login}<Icon name="ext" /></a>
               </nav>
-              <a class="btn" href={signup} data-cta="menu">{c.ui.cta}<Icon name="arrow-r" /></a>
+              <a class="btn" href={`${signup}?entry=menu-${routeKey}`} data-cta="menu">{c.ui.cta}<Icon name="arrow-r" /></a>
             </div>
           </details>
         </>

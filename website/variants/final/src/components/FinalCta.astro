@@ -8,8 +8,8 @@ import Icon from './Icon.astro';
 import Fn from './Fn.astro';
 import pointing from '@shared/assets/character/june-character-pointing.png';
 import cheering from '@shared/assets/character/june-character-cheering.png';
-interface Props { c: any; locale: 'nl-be' | 'fr-be'; title?: string; character?: 'pointing' | 'cheering' | null; plan?: string; }
-const { c, locale, title, character = null, plan } = Astro.props;
+interface Props { c: any; locale: 'nl-be' | 'fr-be'; title?: string; character?: 'pointing' | 'cheering' | null; plan?: string; entry?: string; }
+const { c, locale, title, character = null, plan, entry = 'final' } = Astro.props;
 const img = character === 'cheering' ? cheering : pointing;
 ---
 <section class="section section--close" id="start" aria-labelledby="sum-h">
@@ -22,7 +22,7 @@ const img = character === 'cheering' ? cheering : pointing;
         </ul>
       </div>
       <div class="pc-wrap">
-        <PostcodeForm locale={locale} c={c} id="sum" plan={plan} />
+        <PostcodeForm locale={locale} c={c} id="sum" plan={plan} entry={entry} />
         <Trust c={c} id="sum" />
       </div>
       {character && <Image src={img} alt="" class="summary-char" widths={[160, 320]} sizes="160px" width={160} loading="lazy" />}

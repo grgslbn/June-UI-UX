@@ -164,7 +164,7 @@
 .pl-card dl > div { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; }
 .pl-card dt { color: var(--ink-700); }
 .plan--rec .pl-card dt { color: var(--on-block-muted); }
-.pl-card dd { margin: 0; font-weight: 600; white-space: nowrap; }
+.pl-card dd { margin: 0; font-weight: 600; white-space: nowrap; min-width: 15ch; text-align: right; }
 .pl-card .pl-you { margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--rule); font-size: 16px; }
 .plan--rec .pl-card .pl-you { border-color: rgba(255, 255, 255, 0.22); }
 .pl-card .pl-you dt { color: var(--ink-900); font-weight: 700; }
@@ -172,7 +172,6 @@
 .pl-card .pl-you dd { font-family: var(--font-display); font-size: 18px; color: var(--accent-strong); }
 .plan--rec .pl-card .pl-you dd { color: var(--on-block-accent); }
 .pl-low { margin-top: 6px; font-size: var(--fs-note); }
-.pl-low[hidden] { display: none; }
 
 /* ── What you pay June: horizontal money flow (replaces the old stacked Jij → June → Leverancier boxes) ── */
 .earn-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: end; margin-bottom: var(--s-10); }

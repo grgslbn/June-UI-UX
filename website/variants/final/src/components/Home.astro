@@ -52,7 +52,7 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
         <p class="lead">{c.hero.lead}</p>
         <p class="hero-cost">{c.hero.saving[0]}<strong>{c.hero.saving[1]}</strong>{c.hero.saving[2]}<Fn n={1} L={L} /></p>
         <div data-sticky-hide id="bereken">
-          <PostcodeForm locale={locale} c={c} id="hero" />
+          <PostcodeForm locale={locale} c={c} id="hero" entry="home-hero" />
         </div>
         <Trust c={c} id="hero" />
       </div>
@@ -140,5 +140,5 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
     </div>
   </section>
 
-  <FinalCta c={c} locale={locale} />
+  <FinalCta c={c} locale={locale} entry="home-final" />
 </Site>

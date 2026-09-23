@@ -17,11 +17,13 @@ const c = siteCopy(locale);
 const trail = crumbs && routeKey !== 'home' ? [{ name: c.pageNames.home, key: 'home' }, ...(routeKey === 'switchPlus' ? [{ name: c.pageNames.plans, key: 'plans' }] : []), { name: c.pageNames[routeKey], key: routeKey }] : [];
 const signup = href('signup', locale, import.meta.env.BASE_URL);
 const p = stickyPlan && c.plans.find((x: any) => x.slug === stickyPlan);
-const bar = sticky
+const withEntry = (u: string) => u + (u.includes('?') ? '&' : '?') + `entry=sticky-${routeKey}`;
+const bar0 = sticky
   ? { strong: sticky.strong, sub: sticky.sub, label: sticky.label || c.ui.cta, url: sticky.url || signup }
   : p
     ? { strong: `${p.name} · ${p.yearly} ${c.L === 'fr' ? 'par an' : 'per jaar'}`, sub: `${c.trust.rating.split(' · ')[0]} · ${c.ui.reducer.toLowerCase()}`, label: `${c.L === 'fr' ? 'Choisir' : 'Kies'} ${p.name}`, url: `${signup}?plan=${p.slug}` }
     : { strong: c.sticky.strong, sub: c.sticky.sub, label: c.ui.cta, url: signup };
+const bar = { ...bar0, url: bar0.url.includes('entry=') ? bar0.url : withEntry(bar0.url) };
 ---
 <Page locale={locale} routeKey={routeKey} title={title} description={description} crumbs={trail} ld={ld}>
   <Header locale={locale} routeKey={routeKey} c={c} />

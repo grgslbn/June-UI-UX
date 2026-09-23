@@ -129,11 +129,11 @@ const plans = localise((L, m) => {
       cta: 'Calculez ce qui vous reste',
     },
     ledger: nl ? {
-      title: 'Wat jij overhoudt', save: 'Geschatte besparing', fee: 'Abonnement', you: 'Voor jou', per: 'per jaar',
-      low: 'Deze schatting dekt de prijs van dit abonnement niet.', guard: 'Bespaar je niet meer dan je abonnement kost? Dan geldt de winstgarantie.', cap: 'Indicatief, op basis van je antwoorden in de aanmelding.', edit: 'Schatting aanpassen',
+      title: 'Wat jij overhoudt · indicatief', save: 'Besparing', fee: 'Abonnement', you: 'Voor jou', per: 'per jaar',
+      advice: 'Ons advies', guard: 'Bespaar je niet meer dan je abonnement kost? Dan geldt de winstgarantie.', cap: 'Indicatief, op basis van je antwoorden in de aanmelding.', edit: 'Schatting aanpassen',
     } : {
-      title: 'Ce qui vous reste', save: 'Économie estimée', fee: 'Abonnement', you: 'Pour vous', per: 'par an',
-      low: 'Cette estimation ne couvre pas le prix de cet abonnement.', guard: 'Vous n’économisez pas plus que le prix de votre abonnement ? La garantie de gain s’applique.', cap: 'Indicatif, sur la base de vos réponses à l’inscription.', edit: 'Modifier l’estimation',
+      title: 'Ce qui vous reste · indicatif', save: 'Économie', fee: 'Abonnement', you: 'Pour vous', per: 'par an',
+      advice: 'Notre conseil', guard: 'Vous n’économisez pas plus que le prix de votre abonnement ? La garantie de gain s’applique.', cap: 'Indicatif, sur la base de vos réponses à l’inscription.', edit: 'Modifier l’estimation',
     },
     table: nl ? {
       kicker: 'Alles naast elkaar', h2: 'Wat zit in welk abonnement?', caption: 'Vergelijking van de drie abonnementen',

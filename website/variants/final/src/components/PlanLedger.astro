@@ -3,16 +3,15 @@
 // sign-up funnel in this session. Before that there are no preset numbers at all: the plans page shows the method
 // (besparing − abonnement = wat jij overhoudt) and a CTA to get an estimate.
 //
-// Contract with the funnel (src/lib + Signup, owned by the funnel builder): after the estimate step, the funnel writes
-//   sessionStorage['june-estimate'] = JSON { gross: [lo, hi], net?: { switch: [lo, hi], 'switch-plus': [lo, hi], premium: [lo, hi] } }
-// computed by estimate()/net() in src/lib/estimate.js. This component only DISPLAYS those numbers. If `net` is missing it
-// subtracts the plan fee with the same rounding as net() (down to 10 / nearest 10, floored at 0), as a fallback only.
+// Contract with the funnel (src/lib, owned by the funnel builder): the answers live in sessionStorage['june-signup']
+// (funnel-state.js). An estimate "exists" once the estimate step could be shown (energy + household or own kWh).
+// All maths comes from getEstimate() in src/lib/estimate.js — nothing is recomputed here.
 //
-// Three modes, used in this order on the page (keeps CLS at 0: visibility is decided by a tiny inline script BEFORE the
-// ledgers are parsed, and the values are filled by a second one right after the cards, into boxes of fixed height):
+// Three modes, used in this order on the page. CLS stays 0: a tiny inline script decides visibility BEFORE the
+// ledgers are parsed (html[data-est]); the async getEstimate() then only replaces "≈ …" in boxes of fixed height.
 //   <PlanLedger mode="boot" c={c} signup={url} />   method box / "your estimate" box + sets html[data-est]
-//   <PlanLedger mode="card" c={c} slug="switch" fee={69} />   one per plan card
-//   <PlanLedger mode="fill" c={c} />                 fills every ledger
+//   <PlanLedger mode="card" c={c} slug="switch" fee={69} name="Switch" />   one per plan card
+//   <PlanLedger mode="fill" c={c} />                 fills every ledger (module script, lib/estimate.js)
 import Icon from './Icon.astro';
 import Stars from './Stars.astro';
 import Fn from './Fn.astro';
@@ -27,11 +26,8 @@ const L = c.L;
     <script is:inline>
       (function () {
         try {
-          var e = JSON.parse(sessionStorage.getItem('june-estimate') || 'null');
-          var g = e && e.gross;
-          if (g && g.length === 2 && isFinite(g[0]) && isFinite(g[1]) && g[0] >= 0 && g[1] >= g[0] && g[1] < 10000) {
-            window.__juneEst = e; document.documentElement.setAttribute('data-est', '');
-          }
+          var a = JSON.parse(sessionStorage.getItem('june-signup') || 'null');
+          if (a && (a.estSeen || (a.energy && (a.household || Number(a.kwhElec) > 0)))) document.documentElement.setAttribute('data-est', '');
         } catch (_) { /* no storage: method only */ }
       })();
     </script>
@@ -50,6 +46,7 @@ const L = c.L;
         <p class="pl-h">{l.title}</p>
         <p class="pl-p">{L === 'fr' ? 'Votre économie estimée' : 'Je geschatte besparing'}: <strong class="num" data-est-gross>≈ …</strong> {l.per}</p>
         <p class="pl-p">{L === 'fr' ? 'Pour chaque abonnement, vous voyez ci-dessous ce qui vous reste, abonnement déduit.' : 'Per abonnement zie je hieronder wat je overhoudt, na aftrek van je abonnement.'}</p>
+        <p class="pl-p pl-advice">{l.advice}: <strong data-est-advice>…</strong></p>
         <p class="pl-cap">{l.cap}</p>
         <a class="link-arrow" href={signup}>{l.edit}<Icon name="arrow-r" /></a>
       </div>
@@ -61,30 +58,33 @@ const L = c.L;
     <p class="pl-title">{l.title}</p>
     <dl>
       <div><dt>{l.save}</dt><dd class="num" data-l-gross>≈ …</dd></div>
-      <div><dt>− {l.fee} {name}</dt><dd class="num">− {c.plans.find((p: any) => p.slug === slug)?.yearly}</dd></div>
+      <div><dt>− {l.fee}</dt><dd class="num">− {c.plans.find((p: any) => p.slug === slug)?.yearly}</dd></div>
       <div class="pl-you"><dt>= {l.you}</dt><dd class="num" data-l-net>≈ …</dd></div>
     </dl>
-    <p class="pl-low" data-l-low hidden>{l.low}</p>
-    {slug !== 'switch' && <p class="pl-low" data-l-guard hidden>{l.guard}</p>}
+    {slug !== 'switch' && <p class="pl-low">{l.guard}</p>}
   </div>
 )}
 {mode === 'fill' && (
-  <script is:inline define:vars={{ L }}>
-    (function () {
-      var e = window.__juneEst; if (!e) return;
-      var fmt = function (n) { var s = String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, L === 'nl' ? '.' : ' '); return L === 'nl' ? '€ ' + s : s + ' €'; };
-      var rng = function (r) { return '≈ ' + (r[0] === r[1] ? fmt(r[0]) : fmt(r[0]) + ' – ' + fmt(r[1])); };
-      // Fallback only; mirrors net() in src/lib/estimate.js.
-      var net = function (g, fee) { return [Math.max(0, Math.floor((g[0] - fee) / 10) * 10), Math.max(0, Math.round((g[1] - fee) / 10) * 10)]; };
-      var gEl = document.querySelector('[data-est-gross]'); if (gEl) gEl.textContent = rng(e.gross);
-      document.querySelectorAll('[data-ledger]').forEach(function (box) {
-        var slug = box.getAttribute('data-plan'), fee = Number(box.getAttribute('data-fee'));
-        var n = (e.net && e.net[slug] && e.net[slug].length === 2) ? e.net[slug] : net(e.gross, fee);
-        box.querySelector('[data-l-gross]').textContent = rng(e.gross);
-        box.querySelector('[data-l-net]').textContent = rng(n);
-        if (n[1] <= 0) box.querySelector('[data-l-low]').hidden = false;
-        var guard = box.querySelector('[data-l-guard]'); if (guard && n[0] <= 0) guard.hidden = false;
-      });
-    })();
-  </script>
+  <div hidden data-ledger-fill data-locale={L} data-names={JSON.stringify(Object.fromEntries(c.plans.map((p: any) => [p.slug, p.name])))}></div>
 )}
+<script>
+  // Fills the ledgers from the funnel's answers through the one estimate function. Loaded only for visitors
+  // who have an estimate (dynamic import: the estimate code and facts stay out of everyone else's bundle).
+  const cfg = document.querySelector<HTMLElement>('[data-ledger-fill]');
+  if (cfg && document.documentElement.hasAttribute('data-est')) {
+    Promise.all([import('../lib/estimate.js'), import('../lib/funnel-state.js')]).then(async ([E, S]) => {
+      const L = cfg.dataset.locale as 'nl' | 'fr';
+      const names = JSON.parse(cfg.dataset.names || '{}');
+      const a: any = S.load();
+      const e: any = await E.getEstimate({ energy: a.energy || 'both', household: a.household, kwhElec: a.kwhElec, kwhGas: a.kwhGas, meter: a.meter, solar: !!a.solar, ev: !!a.ev, heatpump: !!a.heatpump });
+      const set = (el: Element | null, t: string) => { if (el) el.textContent = t; };
+      set(document.querySelector('[data-est-gross]'), `≈ ${E.fmtRange(e.gross, L)}`);
+      set(document.querySelector('[data-est-advice]'), names[e.recommended] || '');
+      document.querySelectorAll<HTMLElement>('[data-ledger]').forEach((box) => {
+        const n = e.nets?.[box.dataset.plan || ''];
+        set(box.querySelector('[data-l-gross]'), `≈ ${E.fmtRange(e.gross, L)}`);
+        if (n) set(box.querySelector('[data-l-net]'), `≈ ${E.fmtRange(n, L)}`);
+      });
+    }).catch(() => { /* keep "≈ …"; the "adjust estimate" link stays available */ });
+  }
+</script>

@@ -3,7 +3,8 @@
 //   1. digital meter? (yes / no / don't know)   2. solar panels? (yes / no)
 // → marks the fitting plan card (data-fit on [data-plan-cards]) and explains why, in one sentence.
 // Analogue meter (or "don't know") never leads to Premium: the helper says Switch Plus and explains that the
-// June Dongle needs the P1 port of a digital meter. The answers are carried into the plan links (?meter=&solar=)
+// June Dongle needs the P1 port of a digital meter. The answers are carried into the plan links (?meter=&solar=1,
+// the funnel's query contract in src/lib/funnel-state.js)
 // so the sign-up doesn't ask again. Needs JS; without JS it is not shown (the cards stand on their own).
 import Icon from './Icon.astro';
 import AnimIcon from './AnimIcon.astro';
@@ -64,9 +65,9 @@ const h = c.helper;
       rs.forEach((r) => { r.hidden = r.dataset.r !== key; });
       const fit = key === 'digitalSolar' ? 'premium' : 'switch-plus';
       if (cards) { cards.dataset.fit = fit; cards.dataset.meter = meter; }
-      const p: string[] = [];
-      if (meter !== 'dk') p.push(`meter=${meter}`);
-      if (solar) p.push(`solar=${solar}`);
+      // Sign-up query contract (src/lib/funnel-state.js): meter=digital|analog|unknown · solar=1.
+      const p: string[] = [`meter=${meter === 'dk' ? 'unknown' : meter}`];
+      if (solar === 'yes') p.push('solar=1');
       links.forEach((a, i) => { a.href = base[i] + (p.length ? `&${p.join('&')}` : ''); });
       (window as any).dataLayer?.push({ event: 'plan_helper', meter, solar, fit });
     });
