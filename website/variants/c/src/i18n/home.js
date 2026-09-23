@@ -14,7 +14,7 @@ const page = localise((L, m) => {
     hero: {
       kicker: 'Onafhankelijk · geen energieleverancier',
       h1a: 'Energieleveranciers rekenen op je trouw.', h1b: 'Wij niet.',
-      lead: 'June is geen leverancier. Jij betaalt ons, dus wij werken voor jou: minstens elke maand zoeken we een voordeliger contract voor jouw verbruik, en we regelen de overstap.',
+      lead: 'Jij betaalt ons, niet de leverancier. Dus werken we voor jou: minstens elke maand zoeken we een voordeliger contract voor jouw verbruik. De overstap regelen wij.',
       saving: ['Klanten besparen ', facts.saving.averagePerYear.display.nl, '.'],
     },
     ledger: [
@@ -72,7 +72,7 @@ const page = localise((L, m) => {
     hero: {
       kicker: 'Indépendant · pas un fournisseur d’énergie',
       h1a: 'Les fournisseurs comptent sur votre fidélité.', h1b: 'Pas nous.',
-      lead: 'June n’est pas un fournisseur. C’est vous qui nous payez, donc nous travaillons pour vous : au moins une fois par mois, nous cherchons un contrat plus avantageux pour votre consommation, et nous gérons le changement.',
+      lead: 'C’est vous qui nous payez, pas le fournisseur. Nous travaillons donc pour vous : au moins une fois par mois, nous cherchons un contrat plus avantageux pour votre consommation. Le changement, c’est nous.',
       saving: ['Nos clients économisent ', facts.saving.averagePerYear.display.fr, '.'],
     },
     ledger: [
