@@ -808,8 +808,15 @@
       const w = Math.min(320, hi - lo); p.style.width = w + 'px';
       const ph = p.offsetHeight;
       const left = Math.min(Math.max(lo, r.left + r.width / 2 - w / 2), hi - w);
-      let top = r.bottom + 10, above = false;
-      if (top + ph > window.innerHeight - 8 && r.top - ph - 10 > 8) { top = r.top - ph - 10; above = true; }
+      // Prefer below. Stay inside the card vertically when possible (never spill into the next card):
+      // below-in-card → above-in-card → below-in-viewport → above-in-viewport.
+      const vh = window.innerHeight, bTop = r.bottom + 10, aTop = r.top - ph - 10;
+      const cardBottom = Math.min(card.bottom - 8, vh - 8), cardTop = Math.max(card.top + 8, 8);
+      let top = bTop, above = false;
+      if (bTop + ph <= cardBottom) top = bTop;
+      else if (aTop >= cardTop) { top = aTop; above = true; }
+      else if (bTop + ph <= vh - 8) top = bTop;
+      else if (aTop >= 8) { top = aTop; above = true; }
       p.style.left = left + 'px'; p.style.top = top + 'px';
       p.classList.toggle('above', above);
       let caret = p.querySelector(':scope > .caret');

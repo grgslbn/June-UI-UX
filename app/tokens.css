@@ -68,14 +68,14 @@
   --gas-soft: #e2f0f9;
 
   /* ── Categorical ramp (Breakdown categories). Round 3: accent + ink tints, NO new hues.
-        cat-1 = the category the tab is about (accent); cat-2…5 + other = ink steps,
-        dark → light, each ≥ 1.3:1 from its neighbour. Always text-labelled; order fixed. ── */
+        cat-1 = the category the tab is about (accent); cat-2…5 + other = ink steps from mid-ink
+        fading toward the surface (light AND dark), so the accent always leads. Always text-labelled; order fixed. ── */
   --cat-1: #3bada8;  /* accent — the lead category (e.g. Heating) */
-  --cat-2: #2c4349;  /* ink 1 */
-  --cat-3: #5b7075;  /* ink 2 */
-  --cat-4: #8a9ca0;  /* ink 3 */
-  --cat-5: #b3c1c4;  /* ink 4 */
-  --cat-other: #d5dddf; /* ink 5 — Other */
+  --cat-2: #6b7f84;  /* ink 1 — starts at mid-ink so cat-1 always leads */
+  --cat-3: #8c9ea2;  /* ink 2 */
+  --cat-4: #adbcbf;  /* ink 3 */
+  --cat-5: #c9d4d6;  /* ink 4 */
+  --cat-other: #dde4e5; /* ink 5 — Other */
 
   /* ── Chart roles ────────────────────────────────────────────────────── */
   --chart-grid: var(--ink-100);
@@ -169,11 +169,11 @@
     --gas-strong: #5cb8ec;
     --gas-soft: #0f2a3a;
     --cat-1: #45bdb7;
-    --cat-2: #d5dfe0;
-    --cat-3: #9fb0b3;
-    --cat-4: #71858a;
-    --cat-5: #4f6268;
-    --cat-other: #37484d;
+    --cat-2: #7d9095;
+    --cat-3: #63767b;
+    --cat-4: #4e6065;
+    --cat-5: #3e4f54;
+    --cat-other: #314145;
     --chart-muted: #3b5358;
     --chart-rolloff: #adbcbf;
     --chart-band: rgba(69, 189, 183, 0.18);
@@ -226,11 +226,11 @@
   --gas-strong: #5cb8ec;
   --gas-soft: #0f2a3a;
   --cat-1: #45bdb7;
-  --cat-2: #d5dfe0;
-  --cat-3: #9fb0b3;
-  --cat-4: #71858a;
-  --cat-5: #4f6268;
-  --cat-other: #37484d;
+  --cat-2: #7d9095;
+  --cat-3: #63767b;
+  --cat-4: #4e6065;
+  --cat-5: #3e4f54;
+  --cat-other: #314145;
   --chart-muted: #3b5358;
   --chart-rolloff: #adbcbf;
   --chart-band: rgba(69, 189, 183, 0.18);

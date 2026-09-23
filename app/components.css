@@ -289,7 +289,7 @@ details.meta code { font-size: var(--fs-xs); }
 .seg button { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 4px 14px; font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--ink-700); border-radius: var(--r-pill); white-space: nowrap; transition: color var(--dur-fast); }
 .seg button[aria-checked="true"] { color: var(--ink-900); font-weight: var(--w-semibold); }
 .seg button:hover { color: var(--ink-900); }
-.seg button[aria-disabled="true"] { color: var(--ink-500); cursor: not-allowed; opacity: .5; text-decoration: line-through 1px; text-decoration-color: var(--ink-400); }
+.seg button[aria-disabled="true"] { color: var(--ink-500); cursor: not-allowed; opacity: .5; }
 .seg button[aria-disabled="true"]:hover { color: var(--ink-500); }
 .seg button:focus-visible { border-radius: var(--r-pill); }
 /* Fuel toggle: .seg.seg--fuel with <span class="fuel-dot elec|gas"> before the label */
@@ -391,11 +391,14 @@ a.row:hover .row__go, a.rank-card:hover .row__go { color: var(--ink-700); transf
 .empty__actions { margin-top: var(--s-5); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .empty__note { margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--hairline); font-size: var(--fs-xs); color: var(--ink-500); max-width: 70ch; }
 .empty .readiness { margin-top: var(--s-5); max-width: 520px; }
-.empty.motif::after {
-  content: ""; position: absolute; pointer-events: none; right: -28px; top: -28px; width: 150px; height: 120px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 28px) 100%, calc(100% - 28px) 28px, 0 28px); /* only the part outside the tile */
+.empty.motif::after { /* desktop only, fully inside the tile's top-right corner, in space the text column never reaches */
+  content: none; position: absolute; pointer-events: none; right: 16px; top: 16px; width: 120px; height: 96px; border-radius: 0 var(--r-lg) 0 0;
   background-image: radial-gradient(var(--halftone) 1.4px, transparent 1.6px); background-size: 10px 10px;
   -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent); mask-image: radial-gradient(closest-side, #000 35%, transparent);
+}
+@media (min-width: 961px) {
+  .empty.motif::after { content: ""; }
+  .empty.motif > :not(.well) { padding-right: 136px; } /* keep text clear of the motif */
 }
 
 /* ── 12 · Disclosure & table ───────────────────────────────────────────── */
