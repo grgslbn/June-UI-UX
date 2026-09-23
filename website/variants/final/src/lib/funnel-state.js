@@ -6,6 +6,7 @@
            pref (auto|ask) · green (1) · entry (CTA id, analytics only)
    - Answers live in sessionStorage (same origin for NL and FR), so back, reload and the language
      switch keep them. The e-mail address is kept in sessionStorage only, never in a URL or an event.
+   - `estSeen: true` is set once the estimate step has actually been shown (read by the plans page ledger).
    - Per-step URLs are hash states, localised: NL #schatting #abonnement #bevestigd, FR #estimation
      #abonnement #confirmation (both spellings are accepted on either locale). */
 

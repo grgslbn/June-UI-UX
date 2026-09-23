@@ -112,17 +112,6 @@
 }
 .js .chart[data-draw].is-drawn .draw { will-change: auto; }
 
-/* ── Product band (app + leaf dongle) ───────────────────────────────── */
-.pb-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
-.pb-points { list-style: none; margin: 0 0 var(--s-6); padding: 0; display: grid; gap: 10px; }
-.pb-points li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; font-size: 17px; color: var(--ink-700); }
-.pb-points svg { width: 20px; height: 20px; color: var(--accent-strong); margin-top: 3px; }
-.pb-fig { margin: 0; display: grid; gap: var(--s-3); }
-.pb-stage { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: end; justify-items: center; gap: var(--s-2); padding: var(--s-8) var(--s-4) 0; border-radius: var(--r-lg); background: radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--accent) 26%, var(--paper)) 0, var(--accent-soft) 45%, transparent 72%); }
-.pb-phone { width: 100%; max-width: 240px; height: auto; filter: drop-shadow(0 24px 30px rgba(18, 52, 50, 0.22)); }
-.pb-dongle { width: 100%; max-width: 210px; height: auto; margin-bottom: var(--s-4); transform: rotate(-6deg); }
-@media (max-width: 860px) { .pb-grid { grid-template-columns: minmax(0, 1fr); } .pb-fig { order: -1; } }
-
 /* ── Rating band (no invented reviews) ──────────────────────────────── */
 .rating-band { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: clamp(24px, 5vw, 80px); align-items: center; }
 .rating-big { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-numeral); line-height: 1; letter-spacing: -0.04em; }

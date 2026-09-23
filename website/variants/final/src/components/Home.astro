@@ -21,7 +21,7 @@ import FaqList from './FaqList.astro';
 import FinalCta from './FinalCta.astro';
 import HeroTile from './HeroTile.astro';
 import Squiggle from './Squiggle.astro';
-import HomeProduct from './HomeProduct.astro';
+import ProductBand from './ProductBand.astro';
 import { homeCopy } from '../i18n/home.js';
 import { href } from '@shared/routes.mjs';
 interface Props { locale: 'nl-be' | 'fr-be'; }
@@ -121,7 +121,7 @@ const icons = ['home-analysis', 'compare', 'home-switch'] as const;
   </section>
 
   <!-- ── PRODUCT: the app + leaf dongle ──────────────── -->
-  <HomeProduct c={c} locale={locale} />
+  <ProductBand variant="compact" locale={locale} id="premium-band" entry="home-premium" tone="deep" />
 
   <!-- ── 03 THE HONEST PROMISE ───────────────────────── -->
   <Guarantee c={c} locale={locale} n="03" cta="more" />

@@ -11,10 +11,10 @@ const role = fr
   : { you: 'Kiest een abonnement en, als je wil, keurt elke overstap zelf goed.', june: 'Verkoopt geen energie. Verdient aan je abonnement, niet aan je verbruik.', sup: 'Levert je stroom en gas en stuurt je de factuur, zoals nu.' };
 ---
 <div class="mflow-c"><figure class="mflow" role="img" aria-label={`${f.you} → ${f.june}: ${f.pay}. ${f.june} → ${f.sup}: ${f.work}. ${f.bill}.`}>
-  <div class="mf-node"><span class="mf-name">{f.you}</span><span class="mf-role">{role.you}</span></div>
-  <div class="mf-edge mf-edge--money" aria-hidden="true"><span class="mf-label">{f.pay}</span><span class="mf-arrow"></span></div>
-  <div class="mf-node mf-node--june"><span class="mf-name">{f.june}</span><span class="mf-role">{role.june}</span></div>
-  <div class="mf-edge" aria-hidden="true"><span class="mf-label">{f.work}</span><span class="mf-arrow"></span></div>
-  <div class="mf-node"><span class="mf-name">{f.sup}</span><span class="mf-role">{role.sup}</span></div>
-  <div class="mf-bill" aria-hidden="true"><span class="mf-bill-line"></span><span class="mf-label">{f.bill}</span></div>
+  <div class="mfl-node"><span class="mfl-name">{f.you}</span><span class="mfl-role">{role.you}</span></div>
+  <div class="mfl-edge mfl-edge--money" aria-hidden="true"><span class="mfl-label">{f.pay}</span><span class="mfl-arrow"></span></div>
+  <div class="mfl-node mfl-node--june"><span class="mfl-name">{f.june}</span><span class="mfl-role">{role.june}</span></div>
+  <div class="mfl-edge" aria-hidden="true"><span class="mfl-label">{f.work}</span><span class="mfl-arrow"></span></div>
+  <div class="mfl-node"><span class="mfl-name">{f.sup}</span><span class="mfl-role">{role.sup}</span></div>
+  <div class="mfl-bill" aria-hidden="true"><span class="mfl-bill-line"></span><span class="mfl-label">{f.bill}</span></div>
 </figure></div>

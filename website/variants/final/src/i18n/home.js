@@ -2,12 +2,7 @@
 // Phase 4: tightened. Hero → how (3 steps) → who pays + prices → guarantee → reviews → 4 FAQs → close.
 // Market facts moved to Hoe werkt het; "June vs doing it yourself" moved to Abonnementen.
 import { facts, SW, SWP, PREM, G, faqById, localise, siteCopy } from './site.js';
-
-// Cancellation: facts.json still has a [placeholder] (BLOCKING). Safe interim wording, nothing unconfirmed.
-const CANCEL = {
-  nl: 'Ja. Na je aanmelding heb je 14 dagen bedenktijd. De opzeg- en verlengingsregels van je June-abonnement lees je in de algemene voorwaarden. Je energiecontract zelf kan je als particulier altijd opzeggen met een maand opzeg, zonder verbrekingsvergoeding.',
-  fr: 'Oui. Après votre inscription, vous disposez de 14 jours de rétractation. Les règles de résiliation et de reconduction de votre abonnement June figurent dans les conditions générales. Votre contrat d’énergie, en tant que particulier, vous pouvez toujours le résilier avec un mois de préavis, sans indemnité de rupture.',
-};
+import { faqItem } from './pages.js';
 
 const page = localise((L, m) => {
   const steps = facts.howItWorks.short.map((s) => ({ n: s.n, title: s.title[L], body: s.body[L] }));
@@ -36,13 +31,6 @@ const page = localise((L, m) => {
       stay: ['Niets doen'], june: ['Met June'], step: ['Welkomst-', 'korting stopt'], gap: ['De prijs', 'van trouw'],
       legend: 'June vergelijkt opnieuw en wisselt: automatisch, of na jouw akkoord.',
       method: 'Vereenvoudigd verloop, geen echte marktprijzen. Bron vóór livegang: tariefdata van de CREG en de VREG.',
-    },
-    product: {
-      kicker: 'Wat je daarna ziet', h2: 'Je ziet wat June voor je doet. Elke maand.',
-      body: 'In de June-app zie je je verbruik, je contract en wat een overstap opbracht. Met Premium en de June Dongle zie je het zelfs live.',
-      points: ['Switch en Switch Plus: je verbruik en je contract in de app', 'Switch Plus: elk jaar een besparingsrapport, de basis van je winstgarantie', 'Premium: June Dongle inbegrepen, live verbruik en injectie via de P1-poort'],
-      link: 'Premium en de June Dongle', cap: 'De huidige June-app en de June Dongle.',
-      alt: { phone: 'Verbruiksscherm van de June-app met een staafgrafiek per dag en tegels voor afname en injectie', dongle: 'De June Dongle: een wit toestel met een groene kabel in de vorm van een blad' },
     },
     tile: {
       label: 'Aanbevolen', plan: 'Switch Plus', price: m(SWP.priceYearly), per: 'per jaar', monthly: `${SWP.priceDisplay.nl.main}, jaarlijks gefactureerd`,
@@ -77,10 +65,10 @@ const page = localise((L, m) => {
       all: 'Alle eerlijke antwoorden',
       items: [
         faq('not-a-supplier'),
-        faq('independence', 'June leeft van de abonnementen van haar klanten. We zijn geen leverancier en kiezen het contract op basis van jouw verbruik.', 5),
+        { ...faqItem('independence', 'nl'), fn: 5 },
         faq('exit-fee'),
         faq('meters'),
-        { id: 'cancel', q: faqById('cancel').q.nl, a: CANCEL.nl },
+        faqItem('cancel', 'nl'),
       ],
     },
   };
@@ -108,13 +96,6 @@ const page = localise((L, m) => {
       stay: ['Sans rien', 'faire'], june: ['Avec June'], step: ['Fin de la remise', 'de bienvenue'], gap: ['Le prix de', 'la fidélité'],
       legend: 'June compare à nouveau et change : automatiquement, ou après votre accord.',
       method: 'Évolution simplifiée, sans prix réels du marché. Source avant la mise en ligne : données tarifaires de la CREG, de la CWaPE et de Brugel.',
-    },
-    product: {
-      kicker: 'Ce que vous voyez ensuite', h2: 'Vous voyez ce que June fait pour vous. Chaque mois.',
-      body: 'Dans l’app June, vous voyez votre consommation, votre contrat et ce qu’un changement vous a rapporté. Avec Premium et le June Dongle, vous le voyez même en direct.',
-      points: ['Switch et Switch Plus : votre consommation et votre contrat dans l’app', 'Switch Plus : chaque année un rapport d’économies, la base de votre garantie de gain', 'Premium : June Dongle inclus, consommation et injection en direct via le port P1'],
-      link: 'Premium et le June Dongle', cap: 'L’app June actuelle et le June Dongle.',
-      alt: { phone: 'Écran Consommation de l’app June avec un graphique en barres par jour et des tuiles pour le prélèvement et l’injection', dongle: 'Le June Dongle : un boîtier blanc avec un câble vert en forme de feuille' },
     },
     tile: {
       label: 'Recommandé', plan: 'Switch Plus', price: m(SWP.priceYearly), per: 'par an', monthly: `${SWP.priceDisplay.fr.main}, facturé annuellement`,
@@ -149,10 +130,10 @@ const page = localise((L, m) => {
       all: 'Toutes les réponses franches',
       items: [
         faq('not-a-supplier'),
-        faq('independence', 'June vit des abonnements de ses clients. Nous ne sommes pas fournisseur et choisissons le contrat sur la base de votre consommation.', 5),
+        { ...faqItem('independence', 'fr'), fn: 5 },
         faq('exit-fee'),
         faq('meters'),
-        { id: 'cancel', q: faqById('cancel').q.fr, a: CANCEL.fr },
+        faqItem('cancel', 'fr'),
       ],
     },
   };

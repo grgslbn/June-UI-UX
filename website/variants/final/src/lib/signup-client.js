@@ -257,6 +257,7 @@ export function initSignup() {
     });
     $('#progress-meta').textContent = C.progress.meta[idx];
     document.body.dataset.step = step;
+    if (step === 'est' && !A.estSeen) { A.estSeen = true; save(A); } // plans page shows its ledger only after a real estimate
     chip(); side(); premWarn(); syncLang();
   }
   function go(step, { push: doPush = true, focus = true } = {}) {
