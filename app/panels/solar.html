@@ -399,7 +399,6 @@
     Object.assign(node('grid').style, { left: gx + 'px', top: gy + 'px' });
     Object.assign(node('home').style, { left: hx + 'px', top: gy + 'px' });
   }
-  // The sun's label would sit under the sun, between the two arcs.
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(drawFlow).observe(flow);
   drawFlow();
 })();

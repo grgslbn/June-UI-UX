@@ -35,7 +35,7 @@
 [data-tab="budgets"] .bg-month.none .icon { color: var(--ink-500); }
 [data-tab="budgets"] .bg-month.now { background: transparent; box-shadow: inset 0 0 0 1px var(--ink-200); border: 1px dashed var(--ink-400); padding: 9px 1px; }
 [data-tab="budgets"] .bg-month.now .icon { color: var(--ink-500); }
-[data-tab="budgets"] .bg-best { margin-top: auto; display: flex; align-items: center; gap: 10px; padding-top: var(--s-4); border-top: 1px solid var(--hairline); font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-best { display: flex; align-items: center; gap: 10px; padding-top: var(--s-4); border-top: 1px solid var(--hairline); font-size: var(--fs-sm); color: var(--ink-700); }
 [data-tab="budgets"] .bg-best .icon { color: var(--ink-400); }
 [data-tab="budgets"] .bg-best b { margin-left: auto; }
 [data-tab="budgets"] .bg-foot-link { margin-top: auto; }
@@ -332,7 +332,7 @@
 
     <article class="surface span-5 bg-cta" aria-labelledby="bgc-cta">
       <h2 class="section-title" id="bgc-cta">Ways to cut back</h2>
-      <p class="small secondary">Your top tip — adjust your indoor temperature — saves about €150 a year.</p>
+      <p class="small secondary">Your top tip — adjust your indoor temperature — saves <span class="approx">≈</span>&nbsp;€150 a year.</p>
       <div class="mt-4">
         <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         <p class="btn-note">Personal tips, in Advice</p>
@@ -354,7 +354,7 @@
     <ul>
       <li>Pacing variant "cut-back": icon ⚠️ → warn chip; title "Cut back to stay under"; value "≤ 6.5 kWh/day"; body "Forecast to go over — drop to this for the rest of the period." (verbatim). Chip copy "Forecast to exceed budget" reused from the Forecast budget-link pill.</li>
       <li>⚠ <b>Illustrative</b> numbers (source gives only 6.5/day): 85 kWh left ÷ 13 days = 6.5 → used 215 kWh; forecast 215 + 7.9 × 13 ≈ 318 kWh (18 over). Meter scale 0–330 kWh. Needs real data.</li>
-      <li>Advice CTA (primary) and "Why we think you'll go over" copy are <b>derived</b>. Top-tip € is canonical (≈ €150/year).</li>
+      <li>Advice CTA (primary) and "Why we think you'll go over" copy are <b>derived</b>. Top-tip € is canonical (≈ €150/year); the ≈ is explained in Advice (average, €0.27/kWh).</li>
       <li>Trigger: budget exists and forecast &gt; limit, used ≤ limit.</li>
     </ul>
   </details>
@@ -416,7 +416,7 @@
 
     <article class="surface span-5 bg-cta" aria-labelledby="bgo-cta">
       <h2 class="section-title" id="bgo-cta">Get ahead of June</h2>
-      <p class="small secondary">Your top tip — adjust your indoor temperature — saves about €150 a year.</p>
+      <p class="small secondary">Your top tip — adjust your indoor temperature — saves <span class="approx">≈</span>&nbsp;€150 a year.</p>
       <div class="mt-4">
         <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
         <p class="btn-note">Personal tips, in Advice</p>
