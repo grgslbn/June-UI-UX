@@ -1,4 +1,4 @@
-<title>June Insights Directions</title>
+<title>June Insights Redesign</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -32,13 +32,13 @@ section{padding-block:36px;border-top:1px solid var(--line);display:grid;gap:20p
 .podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .pod{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
 .pod.win{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
-.pod .rank{display:flex;justify-content:space-between;align-items:center;font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.pod .rank,.round .rank{display:flex;justify-content:space-between;align-items:center;font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .chip{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:99px;letter-spacing:0;text-transform:none}
 .chip.go{background:var(--green-soft);color:var(--green-strong)}
 .chip.no{background:var(--red-soft);color:var(--red)}
 .score{font:300 44px/1 var(--display);letter-spacing:-.02em}
 .score small{font:500 15px var(--ui);color:var(--ink-3);letter-spacing:0}
-.pod .who{font-size:13px;color:var(--ink-3)}
+.pod .who,.round .who{font-size:13px;color:var(--ink-3)}
 .bar{height:6px;background:var(--sunken);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--green);border-radius:99px;transform-origin:left;animation:grow .9s var(--ease) both}
 .pod:not(.win) .bar i{background:var(--ink-3)}
@@ -97,7 +97,25 @@ a{color:var(--green-strong);font-weight:500;text-decoration-thickness:1px;text-u
 .squig{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4' fill='none' stroke='%233bada8' stroke-width='2'/%3E%3C/svg%3E") repeat-x 0 100%/24px 8px;padding-bottom:6px}
 footer{padding-top:28px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
 
+.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.round{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+.round.now{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.round .score{font-size:36px}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--green-strong);color:var(--page);padding:12px 18px;border-radius:99px;text-decoration:none;font-weight:600;width:max-content}
+.cta:hover{filter:brightness(1.08)}
+.tabscore td.c,.tabscore th.c{width:auto;white-space:nowrap}
+.oq{display:grid;gap:18px}
+.oq details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.oq summary{cursor:pointer;font:600 15px var(--display);display:flex;justify-content:space-between;gap:10px}
+.oq summary span{font:500 13px var(--ui);color:var(--ink-3)}
+.oq ol{margin:12px 0 0;padding-left:22px;display:grid;gap:8px;color:var(--ink-2);font-size:14px}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.team div{background:var(--surface);padding:16px 18px;display:grid;gap:4px;align-content:start}
+.team b{font:600 14px var(--display)}
+.team span{font-size:13px;color:var(--ink-3)}
 @media (max-width:820px){
+  .progress{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr 1fr}
   .podium,.dirs,.hybrid,.shots,.before{grid-template-columns:1fr}
   .gates{grid-template-columns:1fr 1fr}
   .mobile .shots{grid-template-columns:1fr}
@@ -107,143 +125,94 @@ footer{padding-top:28px;border-top:1px solid var(--line);color:var(--ink-3);font
 
 <div class="wrap">
 <header>
-  <span class="eyebrow">June Insights redesign · Phase 3 checkpoint</span>
-  <h1>Three directions, two evaluators, <span class="squig">one clear lead</span>.</h1>
-  <p class="lede">Each direction redesigned the same pilot screens: Overview, Peak, and Peak's "not enough history yet" state. They used the same frozen content and the same demo household. Two independent evaluators scored every screen against a 13-criterion rubric. The totals below are the average of the two.</p>
+  <span class="eyebrow">June Insights redesign · Phase 5 · final review</span>
+  <h1>All eight Insights tabs, <span class="squig">rebuilt and signed off</span> by both evaluators.</h1>
+  <p class="lede">The Soft Native direction now covers all 8 tabs and every edge state: 33 screens in one working prototype, with motion, popovers, disclosures and dark mode. After three evaluation rounds, every tab scores 4.0 or higher from both the design and the UX evaluator, and the automated quality gates show zero failures.</p>
+  <a class="cta" href="app/index.html" target="_blank" rel="noopener">Open the live prototype →</a>
 </header>
 
-<section aria-labelledby="h-verdict">
-  <h2 id="h-verdict">Verdict</h2>
-  <div class="podium">
-    <article class="pod win">
-      <div class="rank">1st · B <span class="chip go">Clears 4.0 bar</span></div>
-      <h3>Energy Almanac</h3>
-      <div class="score num">4.22 <small>/ 5</small></div>
-      <div class="bar"><i style="width:84.4%"></i></div>
-      <p class="who num">Design lead 4.15 · UX research 4.29</p>
-    </article>
-    <article class="pod">
-      <div class="rank">2nd · A <span class="chip go">Clears 4.0 bar</span></div>
-      <h3>Calm Ledger</h3>
-      <div class="score num">4.08 <small>/ 5</small></div>
-      <div class="bar"><i style="width:81.6%"></i></div>
-      <p class="who num">Design lead 4.05 · UX research 4.11</p>
-    </article>
-    <article class="pod">
-      <div class="rank">3rd · C <span class="chip no">Below 4.0</span></div>
-      <h3>Soft Native</h3>
-      <div class="score num">3.83 <small>/ 5</small></div>
-      <div class="bar"><i style="width:76.5%"></i></div>
-      <p class="who num">Design lead 3.83 · UX research 3.82</p>
-    </article>
+<section aria-labelledby="h-prog">
+  <h2 id="h-prog">How the score moved</h2>
+  <div class="progress">
+    <article class="round"><div class="rank">Round 1 · pilot</div><div class="score num">3.83 <small>/ 5</small></div><p class="who">C on Overview + Peak only. Invented gauge scale, competing numbers, too much red.</p></article>
+    <article class="round"><div class="rank">Round 2 · all 8 tabs</div><div class="score num">3.91 <small>/ 5</small></div><p class="who">Design 3.86 · UX 3.96. Inconsistent heroes, headings and charts; a false Solar headline.</p></article>
+    <article class="round now"><div class="rank">Round 3 + polish <span class="chip go">Ship bar met</span></div><div class="score num">4.24 <small>/ 5</small></div><p class="who">Design 4.16 · UX 4.32. Every tab ≥ 4.0 from both evaluators.</p></article>
   </div>
   <div class="gates" role="list">
-    <div class="gate" role="listitem"><b class="num">0</b><span>hard-gate failures, all 3 directions</span><span class="was num">was 40 in the original</span></div>
-    <div class="gate" role="listitem"><b class="num">6</b><span>font sizes per screen</span><span class="was num">was up to 16</span></div>
+    <div class="gate" role="listitem"><b class="num">0</b><span>hard-gate failures across 33 screens × 2 widths</span><span class="was num">was 40 on 8 screens</span></div>
+    <div class="gate" role="listitem"><b class="num">≤ 6</b><span>font sizes per screen</span><span class="was num">was up to 16</span></div>
     <div class="gate" role="listitem"><b class="num">0 px</b><span>horizontal overflow at 390 px</span><span class="was num">was up to 249 px</span></div>
-    <div class="gate" role="listitem"><b class="num">0</b><span>emoji used as icons</span><span class="was num">was 118</span></div>
+    <div class="gate" role="listitem"><b class="num">0</b><span>emoji as icons</span><span class="was num">was 118</span></div>
   </div>
 </section>
 
-<section aria-labelledby="h-look">
-  <h2 id="h-look">See them side by side</h2>
-  <p class="sub">Each frame scrolls. Pick a screen and a width. The live prototypes are linked under each frame, and they have working motion, popovers, disclosures and dark mode.</p>
-  <div class="tabs" role="group" aria-label="Screen">
-    <button class="tab" data-panel="peak" aria-pressed="true">Peak</button>
-    <button class="tab" data-panel="overview" aria-pressed="false">Overview</button>
-    <button class="tab" data-panel="peak-history" aria-pressed="false">Not enough history</button>
+<section aria-labelledby="h-ba">
+  <h2 id="h-ba">Before and after, tab by tab</h2>
+  <p class="sub">The left frame is the original mockup and the right frame is the redesign. Each frame scrolls. The redesign can be shown in dark mode or at mobile width.</p>
+  <div class="tabs" role="group" aria-label="Tab"><button class="tab" data-t="overview" aria-pressed="true">Overview</button><button class="tab" data-t="compare" aria-pressed="false">Compare</button><button class="tab" data-t="solar" aria-pressed="false">Solar</button><button class="tab" data-t="breakdown" aria-pressed="false">Breakdown</button><button class="tab" data-t="peak" aria-pressed="false">Peak</button><button class="tab" data-t="forecast" aria-pressed="false">Forecast</button><button class="tab" data-t="advice" aria-pressed="false">Advice</button><button class="tab" data-t="budgets" aria-pressed="false">Budgets</button></div>
+  <div class="tabs" role="group" aria-label="View">
+    <button class="tab" data-v="desktop" aria-pressed="true">Desktop</button>
+    <button class="tab" data-v="desktop-dark" aria-pressed="false">Desktop · dark</button>
+    <button class="tab" data-v="mobile" aria-pressed="false">Mobile</button>
+    <button class="tab" data-v="mobile-dark" aria-pressed="false">Mobile · dark</button>
   </div>
-  <div class="tabs" role="group" aria-label="Width">
-    <button class="tab" data-vp="desktop" aria-pressed="true">Desktop 1280</button>
-    <button class="tab" data-vp="mobile" aria-pressed="false">Mobile 390</button>
-  </div>
-  <div id="gallery">
-    <div class="shots">
-      <figure><div class="frame"><img data-dir="a" alt="Direction A, Calm Ledger" loading="lazy"></div><figcaption><b>A · Calm Ledger</b><a href="a/index.html" target="_blank" rel="noopener">Open prototype</a></figcaption></figure>
-      <figure><div class="frame"><img data-dir="b" alt="Direction B, Energy Almanac" loading="lazy"></div><figcaption><b>B · Energy Almanac</b><a href="b/index.html" target="_blank" rel="noopener">Open prototype</a></figcaption></figure>
-      <figure><div class="frame"><img data-dir="c" alt="Direction C, Soft Native" loading="lazy"></div><figcaption><b>C · Soft Native</b><a href="c/index.html" target="_blank" rel="noopener">Open prototype</a></figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section aria-labelledby="h-before">
-  <h2 id="h-before">Before and after: Peak</h2>
   <div class="before">
-    <figure><div class="frame"><img src="shots/original-peak.png" alt="Original Peak mockup" loading="lazy"></div><figcaption><b>Original</b><span>Equal-weight cards, 9–13 px text, dashed thresholds</span></figcaption></figure>
-    <figure><div class="frame"><img src="shots/b-peak-desktop.png" alt="Direction B Peak" loading="lazy"></div><figcaption><b>Direction B</b><span>Headline, one hero number, one annotated chart</span></figcaption></figure>
+    <figure><div class="frame"><img id="img-before" alt="Original mockup" loading="lazy"></div><figcaption><b>Original</b><span>Gallery mockup</span></figcaption></figure>
+    <figure><div class="frame"><img id="img-after" alt="Redesign" loading="lazy"></div><figcaption><b>Redesign</b><a href="app/index.html" target="_blank" rel="noopener">Open live</a></figcaption></figure>
   </div>
 </section>
 
 <section aria-labelledby="h-scores">
-  <h2 id="h-scores">Scores by criterion</h2>
-  <p class="sub">Each score is the average of the two evaluators, from 1 to 5. Weights add up to 100. The best score in each row is in green, and scores under 3.75 are in red.</p>
-  <div class="tablebox">
-  <table>
-    <thead><tr><th>Criterion</th><th>Weight</th><th class="c">A</th><th class="c">B</th><th class="c">C</th></tr></thead>
-    <tbody id="scores"></tbody>
-  </table>
-  </div>
+  <h2 id="h-scores">Final scores by tab</h2>
+  <p class="sub">Both evaluators worked independently from screenshots, keyboard and screen-reader checks, and 5-second tests. Each cell shows the round 2 score, then the round 3 score, out of 5.</p>
+  <div class="tablebox"><table class="tabscore"><thead><tr><th>Tab</th><th class="c">Design</th><th class="c">UX</th><th class="c">Average</th></tr></thead><tbody><tr><td>Overview</td><td class="c">4.08 → <b>4.30</b></td><td class="c">4.18 → <b>4.42</b></td><td class="c"><span class="best">4.36</span></td></tr><tr><td>Compare</td><td class="c">3.78 → <b>4.18</b></td><td class="c">3.88 → <b>4.20</b></td><td class="c"><span class="best">4.19</span></td></tr><tr><td>Solar</td><td class="c">3.74 → <b>4.12</b></td><td class="c">3.60 → <b>4.34</b></td><td class="c"><span class="best">4.23</span></td></tr><tr><td>Breakdown</td><td class="c">3.38 → <b>4.10</b></td><td class="c">3.90 → <b>4.34</b></td><td class="c"><span class="best">4.22</span></td></tr><tr><td>Peak</td><td class="c">4.10 → <b>4.16</b></td><td class="c">4.20 → <b>4.30</b></td><td class="c"><span class="best">4.23</span></td></tr><tr><td>Forecast</td><td class="c">3.90 → <b>4.00</b></td><td class="c">4.12 → <b>4.34</b></td><td class="c"><span class="best">4.17</span></td></tr><tr><td>Advice</td><td class="c">4.14 → <b>4.22</b></td><td class="c">3.80 → <b>4.36</b></td><td class="c"><span class="best">4.29</span></td></tr><tr><td>Budgets</td><td class="c">3.74 → <b>4.20</b></td><td class="c">4.02 → <b>4.26</b></td><td class="c"><span class="best">4.23</span></td></tr>
+  <tr class="total"><td>Overall</td><td class="c">3.86 → 4.16</td><td class="c">3.96 → 4.32</td><td class="c"><span class="best">4.24</span></td></tr></tbody></table></div>
 </section>
 
-<section aria-labelledby="h-dirs">
-  <h2 id="h-dirs">What each direction brings</h2>
+<section aria-labelledby="h-what">
+  <h2 id="h-what">What makes it feel premium now</h2>
   <div class="dirs">
-    <article class="dir"><h3>A · Calm Ledger</h3><p class="sub">Swiss precision: hairlines instead of cards, numbers doing the work.</p>
-      <span class="lbl">Strengths</span><ul><li>Best-disciplined colour and accessibility</li><li>The strongest chart: to scale, a Today marker, a working Year view, arrow-key tooltips</li><li>The "4.0 → 3.9 kW without June 2025" comparison</li></ul>
-      <span class="lbl bad">Weaknesses</span><ul><li>Feels cold, with little of June's character</li><li>The history state drops the daily chart</li><li>The ≈ € button is too small to tap (14 px)</li></ul></article>
-    <article class="dir"><h3>B · Energy Almanac</h3><p class="sub">Editorial: a headline that answers, an 88 px numeral, one annotated chart.</p>
-      <span class="lbl">Strengths</span><ul><li>Best 5-second comprehension and hierarchy</li><li>The strongest June voice: squiggle motif, warm copy</li><li>Text summaries under charts, a clear CTA with context</li></ul>
-      <span class="lbl bad">Weaknesses</span><ul><li>Popovers close on scroll (keyboard users lose them)</li><li>The Peak headline mixes two messages, and the Flemish comparison appears 3 times</li><li>The blob behind the hero is clipped, and the peak marker floats too high</li></ul></article>
-    <article class="dir"><h3>C · Soft Native</h3><p class="sub">App-like: large soft tiles, a live gauge instrument.</p>
-      <span class="lbl">Strengths</span><ul><li>Most tactile, the best dark mode</li><li>12-month peak strip showing June 2025 rolling off</li><li>Latest and month peaks paired under the chart</li></ul>
-      <span class="lbl bad">Weaknesses</span><ul><li>The gauge uses an invented 0–6 kW scale, and "−0.24 kW" reads as a negative reading</li><li>Competing big numbers (113 kWh vs 290 kWh), too much red</li><li>Drifts toward a generic energy app</li></ul></article>
+    <article class="dir"><h3>One answer per tab</h3><ul><li>Each hero is a plain-language sentence plus one big number that adds information</li><li>Jargon (capacity tariff, self-consumption, percentile) lives in popovers</li><li>One ≈ marker for every estimate, with a footnote on every tab</li></ul></article>
+    <article class="dir"><h3>Quiet, consistent system</h3><ul><li>Montserrat numerals with lighter units, Inter for UI text, ≤ 6 sizes</li><li>June Green for interaction and your own data; red only for peaks and money actually over budget</li><li>One chart engine: direct labels, the current period highlighted, true minus signs</li></ul></article>
+    <article class="dir"><h3>Subtle motion</h3><ul><li>Count-up on hero numbers, bars that grow in, the Solar energy flow</li><li>240 ms sliding thumbs and disclosures, and a row fold with Undo in Advice</li><li>Reduced-motion mode switches all of it to instant changes</li></ul></article>
   </div>
 </section>
 
-<section aria-labelledby="h-hybrid">
-  <h2 id="h-hybrid">Recommended: B as the base, plus the best of A and C</h2>
-  <p class="sub">Both evaluators came to this independently. If you agree, Phase 4 applies it to all 8 tabs and every edge state.</p>
-  <div class="hybrid">
-    <div class="hy"><h3>Keep from B</h3><ul><li>Headline sentence + oversized light numeral</li><li>Squiggle underline as the single brand motif</li><li>Editorial column + slim side rail</li><li>Chart text summaries, CTA with context line</li></ul></div>
-    <div class="hy"><h3>Borrow from A and C</h3><ul><li>A: Peak chart (Today marker, Year view, arrow-key tooltips)</li><li>A: "4.0 → 3.9 kW" comparison, mobile table, red discipline</li><li>A: "Complete after June 2026" on the history state</li><li>C: 12-month peak strip, sliding tab and segmented-control thumbs</li></ul></div>
-    <div class="hy drop"><h3>Drop</h3><ul><li>C's gauge and its invented kW scale</li><li>C's 113 kWh hero (contradicts 290 kWh)</li><li>A's visible "New idea" badge</li><li>B's clipped blob and floating peak marker</li></ul></div>
-  </div>
-  <div class="fixes">
-    <h3>Fixes to B itself</h3>
-    <ul><li>Popovers close only on Esc or a click outside</li><li>Peak headline leads with "4.0 kW, ≈ €7.40 a month, just under the Flemish average", with the comparison said once</li><li>Inactive tabs taken out of the keyboard order, tap targets ≥ 24 px</li><li>The illustrative September daily peaks logged in the demo-data change log</li></ul>
+<section aria-labelledby="h-oq">
+  <h2 id="h-oq">Your decisions before build</h2>
+  <p class="sub">The redesign keeps all approved content. Where the original numbers contradicted each other, one demo household was used. These items need a product decision or real data.</p>
+  <div class="oq">
+<details open><summary>Decisions needed (data &amp; product rules)<span>7</span></summary><ol><li><b>Heating fuel of the demo home.</b> Heat-pump tip assumes electric heating; Compare offers a Gas toggle; Budgets says &quot;no gas meter linked&quot;. All-electric home (hide Gas) or gas-heated home (rework heat-pump copy)?</li><li><b>Budgets Auto limit.</b> Auto is described as &quot;forecast +20%&quot;, but 290 × 1.2 = 348 ≠ the 300 kWh limit. How is the Auto limit derived?</li><li><b>€ price basis and rounding.</b> Breakdown/Advice € use an average €0.27/kWh; source rounding is inconsistent (€145.80 → €150, €64.80 → €65). Confirm the price and one rounding rule.</li><li><b>Readiness rules.</b> Proposed: daily/weekly forecasts and Solar after 7 full days of readings; monthly forecast after the first full calendar month; yearly after 12 full months; Breakdown after 28 days. Confirm (Breakdown&#x27;s &quot;about 3 more weeks&quot; was read as 28 days).</li><li><b>Forecast &quot;Year&quot; horizon.</b> &quot;This year&quot; glance cell vs. the 6-month Year chart — what does &quot;Year&quot; mean?</li><li><b>Compare partial-profile nudge</b> says &quot;living area&quot;, but Belgian groups filter on bedrooms. Which field?</li><li><b>Gas on Compare</b> shows the approved &quot;Still gathering the group&quot; state (no gas data). Acceptable?</li></ol></details>
+<details><summary>Data aligned by the coordinator (review, see <code>demo-data.md</code> change log 1–13)<span>7</span></summary><ol><li>Forecast month 290 kWh everywhere (was 412 / 265); budget 300 kWh; pacing &quot;last 7 days 7.9 kWh/day&quot;.</li><li>Solar hero &quot;Sent to the grid today · 3.2 kWh&quot; + 4.4 kWh import named (the frozen &quot;Net exporter today&quot; was false).</li><li>Breakdown period = April 2026, 442 kWh (Heating 168 = 38%); 820 kWh total dropped.</li><li>&quot;Now&quot; = 18 May 2026, 20:00 on every tab; Peak month-peak date 12 May.</li><li>Compare trend relabelled Nov 2025–Apr 2026; month names in copy moved (widest gap Feb; best month Nov 2025).</li><li>Forecast glance Today 8.4 / Week 56; accuracy check on April (442 actual vs 417 forecast); over-budget variant 270 kWh budget, 6.4 kWh/day.</li><li>Streak: 2-month streak (Mar ✓, Apr ✓, Feb ✕, Jan &quot;no data&quot; example).</li></ol></details>
+<details><summary>Illustrative data that needs real values before build<span>5</span></summary><ol><li>Peak Sep 2025 daily peaks (insufficient-history chart).</li><li>Solar hourly / weekly / monthly and 10 of 12 seasonal values (totals match canon).</li><li>Budgets 18 daily values; &quot;Cutting it close&quot; (215 used / 318 forecast); &quot;Over budget&quot; (342 used, day 25).</li><li>Forecast May daily curve, last-year ghost line, 48 h band.</li><li>Advice status counts (Done 1 / Dismissed 3) so status views have content.</li></ol></details>
+<details><summary>New copy to sign off<span>8</span></summary><ol><li>Renames: &quot;Save for later&quot; → &quot;Add to my plan&quot;, &quot;To do&quot; → &quot;My plan&quot;, &quot;Discarded&quot; → &quot;Dismissed&quot;.</li><li>Breakdown hard-block title &quot;Tell us about your home to see where your energy goes&quot; (field names still placeholder — ask #36).</li><li>Advice: &quot;Why this one first&quot; callout, &quot;Check your home profile&quot;, &quot;Move back to New&quot;, &quot;More options&quot; (mobile).</li><li>Budgets: &quot;Gas: no gas meter linked&quot;; not-ready fallback tip (&quot;user port on, reader has power and Wi-Fi, then contact us&quot;).</li><li>Peak: &quot;4.0 kW sets your capacity tariff&quot; hero, &quot;Drops out 1 Jun 2026&quot;, &quot;If it rolled off today… ≈ 3.9 kW&quot;; &quot;New idea&quot; badge removed from customer UI.</li><li>Compare: &quot;See ways to use less&quot;, edge-state reassurance lines, € unavailable note wording.</li><li>Overview: &quot;Worth a look&quot; section title; new-customer state copy (&quot;We&#x27;re still getting to know your home&quot;).</li><li>Every panel&#x27;s &quot;About these numbers&quot; footnote.</li></ol></details>
   </div>
 </section>
 
-<footer>Full reports: <code>evaluations/round1-evaluator1.md</code>, <code>evaluations/round1-evaluator2.md</code> · brief: <code>brief/design-brief.md</code> · branch <code>claude/june-energy-ui-design-mnsn2a</code> in grgslbn/june-ui-ux.</footer>
+<section aria-labelledby="h-team">
+  <h2 id="h-team">How it was made</h2>
+  <div class="team">
+    <div><b>Analyse</b><span>UX audit, visual audit, reference research and a content inventory, all run in parallel</span></div>
+    <div><b>Explore</b><span>Three directions on pilot screens, independently scored. You chose C, Soft Native</span></div>
+    <div><b>Build</b><span>A design-system lead plus three tab builders on one shared component kit</span></div>
+    <div><b>Evaluate</b><span>Two independent evaluators over three rounds, plus automated quality gates</span></div>
+  </div>
+</section>
+
+<footer>Repository <code>grgslbn/june-ui-ux</code>, branch <code>claude/june-energy-ui-design-mnsn2a</code>. Prototype source: <code>app/</code> (component guide <code>app/COMPONENTS.md</code>). Reports: <code>evaluations/</code>. Open questions: <code>brief/open-questions.md</code>.</footer>
 </div>
 
 <script>
-const rows=[
- ['g','Design (50%)'],
- ['Visual hierarchy',10,4.0,4.5,3.5],['Typography',8,4.0,4.5,4.0],['Colour restraint',8,4.5,4.25,3.5],['Spacing & rhythm',6,4.0,4.0,4.0],
- ['Data-viz clarity',10,4.0,4.25,3.5],['Consistency',4,4.0,4.0,3.75],['Craft & premium feel',4,3.5,4.25,4.0],
- ['g','UX (50%)'],
- ['5-second comprehension',12,4.25,4.5,4.0],['Cognitive load',8,4.0,4.0,3.5],['Action clarity',8,4.0,4.0,4.0],['Edge / empty states',8,3.75,4.0,4.0],
- ['Accessibility',8,4.25,4.0,4.0],['Responsive',6,4.5,4.25,4.25],
-];
-const tb=document.getElementById('scores');let html='';
-for(const r of rows){
-  if(r[0]==='g'){html+=`<tr class="group"><td colspan="5">${r[1]}</td></tr>`;continue}
-  const [n,w,...s]=r;const m=Math.max(...s);
-  html+=`<tr><td>${n}</td><td class="w num">${w}</td>`+s.map(v=>`<td class="c"><span class="${v===m?'best':v<3.75?'low':''}">${v.toFixed(2)}</span></td>`).join('')+'</tr>';
-}
-html+='<tr class="total"><td>Weighted total</td><td class="w num">100</td><td class="c">4.08</td><td class="c"><span class="best">4.22</span></td><td class="c">3.83</td></tr>';
-tb.innerHTML=html;
-
-let panel='peak',vp='desktop';
-const gal=document.getElementById('gallery');
+const orig={overview:'consumption',compare:'compare',solar:'solar',breakdown:'breakdown',peak:'peak',forecast:'forecast',advice:'advice',budgets:'budgets'};
+let t='overview',v='desktop';
 function render(){
-  gal.className=vp;
-  gal.querySelectorAll('img').forEach(img=>{img.src=`shots/${img.dataset.dir}-${panel}-${vp}.png`;img.parentElement.scrollTop=0});
-  document.querySelectorAll('[data-panel]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.panel===panel));
-  document.querySelectorAll('[data-vp]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.vp===vp));
+  document.getElementById('img-before').src=`shots/original/${orig[t]}.png`;
+  document.getElementById('img-after').src=`shots/final/${t}-${v}.png`;
+  document.querySelectorAll('.frame').forEach(f=>f.scrollTop=0);
+  document.querySelectorAll('[data-t]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t));
+  document.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));
 }
-document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>{panel=b.dataset.panel;render()});
-document.querySelectorAll('[data-vp]').forEach(b=>b.onclick=()=>{vp=b.dataset.vp;render()});
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{t=b.dataset.t;render()});
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{v=b.dataset.v;render()});
 render();
 </script>
