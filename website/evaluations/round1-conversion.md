@@ -62,7 +62,7 @@ Postcode distance = document Y of the first visible postcode input at 390×844 (
 | Premium recommended for digital + solar (H14) | yes | yes | yes | yes, **but the text below still quotes the Switch Plus price and guarantee (bug)** |
 | Exits from funnel | logo, "Hulp nodig?"→FAQ, FAQ, **"Vergelijk de abonnementen" on estimate** (7 links) | logo, FAQ, lang (7) | logo, "Home", lang (4); lang switch drops `?postcode` | logo, FAQ, lang, **"Vergelijk de abonnementen" on estimate** (6) |
 | Trust ≤ 40 px of in-body CTAs (proof / risk reducer, 1280) | 0/14 · 14/14 (proof median 56 px; both ≤ 80 px: 12/14) | **9/16 · 11/16** (mobile 2/16 · 4/16) | 0/20 · 18/20 (proof median 76 px) | 3/19 · 4/19 (medians 65 / 99 px) |
-| Yearly total next to every monthly price | **100 %** (0 of 48 checks > 120 px) | **100 %** | **100 %** | **100 %** |
+| Yearly total next to every monthly price (≤ 120 px) | **64/64** | **52/52** | **48/48** (2 script misses: the yearly figures sit in the heading directly above "(€ 5,75 tot € 16,50 per maand)"; checked by hand) | **56/56** |
 | Yearly figure larger than monthly (cards) | ×1.5 | ×1.0 on cards (same size) | ×1.3–3.2 | ×2.9–3.7 |
 | 14-day withdrawal stated before commitment | yes (step 3) | yes (FAQ + flow) | yes (sign-up aside) | yes (after submit) |
 
