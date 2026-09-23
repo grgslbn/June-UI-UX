@@ -86,13 +86,13 @@ const favicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www
           </figure>
         ))}
       </div>
-      <table class="cr">
+      <div class="cr-wrap" tabindex="0" role="region" aria-label="Contrasttabel"><table class="cr">
         <caption>Gemeten contrast (WCAG 2.x)</caption>
         <thead><tr><th scope="col">Paar</th><th scope="col">Voorbeeld</th><th scope="col">Ratio</th><th scope="col">Gebruik</th></tr></thead>
         <tbody>{pairs.map(([n, fg, bg]) => { const r = cr(fg, bg); return (
           <tr><th scope="row">{n}</th><td><span class="cr__demo" aria-hidden="true" style={`color:${fg};background:${bg}`}>Aa power</span></td><td>{r.toFixed(2)}:1</td><td>{grade(r)}</td></tr>
         ); })}</tbody>
-      </table>
+      </table></div>
       <p class="ts__note">Beslissing: de hero is <strong>#1f7f7a</strong>, niet #3bada8. Wit op #3bada8 haalt maar 2,72:1 en faalt zelfs voor grote tekst. De heldere June Green leeft verder in blobs, cijfers en schaduwen.</p>
     </section>
 

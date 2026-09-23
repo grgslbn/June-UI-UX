@@ -1,8 +1,8 @@
 ---
 // Organic blob library (brand book 2018). shape 1–4. Colour via currentColor. Optional halftone texture on top (white dots),
 // so "blob + halftone" reads as ONE framing device (keeps the 2-motif-per-viewport rule).
-interface Props { shape?: 1 | 2 | 3 | 4; class?: string; dots?: boolean; id?: string }
-const { shape = 1, class: cls = '', dots = false, id = `b${shape}` } = Astro.props;
+interface Props { shape?: 1 | 2 | 3 | 4; class?: string; dots?: boolean; id?: string; style?: string }
+const { shape = 1, class: cls = '', dots = false, id = `b${shape}`, style } = Astro.props;
 const SHAPES = {
   1: 'M140 24C170 30 190 58 186 92C183 118 170 128 172 150C174 172 150 188 122 180C100 174 90 186 64 180C36 174 16 150 20 120C23 98 12 86 20 64C30 36 60 20 90 26C110 30 120 20 140 24Z',
   2: 'M150.6 38.2C166.5 50.1 177.4 68.9 180.1 88.1C182.8 107.3 177.3 126.9 166.9 142.3C156.5 157.7 139.2 168.9 120.6 174.7C102 180.5 82.1 180.9 64.8 173.6C47.5 166.3 32.8 151.3 25.6 133.9C18.4 116.5 18.7 96.7 24.1 78.9C29.5 61.1 40 45.3 55.1 35.4C70.2 25.5 89.9 21.5 108.4 22.6C126.9 23.7 134.7 26.3 150.6 38.2Z',
@@ -11,7 +11,7 @@ const SHAPES = {
 } as const;
 const d = SHAPES[shape];
 ---
-<svg class={`blob ${cls}`} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+<svg class={`blob ${cls}`} style={style} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
   {dots && <defs>
     <pattern id={`${id}-p`} width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="2" fill="#fff" /></pattern>
     <radialGradient id={`${id}-g`} cx="80%" cy="18%" r="55%"><stop offset="0" stop-color="#fff" /><stop offset="1" stop-color="#000" /></radialGradient>

@@ -264,7 +264,8 @@ button, input { font: inherit; color: inherit; }
 .score__meta { margin-top: 1rem; font-weight: 500; color: var(--ink-2); }
 .reviews__cards { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
 .reviews__label { grid-column: 1 / -1; font: 700 var(--fs-small)/1.2 var(--font-display); color: var(--ink-2); }
-.rcard { background: var(--mint); border: 2px dashed #9fb8ba; border-radius: var(--r-lg); padding: 1.5rem; display: grid; gap: 1rem; }
+.rcard { background: var(--mint); border: 2px dashed #9fb8ba; border-radius: var(--r-lg); padding: 1.75rem; display: grid; gap: 1.25rem; align-content: start; min-height: 16rem; }
+.rcard--1 { transform: translateY(2rem); }
 .rcard__stars { width: 6.5rem; color: var(--ink); }
 .rcard__lines { display: grid; gap: .55rem; }
 .rcard__lines span { height: .7rem; border-radius: 99px; background: var(--mint-2); }
@@ -274,6 +275,7 @@ button, input { font: inherit; color: inherit; }
 @media (max-width: 900px) {
   .reviews__in { grid-template-columns: 1fr; }
   .reviews__cards { grid-template-columns: 1fr; }
+  .rcard { min-height: 0; } .rcard--1 { transform: none; }
   .reviews__junior { width: 5.5rem; right: -.25rem; bottom: -2.5rem; }
 }
 

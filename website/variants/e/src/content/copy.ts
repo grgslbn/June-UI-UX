@@ -13,6 +13,10 @@ export const money = (n: number, l: Locale) => {
   return l === 'nl-be' ? `€${NBSP}${s}` : `${s}${NBSP}€`;
 };
 
+/** French typography: narrow no-break space before : ; ? ! so punctuation never starts a line. */
+export const tp = (s: string, l: Locale) => (l === 'fr-be' ? s.replace(/ ([:;?!»])/g, '\u202f$1').replace(/« /g, '«\u202f') : s);
+const deep = (o: any): any => (typeof o === 'string' ? tp(o, 'fr-be') : Array.isArray(o) ? o.map(deep) : o && typeof o === 'object' ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, deep(v)])) : o);
+
 const f = facts as any;
 export const plans = f.plans as any[];
 export const faqById = (id: string) => f.faq.find((q: any) => q.id === id);
@@ -22,7 +26,7 @@ const saving = money(f.saving.averagePerYear.value, 'nl-be');
 const savingFr = money(f.saving.averagePerYear.value, 'fr-be');
 const g = f.guarantees.winstgarantie;
 
-export const copy = {
+const raw = {
   'nl-be': {
     meta: {
       title: 'June: automatisch naar een voordeliger energiecontract',
@@ -208,3 +212,4 @@ export const copy = {
     },
   },
 } as const;
+export const copy = { 'nl-be': raw['nl-be'], 'fr-be': deep(raw['fr-be']) as typeof raw['fr-be'] };

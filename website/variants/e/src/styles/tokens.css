@@ -43,7 +43,6 @@
   --mint-3: #b6e3df;            /* ambient blob */
   --white: #ffffff;
   --on-field: #ffffff;
-  --on-field-2: #e3f4f2;        /* secondary text on field 4.2→ use ≥ 18px bold or keep white; measured 4.27 — use for ≥ 18.66 bold only */
 
   /* ── Type ─────────────────────────────────────── */
   --font-display: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;

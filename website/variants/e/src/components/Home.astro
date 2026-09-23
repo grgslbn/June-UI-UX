@@ -4,7 +4,6 @@ import Site from '../layouts/Site.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import PostcodeForm from './PostcodeForm.astro';
-import Wordmark from './Wordmark.astro';
 import Junior from './Junior.astro';
 import Blob from './Blob.astro';
 import Halftone from './Halftone.astro';
@@ -12,7 +11,7 @@ import Squiggle from './Squiggle.astro';
 import Bolt from './Bolt.astro';
 import Stars from './Stars.astro';
 import { href, abs } from '@shared/routes.mjs';
-import { copy, lang, money, plans, steps, faqById, type Locale } from '../content/copy';
+import { copy, lang, money, plans, steps, faqById, tp, type Locale } from '../content/copy';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -98,8 +97,8 @@ const guarH2 = t.guarantee.h2.replace(g99, `<span class="hl">${g99}</span>`);
                 )}
                 {stepIcons[i] === 'switch' && <Bolt class="step__bolt" />}
               </div>
-              <h3 class="step__title">{s.title[L]}</h3>
-              <p class="step__body">{s.body[L]}</p>
+              <h3 class="step__title">{tp(s.title[L], locale)}</h3>
+              <p class="step__body">{tp(s.body[L], locale)}</p>
             </li>
           ))}
         </ol>
@@ -123,11 +122,11 @@ const guarH2 = t.guarantee.h2.replace(g99, `<span class="hl">${g99}</span>`);
                 {rec && <p class="plan__badge">{t.plans.recommended}</p>}
                 {rec && <Halftone id="ht-plan" class="plan__dots" />}
                 <h3 class="plan__name" id={`plan-${slug}`}>{p.shortName}</h3>
-                <p class="plan__vp">{p.valueProposition[L]}</p>
+                <p class="plan__vp">{tp(p.valueProposition[L], locale)}</p>
                 <p class="plan__price"><span class="plan__big">{money(p.priceYearly, locale)}</span> <span class="plan__per">{t.plans.perYear}</span></p>
                 <p class="plan__sub">{money(p.priceMonthly, locale)} {t.plans.perMonth} · {t.plans.billed}{slug === 'premium' && <>, {t.plans.dongle}</>}</p>
                 <ul class="plan__feat" role="list">
-                  {p.features.slice(0, cardFeatures[slug]).map((ft: any) => <li>{ft[L]}</li>)}
+                  {p.features.slice(0, cardFeatures[slug]).map((ft: any) => <li>{tp(ft[L], locale)}</li>)}
                 </ul>
                 <a class={`btn ${rec ? 'btn--white' : 'btn--ghost'} plan__cta`} href={`${signup}?plan=${slug}`}>{t.plans.choose} {p.shortName}</a>
               </article>
@@ -192,7 +191,7 @@ const guarH2 = t.guarantee.h2.replace(g99, `<span class="hl">${g99}</span>`);
         </header>
         <div class="faq__list">
           {t.faq.ids.map(id => { const q = faqById(id); return (
-            <details class="qa"><summary><span>{q.q[L]}</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><p>{q.a[L]}</p></details>
+            <details class="qa"><summary><span>{tp(q.q[L], locale)}</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><p>{tp(q.a[L], locale)}</p></details>
           ); })}
         </div>
       </div>

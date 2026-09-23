@@ -5,7 +5,7 @@ const { class: cls = '', kind = 'underline' } = Astro.props;
 ---
 {kind === 'underline' ? (
   <svg class={`squiggle ${cls}`} viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-    <path pathLength="100" d="M6 24 C 26 8, 42 34, 64 20 S 102 8, 124 22 S 162 34, 186 20 S 224 8, 248 22 S 282 30, 294 14" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    <path pathLength="100" d="M6 24 C 26 8, 42 34, 64 20 S 102 8, 124 22 S 162 34, 186 20 S 224 8, 248 22 S 282 30, 294 14" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
   </svg>
 ) : (
   <svg class={`squiggle squiggle--wave ${cls}`} viewBox="0 0 120 36" aria-hidden="true" focusable="false">
