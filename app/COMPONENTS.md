@@ -11,6 +11,33 @@ node shots/app/interact.mjs                            # example Playwright inte
 
 ---
 
+## 0. Round 3 changes (read first)
+
+Everything below is **additive**: old markup keeps rendering. The "Do" column is the new way; the last column says whether your fragment must change.
+
+| Area | What changed in the foundation | Do | Fragment change needed? |
+|---|---|---|---|
+| **Hero contract** | — | Status chip (optional) → ONE answer sentence (`h1.hero__sentence`) → ONE numeral that **adds** information (never the number already in the sentence) → caption / visual. Over / alert states lead with the problem (the overage). A bare eyebrow + numeral with no sentence is no longer allowed. | **Yes**, where your hero repeats the sentence's number or has no sentence. |
+| **Headings** | `.overline` now renders as a sentence-case 14/600 label (no caps). New `.hero-kicker` (the only caps label; hero kicker line only) and `.card-title` (in-card title, sentence case; `.section-title` is an alias). | In-card titles: `<h2 class="card-title">`. No headings floating above cards except Overview's section headers. Don't stack an `.overline` over a title. | **Yes** if a card has an `.overline` *and* a title (delete the overline), or a heading outside its card (move it inside). |
+| **≈ estimate marker** | `.est` no longer renders as a pill: it is an inline accent **≈ in the value's own size** (auto-sized when it sits directly before `.mid-num` / `.stat-num` / `.stat__value` / `.hero-num` / `.num`). `button.approx` works too. | One form everywhere: `<button class="est" data-pop="…">≈</button>` before the value (or `<span class="approx">≈</span>` inside links). No "~", no pill badges, no "Estimated" pill in front of a numeral. | Only to remove "~" / pill badges. |
+| **Popovers** | Now **disclosure tips**, not dialogs: no `role=dialog` / `aria-haspopup`; the tip gets `role="note"`, moves into reading order right after the block holding its trigger when opened, is clamped **inside its card** on desktop (bottom sheet < 600px), and closes on Esc (focus returns), click outside, trigger again, or **focus leaving** trigger + tip. | Same markup as before (`data-pop` + `.popover` anywhere in the panel). Keep tip content short; links inside a tip are reachable with Tab. | No. |
+| **Chart labels** | Wide charts (≥ 600px) use **one-line** right-gutter labels ("Budget 300 kWh"), de-collided with leaders. `line`: when direct end labels are shown there is **no legend** (series identity = the label; a forecast end point says "… forecast"); the key row appears only < 480px or with `endLabels:false`; the band swatch stays. | Direct labels OR legend, never both — don't add your own HTML legend next to a directly-labelled chart. | Only if you hand-built a legend. |
+| **Current period** | New `current` option on `bars` and `line`: `current: 17` or `{from, to}` → the bar turns accent (`currentTone`), stacked bars / lines get a soft column band, x label goes bold. | Always highlight the current period: `tone:'muted'` + `current:<index>` (Peak Month, Breakdown seasonal, Solar seasonal "May so far", Forecast month). | **Yes**, add `current` to your time series. |
+| **Stacked direct labels** | `bars` with `series` + `seriesLabels:'direct'` labels each segment in the right gutter at the current (or last) column instead of a legend (`seriesValues:true` adds the values). Falls back to the key row < 480px. | Solar seasonal, Breakdown "All categories". | Optional. |
+| **Minus signs** | All chart numbers use a true minus "−" and never print "−0". | Signed ticks on diverging charts (Solar). | No. |
+| **Categories** | `--cat-1…5`, `--cat-other` are now **accent + ink tints** (no new hues): cat-1 = accent (the lead category), cat-2…other = ink steps dark → light. | Keep using the tokens in fixed order; always text-label. | No (colours update automatically). |
+| **Colour: over / warn** | — | Red (`--alert`) = the month's peak, over budget, alerts — the same in every tab. **Amber (`warn`) is not a second "over" colour**: use it only for "at risk, not over yet" (e.g. "Cutting it close"). "+73% vs similar homes" is **ink** on Overview and Compare. | Compare / Forecast / Budgets: check. |
+| **Segmented** | Thumbs 240ms, no overshoot. Disabled options are visibly disabled (50% + strike). `data-reason="…"` on a disabled option becomes its tooltip + accessible description. Group gets `role="radiogroup"` automatically if missing. | Always give the group `aria-label`. Give disabled options `data-reason` **and** a visible reason nearby (ⓘ or callout). | Add `data-reason`. |
+| **Header context** | Shell shows "Updated today, 20:00" and the household chip; both follow the active panel. | `data-home="none"` hides the household chip (e.g. `panel-compare-no-house-type`); `data-home="Apartment · Brussels"` replaces it. `data-updated="Updated 15 Sep 2025, 08:30"` / `data-updated="none"` on a panel. | Compare no-house-type: **yes** (`data-home="none"`). |
+| **Tab bar** | Edge fade on the side(s) with hidden tabs; active tab scrolled into view. | — | No. |
+| **Empty / not-ready template** | New parts: `.empty__status`, `.empty__when` (mandatory), `.empty__note`. `.motif` halftone now sits **outside** the tile's top-right corner — never behind text. | See the template in §4 "Empty / not-ready state block". Every not-ready state says what's missing, **when** (date, count, or "timing unknown because …"), what you can do (or "nothing you need to do"), plus the panel footnote. | **Yes** where "when" or the footnote is missing. |
+| **Readiness rule** | — | **One rule:** days are counted from the first day with readings, today included; a feature that needs N days unlocks **the morning after the Nth day**. 7-day features (Forecast, Solar): first readings 16 May → 16–22 May → **ready 23 May**. Monthly features need one full calendar month. Show the date *and* the count ("Ready on 23 May · 4 more days"). | Solar calibrating: first readings 15 May → **ready 22 May** (was 21). |
+| **Data** | D1–D3 applied on Overview (Solar row "3.2 kWh sent to the grid today", Breakdown row "Your biggest category in April."). "Now" = 18 May 2026, 20:00 — the shell says "Updated today, 20:00". | Use 20:00 for every "now" marker. | Forecast / Solar: check "Now" labels. |
+
+New panel: `panel-overview-new` (new customer; topic rows show readiness chips linking to each tab's not-ready state). If your not-ready date changes, tell the design-system lead so the chip on that row matches.
+
+---
+
 ## 1. Panel contract
 
 ```html
@@ -64,12 +91,12 @@ footnote "About these numbers" · Spec notes
 | Accent | `--accent` fills · `--accent-strong` text/links/buttons/emphasised lines · `--accent-soft` selected bg · `--accent-stripe` forecast hatch |
 | Semantic | `--alert` / `--alert-graphic` / `--alert-soft` (**month peak, over budget, alerts only**) · `--positive*` · `--warn*` |
 | Energy | `--elec` / `--elec-strong` / `--elec-soft`, `--gas` / `--gas-strong` / `--gas-soft`. Data series only, never chrome. |
-| Categorical | `--cat-1` teal · `--cat-2` violet · `--cat-3` ochre · `--cat-4` magenta · `--cat-5` blue · `--cat-other` neutral. Fixed order, never cycled, at most 5 plus Other. Validated for CVD in light and dark. Always shown next to a text label. |
+| Categorical | Round 3: accent + ink tints, no new hues. `--cat-1` accent (the lead category) · `--cat-2…5` ink steps dark → light · `--cat-other` lightest ink. Fixed order, never cycled, at most 5 plus Other. Always shown next to a text label (colour alone can't identify a category). |
 | Chart roles | `--chart-grid`, `--chart-axis`, `--chart-label`, `--chart-you`, `--chart-compare` (benchmark/similar homes), `--chart-muted` (de-emphasised bars), `--chart-rolloff` (the item leaving a window, which is **not** red), `--chart-band` |
 | Space | `--s-1 4` … `--s-16 64` (4px scale), `--gap`, `--tile-pad` |
 | Radii | `--r-sm 10` · `--r-md 14` · `--r-lg 24` · `--r-pill` |
 | Elevation | `--shadow-1` (tile) · `--shadow-2` (hover, popover) |
-| Motion | `--ease-out`, `--ease-in-out`, `--ease-emphasis` (thumbs only) · `--dur-instant 90` · `--dur-fast 160` · `--dur-base 240` · `--dur-slide 320` · `--dur-slow 480` · `--dur-draw 700` |
+| Motion | `--ease-out`, `--ease-in-out`, `--ease-emphasis` (legacy alias of ease-out) · `--dur-instant 90` · `--dur-fast 160` · `--dur-base 240` · `--dur-slide 240` (thumbs; ≤ 240, no overshoot) · `--dur-slow 480` · `--dur-draw 700` |
 
 Dark mode switches automatically. If you use only tokens, you get it for free. Always check your panel with `--dark`.
 
@@ -89,10 +116,10 @@ Status, then the sentence, then **one** numeral that the sentence is about, then
 ```html
 <div class="span-12 ambient">
   <article class="surface hero">
-    <div class="hero__status"><span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span><span class="xs muted">May 2026</span></div>
-    <h1 class="hero__sentence" id="bg-title">On track — 113 kWh left for 13 days.</h1>
-    <p class="hero__figure hero-num"><span class="num" data-count="8.7">8.7</span><span class="unit">kWh/day</span></p>
-    <p class="hero__caption">stay under this to keep your budget</p>
+    <div class="hero__status"><span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span><span class="xs muted">May 2026 · electricity</span></div>
+    <h1 class="hero__sentence" id="ov-title">May is on track — 290 kWh forecast against your 300 kWh budget.</h1>
+    <p class="hero__figure hero-num"><span class="num" data-count="113">113</span><span class="unit">kWh left</span></p>   <!-- adds info; never repeats 290 -->
+    <p class="hero__caption">for the next 13 days — about 8.7 kWh a day keeps you on track.</p>
   </article>
 </div>
 ```
@@ -101,7 +128,7 @@ Split variant (answer on the left, comparison/visual on the right; stacks at ≤
 <article class="surface hero"><div class="hero__split">
   <div><h1 class="hero__label">12-month rolling average <button class="info" …></button></h1>
        <p class="hero__figure hero-num">4.0<span class="unit">kW</span></p></div>
-  <div class="hero__aside"><p class="overline">How you compare</p>…</div>
+  <div class="hero__aside"><h2 class="card-title">How you compare</h2>…</div>
 </div></article>
 ```
 `data-count` counts the number up on first view. It is skipped under reduced motion. The final text must already be in the HTML.
@@ -126,7 +153,7 @@ Split variant (answer on the left, comparison/visual on the right; stacks at ≤
 <span class="chip warn"><span class="dot" aria-hidden="true"></span>Forecast to exceed budget</span>
 <span class="chip alert"><span class="dot" aria-hidden="true"></span>Over budget</span>
 <span class="chip">Setting up</span>                                   <!-- neutral -->
-<span class="chip positive"><svg class="icon" aria-hidden="true"><use href="#i-trend-down"/></svg>0.24 kW below the Flemish average</span>
+<span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>From 23 May</span>   <!-- readiness chip on a topic row -->
 <span class="tag">Estimated</span>  <span class="tag accent">just added</span>  <span class="tag alert">highest</span>  <span class="tag positive">Completed</span>
 <h2 class="section-title">Needs attention <span class="badge">3</span></h2>
 ```
@@ -145,8 +172,8 @@ A chip always has a word. Colour is never the only signal.
   <p class="note">Honesty label, verbatim.</p>
 </div>
 ```
-- Behaviour is automatic. The popover opens on click or Enter below its trigger, with a caret, clamped to the viewport. On phones (< 600px) it becomes a **bottom sheet**, so it never covers the value it explains.
-- It closes only on Esc (focus returns to the trigger), a click outside, or clicking the trigger again. **It never closes on scroll.**
+- Behaviour is automatic (Round 3: disclosure tip, not a dialog). The tip opens on click or Enter, moves into reading order right after the block holding its trigger, shows below the trigger with a caret, and stays inside its card. On phones (< 600px) it becomes a **bottom sheet**, so it never covers the value it explains.
+- It closes on Esc (focus returns to the trigger), a click outside, clicking the trigger again, or focus leaving trigger + tip. **It never closes on scroll.**
 - Never put a button inside a link. Use `.approx` there.
 
 ### Buttons & links (one primary per view)
@@ -248,15 +275,20 @@ Every chart gets an insight sentence directly above it. Every tab gets one "Abou
 
 ### Empty / not-ready state block
 ```html
-<article class="surface span-12 empty motif">          <!-- .motif = faint halftone, max one per screen -->
+<article class="surface span-12 empty motif">          <!-- .motif = faint halftone OUTSIDE the corner, max one per screen -->
   <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
   <div>
-    <h1 class="empty__title">Building toward your first forecast</h1>   <!-- what's missing -->
-    <p class="empty__body">…plain reason…</p>
-    <div class="readiness" data-done="3" data-total="7" data-labels="…">…</div>   <!-- how long -->
-    <div class="empty__actions"><a class="btn btn--secondary" href="#panel-budgets">…</a></div>   <!-- what you can do -->
+    <div class="empty__status"><span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Setting up</span></div>  <!-- optional -->
+    <h1 class="empty__title">Building toward your first forecast</h1>          <!-- what's missing -->
+    <p class="empty__body">…plain reason…</p>                                   <!-- why -->
+    <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>Ready on 23 May</b> · 4 more days</span></p>  <!-- WHEN (mandatory) -->
+    <div class="readiness" data-done="3" data-total="7" data-labels="…" aria-label="…"></div>   <!-- optional count -->
+    <div class="empty__actions"><a class="btn btn--secondary" href="#panel-budgets-setup">…</a></div>  <!-- what you can do -->
+    <p class="empty__note">Optional in-tile note (e.g. why the date may move).</p>
   </div>
 </article>
+<!-- + the panel's "About these numbers" footnote, always. Timing unknown? Say so and why:
+     <p class="empty__when">…<span><b>No date yet</b> — tips appear as we learn your patterns.</span></p> -->
 ```
 A not-ready state is a state, not an error. Say what is missing, how long it will take (a date, not "soon"), and what the person can do. If there is nothing to do, say so.
 
@@ -319,6 +351,8 @@ JuneCharts.bars('#pk-chart-month', {
 ```
 - Threshold labels go in a right gutter. Close labels are pushed apart and joined to their line with a leader. Below 480px they become a key row above the plot.
 - Mark the most important threshold with `emphasis: true` (2px line). The others are 1px ink.
+- Two thresholds closer than ~12px can't be read as two lines: keep the one that matters as a line and carry the other as a direct `annotation` on its bar (Peak: "Month peak 4.2 kW · 12 May, 18:30").
+- `current: index | {from,to}` highlights the current period (see §0). `seriesLabels: 'direct'` labels stacked segments instead of a legend.
 - For a spark strip, use `compact: true` with `xTicks: [0, n-1]` and `interactive: false`. See `#pk-strip`.
 - Diverging bars: use `JuneCharts.diverging` (two flows around zero, optional signed net line, filter state, keyboard tooltip) — see `app/panels/solar.html` for a worked example.
 

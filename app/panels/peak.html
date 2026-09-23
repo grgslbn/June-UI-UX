@@ -188,7 +188,11 @@
     <h4>Phase 4 fixes</h4>
     <ul>
       <li>Gauge removed. Comparison is now a bullet meter on a plain 0–5 kW ruler (starts at zero, 1 kW ticks; 5 kW = next whole kW above the largest value shown, 4.24). You 4.0 kW = filled bar + dot above; Flemish average 4.24 kW = tick labelled below. No derived "−0.24 kW" reading: the delta is written as "0.24 kW below the Flemish average".</li>
-      <li>Thresholds 0.2 kW apart: the 12-month avg line (the one that sets your tariff) is emphasised (2px, accent); month peak is 1px ink. Labels in the right gutter are de-collided with leader lines; at &lt;480px they move to a key row above the plot. y-axis has a 4 kW tick.</li>
+      <li>Round 3: the month-peak and 12-month-average lines were 0.2 kW (≈ 3px) apart. Only the 12-month average (the number that sets your tariff) is drawn as a line now; the month peak is carried by its red bar + direct annotation "Month peak 4.2 kW · 12 May, 18:30" (approved legend content, restyled). Same in the history state.</li>
+      <li>Round 3: current period highlighted — today's bar (3.8 kW = Latest peak) is accent, other days muted, month peak red; matches the stat-row swatches.</li>
+      <li>Round 3 hero contract: sentence "Your peaks are 0.24 kW below the Flemish average." (plain words, the comparison is the answer) → ONE numeral 4.0 kW (the tariff figure). The "0.24 below" chip was removed (it repeated the sentence). "You're just under average!" kept verbatim (frozen benchmark copy; evaluator 2 suggests dropping the "!" — product decision).</li>
+      <li>Round 3: "New idea" badge removed from the customer ≈ popover — it is a designer badge ("experimental"), tracked here only. The popover keeps the title, sub and honesty note verbatim.</li>
+      <li>Round 3: the 12-month strip in "What's coming up" was removed (duplicated the Year view) so the chart and coming-up tiles balance.</li>
       <li>Red is only the month's peak (bar, annotation, "Month peak" swatch) and the "highest" tag. The roll-off bar, strip and hourglass are ink/neutral.</li>
       <li>"Rolls off after June" → "Drops out 1 Jun 2026" / "drops out on 1 June 2026" (June 2025 counts through May 2026 = "1 more month").</li>
       <li>Year view works (12 monthly peaks from the calc table; Jun 2025 in ink with its drop-out date, May 2026 in accent, 4.0 kW average line). Day and Week are shown but disabled until 15-minute data is wired (not in the keyboard order).</li>
@@ -205,7 +209,7 @@
 </section>
 
 <!-- ════════════════════════ PEAK · insufficient history (< 12 months) ════════════════════════ -->
-<section class="panel" id="panel-peak-history" data-tab="peak" data-label="Peak · insufficient history" data-updated="Updated today, 15 Sep 2025, 08:30" aria-labelledby="pkh-title">
+<section class="panel" id="panel-peak-history" data-tab="peak" data-label="Peak · insufficient history" data-updated="Updated 15 Sep 2025, 08:30" aria-labelledby="pkh-title">
   <div class="grid stretch">
 
     <div class="span-12 ambient left">
@@ -352,7 +356,7 @@
     thresholds: [{ value: 3.0, label: 'Average so far', tone: 'accent', emphasis: true }],
     yMax: 4, yTicks: [0, 1, 2, 3, 4], yLabel: 'Daily peak (kW)', unit: 'kW', decimals: 1,
     futureLabel: '16–30 Sep still to come',
-    ariaLabel: 'Bar chart of daily peaks, 1 to 15 September 2025; the rest of the month has not happened yet. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today reached 3.1 kW. Lines: month peak 3.4 kW and average so far 3.0 kW.'
+    ariaLabel: 'Bar chart of daily peaks, 1 to 15 September 2025; the rest of the month has not happened yet. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today, highlighted, reached 3.1 kW. A line marks your average so far, 3.0 kW.'
   });
   JuneCharts.meter('#pkh-bench', {
     min: 0, max: 5, ticks: [0, 1, 2, 3, 4, 5], unit: 'kW', fill: { to: 3.0, provisional: true },

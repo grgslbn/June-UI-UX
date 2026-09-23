@@ -19,15 +19,26 @@ for (const vp of [{ n: 'desktop', width: 1280, height: 900 }, { n: 'mobile', wid
     await page.keyboard.press('Escape'); await page.waitForTimeout(200);
     const closedOnEsc = await page.$eval('#pk-pop-est', p => p.hidden);
     const focusBack = await page.evaluate(() => document.activeElement?.dataset.pop);
-    log.push({ sfx, openAfterScroll, closedOnEsc, focusBack });
+    // Round 3: tip sits in reading order after its trigger's block, stays inside its card, closes when focus leaves
+    await page.focus('[data-pop="pk-pop-est"]'); await page.keyboard.press('Enter'); await page.waitForTimeout(250);
+    const geo = await page.evaluate(() => {
+      const p = document.getElementById('pk-pop-est'), b = document.querySelector('[data-pop="pk-pop-est"]');
+      const card = b.closest('.surface').getBoundingClientRect(), r = p.getBoundingClientRect();
+      const blk = p.previousElementSibling;
+      return { role: p.getAttribute('role'), haspopup: b.getAttribute('aria-haspopup'), afterTriggerBlock: !!(blk && blk.contains(b)),
+        insideCard: p.classList.contains('sheet') || (r.left >= card.left - 1 && r.right <= card.right + 1) };
+    });
+    await page.keyboard.press('Tab'); await page.waitForTimeout(250);
+    const closedOnTabAway = await page.$eval('#pk-pop-est', p => p.hidden || !p.classList.contains('open'));
+    log.push({ sfx, openAfterScroll, closedOnEsc, focusBack, ...geo, closedOnTabAway });
     // 2. rolling-average popover (mobile check: must not cover the 4.0 figure badly)
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.click('[data-pop="pk-pop-rolling"]'); await page.waitForTimeout(250);
     await page.screenshot({ path: `${out}/int__pop-rolling__${sfx}.png` });
     await page.mouse.click(5, vp.height - 5); await page.waitForTimeout(200);
     // 3. disclosure open
-    await page.click('.disc-btn'); await page.waitForTimeout(400);
-    const disc = await page.$('.disclosure');
+    await page.click('#panel-peak .disc-btn'); await page.waitForTimeout(400);
+    const disc = await page.$('#panel-peak .disclosure');
     await disc.screenshot({ path: `${out}/int__disc-calc__${sfx}.png` });
     // 4. Year view
     await page.click('#pk-chart-tile .seg button[data-value="year"]'); await page.waitForTimeout(300);

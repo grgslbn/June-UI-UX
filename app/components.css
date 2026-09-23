@@ -228,7 +228,11 @@ details.meta code { font-size: var(--fs-xs); }
                           button it opens its popover; 24px min target; dotted underline = "explained". */
   position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; padding: 0 2px; margin-right: 2px;
   background: none; border-radius: 6px; color: var(--accent-strong); font: inherit; font-family: var(--font-display); font-weight: var(--w-semibold); line-height: 1;
-  text-decoration: underline dotted 1.5px; text-underline-offset: 4px; transition: background-color var(--dur-fast); vertical-align: baseline; }
+  transition: background-color var(--dur-fast); vertical-align: baseline; }
+/* take the size of the value it qualifies (legacy markup puts the button just before the value) */
+.est:has(+ .mid-num) { font-size: var(--fs-lg); }
+.est:has(+ .stat-num), .est:has(+ .stat__value) { font-size: var(--fs-xl); }
+.est:has(+ .hero-num), .est:has(+ .num) { font-size: var(--fs-xl); }
 .est:hover, .est[aria-expanded="true"], button.approx:hover, button.approx[aria-expanded="true"] { background: var(--accent-soft); }
 .est:focus-visible, button.approx:focus-visible { border-radius: 6px; }
 .hero-num .est { font-size: 0.8em; align-self: center; }
@@ -388,7 +392,8 @@ a.row:hover .row__go, a.rank-card:hover .row__go { color: var(--ink-700); transf
 .empty__note { margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--hairline); font-size: var(--fs-xs); color: var(--ink-500); max-width: 70ch; }
 .empty .readiness { margin-top: var(--s-5); max-width: 520px; }
 .empty.motif::after {
-  content: ""; position: absolute; z-index: -1; pointer-events: none; right: -28px; top: -28px; width: 150px; height: 120px;
+  content: ""; position: absolute; pointer-events: none; right: -28px; top: -28px; width: 150px; height: 120px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 28px) 100%, calc(100% - 28px) 28px, 0 28px); /* only the part outside the tile */
   background-image: radial-gradient(var(--halftone) 1.4px, transparent 1.6px); background-size: 10px 10px;
   -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent); mask-image: radial-gradient(closest-side, #000 35%, transparent);
 }
@@ -524,6 +529,9 @@ a.row:hover .row__go, a.rank-card:hover .row__go { color: var(--ink-700); transf
   .hero { padding: 24px 20px; }
   .hero__sentence { font-size: var(--fs-lg); }
   .home-chip span { display: none; }
+  .wordmark .divider, .wordmark .product { display: none; }
+  .topbar { gap: 8px; }
+  .topbar .right { gap: 4px; }
   .tab { min-height: 44px; }
   .seg button { min-height: 40px; padding: 4px 10px; }
   .datenav button { width: 44px; height: 44px; }
