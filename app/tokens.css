@@ -67,15 +67,15 @@
   --gas-strong: #16689a;
   --gas-soft: #e2f0f9;
 
-  /* ── Categorical ramp (Breakdown categories; fixed order, never cycled)
-        Validated: CVD-adjacent ΔE ≥ 8.9, normal ΔE ≥ 21, all ≥ 3:1 on surface.
-        Max 5 hues + "Other" (neutral). Always pair with a text label. ── */
-  --cat-1: #009b8f;  /* teal    — Heating */
-  --cat-2: #5b4fc4;  /* violet  — Water heating */
-  --cat-3: #c98500;  /* ochre   — Always on */
-  --cat-4: #c4508a;  /* magenta — Cooking */
-  --cat-5: #2f78c4;  /* blue    — Washing / appliances */
-  --cat-other: #8c999e; /* neutral — Other (use with texture .jc-tex if adjacent to cat-5) */
+  /* ── Categorical ramp (Breakdown categories). Round 3: accent + ink tints, NO new hues.
+        cat-1 = the category the tab is about (accent); cat-2…5 + other = ink steps,
+        dark → light, each ≥ 1.3:1 from its neighbour. Always text-labelled; order fixed. ── */
+  --cat-1: #3bada8;  /* accent — the lead category (e.g. Heating) */
+  --cat-2: #2c4349;  /* ink 1 */
+  --cat-3: #5b7075;  /* ink 2 */
+  --cat-4: #8a9ca0;  /* ink 3 */
+  --cat-5: #b3c1c4;  /* ink 4 */
+  --cat-other: #d5dddf; /* ink 5 — Other */
 
   /* ── Chart roles ────────────────────────────────────────────────────── */
   --chart-grid: var(--ink-100);
@@ -122,11 +122,11 @@
   /* ── Motion ─────────────────────────────────────────────────────────── */
   --ease-out: cubic-bezier(.2, .8, .2, 1);      /* enter & settle (default) */
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);  /* move between two states */
-  --ease-emphasis: cubic-bezier(.3, 1.25, .5, 1); /* toggle thumbs only */
+  --ease-emphasis: cubic-bezier(.2, .8, .2, 1); /* legacy alias of --ease-out (Round 3: no overshoot) */
   --dur-instant: 90ms;   /* press, colour */
   --dur-fast: 160ms;     /* hover, focus, popover */
   --dur-base: 240ms;     /* panel switch, disclosure */
-  --dur-slide: 320ms;    /* thumbs */
+  --dur-slide: 240ms;    /* thumbs (Round 3: ≤ 240ms, no overshoot) */
   --dur-slow: 480ms;     /* chart enter */
   --dur-draw: 700ms;     /* line draw, count-up */
   --stagger: 16ms;       /* per-bar delay, total capped at 300ms */
@@ -168,12 +168,12 @@
     --gas: #5cb8ec;
     --gas-strong: #5cb8ec;
     --gas-soft: #0f2a3a;
-    --cat-1: #149a8e;
-    --cat-2: #8b80ec;
-    --cat-3: #c08410;
-    --cat-4: #d0629a;
-    --cat-5: #4d95e0;
-    --cat-other: #62747a;
+    --cat-1: #45bdb7;
+    --cat-2: #d5dfe0;
+    --cat-3: #9fb0b3;
+    --cat-4: #71858a;
+    --cat-5: #4f6268;
+    --cat-other: #37484d;
     --chart-muted: #2a3d41;
     --chart-rolloff: #adbcbf;
     --chart-band: rgba(69, 189, 183, 0.18);
@@ -225,12 +225,12 @@
   --gas: #5cb8ec;
   --gas-strong: #5cb8ec;
   --gas-soft: #0f2a3a;
-  --cat-1: #149a8e;
-  --cat-2: #8b80ec;
-  --cat-3: #c08410;
-  --cat-4: #d0629a;
-  --cat-5: #4d95e0;
-  --cat-other: #62747a;
+  --cat-1: #45bdb7;
+  --cat-2: #d5dfe0;
+  --cat-3: #9fb0b3;
+  --cat-4: #71858a;
+  --cat-5: #4f6268;
+  --cat-other: #37484d;
   --chart-muted: #2a3d41;
   --chart-rolloff: #adbcbf;
   --chart-band: rgba(69, 189, 183, 0.18);

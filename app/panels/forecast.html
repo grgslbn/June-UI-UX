@@ -209,22 +209,24 @@
     <h4>Approval &amp; structure</h4>
     <ul>
       <li>✓ Approved: glance row gated per cell; Month/Year chart vs last year; 24–48h chart with a verified band; budget cross-reference; retrospective accuracy check (<code>allow_historic</code>). IA per ux-audit §3.2.</li>
-      <li>Hero = the month answer (frozen headline as the h1, one numeral ≈ 290 kWh) + delta chip + budget status. Budget link card (6.4) folded into the hero aside: pill, body and "View budget →" verbatim with canonical numbers. The status chip is a plain chip; the single link to Budgets is "View budget" (no two links to one place).</li>
-      <li>Glance row moved from first position to a compact side list (ux-audit: the month answer was one of four). Year cell shows the per-cell not-ready form.</li>
-      <li>Month view = May day by day, cumulative: actual solid to today, forecast dashed to 31 May, May 2025 as an ink ghost, budget line, "Today" divider, direct end labels. Year view = monthly totals Nov 2025 – Oct 2026 with "Forecasting the next 6 months" (May–Oct). No confidence band on either (binding rule).</li>
-      <li>€: disabled € option in the unit toggle + [i] popover with the product half of the € note (verbatim). Binding meta rule: the API silently returns €0 for <code>unit=cost</code>; the app must detect this and never show "€0 projected".</li>
-      <li>Band explainer + "Likely range (95% confidence)" moved into the [i] popover (verbatim); the chart key says "Likely range".</li>
-      <li>Accuracy check behind a disclosure; the 6-month table is shown inside it (no nested "▾ See the last 6 months" toggle; that label is kept as the table heading). "Off by" written in words ("6% higher") instead of signed "+6%".</li>
+      <li>Hero contract (round-2 shared rule): status chip "On track for budget" (the frozen budget pill, moved to the hero status) → sentence "You're projected to use 8% more this month than in May last year — and stay under budget." → ONE numeral ≈ 290 kWh that the sentence doesn't repeat. The frozen headline ("You're projected to use 290 kWh this month — 8% more than the same month last year.") is split between the h1 and the numeral; the separate "+8%" delta chip is dropped as a repeat.</li>
+      <li>Budget link card (6.4) = hero aside: body and "View budget →" verbatim with canonical numbers; aside heading is an in-card sentence-case title (no caps kicker).</li>
+      <li>Month view: a single line (your use: solid to today, dashed forecast) plus the budget as the only labelled threshold (2px ink). No legend/end-label mix and no stacked right-edge labels (fixes the 300/290/269 collision). Last year moved out of this view — it is stated in the hero caption and drawn in the Year view.</li>
+      <li>Year view: "Last year" (ink) vs "This year" (accent, dashed after April), legend only (end labels off). No confidence band on either view (binding rule).</li>
+      <li>€: disabled € option + [i] popover with the product half of the € note (verbatim). Binding meta rule: <code>unit=cost</code> silently returns €0; the app must detect this and never show "€0 projected".</li>
+      <li>Band explainer + "Likely range (95% confidence)" in the [i] popover (verbatim); the chart key says "Likely range".</li>
+      <li>Accuracy check behind a disclosure; the 6-month table is shown inside it ("See the last 6 months" kept as its heading). "Off by" in words.</li>
     </ul>
     <h4>Data changes (demo-data.md)</h4>
     <ul>
-      <li>Month 412 → <b>290 kWh</b> (+8% vs May 2025 = 269 kWh). Budget link 412/450 → <b>290/300 kWh</b> (inconsistency #1 resolved by demo-data change log #1).</li>
-      <li>⚠ <b>Derived glance values</b> (to match 290 and the Budgets pace of 7.9 kWh/day): Today 14.2 → <b>7.9</b> (5.2 so far + 2.7 forecast); This week 92 → <b>54</b> (Mon 18 – Sun 24 May: 5.2 so far + 49 forecast); This month 240 + 172 → <b>187 + 103</b>.</li>
-      <li>⚠ <b>Illustrative</b> daily kWh 1–18 May: 13.2, 14.0, 12.9, 12.0, 13.2, 11.8, 12.7, 12.5, 11.8, 12.4, 8.2, 7.9, 7.6, 8.1, 7.9, 7.9, 7.7, 5.2 (partial today) = 187; 11–17 May average 7.9. Forecast 19–31 May ≈ 7.7/day to 290. May 2025 daily curve illustrative, ends at 269.</li>
-      <li>⚠ <b>Accuracy check relabelled</b>: "last month" in May 2026 is April, so "Replaying what we predicted on 1 May" → "on 1 April" and rows shift one month (Apr 2026 … Nov 2025). April actual aligned with Compare (442 kWh); forecast 380 → 417 so "6% higher — pretty close" stays true. Other rows keep their printed values.</li>
+      <li>Month 412 → <b>290 kWh</b> (+8% vs May 2025 = 269 kWh). Budget link 412/450 → <b>290/300 kWh</b> (change log #1).</li>
+      <li><b>D3 "Now" = 18 May 2026, 20:00</b> (change log 12): "Now: 18 May, 14:30" → "Now: 18 May, 20:00"; hourly chart starts at 20:00; hero shows "updated today, 20:00".</li>
+      <li>Daily kWh 1–18 May = the Budgets tab's bars (12.8 … 7.8; sum 187; 12–18 May average 7.9). Forecast 19–31 May ≈ 7.9/day → 290.</li>
+      <li>⚠ <b>Derived glance values</b> at 20:00: Today <b>8.4</b> (7.8 so far + 0.6 forecast); This week <b>56</b> (Mon 18 – Sun 24 May: 7.8 + 0.6 + 6 × 7.9 ≈ 8 so far + 48 forecast); This month <b>187 + 103</b>.</li>
+      <li>⚠ "This year": printed "needs a bit more history yet" now carries a date — "ready 1 June 2026" on the rule "yearly forecasts need 12 full months of daily data" (daily data assumed from 1 June 2025, matching Peak's 12-month window). May 2025 = 269 kWh comes from monthly readings. Rule + date need product confirmation.</li>
+      <li>⚠ <b>Accuracy check relabelled</b>: last month in May 2026 is April → "on 1 April", rows Apr 2026 … Nov 2025; April actual aligned with Compare (442 kWh), forecast 417 so "6% higher — pretty close" stays true.</li>
       <li>⚠ <b>Illustrative</b> Year view: actuals Nov–Apr from the accuracy table; forecast May 290, Jun 250, Jul 240, Aug 245, Sep 280, Oct 350; last year Nov 2024 – Oct 2025: 455, 490, 520, 470, 410, 405, 269, 235, 228, 236, 268, 340 (only May 2025 = 269 is canonical).</li>
-      <li>Hourly: printed SVG geometry converted to kWh (kWh = (100 − y) × 0.006; ≈ 7.5 kWh over 24 h, consistent with ~7.7/day) and interpolated to hourly points; band shape kept (wide evening/morning, narrow overnight/midday). 48h = the same profile repeated with small variation (illustrative).</li>
-      <li>⚠ "Now: 18 May, 14:30" is frozen, while demo-data "today" is 18 May 20:00. Kept 14:30 as the forecast's data time — flag.</li>
+      <li>Hourly: printed SVG geometry → kWh ((100 − y) × 0.006 ≈ 7.5 kWh/24 h), resampled by clock time from 20:00; band shape kept (wide morning/evening, narrow overnight/midday). 48h repeats the profile with small variation (illustrative).</li>
     </ul>
     <h4>Reason codes</h4>
     <ul>
@@ -297,10 +299,11 @@
   <details class="meta">
     <summary>Spec notes · Forecast · over budget</summary>
     <ul>
-      <li>Budget link — over. Pill (amber/warn, not red: nothing is over yet, it's a forecast) "Forecast to exceed budget" and "View budget →" verbatim.</li>
-      <li>⚠ <b>Derived numbers</b>: printed 412 vs 380 kWh "by about 8%". With the canonical 290 kWh forecast, an illustrative budget of <b>270 kWh</b> gives "by about 7%" (290 ÷ 270 = 1.074). Needs sign-off.</li>
-      <li>Derived insight: cumulative forecast passes 270 kWh during 29 May (266.9 end of 28 May, 274.8 end of 29 May); (270 − 189.7 expected by midnight today) ÷ 13 days = 6.2 kWh a day. Copy needs sign-off.</li>
-      <li>Only the budget pieces change; hourly chart, € handling and accuracy check are identical to the main state and are omitted here for brevity.</li>
+      <li>Leads with the problem (round-2 rule): alert chip "Forecast to exceed budget" (verbatim pill copy) → "May is heading over your 270 kWh budget." → numeral ≈ 20 kWh over. One "over" colour: red (chip + budget line); amber is no longer used for "over".</li>
+      <li>Aside body "Your forecast projects 290 kWh this month — over your 270 kWh electricity budget by about 7%." and "View budget →" verbatim pattern.</li>
+      <li>⚠ <b>Derived numbers</b>: printed 412 vs 380 kWh "by about 8%". With the canonical 290 kWh forecast, an illustrative budget of <b>270 kWh</b> gives "by about 7%" (290 ÷ 270 = 1.074) and 20 kWh over.</li>
+      <li><b>D4</b>: daily figure uses the Budgets formula (limit − used) ÷ days left = (270 − 187) ÷ 13 = <b>6.4 kWh a day</b> (13 days = 19–31 May, as on Budgets). Crossing date: 187 + 7.9 × n ≥ 270 → n = 10.5 → during 29 May.</li>
+      <li>Hourly chart, € handling and accuracy check are identical to the main state and are omitted here.</li>
       <li>Reason: budget exists and forecast &gt; limit.</li>
     </ul>
   </details>
@@ -366,7 +369,7 @@
     <summary>Spec notes · Forecast · no budget</summary>
     <ul>
       <li>Budget link — no budget. Title, body and "Set up a budget →" verbatim; emoji 🎯 → target icon. Secondary button (it's an optional setup, not the tab's main job).</li>
-      <li>Month chart drops the budget line; everything else is as in the main state.</li>
+      <li>No status chip (nothing to report on); h1 without the budget clause. Month chart drops the budget line; everything else is as in the main state.</li>
       <li>Reason: no Budget configured.</li>
     </ul>
   </details>
@@ -436,7 +439,7 @@
     <ul>
       <li>Per-cell not ready, shown as a whole state: any glance cell can be "not ready" on its own ("… — needs a bit more history yet", verbatim form). Here Today and This week are ready, This month and This year are not, so the hero answers the week instead of the month.</li>
       <li>Month/Year chart and accuracy check are hidden (no monthly forecast yet); the budget link needs a monthly forecast, so it's hidden too. Hourly chart works (short-term forecasts unlock first).</li>
-      <li>⚠ <b>Illustrative household</b> (new customer, data since 6 May 2026, 13 days): Today 6.4 (4.1 + 2.3), week 45 (4 + 41), hourly = main profile × 0.85. Monthly unlock date 6 June 2026 derived from the guide's "a full month" threshold. "Setting up" neutral chip from the shared status-pill set. All derived copy needs sign-off.</li>
+      <li>⚠ <b>Illustrative household</b> (new customer, data since 6 May 2026, 13 days; now = 18 May 20:00): Today 6.5 (6.1 + 0.4), week 45 (6 + 39), hourly = main profile × 0.85. Yearly from 6 May 2027 (12 full months). Monthly unlock date 6 June 2026 derived from the guide's "a full month" threshold. "Setting up" neutral chip from the shared status-pill set. All derived copy needs sign-off.</li>
       <li>Reason: per-horizon data-readiness threshold (no API code).</li>
     </ul>
   </details>
@@ -479,7 +482,7 @@
     <ul>
       <li>Whole tab, under 7 days. Title, body and "3 of 7 days toward your first forecast" verbatim; emoji 📈 → line icon. Shared readiness meter (7 segments, 3 filled).</li>
       <li>The 4 greyed glance cells ("Today / not ready" … "This year / not ready") are kept but turned into a "What unlocks when" list with dates, so they add information instead of repeating the message (ux-audit §1.6).</li>
-      <li>⚠ <b>Derived dates</b> (illustrative new customer, data since 16 May 2026): first forecast 23 May (after 7 days); monthly from 16 June (a full month). "There's nothing you need to do — we'll keep counting." reuses the Peak pattern. Optional action "Set a monthly budget meanwhile" is new copy — sign-off. All need sign-off.</li>
+      <li>⚠ <b>Derived dates</b> (illustrative new customer, data since 16 May 2026): first forecast 23 May (after 7 days); monthly from 16 June (a full month); yearly from 16 May 2027 (12 full months). "There's nothing you need to do — we'll keep counting." reuses the Peak pattern. Optional action "Set a monthly budget meanwhile" is new copy — sign-off. All need sign-off.</li>
       <li>Reason: no API code; uses the guide's documented thresholds (7 days; a full month for monthly).</li>
     </ul>
   </details>
