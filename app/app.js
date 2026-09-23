@@ -61,7 +61,11 @@
     return { min, max, ticks };
   }
   const decOf = arr => arr.some(v => v != null && Math.round(v) !== v) ? 1 : 0;
-  const fmtN = (v, d) => (v == null ? '—' : Number(v).toFixed(d));
+  const fmtN = (v, d) => { // true minus sign "−", never "-0"
+    if (v == null) return '—';
+    const t = Number(v).toFixed(d);
+    return /^-0(\.0+)?$/.test(t) ? t.slice(1) : t.replace('-', '−');
+  };
   function panelOf(el) { return el.closest('.panel'); }
 
   /* ── 2 · JuneCharts ────────────────────────────────────────────────────── */
@@ -144,19 +148,27 @@
       host.onblur = () => set(-1);
     }
 
-    function gutterLabels(items, plotRight, lo, hi) {
-      // items: {y, name, val, cls, valCls}; two-line label blocks (30px) with leaders to their line
-      const pos = resolve1D(items.map(it => ({ c: it.y, size: 30 })), 4, lo, hi);
+    /* Right-gutter direct labels. items: {y, name, val, valCls}. Wide charts use one-line
+       blocks ("Budget 300 kWh", 16px tall); narrower ones two-line blocks (30px). Blocks are
+       de-collided (never overlap) and joined to their line with a leader when displaced. */
+    const singleLine = W => W >= 600;
+    function gutterLabels(items, plotRight, lo, hi, single) {
+      const size = single ? 16 : 30, gap = single ? 6 : 4;
+      const pos = resolve1D(items.map(it => ({ c: it.y, size })), gap, lo, hi);
       let s = '';
       items.forEach((it, i) => {
-        const c = pos[i], x = plotRight + 14;
-        if (Math.abs(c - it.y) > 1) s += `<path class="jc-leader jc-late" d="M${plotRight + 4} ${it.y.toFixed(1)} L${x - 4} ${c.toFixed(1)}"/>`;
-        s += `<text class="jc-thr-name jc-late" x="${x}" y="${(c - 3).toFixed(1)}">${esc(it.name)}</text>`;
-        if (it.val) s += `<text class="jc-thr-val jc-late ${it.valCls || ''}" x="${x}" y="${(c + 12).toFixed(1)}">${esc(it.val)}</text>`;
+        const c = pos[i], x = plotRight + 16;
+        if (Math.abs(c - it.y) > 1) s += `<path class="jc-leader jc-late" d="M${plotRight + 4} ${it.y.toFixed(1)} H${plotRight + 8} L${x - 3} ${c.toFixed(1)}"/>`;
+        if (single) s += `<text class="jc-thr-name jc-late" x="${x}" y="${(c + 4).toFixed(1)}">${esc(it.name)}${it.val ? ` <tspan class="jc-thr-val ${it.valCls || ''}">${esc(it.val)}</tspan>` : ''}</text>`;
+        else {
+          s += `<text class="jc-thr-name jc-late" x="${x}" y="${(c - 3).toFixed(1)}">${esc(it.name)}</text>`;
+          if (it.val) s += `<text class="jc-thr-val jc-late ${it.valCls || ''}" x="${x}" y="${(c + 12).toFixed(1)}">${esc(it.val)}</text>`;
+        }
       });
       return s;
     }
-    const gutterWidth = items => items.length ? Math.ceil(Math.max(...items.map(t => Math.max(textW(t.name), textW(t.val || '', 600))))) + 22 : 0;
+    const gutterWidth = (items, single) => items.length ? Math.ceil(Math.max(...items.map(t => single ? textW(t.name) + 4 + textW(t.val || '', 600) : Math.max(textW(t.name), textW(t.val || '', 600))))) + 24 : 0;
+    const curRange = c => c == null ? null : typeof c === 'number' ? { from: c, to: c } : { from: c.from ?? c.index, to: c.to ?? c.index };
 
     /* x tick selection */
     function pickTicks(o, n, labels, pw) {
@@ -194,9 +206,12 @@
       const yMax = sc.max;
       const tickW = compact ? 0 : Math.max(...sc.ticks.map(t => textW(fmtN(t, decOf(sc.ticks)))));
       const gItems = thr.map(t => ({ name: t.label, val: t.valueText }));
-      const gut = mode === 'gutter' ? Math.max(gutterWidth(gItems), 8) : (compact ? 0 : 8);
+      const single = singleLine(W);
+      const gut = mode === 'gutter' ? Math.max(gutterWidth(gItems, single), 8) : (compact ? 0 : 8);
       const capH = o.yLabel && !compact ? 24 : 0;
       const H = o.height || (compact ? 56 : narrow ? 210 : 240);
+      const cur = curRange(o.current);             // current period: accent bar (or band when stacked) + bold x label
+      const isCur = i => cur && i >= cur.from && i <= cur.to;
       const m = { l: compact ? 0 : tickW + 12, r: gut, t: capH + (compact ? 2 : (o.annotation ? 22 : 12)), b: compact ? (o.xTicks ? 20 : 2) : 26 };
       const pw = W - m.l - m.r, ph = H - m.t - m.b;
       const y = v => m.t + ph - (v / yMax) * ph;
@@ -215,6 +230,7 @@
           s += `<text class="jc-tick" x="${m.l - 10}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end">${fmtN(t, decOf(sc.ticks))}</text>`;
         });
       }
+      if (cur && stacked) s += `<rect class="jc-current-band" x="${(cx(cur.from) - slot / 2).toFixed(1)}" y="${m.t}" width="${(slot * (cur.to - cur.from + 1)).toFixed(1)}" height="${ph}" rx="6"/>`;
       s += `<line class="jc-axis" x1="${m.l}" x2="${W - m.r}" y1="${base}" y2="${base}"/>`;
       // bars
       for (let i = 0; i < nData; i++) {
@@ -226,7 +242,7 @@
           const bottom = y(acc), top = y(acc + v); acc += v;
           const isTop = k === series.length - 1 || series.slice(k + 1).every(s2 => !s2.values[i]);
           let tone = sr.tone || 'accent';
-          if (!stacked && hl.has(i)) tone = hl.get(i); else if (!stacked && hl.size && o.muteOthers) tone = 'muted';
+          if (!stacked && hl.has(i)) tone = hl.get(i); else if (!stacked && isCur(i)) tone = o.currentTone || 'accent'; else if (!stacked && hl.size && o.muteOthers) tone = 'muted';
           const gapPx = stacked && k > 0 ? 2 : 0;
           const style = (tone && tone.startsWith('cat-')) ? ` style="fill:var(--${tone});animation-delay:${delay}ms"` : ` style="animation-delay:${delay}ms"`;
           s += `<path class="jc-bar t-${tone}" data-i="${i}" d="${barPath(cx(i) - bw / 2, top, bottom - gapPx, isTop)}"${style}/>`;
@@ -243,7 +259,7 @@
         const cls = `jc-thr jc-late t-${t.tone || 'ink'}${t.emphasis ? ' em' : ''}`;
         s += `<line class="${cls}" x1="${m.l}" x2="${(W - m.r + (mode === 'gutter' ? 4 : 0)).toFixed(1)}" y1="${y(t.value).toFixed(1)}" y2="${y(t.value).toFixed(1)}"/>`;
       });
-      if (mode === 'gutter' && thr.length) s += gutterLabels(thr.map(t => ({ y: y(t.value), name: t.label, val: t.valueText, valCls: t.tone === 'accent' ? 't-accent' : '' })), W - m.r, 4, H - 4);
+      if (mode === 'gutter' && thr.length) s += gutterLabels(thr.map(t => ({ y: y(t.value), name: t.label, val: t.valueText, valCls: t.tone === 'accent' ? 't-accent' : '' })), W - m.r, 4, H - 4, single);
       // annotation
       if (o.annotation && tot[o.annotation.index] != null && !compact) {
         const a = o.annotation, tw = textW(a.text, 600);
@@ -253,7 +269,7 @@
       // x ticks (+ "now" label)
       const ticks = pickTicks(o, n, labels, pw).filter(i => !o.now || Math.abs(cx(i) - cx(o.now.index)) > (textW(o.now.label, 600) / 2 + textW(labels[i]) / 2 + 6));
       if (!compact || o.xTicks) {
-        ticks.forEach(i => s += `<text class="jc-tick" x="${cx(i).toFixed(1)}" y="${H - 6}" text-anchor="${compact && i === 0 ? 'start' : compact && i === n - 1 ? 'end' : 'middle'}">${esc(labels[i])}</text>`);
+        ticks.forEach(i => s += `<text class="jc-tick${isCur(i) ? ' strong' : ''}" x="${cx(i).toFixed(1)}" y="${H - 6}" text-anchor="${compact && i === 0 ? 'start' : compact && i === n - 1 ? 'end' : 'middle'}">${esc(labels[i])}</text>`);
         if (o.now) s += `<text class="jc-tick strong" x="${Math.max(m.l + textW(o.now.label, 600) / 2, Math.min(W - m.r - textW(o.now.label, 600) / 2, cx(o.now.index))).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(o.now.label)}</text>`;
       }
       // hit areas
@@ -291,11 +307,14 @@
       const labels = o.labels || [...Array(n).keys()].map(i => String(i + 1));
       const lastIdx = s => { for (let i = s.values.length - 1; i >= 0; i--) if (s.values[i] != null) return i; return -1; };
       const ends = o.endLabels === false ? [] : series.filter(s => s.name).map(s => ({ s, i: lastIdx(s) })).filter(e => e.i >= 0);
-      const gItems = mode === 'gutter' ? ends.map(e => ({ name: e.s.name, val: fmtN(e.s.values[e.i], dec) + unit })).concat(thr.map(t => ({ name: t.label, val: t.valueText }))) : [];
+      // a series whose last point is forecast says so in its direct label ("290 kWh forecast")
+      const endVal = e => fmtN(e.s.values[e.i], dec) + unit + (e.s.forecastFrom != null && e.i > e.s.forecastFrom ? ' ' + (o.forecastWord || 'forecast') : '');
+      const gItems = mode === 'gutter' ? ends.map(e => ({ name: e.s.name, val: endVal(e) })).concat(thr.map(t => ({ name: t.label, val: t.valueText }))) : [];
+      const single = singleLine(W);
       const sc = o.yMax != null ? { min: o.yMin || 0, max: o.yMax, ticks: o.yTicks || niceScale(o.yMax, o.yMin || 0, 4).ticks } : niceScale(Math.max(...all, ...thr.map(t => t.value)) * 1.05, o.yMin || 0, narrow ? 3 : 4);
       if (o.yTicks) sc.ticks = o.yTicks;
       const tickW = Math.max(...sc.ticks.map(t => textW(fmtN(t, decOf(sc.ticks)))));
-      const gut = mode === 'gutter' ? Math.max(gutterWidth(gItems), 12) : 12;
+      const gut = mode === 'gutter' ? Math.max(gutterWidth(gItems, single), 12) : 12;
       const capH = o.yLabel ? 24 : 0;
       const H = o.height || (narrow ? 210 : 240);
       const m = { l: tickW + 12, r: gut, t: capH + (o.now ? 22 : 12), b: 26 };
@@ -316,6 +335,7 @@
         s += `<line class="${t === sc.min ? 'jc-axis' : 'jc-grid'}" x1="${m.l}" x2="${W - m.r}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}"/>`;
         s += `<text class="jc-tick" x="${m.l - 10}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end">${fmtN(t, decOf(sc.ticks))}</text>`;
       });
+      { const c = curRange(o.current); if (c) { const step = n > 1 ? pw / (n - 1) : pw; const x0 = Math.max(m.l, x(c.from) - step / 2), x1 = Math.min(W - m.r, x(c.to) + step / 2); s += `<rect class="jc-current-band" x="${x0.toFixed(1)}" y="${m.t}" width="${(x1 - x0).toFixed(1)}" height="${(y(sc.min) - m.t).toFixed(1)}" rx="6"/>`; } }
       series.forEach(sr => {
         if (!sr.band) return;
         const idx = [...Array(n).keys()].filter(i => sr.band.lo[i] != null && sr.band.hi[i] != null);
@@ -340,16 +360,20 @@
         else if (li >= 0) s += `<circle class="jc-dot jc-late t-${tone}" cx="${x(li).toFixed(1)}" cy="${y(sr.values[li]).toFixed(1)}" r="4"/>`;
       });
       if (mode === 'gutter' && gItems.length) {
-        const items = ends.map(e => ({ y: y(e.s.values[e.i]), name: e.s.name, val: fmtN(e.s.values[e.i], dec) + unit, valCls: (e.s.tone || 'accent') === 'accent' ? 't-accent' : '' }))
+        const items = ends.map(e => ({ y: y(e.s.values[e.i]), name: e.s.name, val: endVal(e), valCls: (e.s.tone || 'accent') === 'accent' ? 't-accent' : '' }))
           .concat(thr.map(t => ({ y: y(t.value), name: t.label, val: t.valueText, valCls: t.tone === 'accent' ? 't-accent' : '' })));
-        s += gutterLabels(items, W - m.r, 4, H - 4);
+        s += gutterLabels(items, W - m.r, 4, H - 4, single);
       }
-      pickTicks(o, n, labels, pw).forEach(i => s += `<text class="jc-tick" x="${x(i).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'}">${esc(labels[i])}</text>`);
+      const lcur = curRange(o.current);
+      pickTicks(o, n, labels, pw).forEach(i => s += `<text class="jc-tick${lcur && i >= lcur.from && i <= lcur.to ? ' strong' : ''}" x="${x(i).toFixed(1)}" y="${H - 6}" text-anchor="${i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'}">${esc(labels[i])}</text>`);
       s += `<line class="jc-cross" x1="0" x2="0" y1="${m.t}" y2="${y(sc.min)}" style="opacity:0"/>`;
       s += `</svg><div class="jc-tip" aria-hidden="true"></div>`;
       const keyEntries = [];
-      if (series.length > 1 || mode === 'key') series.forEach(sr => keyEntries.push({ swatch: `<i class="ln${sr.forecastFrom != null ? '' : ''}" style="border-color:${toneVar(sr.tone || 'accent')}"></i>`, name: sr.name }));
-      if (series.some(sr => sr.forecastFrom != null)) keyEntries.push({ swatch: `<i class="ln dash" style="border-color:var(--ink-400)"></i>`, name: o.forecastName || 'Forecast' });
+      // Direct labels OR a legend, never both: wide (gutter) charts are directly labelled; the key row
+      // appears only on narrow widths (or with endLabels:false), plus the band swatch (not a series).
+      const legend = mode === 'key' || o.endLabels === false;
+      if (legend && (series.length > 1 || mode === 'key')) series.forEach(sr => keyEntries.push({ swatch: `<i class="ln" style="border-color:${toneVar(sr.tone || 'accent')}"></i>`, name: sr.name }));
+      if (legend && series.some(sr => sr.forecastFrom != null)) keyEntries.push({ swatch: `<i class="ln dash" style="border-color:var(--ink-400)"></i>`, name: o.forecastName || 'Forecast' });
       if (series.some(sr => sr.band)) keyEntries.push({ swatch: `<i class="dot" style="background:var(--chart-band);width:14px;border-radius:3px"></i>`, name: o.bandName || 'Likely range' });
       if (mode === 'key') thr.forEach(t => keyEntries.push({ swatch: `<i class="ln${t.emphasis ? '' : ' thin'}" style="border-color:${toneVar(t.tone)}"></i>`, name: t.label, val: t.valueText }));
       host.innerHTML = keyHTML(keyEntries.filter(e => e.name)) + s;
@@ -442,7 +466,8 @@
        (signed line; default values = up − down), show {up, down, net} (filter chips),
        slots, labels, tipLabels, xTicks, now {index,label}, futureLabel,
        upLabel / downLabel (region labels in the right gutter, e.g. 'Exporting'),
-       yMax / yMin (yMin ≤ 0) / yTicks (signed; printed without a minus sign),
+       yMax / yMin (yMin ≤ 0) / yTicks (signed; negatives printed with a true minus “−”),
+       nowLine {index, label} (vertical marker at the start of slot `index`, e.g. 20 = 20:00),
        yLabel, unit, decimals, height, maxBar, key (default true), tooltip(i)→str,
        interactive, ariaLabel. Tones as bars (accent | elec | gas | compare | muted | ink | cat-n);
        net line tones as line (accent | accent-strong | ink | elec | gas).             */
@@ -472,13 +497,13 @@
         top = sc.max; bot = -sc.max; ticks = sc.ticks.slice(1).map(t => -t).reverse().concat(sc.ticks);
       }
       const tdec = decOf(ticks);
-      const tickTxt = t => t === 0 ? '0' : fmtN(Math.abs(t), tdec);
+      const tickTxt = t => t === 0 ? '0' : (t < 0 ? '−' : '') + fmtN(Math.abs(t), tdec);
       const tickW = Math.max(...ticks.map(t => textW(tickTxt(t))));
-      const regions = !narrow && (o.upLabel || o.downLabel);
+      const regions = !narrow && (o.upLabel || o.downLabel), regionsIn = narrow && (o.upLabel || o.downLabel);
       const gut = regions ? Math.ceil(Math.max(textW(o.upLabel || '', 600), textW(o.downLabel || '', 600))) + 22 : 8;
       const capH = o.yLabel ? 24 : 0;
       const H = o.height || (narrow ? 220 : 260);
-      const m = { l: tickW + 12, r: gut, t: capH + 10, b: 26 };
+      const m = { l: tickW + 12, r: gut, t: capH + (o.nowLine ? 20 : 10), b: 26 };
       const pw = W - m.l - m.r, ph = H - m.t - m.b;
       const y = v => m.t + ((top - v) / (top - bot)) * ph;
       const base = y(0);
@@ -515,16 +540,26 @@
           if (netVals[i] == null) { pen = false; continue; }
           d += `${pen ? 'L' : 'M'}${cx(i).toFixed(1)} ${y(netVals[i]).toFixed(1)}`; pen = true;
         }
-        const tone = netO.tone || 'accent-strong';
-        if (d) s += `<path class="jc-line jc-draw t-${tone}" d="${d}" pathLength="1" style="--len:1;stroke-dasharray:${motionOK() ? 1 : 'none'}"/>`;
+        const tone = netO.tone || 'accent-strong', tok = tone.startsWith('--');
+        const col = tok ? `var(${tone})` : tone === 'accent-strong' ? 'var(--accent-strong)' : null;
+        if (d) s += `<path class="jc-line jc-draw${tok ? '' : ' t-' + tone}" d="${d}" pathLength="1" style="--len:1;stroke-dasharray:${motionOK() ? 1 : 'none'}${tok ? `;stroke:${col}` : ''}"/>`;
         let li = -1; for (let i = nData - 1; i >= 0; i--) if (netVals[i] != null) { li = i; break; }
-        if (li >= 0) s += `<circle class="jc-dot jc-late t-${tone === 'accent-strong' ? 'accent' : tone}" cx="${cx(li).toFixed(1)}" cy="${y(netVals[li]).toFixed(1)}" r="3.5"${tone === 'accent-strong' ? ' style="fill:var(--accent-strong)"' : ''}/>`;
+        if (li >= 0) s += `<circle class="jc-dot jc-late${tok || tone === 'accent-strong' ? '' : ' t-' + tone}" cx="${cx(li).toFixed(1)}" cy="${y(netVals[li]).toFixed(1)}" r="3.5"${col ? ` style="fill:${col}"` : ''}/>`;
       }
       // region labels (direct labels for "above / below zero") in the right gutter
       if (regions) {
         const gx = W - m.r + 14;
         if (o.upLabel) s += `<text class="jc-thr-val jc-late" x="${gx}" y="${(m.t + 12).toFixed(1)}">↑ ${esc(o.upLabel)}</text>`;
         if (o.downLabel) s += `<text class="jc-thr-val jc-late" x="${gx}" y="${(m.t + ph - 2).toFixed(1)}">↓ ${esc(o.downLabel)}</text>`;
+      }
+      if (regionsIn) { // narrow: keep the direction words, inside the plot's left edge (haloed)
+        if (o.upLabel) s += `<text class="jc-annot jc-late t-ink" x="${m.l + 4}" y="${(m.t + 12).toFixed(1)}">↑ ${esc(o.upLabel)}</text>`;
+        if (o.downLabel) s += `<text class="jc-annot jc-late t-ink" x="${m.l + 4}" y="${(m.t + ph - 4).toFixed(1)}">↓ ${esc(o.downLabel)}</text>`;
+      }
+      if (o.nowLine) { // boundary marker: data before, future after
+        const nx = m.l + o.nowLine.index * slot, lw = textW(o.nowLine.label || 'Now', 600);
+        s += `<line class="jc-now" x1="${nx.toFixed(1)}" x2="${nx.toFixed(1)}" y1="${m.t}" y2="${(m.t + ph).toFixed(1)}" style="stroke-dasharray:3 3"/>`;
+        s += `<text class="jc-now-label jc-late" x="${Math.min(W - m.r - lw / 2, nx).toFixed(1)}" y="${(m.t - 4).toFixed(1)}" text-anchor="middle">${esc(o.nowLine.label || 'Now')}</text>`;
       }
       // x ticks (+ "now")
       const ticksX = pickTicks(o, n, labels, pw).filter(i => !o.now || Math.abs(cx(i) - cx(o.now.index)) > (textW(o.now.label, 600) / 2 + textW(labels[i]) / 2 + 6));
@@ -536,7 +571,7 @@
       if (o.key !== false) {
         if (show.up) keyEntries.push({ swatch: `<i class="dot" style="background:${fv(up.tone || 'accent')}"></i>`, name: up.name || '' });
         if (show.down) keyEntries.push({ swatch: `<i class="dot" style="background:${fv(dn.tone || 'compare')}"></i>`, name: dn.name || '' });
-        if (netOn && show.net) keyEntries.push({ swatch: `<i class="ln" style="border-color:${toneVar(netO.tone || 'accent-strong')}"></i>`, name: netO.name || 'Net' });
+        if (netOn && show.net) keyEntries.push({ swatch: `<i class="ln" style="border-color:${(netO.tone || '').startsWith('--') ? `var(${netO.tone})` : toneVar(netO.tone || 'accent-strong')}"></i>`, name: netO.name || 'Net' });
       }
       host.innerHTML = keyHTML(keyEntries.filter(e => e.name)) + s;
       const svg = host.querySelector('svg'), barsEls = $$('.jc-bar', svg);
@@ -586,9 +621,9 @@
   /* ── 3 · Panels, tab bar, reviewer picker, theme ───────────────────────── */
   function init() {
     JuneCharts.render();
-    // Popovers live in fragments; move them to <body> so fixed positioning isn't
-    // trapped by transformed ancestors (tiles lift on hover, panels animate in).
-    $$('.popover').forEach(p => { p.hidden = true; p.setAttribute('role', p.getAttribute('role') || 'dialog'); document.body.appendChild(p); });
+    // Popovers are informational disclosure tips (not dialogs). They stay in the panel; on open
+    // each one is moved into reading order right after the block that holds its trigger.
+    $$('.popover').forEach(p => { p.hidden = true; if (p.getAttribute('role') === 'dialog' || !p.hasAttribute('role')) p.setAttribute('role', 'note'); });
 
     const panels = $$('.panel');
     const tabs = $$('.tabs .tab');
@@ -606,7 +641,8 @@
       if (instant) requestAnimationFrame(() => requestAnimationFrame(() => (thumb.style.transition = '')));
       const sc = thumb.closest('.tabs-scroll'); if (!sc) return;
       const l = active.offsetLeft, r = l + active.offsetWidth;
-      if (l < sc.scrollLeft + 16 || r > sc.scrollLeft + sc.clientWidth - 16) sc.scrollLeft = Math.max(0, l - (sc.clientWidth - active.offsetWidth) / 2);
+      if (l < sc.scrollLeft + 32 || r > sc.scrollLeft + sc.clientWidth - 32) sc.scrollLeft = Math.max(0, l - (sc.clientWidth - active.offsetWidth) / 2);
+      requestAnimationFrame(() => { try { fadeEdges(); } catch (e) { /* not ready yet */ } });
     }
 
     // Reviewer picker: grouped by tab, generated from data-tab / data-label
@@ -627,7 +663,27 @@
       tabs.forEach(t => t.dataset.tab === key ? t.setAttribute('aria-current', 'page') : t.removeAttribute('aria-current'));
       if (picker && panel) picker.value = panel.id;
       moveThumb();
+      headerContext(panel);
     }
+    // Header context follows the panel: data-home="…" / data-home="" (hide), data-updated="…" / "" (hide)
+    const homeChip = $('.home-chip'), homeText = homeChip?.querySelector('[data-home-text]'), updatedEl = $('[data-updated-slot]');
+    const homeDefault = homeText?.textContent, updatedDefault = updatedEl?.textContent;
+    function headerContext(panel) {
+      if (!panel) return;
+      const h = panel.dataset.home, u = panel.dataset.updated;
+      if (homeChip) { homeChip.hidden = h === ''; if (homeText) homeText.textContent = h || homeDefault; }
+      if (updatedEl) { updatedEl.hidden = u === ''; updatedEl.textContent = u || updatedDefault; }
+    }
+    // Tab bar scroll cue: fade whichever edge has more tabs behind it
+    const tabScroller = $('.tabs-scroll');
+    const fadeEdges = () => {
+      if (!tabScroller) return;
+      const max = tabScroller.scrollWidth - tabScroller.clientWidth;
+      tabScroller.classList.toggle('fade-l', tabScroller.scrollLeft > 2);
+      tabScroller.classList.toggle('fade-r', tabScroller.scrollLeft < max - 2);
+    };
+    tabScroller?.addEventListener('scroll', fadeEdges, { passive: true });
+    window.addEventListener('resize', fadeEdges);
     function show(id, opt = {}) {
       const panel = document.getElementById(id);
       if (!panel || !panel.classList.contains('panel')) return false;
@@ -690,6 +746,7 @@
       select(cur, false);
       btns.forEach((b, i) => {
         b.setAttribute('role', 'radio'); b.type = 'button';
+        if (!enabled(b)) { if (b.dataset.reason && !b.title) b.title = b.dataset.reason; if (b.dataset.reason) b.setAttribute('aria-description', b.dataset.reason); }
         b.addEventListener('click', () => { if (enabled(b)) { cur = i; select(i, true); } });
         b.addEventListener('keydown', e => {
           if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'].includes(e.key)) return;
@@ -714,9 +771,14 @@
       });
     });
 
-    /* ── Popovers: open on click/Enter; close on Esc, outside click, or toggle.
-          Never on scroll — they follow their trigger instead. ─────────────── */
+    /* ── Popovers = disclosure tips (WAI-ARIA disclosure pattern, non-modal).
+          Trigger: <button data-pop="id"> gets aria-expanded + aria-controls.
+          Open: the tip moves right after the block holding its trigger (so it is next in
+          reading/Tab order), shown below the trigger and kept inside its card (desktop) or as
+          a bottom sheet (<600px). Close: Esc (focus back to trigger), click outside, trigger
+          again, or focus leaving trigger+tip. Never on scroll — it follows its trigger. ─── */
     let openPop = null, openBtn = null;
+    const BLOCKS = 'p, h1, h2, h3, h4, li, td, th, dd, dt, figcaption, .stat__value, .row, .seg, .readiness__foot';
     function closePop(restore) {
       if (!openPop) return;
       const p = openPop, b = openBtn;
@@ -727,33 +789,42 @@
     }
     function place(p, b) {
       const vw = document.documentElement.clientWidth;
-      // Phones: a bottom sheet, so the popover never covers the value it explains
       const sheet = vw < 600; p.classList.toggle('sheet', sheet);
-      if (sheet) { p.style.left = ''; p.style.top = ''; return; }
-      const r = b.getBoundingClientRect(), pw = p.offsetWidth, ph = p.offsetHeight;
-      const left = Math.min(Math.max(16, r.left + r.width / 2 - pw / 2), vw - pw - 16);
+      if (sheet) { p.style.left = ''; p.style.top = ''; p.style.width = ''; return; }
+      const r = b.getBoundingClientRect();
+      const card = (b.closest('.surface') || b.closest('.panel') || document.body).getBoundingClientRect();
+      const lo = Math.max(12, card.left + 12), hi = Math.min(vw - 12, card.right - 12);
+      const w = Math.min(320, hi - lo); p.style.width = w + 'px';
+      const ph = p.offsetHeight;
+      const left = Math.min(Math.max(lo, r.left + r.width / 2 - w / 2), hi - w);
       let top = r.bottom + 10, above = false;
       if (top + ph > window.innerHeight - 8 && r.top - ph - 10 > 8) { top = r.top - ph - 10; above = true; }
       p.style.left = left + 'px'; p.style.top = top + 'px';
       p.classList.toggle('above', above);
       let caret = p.querySelector(':scope > .caret');
       if (!caret) { caret = document.createElement('span'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true'); p.prepend(caret); }
-      caret.style.left = Math.max(12, Math.min(pw - 24, r.left + r.width / 2 - left - 6)) + 'px';
+      caret.style.left = Math.max(12, Math.min(w - 24, r.left + r.width / 2 - left - 6)) + 'px';
+    }
+    function openTip(b) {
+      const p = document.getElementById(b.dataset.pop); if (!p) return;
+      closePop();
+      const host = b.closest(BLOCKS) || b;
+      if (host.matches('li, td, th, dd, dt')) { if (host.lastElementChild !== p) host.append(p); } // keep list/table semantics
+      else if (host.nextElementSibling !== p) host.after(p);   // reading order: right after its trigger's block
+      p.hidden = false; place(p, b);
+      requestAnimationFrame(() => p.classList.add('open'));
+      b.setAttribute('aria-expanded', 'true'); openPop = p; openBtn = b;
     }
     $$('[data-pop]').forEach(b => {
-      b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-controls', b.dataset.pop); b.setAttribute('aria-haspopup', 'dialog');
+      b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-controls', b.dataset.pop); b.removeAttribute('aria-haspopup');
       b.addEventListener('click', e => {
         e.preventDefault(); e.stopPropagation();
-        const p = document.getElementById(b.dataset.pop); if (!p) return;
-        if (openBtn === b) return closePop();
-        closePop();
-        p.hidden = false; place(p, b);
-        requestAnimationFrame(() => p.classList.add('open'));
-        b.setAttribute('aria-expanded', 'true'); openPop = p; openBtn = b;
+        if (openBtn === b) closePop(); else openTip(b);
       });
     });
     document.addEventListener('click', e => { if (openPop && !openPop.contains(e.target)) closePop(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && openPop) closePop(true); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && openPop) closePop(openPop.contains(document.activeElement) || document.activeElement === openBtn); });
+    document.addEventListener('focusin', e => { if (openPop && e.target !== openBtn && !openPop.contains(e.target)) closePop(); });
     window.addEventListener('scroll', () => openPop && place(openPop, openBtn), { passive: true });
     window.addEventListener('resize', () => { moveThumb(true); if (openPop) place(openPop, openBtn); });
 

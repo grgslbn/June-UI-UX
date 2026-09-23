@@ -40,19 +40,18 @@
         <div class="hero__split">
           <div>
             <div class="hero__status">
-              <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-trend-up"/></svg>8% more than May 2025</span>
-              <span class="xs muted">May 2026 · electricity</span>
+              <span class="chip positive"><span class="dot" aria-hidden="true"></span>On track for budget</span>
+              <span class="xs muted">May 2026 · electricity · updated today, 20:00</span>
             </div>
-            <h1 class="hero__sentence" id="fc-title">You're projected to use 290&nbsp;kWh this month — 8% more than the same month last year.</h1>
+            <h1 class="hero__sentence" id="fc-title">You're projected to use 8% more this month than in May last year — and stay under budget.</h1>
             <div class="fc-figure">
               <button class="est" type="button" data-pop="fc-pop-est" aria-label="About this forecast">≈</button>
               <p class="hero-num"><span class="num" data-count="290">290</span><span class="unit">kWh</span></p>
             </div>
-            <p class="hero__caption">187&nbsp;kWh used so far + 103&nbsp;kWh forecast · May 2025 was 269&nbsp;kWh</p>
+            <p class="hero__caption">forecast for May · 187&nbsp;kWh used so far · May 2025 was 269&nbsp;kWh</p>
           </div>
           <div class="hero__aside fc-aside">
-            <p class="overline">Your budget</p>
-            <p class="mt-2"><span class="chip positive"><span class="dot" aria-hidden="true"></span>On track for budget</span></p>
+            <h2 class="section-title">Your budget</h2>
             <p class="fc-aside-body">Your forecast projects <b>290 kWh</b> this month — under your <b>300 kWh</b> electricity budget.</p>
             <div class="fc-meter">
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9" role="img" aria-label="187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
@@ -108,14 +107,14 @@
         <li><div class="row">
           <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span>
           <span class="row__title">Today</span>
-          <span class="row__sub">5.2 so far + 2.7 forecast</span>
-          <span class="row__meta mid-num">7.9<span class="unit">kWh</span></span>
+          <span class="row__sub">7.8 so far + 0.6 forecast</span>
+          <span class="row__meta mid-num">8.4<span class="unit">kWh</span></span>
         </div></li>
         <li><div class="row">
           <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
           <span class="row__title">This week</span>
-          <span class="row__sub">5 so far + 49 forecast</span>
-          <span class="row__meta mid-num">54<span class="unit">kWh</span></span>
+          <span class="row__sub">8 so far + 48 forecast</span>
+          <span class="row__meta mid-num">56<span class="unit">kWh</span></span>
         </div></li>
         <li><div class="row">
           <span class="well accent row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span>
@@ -126,7 +125,7 @@
         <li><div class="row off">
           <span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
           <span class="row__title">This year</span>
-          <span class="row__sub">Needs a bit more history yet</span>
+          <span class="row__sub">Needs a bit more history yet · ready 1 June 2026</span>
           <span class="row__meta"><span class="tag">Not ready</span></span>
         </div></li>
       </ul>
@@ -137,14 +136,14 @@
       <div class="fc-head">
         <h2 class="section-title" id="fc-hourly-title"><span data-when="24">Next 24 hours</span><span data-when="48" hidden>Next 48 hours</span></h2>
         <div class="fc-controls">
-          <span class="xs muted">Now: 18 May, 14:30</span>
+          <span class="xs muted">Now: 18 May, 20:00</span>
           <div class="seg" role="radiogroup" aria-label="Time span" data-seg-target="#fc-hourly-tile">
             <button type="button" data-value="24" aria-checked="true">Next 24h</button>
             <button type="button" data-value="48" aria-checked="false">Next 48h</button>
           </div>
         </div>
       </div>
-      <p class="insight fc-insight">Expect your highest use around <b>19:00 tonight</b> and again around <b>06:30 tomorrow</b> — those are also the hours we're least sure about.
+      <p class="insight fc-insight">Your use should stay low overnight, rise around <b>06:30 tomorrow</b> and peak again around <b>19:00</b> — the hours we're least sure about.
         <button class="info" type="button" data-pop="fc-pop-band" aria-label="What is the likely range?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </p>
       <div data-when="24"><div id="fc-hourly-24"></div></div>
@@ -192,7 +191,7 @@
   <!-- Popovers -->
   <div class="popover" id="fc-pop-est" aria-label="About this forecast" hidden>
     <h3>About this forecast <span class="tag">Estimated</span></h3>
-    <p>What you've used so far this month, plus our best estimate for the days still to come, based on your own recent use.</p>
+    <p>What you've used so far this month, plus our best estimate for the days still to come, based on your own recent use (the last 7 days averaged 7.9 kWh a day).</p>
     <p><span class="formula">187 used + 103 forecast = 290 kWh</span></p>
   </div>
   <div class="popover" id="fc-pop-eur" aria-label="€ view unavailable" hidden>
@@ -242,19 +241,18 @@
         <div class="hero__split">
           <div>
             <div class="hero__status">
-              <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-trend-up"/></svg>8% more than May 2025</span>
-              <span class="xs muted">May 2026 · electricity</span>
+              <span class="chip alert"><span class="dot" aria-hidden="true"></span>Forecast to exceed budget</span>
+              <span class="xs muted">May 2026 · electricity · updated today, 20:00</span>
             </div>
-            <h1 class="hero__sentence" id="fco-title">You're projected to use 290&nbsp;kWh this month — 8% more than the same month last year.</h1>
+            <h1 class="hero__sentence" id="fco-title">May is heading over your 270&nbsp;kWh budget.</h1>
             <div class="fc-figure">
               <button class="est" type="button" data-pop="fc-pop-est" aria-label="About this forecast">≈</button>
-              <p class="hero-num"><span class="num" data-count="290">290</span><span class="unit">kWh</span></p>
+              <p class="hero-num"><span class="num" data-count="20">20</span><span class="unit">kWh over</span></p>
             </div>
-            <p class="hero__caption">187&nbsp;kWh used so far + 103&nbsp;kWh forecast · May 2025 was 269&nbsp;kWh</p>
+            <p class="hero__caption">over budget by 31 May · forecast 290&nbsp;kWh · to stay under, use 6.4&nbsp;kWh a day from tomorrow</p>
           </div>
           <div class="hero__aside fc-aside">
-            <p class="overline">Your budget</p>
-            <p class="mt-2"><span class="chip warn"><span class="dot" aria-hidden="true"></span>Forecast to exceed budget</span></p>
+            <h2 class="section-title">Your budget</h2>
             <p class="fc-aside-body">Your forecast projects <b>290 kWh</b> this month — over your <b>270 kWh</b> electricity budget by about 7%.</p>
             <div class="fc-meter">
               <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 81.8" role="img" aria-label="187 kWh used so far, 290 kWh forecast for May, budget 270 kWh. The forecast goes 20 kWh past the budget.">
@@ -276,7 +274,7 @@
       <div class="fc-head">
         <h2 class="section-title" id="fco-chart-title">May, day by day</h2>
       </div>
-      <p class="insight fc-insight">At your current pace you'll pass your <b>270 kWh budget around 29 May</b>. Using about <b>6.2 kWh a day</b> from now on would keep you under it.</p>
+      <p class="insight fc-insight">At your recent pace of 7.9 kWh a day you'll pass your <b>270 kWh budget around 29 May</b>. Using at most <b>6.4 kWh a day</b> from tomorrow keeps you under it.</p>
       <div id="fco-chart-month"></div>
     </article>
 
@@ -286,10 +284,10 @@
         <p class="fc-sub">So far + forecast, in kWh</p>
       </div>
       <ul class="rows">
-        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">5.2 so far + 2.7 forecast</span><span class="row__meta mid-num">7.9<span class="unit">kWh</span></span></div></li>
-        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">5 so far + 49 forecast</span><span class="row__meta mid-num">54<span class="unit">kWh</span></span></div></li>
+        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">7.8 so far + 0.6 forecast</span><span class="row__meta mid-num">8.4<span class="unit">kWh</span></span></div></li>
+        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">8 so far + 48 forecast</span><span class="row__meta mid-num">56<span class="unit">kWh</span></span></div></li>
         <li><div class="row"><span class="well accent row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span><span class="row__title">This month</span><span class="row__sub">187 so far + 103 forecast</span><span class="row__meta mid-num">290<span class="unit">kWh</span></span></div></li>
-        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs a bit more history yet</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs a bit more history yet · ready 1 June 2026</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
       </ul>
     </article>
   </div>
@@ -316,18 +314,17 @@
         <div class="hero__split">
           <div>
             <div class="hero__status">
-              <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-trend-up"/></svg>8% more than May 2025</span>
-              <span class="xs muted">May 2026 · electricity</span>
+              <span class="xs muted">May 2026 · electricity · updated today, 20:00</span>
             </div>
-            <h1 class="hero__sentence" id="fcn-title">You're projected to use 290&nbsp;kWh this month — 8% more than the same month last year.</h1>
+            <h1 class="hero__sentence" id="fcn-title">You're projected to use 8% more this month than in May last year.</h1>
             <div class="fc-figure">
               <button class="est" type="button" data-pop="fc-pop-est" aria-label="About this forecast">≈</button>
               <p class="hero-num"><span class="num" data-count="290">290</span><span class="unit">kWh</span></p>
             </div>
-            <p class="hero__caption">187&nbsp;kWh used so far + 103&nbsp;kWh forecast · May 2025 was 269&nbsp;kWh</p>
+            <p class="hero__caption">forecast for May · 187&nbsp;kWh used so far · May 2025 was 269&nbsp;kWh</p>
           </div>
           <div class="hero__aside fc-aside">
-            <p class="overline">Your budget</p>
+            <h2 class="section-title">Your budget</h2>
             <div class="fc-nobudget">
               <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span>
               <div>
@@ -355,10 +352,10 @@
         <p class="fc-sub">So far + forecast, in kWh</p>
       </div>
       <ul class="rows">
-        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">5.2 so far + 2.7 forecast</span><span class="row__meta mid-num">7.9<span class="unit">kWh</span></span></div></li>
-        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">5 so far + 49 forecast</span><span class="row__meta mid-num">54<span class="unit">kWh</span></span></div></li>
+        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">7.8 so far + 0.6 forecast</span><span class="row__meta mid-num">8.4<span class="unit">kWh</span></span></div></li>
+        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">8 so far + 48 forecast</span><span class="row__meta mid-num">56<span class="unit">kWh</span></span></div></li>
         <li><div class="row"><span class="well accent row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span><span class="row__title">This month</span><span class="row__sub">187 so far + 103 forecast</span><span class="row__meta mid-num">290<span class="unit">kWh</span></span></div></li>
-        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs a bit more history yet</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs a bit more history yet · ready 1 June 2026</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
       </ul>
     </article>
   </div>
@@ -384,12 +381,12 @@
           <span class="chip"><span class="dot" aria-hidden="true"></span>Setting up</span>
           <span class="xs muted">Week of 18 May 2026 · electricity</span>
         </div>
-        <h1 class="hero__sentence" id="fcp-title">Your first forecasts are ready — about 45&nbsp;kWh this week.</h1>
+        <h1 class="hero__sentence" id="fcp-title">Your first forecasts are ready — here's your week.</h1>
         <div class="fc-figure">
           <button class="est" type="button" data-pop="fc-pop-est-week" aria-label="About this forecast">≈</button>
           <p class="hero-num"><span class="num" data-count="45">45</span><span class="unit">kWh</span></p>
         </div>
-        <p class="hero__caption">4&nbsp;kWh used so far + 41&nbsp;kWh forecast · Monday 18 – Sunday 24 May</p>
+        <p class="hero__caption">forecast for Monday 18 – Sunday 24 May · 6&nbsp;kWh used so far</p>
         <div class="fc-ready">
           <h2 class="section-title">Your monthly forecast unlocks on 6 June 2026</h2>
           <p class="small secondary">Monthly forecasts need a full month of data — you have 13 of 31 days.</p>
@@ -404,9 +401,9 @@
     <article class="surface span-8" aria-labelledby="fcp-hourly-title">
       <div class="fc-head">
         <h2 class="section-title" id="fcp-hourly-title">Next 24 hours</h2>
-        <span class="xs muted">Now: 18 May, 14:30</span>
+        <span class="xs muted">Now: 18 May, 20:00</span>
       </div>
-      <p class="insight fc-insight">Expect your highest use around <b>19:00 tonight</b> — the shaded range is widest around your evening and morning routine.
+      <p class="insight fc-insight">Your use should stay low overnight and rise around <b>06:30 tomorrow</b> — the shaded range is widest around your morning and evening routine.
         <button class="info" type="button" data-pop="fc-pop-band" aria-label="What is the likely range?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
       </p>
       <div id="fcp-hourly"></div>
@@ -418,10 +415,10 @@
         <p class="fc-sub">Each forecast unlocks on its own</p>
       </div>
       <ul class="rows">
-        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">4.1 so far + 2.3 forecast</span><span class="row__meta mid-num">6.4<span class="unit">kWh</span></span></div></li>
-        <li><div class="row"><span class="well accent row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">4 so far + 41 forecast</span><span class="row__meta mid-num">45<span class="unit">kWh</span></span></div></li>
+        <li><div class="row"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">6.1 so far + 0.4 forecast</span><span class="row__meta mid-num">6.5<span class="unit">kWh</span></span></div></li>
+        <li><div class="row"><span class="well accent row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">6 so far + 39 forecast</span><span class="row__meta mid-num">45<span class="unit">kWh</span></span></div></li>
         <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This month</span><span class="row__sub">Needs a bit more history yet · from 6 June</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
-        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs a bit more history yet</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+        <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs 12 full months · from 6 May 2027</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
       </ul>
     </article>
   </div>
@@ -431,7 +428,7 @@
   <div class="popover" id="fc-pop-est-week" aria-label="About this forecast" hidden>
     <h3>About this forecast <span class="tag">Estimated</span></h3>
     <p>What you've used so far this week, plus our best estimate for the days still to come, based on your first 13 days of data.</p>
-    <p><span class="formula">4 used + 41 forecast = 45 kWh</span></p>
+    <p><span class="formula">6 used + 39 forecast = 45 kWh</span></p>
   </div>
 
   <details class="meta">
@@ -465,7 +462,7 @@
             <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span><span class="row__title">Today</span><span class="row__sub">From 23 May</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
             <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span><span class="row__title">This week</span><span class="row__sub">From 23 May</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
             <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span><span class="row__title">This month</span><span class="row__sub">From 16 June</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
-            <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs a bit more history yet</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
+            <li><div class="row off"><span class="well row__icon"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span><span class="row__title">This year</span><span class="row__sub">Needs 12 full months · from 16 May 2027</span><span class="row__meta"><span class="tag">Not ready</span></span></div></li>
           </ul>
         </div>
         <div class="empty__actions">
@@ -491,40 +488,29 @@
 <script>
 /* Forecast charts */
 (() => {
-  // ── May, day by day (cumulative kWh) ──
+  // ── May, day by day (cumulative kWh). Daily values = the Budgets tab's bars (1–18 May = 187 kWh). ──
   const days = Array.from({ length: 31 }, (_, i) => String(i + 1));
-  const dailyMay = [13.2, 14.0, 12.9, 12.0, 13.2, 11.8, 12.7, 12.5, 11.8, 12.4, 8.2, 7.9, 7.6, 8.1, 7.9, 7.9, 7.7, 5.2];
-  const fcRest = [2.7, 7.8, 7.6, 7.9, 7.4, 7.7, 7.9, 7.8, 7.6, 7.7, 7.8, 7.9, 7.6, 7.6]; // rest of today + 19–31 May
+  const dailyMay = [12.8, 13.4, 11.9, 12.2, 11.5, 12.6, 11.0, 10.8, 12.4, 11.7, 11.4, 8.4, 7.6, 8.1, 7.2, 7.9, 8.3, 7.8];
+  const fcRest = [0.6 + 7.9, 7.8, 7.9, 7.9, 7.8, 7.9, 7.9, 7.9, 7.8, 7.9, 7.9, 7.9, 7.9];   // rest of today + 19 May, then 20–31 May
   const cum = arr => { let s = 0; return arr.map(v => +(s += v).toFixed(1)); };
-  const actual = cum(dailyMay);                                   // … 187.0 on day 18
-  const fcast = cum([actual[17], ...fcRest]).slice(1);            // 189.7 … 290.0
-  const thisMay = actual.concat(fcast.slice(1));                  // 18 actual points (… 187 today) + 13 forecast points
-  thisMay[30] = 290;
-  const lastMayDaily = [9.2, 9.0, 9.4, 8.9, 9.1, 8.6, 8.8, 9.0, 8.7, 8.5, 8.9, 8.4, 8.6, 8.8, 8.2, 8.5, 8.7, 8.3, 8.6, 8.4, 8.8, 8.5, 8.3, 8.6, 8.4, 8.7, 8.5, 8.4, 8.8, 8.6, 8.8];
-  const lastMay = cum(lastMayDaily); lastMay[30] = 269;
-  const tipMonth = (lbl, extra) => i => {
-    const d = `${i + 1} May`;
-    const now = i < 17 ? `used ${actual[i]} kWh` : i === 17 ? `used 187 kWh so far (forecast ${thisMay[17]} by midnight)` : `forecast ${thisMay[i]} kWh`;
-    return `${d} · ${now} · May 2025 ${lastMay[i]} kWh`;
-  };
-  const monthOpts = (budget, extraAria) => ({
+  const actual = cum(dailyMay);                                            // 187.0 on 18 May (20:00)
+  const thisMay = actual.concat(cum([187, ...fcRest]).slice(1)); thisMay[30] = 290;
+  const tipMonth = i => i < 17 ? `${i + 1} May · used ${actual[i]} kWh so far`
+    : i === 17 ? '18 May (today, 20:00) · used 187 kWh so far' : `${i + 1} May · forecast ${thisMay[i]} kWh`;
+  // One line (your use, solid → dashed forecast); budget as the only labelled threshold. No legend + end-label mix.
+  const monthOpts = (budget, tone, aria) => ({
     labels: days, tipLabels: days.map(d => d + ' May'),
-    series: [
-      { name: 'May 2025', tone: 'ink', values: lastMay },
-      { name: 'May 2026', tone: 'accent', values: thisMay, forecastFrom: 17 }
-    ],
+    series: [{ name: '', tone: 'accent', values: thisMay, forecastFrom: 17 }],
     now: { index: 17, label: 'Today' },
-    thresholds: budget ? [{ value: budget, label: 'Budget', tone: 'ink', valueText: budget + ' kWh' }] : [],
+    thresholds: budget ? [{ value: budget, label: 'Budget', tone, emphasis: true, valueText: budget + ' kWh' }] : [],
     xTicks: [0, 9, 19, 30], yMin: 0, yMax: 320, yTicks: [0, 100, 200, 300],
-    yLabel: 'Used since 1 May (kWh)', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
-    tooltip: tipMonth(),
-    ariaLabel: `Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May, then a dashed forecast line to 290 kWh on 31 May. May 2025 is shown as a grey line ending at 269 kWh.${extraAria}`
+    yLabel: 'Your use since 1 May (kWh)', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
+    tooltip: tipMonth, ariaLabel: aria
   });
-  JuneCharts.line('#fc-chart-month', monthOpts(300, ' Budget line at 300 kWh; the forecast stays 10 kWh under it.'));
-  JuneCharts.line('#fcn-chart-month', monthOpts(0, ''));
-  const overOpts = monthOpts(270, ' Budget line at 270 kWh; the forecast crosses it around 29 May and ends 20 kWh over.');
-  overOpts.thresholds = [{ value: 270, label: 'Budget', tone: 'alert', valueText: '270 kWh' }];
-  JuneCharts.line('#fco-chart-month', overOpts);
+  const base = 'Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to 290 kWh on 31 May.';
+  JuneCharts.line('#fc-chart-month', monthOpts(300, 'ink', base + ' Budget line at 300 kWh; the forecast stays 10 kWh under it.'));
+  JuneCharts.line('#fcn-chart-month', monthOpts(0, 'ink', base));
+  JuneCharts.line('#fco-chart-month', monthOpts(270, 'alert', base + ' Budget line at 270 kWh in red; the forecast crosses it around 29 May and ends 20 kWh over.'));
 
   // ── Month by month (Nov 2025 – Oct 2026) ──
   const ym = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
@@ -538,7 +524,7 @@
       { name: 'This year', tone: 'accent', values: thisYear, forecastFrom: 5, dots: true }
     ],
     now: { index: 6, label: 'Now' },
-    yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], yLabel: 'kWh per month', unit: 'kWh', decimals: 0, forecastName: 'Forecast',
+    yMin: 0, yMax: 600, yTicks: [0, 200, 400, 600], yLabel: 'kWh per month', unit: 'kWh', decimals: 0, forecastName: 'Forecast', endLabels: false,
     tooltip: i => `${ymLong[i]} · ${i < 6 ? 'actual' : 'forecast'} ${thisYear[i]} kWh · a year earlier ${lastYear[i]} kWh`,
     ariaLabel: 'Line chart of monthly use from November 2025 to October 2026. Actual use falls from 512 kWh in January to 442 kWh in April. The dashed forecast continues from 290 kWh in May to a low of 240 kWh in July, rising to 350 kWh in October. Last year is shown as a grey line, slightly lower in most months.'
   });
@@ -549,19 +535,20 @@
   const up = [49, 46, 24, 4, 14, 38, 57, 64, 60, 38, 5, 26, 52, 55, 49, 41];
   const lo = [61, 58, 52, 40, 46, 58, 67, 72, 70, 62, 45, 54, 64, 65, 63, 59];
   const k = v => (100 - v) * 0.006;
-  const interp = (src, n) => Array.from({ length: n }, (_, h) => {
-    const p = h * (src.length - 1) / (n - 1), a = Math.floor(p), b = Math.min(src.length - 1, a + 1), t = p - a;
-    return +(k(src[a]) * (1 - t) + k(src[b]) * t).toFixed(2);
-  });
-  const hourly = (hours, scale = 1, wobble = []) => {
-    const e = interp(est, 25), h = interp(up, 25), l = interp(lo, 25);
-    const rep = a => Array.from({ length: hours + 1 }, (_, i) => +((a[i % 24] * scale) * (1 + (wobble[i] || 0))).toFixed(2));
-    return { e: rep(e), hi: rep(h), lo: rep(l) };
+  // Printed profile starts at 14:30 and spans 24 h over 16 points. Sample it by clock time, starting at 20:00 ("now", D3).
+  const at = (src, hFrom1430) => {
+    const h = ((hFrom1430 % 24) + 24) % 24, p = h * 15 / 24, a = Math.floor(p), b = a + 1 > 15 ? 15 : a + 1, t = p - a;
+    return k(src[a]) * (1 - t) + k(src[b]) * t;
   };
-  const hourLabel = i => i === 0 ? 'Now' : String((14 + i) % 24).padStart(2, '0') + 'h';
+  const hourly = (hours, scale = 1, wobble = []) => {
+    const mk = src => Array.from({ length: hours + 1 }, (_, i) => +(at(src, 5.5 + i) * scale * (1 + (wobble[i] || 0))).toFixed(2));
+    return { e: mk(est), hi: mk(up), lo: mk(lo) };
+  };
+  const clock = i => (20 + i) % 24;
+  const hourLabel = i => i === 0 ? 'Now' : String(clock(i)).padStart(2, '0') + 'h';
   const hourTip = (i, d) => {
-    const hh = (14 + i) % 24, day = (14 + i) >= 48 ? 20 : (14 + i) >= 24 ? 19 : 18;
-    const when = i === 0 ? 'Now (18 May, 14:30)' : `${day} May, ${String(hh).padStart(2, '0')}:00`;
+    const day = 18 + Math.floor((20 + i) / 24);
+    const when = i === 0 ? 'Now (18 May, 20:00)' : `${day} May, ${String(clock(i)).padStart(2, '0')}:00`;
     return `${when} · best estimate ${d.e[i].toFixed(2)} kWh · likely ${d.lo[i].toFixed(2)}–${d.hi[i].toFixed(2)} kWh`;
   };
   const hourlyOpts = (d, hours, ticks, aria) => ({
@@ -571,15 +558,12 @@
     yMin: 0, yMax: 0.6, yTicks: [0, 0.2, 0.4, 0.6], yLabel: 'kWh per hour', unit: 'kWh', decimals: 2,
     bandName: 'Likely range', tooltip: i => hourTip(i, d), ariaLabel: aria
   });
-  const d24 = hourly(24);
-  JuneCharts.line('#fc-hourly-24', hourlyOpts(d24, 24, [2, 6, 10, 14, 18, 22],
-    'Line chart of your expected use per hour for the next 24 hours from 18 May, 14:30, with a shaded likely range. Use peaks around 19:00 tonight at about 0.47 kWh and again around 06:30 tomorrow; it is lowest overnight at about 0.2 kWh. The range is widest in the evening and early morning and narrowest overnight and at midday.'));
+  JuneCharts.line('#fc-hourly-24', hourlyOpts(hourly(24), 24, [4, 8, 12, 16, 20],
+    'Line chart of your expected use per hour for the next 24 hours from 18 May, 20:00, with a shaded likely range. Use stays low overnight at about 0.2 kWh an hour, rises to a morning peak of about 0.45 kWh around 06:30 and an evening peak of about 0.47 kWh around 19:00 tomorrow. The range is widest around those peaks and narrowest overnight and at midday.'));
   const wob = Array.from({ length: 49 }, (_, i) => i > 24 ? ((i * 7) % 5 - 2) * 0.02 : 0);
-  const d48 = hourly(48, 1, wob);
-  JuneCharts.line('#fc-hourly-48', hourlyOpts(d48, 48, [6, 18, 30, 42],
-    'Line chart of your expected use per hour for the next 48 hours from 18 May, 14:30, with a shaded likely range. The same daily rhythm repeats: peaks in the evening around 19:00 and the morning around 06:30, lows overnight and at midday. The range is widest around those routines.'));
-  const dp = hourly(24, 0.85);
-  JuneCharts.line('#fcp-hourly', hourlyOpts(dp, 24, [2, 6, 10, 14, 18, 22],
-    'Line chart of your expected use per hour for the next 24 hours from 18 May, 14:30, with a shaded likely range. Use peaks around 19:00 tonight at about 0.4 kWh and is lowest overnight. The range is widest in the evening and early morning.'));
+  JuneCharts.line('#fc-hourly-48', hourlyOpts(hourly(48, 1, wob), 48, [4, 16, 28, 40],
+    'Line chart of your expected use per hour for the next 48 hours from 18 May, 20:00, with a shaded likely range. The same daily rhythm repeats: peaks in the morning around 06:30 and the evening around 19:00, lows overnight and at midday. The range is widest around those routines.'));
+  JuneCharts.line('#fcp-hourly', hourlyOpts(hourly(24, 0.85), 24, [4, 8, 12, 16, 20],
+    'Line chart of your expected use per hour for the next 24 hours from 18 May, 20:00, with a shaded likely range. Use stays low overnight, peaks around 06:30 and 19:00 at about 0.4 kWh, and the range is widest around those peaks.'));
 })();
 </script>

@@ -10,6 +10,8 @@
 [data-tab="solar"] .sl-legend-note { margin-top: var(--s-3); font-size: var(--fs-xs); color: var(--ink-500); }
 [data-tab="solar"] .sl-season .insight { margin: var(--s-3) 0 var(--s-5); }
 [data-tab="solar"] .sl-raw { max-width: 820px; }
+[data-tab="solar"] .sl-season { display: flex; flex-direction: column; }
+[data-tab="solar"] .sl-next { margin-top: auto; padding-top: var(--s-5); }
 
 /* Filter chips (Import / Export) — toggle buttons with a colour dot + check.
    Not in components.css yet: built here from tokens (see Spec notes). */
@@ -26,12 +28,14 @@
 [data-tab="solar"] .sl-filter .icon { width: 14px; height: 14px; color: var(--ink-700); }
 [data-tab="solar"] .sl-filter[aria-pressed="false"] .icon { display: none; }
 [data-tab="solar"] .sl-filter[aria-pressed="false"] .sl-dot { background: transparent; }
+[data-tab="solar"] .sl-netkey { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 6px; font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="solar"] .sl-netkey i { width: 16px; border-top: 2px solid var(--ink-700); }
 [data-tab="solar"] .sl-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 [data-tab="solar"] .sl-dot.exp { background: var(--elec); box-shadow: inset 0 0 0 1.5px var(--elec-strong); }
 [data-tab="solar"] .sl-dot.imp { background: var(--ink-400); box-shadow: inset 0 0 0 1.5px var(--ink-400); }
 
 /* Flow diagram — the live instrument. Nodes are HTML; lines are an SVG drawn at real size by the script below. */
-[data-tab="solar"] .sl-flow { position: relative; height: 256px; margin-top: var(--s-4); }
+[data-tab="solar"] .sl-flow { position: relative; height: 296px; margin-top: var(--s-4); }
 [data-tab="solar"] .sl-flow > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 [data-tab="solar"] .sl-track { fill: none; stroke-linecap: round; opacity: .38; }
 [data-tab="solar"] .sl-dash { fill: none; stroke-linecap: round; animation: sl-flow 1.4s linear infinite; }
@@ -46,18 +50,14 @@
 [data-tab="solar"] .sl-node.home .sl-node__well { background: var(--accent-soft); color: var(--accent-strong); }
 [data-tab="solar"] .sl-node__name { margin-top: 6px; font-size: var(--fs-xs); color: var(--ink-500); line-height: 1.3; }
 [data-tab="solar"] .sl-node .mid-num { line-height: 1.2; }
-[data-tab="solar"] .sl-pill { position: absolute; transform: translate(-50%, -50%); padding: 2px 10px; border-radius: var(--r-pill); background: var(--surface-raised); box-shadow: var(--shadow-1), inset 0 0 0 1px var(--hairline); font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--ink-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
-[data-tab="solar"] .sl-legend { margin-top: var(--s-5); border-top: 1px solid var(--hairline); padding-top: var(--s-3); }
-[data-tab="solar"] .sl-legend li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: var(--fs-sm); color: var(--ink-700); }
-[data-tab="solar"] .sl-legend li b { margin-left: auto; font-variant-numeric: tabular-nums; }
-[data-tab="solar"] .sl-legend .icon { color: var(--ink-500); }
-[data-tab="solar"] .sl-sw { width: 16px; height: 0; border-top: 3px solid; border-radius: 2px; flex: none; }
+[data-tab="solar"] .sl-pill { position: absolute; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--r-pill); background: var(--surface-raised); box-shadow: var(--shadow-1), inset 0 0 0 1px var(--hairline); font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--ink-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
+[data-tab="solar"] .sl-sw { width: 12px; height: 0; border-top: 3px solid; border-radius: 2px; flex: none; }
 [data-tab="solar"] .sl-sw.exp { border-color: var(--elec-strong); } [data-tab="solar"] .sl-sw.imp { border-color: var(--ink-400); } [data-tab="solar"] .sl-sw.home { border-color: var(--accent); }
 
 /* Calibrating state */
 [data-tab="solar"] .sl-cal .callout { margin-top: var(--s-5); max-width: 60ch; }
 @media (min-width: 961px) { [data-tab="solar"] .grid.stretch > .surface { height: 100%; } }
-@media (max-width: 600px) { [data-tab="solar"] .sl-flow { height: 244px; } [data-tab="solar"] .sl-node { width: 88px; } }
+@media (max-width: 600px) { [data-tab="solar"] .sl-flow { height: 292px; } [data-tab="solar"] .sl-node { width: 88px; } }
 </style>
 
 <!-- ════════════════════════════ SOLAR · main (18 May 2026) ════════════════════════════ -->
@@ -69,10 +69,13 @@
       <article class="surface hero">
         <div class="hero__split">
           <div class="sl-hero-left">
-            <h1 class="hero__label" id="sl-title">Net exporter today</h1>
-            <p class="hero__figure hero-num"><span class="num" data-count="3.2">+3.2</span><span class="unit">kWh</span></p>
-            <p class="hero__caption">sent to the grid · 18 May, so far</p>
-            <p class="sl-made">Your panels made <b>8.4 kWh</b> today, and <b>5.2 kWh</b> of it powered your home.</p>
+            <div class="hero__status">
+              <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg>Solar today</span>
+              <span class="xs muted">18 May 2026 · until 20:00</span>
+            </div>
+            <h1 class="hero__sentence" id="sl-title">Sent to the grid today</h1>
+            <p class="hero__figure hero-num"><span class="num" data-count="3.2">3.2</span><span class="unit">kWh</span></p>
+            <p class="sl-made">Your panels made <b>8.4 kWh</b> and 5.2&nbsp;kWh of it powered your home. You also drew <b>4.4 kWh</b> from the grid, mostly this evening.</p>
 
             <div class="stat-row sl-kpis">
               <div class="stat">
@@ -95,25 +98,20 @@
               <svg aria-hidden="true" focusable="false"></svg>
               <div class="sl-node sun" data-node="sun" aria-hidden="true">
                 <span class="sl-node__well"><svg class="icon lg"><use href="#i-sun"/></svg></span>
-                <span class="sl-node__name">Production</span><span class="mid-num">8.4<span class="unit">kWh</span></span>
+                <span class="sl-node__name">Panels made</span><span class="mid-num">8.4<span class="unit">kWh</span></span>
               </div>
               <div class="sl-node" data-node="grid" aria-hidden="true">
                 <span class="sl-node__well"><svg class="icon lg"><use href="#i-zap"/></svg></span>
-                <span class="sl-node__name">Grid</span><span class="mid-num">4.4<span class="unit">kWh</span></span>
+                <span class="sl-node__name">Grid</span>
               </div>
               <div class="sl-node home" data-node="home" aria-hidden="true">
                 <span class="sl-node__well"><svg class="icon lg"><use href="#i-home"/></svg></span>
-                <span class="sl-node__name">Home</span><span class="mid-num">9.6<span class="unit">kWh</span></span>
+                <span class="sl-node__name">Home used</span><span class="mid-num">9.6<span class="unit">kWh</span></span>
               </div>
-              <span class="sl-pill" data-pill="exp" aria-hidden="true">3.2</span>
-              <span class="sl-pill" data-pill="home" aria-hidden="true">5.2</span>
-              <span class="sl-pill" data-pill="imp" aria-hidden="true">4.4</span>
+              <span class="sl-pill" data-pill="exp" aria-hidden="true"><i class="sl-sw exp"></i>3.2 exported</span>
+              <span class="sl-pill" data-pill="home" aria-hidden="true"><i class="sl-sw home"></i>5.2 used at home</span>
+              <span class="sl-pill" data-pill="imp" aria-hidden="true"><i class="sl-sw imp"></i>4.4 imported</span>
             </div>
-            <ul class="sl-legend">
-              <li><i class="sl-sw imp" aria-hidden="true"></i><svg class="icon sm" aria-hidden="true"><use href="#i-arrow-down"/></svg>Import <span class="muted">from the grid</span><b>4.4 kWh</b></li>
-              <li><i class="sl-sw exp" aria-hidden="true"></i><svg class="icon sm" aria-hidden="true"><use href="#i-arrow-up"/></svg>Export <span class="muted">to the grid</span><b>3.2 kWh</b></li>
-              <li><i class="sl-sw home" aria-hidden="true"></i><svg class="icon sm" aria-hidden="true"><use href="#i-repeat"/></svg>Used at home<b>5.2 kWh</b></li>
-            </ul>
           </div>
         </div>
       </article>
@@ -145,13 +143,14 @@
             <span class="label">May 2026</span>
             <button type="button" aria-label="Next month" aria-disabled="true"><svg class="icon sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
           </div>
-          <span class="datenav" data-when="year" hidden><span class="label">May 2025 – Apr 2026</span></span>
+          <span class="datenav" data-when="year" hidden><span class="label">Jun 2025 – May 2026</span></span>
         </div>
       </div>
 
       <div class="sl-filters" role="group" aria-label="Show on the chart">
         <button type="button" class="sl-filter" aria-pressed="true" data-series="down"><span class="sl-dot imp" aria-hidden="true"></span>Import<svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></button>
         <button type="button" class="sl-filter" aria-pressed="true" data-series="up"><span class="sl-dot exp" aria-hidden="true"></span>Export<svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></button>
+        <span class="sl-netkey"><i aria-hidden="true"></i>Net</span>
       </div>
 
       <div data-when="day">
@@ -167,7 +166,7 @@
         <div id="sl-chart-month"></div>
       </div>
       <div data-when="year" hidden>
-        <p class="insight sl-insight">From May to September you sent more to the grid than you drew; from October to April the grid covered most of your use. Over the year: <b>1,932 kWh exported</b>, <b>2,513 kWh imported</b>.</p>
+        <p class="insight sl-insight">From June to September you sent more to the grid than you drew; from October on, the grid covered most of your use. Over 12 months: <b>1,720 kWh exported</b>, <b>2,558 kWh imported</b>.</p>
         <div id="sl-chart-year"></div>
       </div>
       <p class="sl-legend-note">Net (Production − Consumption) — above zero = exporting surplus, below = importing a deficit</p>
@@ -178,6 +177,7 @@
       <h2 class="section-title" id="sl-season-title">Seasonal production — last 12 months</h2>
       <p class="insight">Production peaks in July at <b>620 kWh</b> — over 9× December's 68 kWh, your quietest month.</p>
       <div id="sl-season"></div>
+      <p class="sl-next"><a class="link" href="#panel-advice">Use more of your own solar <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a></p>
     </article>
 
     <!-- Detail: raw production & consumption, behind a disclosure -->
@@ -199,7 +199,7 @@
     </article>
   </div>
 
-  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. How the four streams relate: <span class="formula">Consumption = Import + Production − Export</span> — Import/Export are metered, Production/Consumption are Eliq's estimate.</span></p>
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. How the four streams relate: <span class="formula">Consumption = Import + Production − Export</span> — Import/Export are metered, Production/Consumption are our estimate.</span></p>
 
   <!-- Popovers (moved to <body> by app.js) -->
   <div class="popover" id="sl-pop-selfuse" aria-label="Used at home (self-consumption)" hidden>
@@ -223,25 +223,27 @@
     <ul>
       <li>✓ Approved: net-line chart + Import/Export chips + net-balance stat, collapsible raw detail, KPIs with worked-example popups, seasonal stacked chart, flow diagram. IA per ux-audit §3.7: hero (net-balance stat + flow diagram) → KPI pair → Day/Week/Month/Year chart + seasonal → [D] raw → [F] identity equation.</li>
       <li>Tab gated by <code>requiredCapability: "solar"</code> — non-solar users never see it, so there is no teaser/empty panel for them.</li>
-      <li>Hero = the approved balance stat "Net exporter today: +3.2 kWh sent to the grid", split as label / numeral / caption. The flow diagram moved from the side column into the hero aside as the live instrument.</li>
+      <li>Hero (coordinator decision D1, demo-data change 10): chip "Solar today" → sentence "Sent to the grid today" → numeral 3.2 kWh → supporting line that names the 4.4 kWh drawn from the grid. The approved "Net exporter today: +3.2 kWh" was false with the canonical numbers (import 4.4 > export 3.2 → net import 1.2 kWh) and is retired by the product-owner mandate for one truthful household. The flow diagram sits in the hero aside as the live instrument.</li>
       <li>KPIs renamed plain-first: Self-consumption → "Used at home", Self-sufficiency → "From your panels". The technical names, the verbatim body sentences, formulas and worked examples live in the ≈ popovers. The four "Estimated" pills collapse into: one ≈ per KPI, the "Estimated" tag in each popover and one tag on the raw chart, plus the footnote.</li>
       <li>Formula card → the "About these numbers" footnote (identity equation + honesty label verbatim).</li>
-      <li>Flow summary rows kept (Import 4.4 · Export 3.2 · Self-consumed → "Used at home" 5.2).</li>
+      <li>Flow numbers printed once (round 2): the summary rows (Import 4.4 · Export 3.2 · Self-consumed 5.2) became the direct labels on the three flow lines ("4.4 imported", "3.2 exported", "5.2 used at home"); the Grid node no longer shows a total (it read as "grid = 4.4 in total"). Nodes: "Panels made 8.4 kWh", "Home used 9.6 kWh".</li>
+      <li>Next step added: "Use more of your own solar" link → Advice (new copy for sign-off).</li>
     </ul>
     <h4>Phase 4 decisions &amp; fixes</h4>
     <ul>
       <li>Signature motion: dots travel along the three flow lines (1.4s loop, linear). Line width scales with kWh. Reduced motion: static dotted lines; direction is still carried by the arrowheads and the Import/Export words.</li>
-      <li>Net chart fixed to the legend's sign convention: export above zero, import below (the mockup's CSS had them flipped — inventory inconsistency #4). Bars = gross import/export per slot; line = net (export − import). New shared chart: <code>JuneCharts.diverging</code> (app.js). Axis magnitudes are printed without minus signs; region labels "Exporting / Importing" sit in the right gutter.</li>
+      <li>Net chart fixed to the legend's sign convention: export above zero, import below (the mockup's CSS had them flipped — inventory inconsistency #4). Bars = gross import/export per slot; line = net (export − import). New shared chart: <code>JuneCharts.diverging</code> (app.js). Round 2: negative ticks carry a minus sign; "Exporting / Importing" labels stay at 390 px (inside the plot edge); the net line is ink (not teal, which means "used at home") and is keyed as "Net" next to the chips; Day view uses regular 00/06/12/18 ticks with a dashed "Now 20:00" marker.</li>
       <li>One colour meaning across the tab: solar leaving the home (export) = electricity yellow; used at home = June Green; grid import = neutral ink. The mockup used teal for export in the chart and yellow for export in the seasonal legend — unified.</li>
       <li>Filter chips are toggle buttons (<code>aria-pressed</code>) with a colour dot and a check mark (not colour alone). Built in this fragment from tokens — candidate for components.css.</li>
       <li>Self-sufficiency worked example corrected per demo-data: <code>(9.6 − 4.4) / 9.6 = 54%</code> (was 6.9 / 3.2 — inconsistency #2; owner to confirm).</li>
-      <li>Seasonal chart is absolute stacked kWh (inconsistency #3): July tallest at 620 kWh, December shortest at 68 kWh. Window = last 12 <i>full</i> months (May 2025 – Apr 2026) so no partial month sits in the series.</li>
+      <li>Seasonal chart is absolute stacked kWh (inconsistency #3): July tallest at 620 kWh, December shortest at 68 kWh. Window = Jun 2025 – May 2026 (round 2), May = 1–18 May so far (170 kWh), shown in the tooltip; the grid Year view uses the same window.</li>
+      <li>Honesty label reworded (round 2, coordinator): "Production/Consumption are Eliq's estimate" → "… are our estimate" — vendor name means nothing to a homeowner.</li>
     </ul>
     <h4>Data (demo-data.md)</h4>
     <ul>
       <li>Canonical: Production 8.4, Home 9.6, Import 4.4, Export 3.2, Used at home 5.2 kWh; 62% and 54%; Jul 620 / Dec 68 kWh.</li>
-      <li>⚠ <b>Illustrative</b>: hourly import/export/production/consumption for 18 May (00:00–20:00; sums match the canonical totals exactly); daily values for 1–18 May and 12–18 May; monthly production for the other 10 months (May 540, Jun 600, Aug 530, Sep 380, Oct 230, Nov 105, Jan 90, Feb 165, Mar 300, Apr 440 kWh) and the used-at-home / exported split; monthly consumption Nov–Apr reuses the Compare trend (408, 372, 513, 569, 520, 442 kWh). Needs real data before build.</li>
-      <li>⚠ <b>Owner question</b>: "Net exporter today" conflicts with the canonical flow numbers — import (4.4) is larger than export (3.2), so over the day this home is a net <i>importer</i> of 1.2 kWh. Copy kept verbatim (frozen); suggested fix: "Sent 3.2 kWh to the grid today" or define "net exporter" as the solar hours only.</li>
+      <li>⚠ <b>Illustrative</b>: hourly import/export/production/consumption for 18 May (00:00–20:00; sums match the canonical totals exactly); daily values for 1–18 May and 12–18 May; monthly production for the other 10 months (Jun 600, Aug 530, Sep 380, Oct 230, Nov 105, Jan 90, Feb 165, Mar 300, Apr 440 kWh; May 2026 so far 170 = 112 used at home + 58 exported, with 75 imported and 187 kWh used — the Budgets "187 kWh used" figure) and the used-at-home / exported split; monthly consumption Nov–Apr reuses the Compare trend (408, 372, 513, 569, 520, 442 kWh). Needs real data before build.</li>
+      <li>Resolved (D1): net over the day = 3.2 − 4.4 = 1.2 kWh imported; no screen asserts "net exporter".</li>
     </ul>
     <h4>Reason codes</h4>
     <ul><li>Get Location per-stream <code>sync_status</code> = ok for all four streams → this state. Production/Consumption <code>waiting_for_data</code> (under 7 days) → "Solar · still calibrating".</li></ul>
@@ -296,22 +298,22 @@
   const wkExp = [4.1, 2.2, 5.0, 3.8, 1.4, 4.6, 3.2], wkImp = [3.6, 4.9, 3.1, 4.0, 5.6, 3.3, 4.4];
   const moExp = [2.8, 3.5, 1.2, 4.2, 3.9, 2.5, 0.9, 3.1, 4.4, 4.8, 2.0, ...wkExp];
   const moImp = [4.3, 3.9, 5.8, 3.4, 3.5, 4.2, 6.1, 4.0, 3.2, 3.0, 4.7, ...wkImp];
-  const months = ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
-  const monthsLong = ['May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026'];
-  const yHome = [270, 252, 248, 261, 213, 147, 80, 56, 72, 115, 180, 242];   // used at home
-  const yExp = [270, 348, 372, 269, 167, 83, 25, 12, 18, 50, 120, 198];      // exported (home + exported = production)
-  const yImp = [30, 28, 27, 29, 107, 213, 328, 316, 441, 454, 340, 200];
+  const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'];
+  const monthsLong = ['Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026 (1–18 May)'];
+  const yHome = [252, 248, 261, 213, 147, 80, 56, 72, 115, 180, 242, 112];   // used at home
+  const yExp = [348, 372, 269, 167, 83, 25, 12, 18, 50, 120, 198, 58];      // exported (home + exported = production)
+  const yImp = [28, 27, 29, 107, 213, 328, 316, 441, 454, 340, 200, 75];
   const days = n => Array.from({ length: n }, (_, i) => String(i + 1));
   const wk = ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon'];
 
-  const common = { up: { name: 'Export', tone: 'elec' }, down: { name: 'Import', tone: '--ink-400' }, net: { name: 'Net', tone: 'accent-strong' }, upLabel: 'Exporting', downLabel: 'Importing', key: false, unit: 'kWh' };
+  const common = { up: { name: 'Export', tone: 'elec' }, down: { name: 'Import', tone: '--ink-400' }, net: { name: 'Net', tone: '--ink-700' }, upLabel: 'Exporting', downLabel: 'Importing', key: false, unit: 'kWh' };
   const mk = (sel, o) => JuneCharts.diverging(sel, Object.assign({}, common, o, { up: Object.assign({}, common.up, o.up), down: Object.assign({}, common.down, o.down) }));
   const charts = [
     mk('#sl-chart-day', {
       up: { values: dExp }, down: { values: dImp }, slots: 24, labels: hh, tipLabels: hh.map((h, i) => `${h}:00–${hh[(i + 1) % 24]}:00`),
-      xTicks: [0, 6, 12, 16, 22], now: { index: 19, label: 'Now' }, futureLabel: 'Still to come',
+      xTicks: [0, 6, 12, 18], nowLine: { index: 20, label: 'Now 20:00' },
       yMax: 1, yMin: -1, yTicks: [-1, -0.5, 0, 0.5, 1], yLabel: 'kWh per hour', decimals: 2, maxBar: 14,
-      ariaLabel: 'Diverging bar chart for 18 May, 00:00 to 20:00. Export above zero, import below. You exported 3.2 kWh, mostly between 10:00 and 15:00, peaking at 0.62 kWh around 12:00. You imported 4.4 kWh, mostly in the morning and after 17:00, highest at 0.92 kWh between 19:00 and 20:00. The net line is above zero from about 09:00 to 16:00.'
+      ariaLabel: 'Diverging bar chart for 18 May, 00:00 to 20:00. Export above zero, import below. You exported 3.2 kWh, mostly between 10:00 and 15:00, peaking at 0.62 kWh around 12:00. You imported 4.4 kWh, mostly in the morning and after 17:00, highest at 0.92 kWh between 19:00 and 20:00. The net line is above zero from about 09:00 to 16:00; over the day you drew 1.2 kWh more than you sent.'
     }),
     mk('#sl-chart-week', {
       up: { values: wkExp }, down: { values: wkImp }, labels: wk, tipLabels: wk.map((d, i) => `${d} ${12 + i} May`), now: { index: 6, label: 'Today' },
@@ -327,7 +329,8 @@
     mk('#sl-chart-year', {
       up: { values: yExp }, down: { values: yImp }, labels: months, tipLabels: monthsLong,
       yMax: 500, yMin: -500, yTicks: [-500, -250, 0, 250, 500], yLabel: 'kWh per month', decimals: 0, maxBar: 24,
-      ariaLabel: 'Diverging bar chart for May 2025 to April 2026. From May to September you exported more than you imported, most in July (372 kWh exported). From October to April you imported more, most in February (454 kWh imported). Over the year: 1,932 kWh exported and 2,513 kWh imported.'
+      now: { index: 11, label: 'May' },
+      ariaLabel: 'Diverging bar chart for June 2025 to May 2026 (May so far). From June to September you exported more than you imported, most in July (372 kWh exported). From October on you imported more, most in February (454 kWh imported). Over 12 months: 1,720 kWh exported and 2,558 kWh imported.'
     })
   ];
 
@@ -341,11 +344,11 @@
 
   JuneCharts.bars('#sl-season', {
     series: [{ name: 'Used at home', values: yHome, tone: 'accent' }, { name: 'Exported', values: yExp, tone: 'elec' }],
-    labels: months, tipLabels: monthsLong, xTicks: [0, 2, 4, 6, 8, 10],
-    annotation: { index: 2, text: '620 kWh', tone: 'ink' },
-    yMax: 700, yTicks: [0, 350, 700], height: 300, yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
+    labels: months, tipLabels: monthsLong, xTicks: [1, 3, 5, 7, 9, 11],
+    annotation: { index: 1, text: '620 kWh', tone: 'ink' },
+    yMax: 700, yTicks: [0, 200, 400, 600], height: 300, yLabel: 'Production (kWh)', unit: 'kWh', decimals: 0, maxBar: 16,
     tooltip: (i, v) => `${monthsLong[i]} · ${v} kWh made · ${yHome[i]} used at home · ${yExp[i]} exported`,
-    ariaLabel: 'Stacked bar chart of monthly solar production, May 2025 to April 2026, split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months export more than half; winter months use almost all of it at home.'
+    ariaLabel: 'Stacked bar chart of monthly solar production, June 2025 to May 2026 (May so far: 170 kWh), split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months export more than half; winter months use almost all of it at home.'
   });
 
   JuneCharts.line('#sl-raw', {
@@ -389,8 +392,8 @@
       s += `<path class="sl-track f-${f.k}" d="${path}" stroke-width="${sw.toFixed(1)}"/>`;
       s += `<path class="sl-dash f-${f.k}" d="${path}" stroke-width="${sw.toFixed(1)}" stroke-dasharray="0 14"/>`;
       s += head(d, bez(a, b, c, d, 0.9), 'f-' + f.k, sw);
-      const mid = bez(a, b, c, d, 0.5), el = pill(f.k);
-      el.style.left = mid[0] + 'px'; el.style.top = mid[1] + 'px';
+      const el = pill(f.k), mid = bez(a, b, c, d, f.k === 'imp' ? 0.5 : (W < 420 ? 0.8 : 0.62)), hw = el.offsetWidth / 2;
+      el.style.left = Math.max(hw, Math.min(W - hw, mid[0])) + 'px'; el.style.top = mid[1] + 'px';
     });
     svg.innerHTML = s;
     Object.assign(node('sun').style, { left: sun[0] + 'px', top: sun[1] + 'px' });
