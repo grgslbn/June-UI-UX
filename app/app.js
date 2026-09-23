@@ -3,7 +3,7 @@
    Loaded in <head> (not deferred) so window.JuneCharts exists before fragment
    scripts run. All DOM wiring waits for DOMContentLoaded. No per-tab code here.
      1  Helpers
-     2  window.JuneCharts — bars · line · hbars · meter (+ declarative data-chart)
+     2  window.JuneCharts — bars · line · hbars · meter · diverging (+ declarative data-chart)
      3  Panels, product tab bar, hash deep-links, reviewer picker, theme
      4  Segmented controls · disclosures · popovers · readiness · count-up
    Everything respects prefers-reduced-motion (fades only; no count-up/grow).
@@ -436,7 +436,131 @@
       host.innerHTML = s;
     }
 
-    const renderers = { bars, line, hbars, meter };
+    /* ── diverging (two flows around a zero line + optional signed net line) ─
+       opts: up {name, values, tone} (drawn above zero), down {name, values, tone}
+       (positive magnitudes, drawn below zero), net {name, tone, values?} | false
+       (signed line; default values = up − down), show {up, down, net} (filter chips),
+       slots, labels, tipLabels, xTicks, now {index,label}, futureLabel,
+       upLabel / downLabel (region labels in the right gutter, e.g. 'Exporting'),
+       yMax / yMin (yMin ≤ 0) / yTicks (signed; printed without a minus sign),
+       yLabel, unit, decimals, height, maxBar, key (default true), tooltip(i)→str,
+       interactive, ariaLabel. Tones as bars (accent | elec | gas | compare | muted | ink | cat-n);
+       net line tones as line (accent | accent-strong | ink | elec | gas).             */
+    function diverging(host, o, W) {
+      const up = o.up || { values: [] }, dn = o.down || { values: [] };
+      const fv = t => (t && t.startsWith('--')) ? `var(${t})` : fillVar(t); // also accepts a token name, e.g. '--ink-400'
+      const show = Object.assign({ up: true, down: true, net: true }, o.show || {});
+      const nData = Math.max(up.values.length, dn.values.length);
+      const n = Math.max(o.slots || 0, nData);
+      const has = i => up.values[i] != null || dn.values[i] != null;
+      const netOn = o.net !== false;
+      const netO = netOn ? (o.net || {}) : null;
+      const netVals = netOn ? (netO.values || [...Array(nData).keys()].map(i => has(i) ? (up.values[i] || 0) - (dn.values[i] || 0) : null)) : [];
+      const dec = o.decimals ?? decOf([...up.values, ...dn.values, ...netVals]);
+      const unit = o.unit ? ' ' + o.unit : '';
+      const narrow = W < 480;
+      const labels = o.labels || [...Array(n).keys()].map(i => String(i + 1));
+      const vis = arr => arr.filter(v => v != null);
+      const hiV = Math.max(0, ...(show.up ? vis(up.values) : []), ...(netOn && show.net ? vis(netVals) : []));
+      const loV = Math.max(0, ...(show.down ? vis(dn.values) : []), ...(netOn && show.net ? vis(netVals).map(v => -v) : []));
+      let top, bot, ticks;
+      if (o.yMax != null) {
+        top = o.yMax; bot = o.yMin != null ? o.yMin : -o.yMax;
+        ticks = o.yTicks || [bot, 0, top];
+      } else { // symmetric nice scale so above/below read at the same size
+        const sc = niceScale(Math.max(hiV, loV, 0.1) * 1.08, 0, narrow ? 2 : 2);
+        top = sc.max; bot = -sc.max; ticks = sc.ticks.slice(1).map(t => -t).reverse().concat(sc.ticks);
+      }
+      const tdec = decOf(ticks);
+      const tickTxt = t => fmtN(Math.abs(t), tdec);
+      const tickW = Math.max(...ticks.map(t => textW(tickTxt(t))));
+      const regions = !narrow && (o.upLabel || o.downLabel);
+      const gut = regions ? Math.ceil(Math.max(textW(o.upLabel || '', 600), textW(o.downLabel || '', 600))) + 22 : 8;
+      const capH = o.yLabel ? 24 : 0;
+      const H = o.height || (narrow ? 220 : 260);
+      const m = { l: tickW + 12, r: gut, t: capH + 10, b: 26 };
+      const pw = W - m.l - m.r, ph = H - m.t - m.b;
+      const y = v => m.t + ((top - v) / (top - bot)) * ph;
+      const base = y(0);
+      const slot = pw / n, bw = Math.max(2, Math.min(slot * 0.62, o.maxBar || 18)), rad = Math.min(4, bw / 3);
+      const cx = i => m.l + (i + 0.5) * slot;
+      const barPath = (x0, from, to) => { // rounded only at the end away from zero
+        const x1 = x0 + bw, h = Math.abs(to - from), r = Math.min(rad, h / 2), d = to < from ? 1 : -1; // d=1: bar goes up
+        return `M${x0.toFixed(1)} ${from.toFixed(1)}V${(to + d * r).toFixed(1)}Q${x0.toFixed(1)} ${to.toFixed(1)} ${(x0 + r).toFixed(1)} ${to.toFixed(1)}H${(x1 - r).toFixed(1)}Q${x1.toFixed(1)} ${to.toFixed(1)} ${x1.toFixed(1)} ${(to + d * r).toFixed(1)}V${from.toFixed(1)}Z`;
+      };
+      let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">`;
+      if (capH) s += `<text class="jc-caption" x="0" y="12">${esc(o.yLabel)}</text>`;
+      ticks.forEach(t => {
+        if (t !== 0) s += `<line class="jc-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}"/>`;
+        s += `<text class="jc-tick" x="${m.l - 10}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end">${tickTxt(t)}</text>`;
+      });
+      // bars: up from zero, down from zero (grow away from the zero line)
+      for (let i = 0; i < nData; i++) {
+        if (!has(i)) continue;
+        const delay = Math.min(i * 16, 300), x0 = cx(i) - bw / 2;
+        const u = up.values[i], d = dn.values[i];
+        if (show.up && u) s += `<path class="jc-bar" data-i="${i}" d="${barPath(x0, base - 1, y(u))}" style="fill:${fv(up.tone || 'accent')};animation-delay:${delay}ms"/>`;
+        if (show.down && d) s += `<path class="jc-bar" data-i="${i}" d="${barPath(x0, base + 1, y(-d))}" style="fill:${fv(dn.tone || 'compare')};transform-origin:50% 0;animation-delay:${delay}ms"/>`;
+      }
+      s += `<line class="jc-axis" x1="${m.l}" x2="${W - m.r}" y1="${base.toFixed(1)}" y2="${base.toFixed(1)}" style="stroke:var(--ink-400)"/>`;
+      for (let i = nData; i < n; i++) s += `<circle class="jc-future jc-late" cx="${cx(i).toFixed(1)}" cy="${(base - 3).toFixed(1)}" r="1.5"/>`;
+      if (o.futureLabel && n > nData) {
+        const fx0 = m.l + nData * slot, fw = (n - nData) * slot, tw = textW(o.futureLabel);
+        if (fw > tw + 16) s += `<text class="jc-future-label jc-late" x="${(fx0 + fw / 2).toFixed(1)}" y="${(m.t + (base - m.t) * 0.5).toFixed(1)}" text-anchor="middle">${esc(o.futureLabel)}</text>`;
+      }
+      // net line (signed)
+      if (netOn && show.net) {
+        let d = '', pen = false;
+        for (let i = 0; i < nData; i++) {
+          if (netVals[i] == null) { pen = false; continue; }
+          d += `${pen ? 'L' : 'M'}${cx(i).toFixed(1)} ${y(netVals[i]).toFixed(1)}`; pen = true;
+        }
+        const tone = netO.tone || 'accent-strong';
+        if (d) s += `<path class="jc-line jc-draw t-${tone}" d="${d}" pathLength="1" style="--len:1;stroke-dasharray:${motionOK() ? 1 : 'none'}"/>`;
+        let li = -1; for (let i = nData - 1; i >= 0; i--) if (netVals[i] != null) { li = i; break; }
+        if (li >= 0) s += `<circle class="jc-dot jc-late t-${tone === 'accent-strong' ? 'accent' : tone}" cx="${cx(li).toFixed(1)}" cy="${y(netVals[li]).toFixed(1)}" r="3.5"${tone === 'accent-strong' ? ' style="fill:var(--accent-strong)"' : ''}/>`;
+      }
+      // region labels (direct labels for "above / below zero") in the right gutter
+      if (regions) {
+        const gx = W - m.r + 14;
+        if (o.upLabel) s += `<text class="jc-thr-val jc-late" x="${gx}" y="${(m.t + 12).toFixed(1)}">↑ ${esc(o.upLabel)}</text>`;
+        if (o.downLabel) s += `<text class="jc-thr-val jc-late" x="${gx}" y="${(m.t + ph - 2).toFixed(1)}">↓ ${esc(o.downLabel)}</text>`;
+      }
+      // x ticks (+ "now")
+      const ticksX = pickTicks(o, n, labels, pw).filter(i => !o.now || Math.abs(cx(i) - cx(o.now.index)) > (textW(o.now.label, 600) / 2 + textW(labels[i]) / 2 + 6));
+      ticksX.forEach(i => s += `<text class="jc-tick" x="${cx(i).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(labels[i])}</text>`);
+      if (o.now) s += `<text class="jc-tick strong" x="${Math.max(m.l + textW(o.now.label, 600) / 2, Math.min(W - m.r - textW(o.now.label, 600) / 2, cx(o.now.index))).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(o.now.label)}</text>`;
+      for (let i = 0; i < nData; i++) if (has(i)) s += `<rect class="jc-hit" data-i="${i}" x="${(cx(i) - slot / 2).toFixed(1)}" y="${m.t}" width="${slot.toFixed(1)}" height="${ph}"/>`;
+      s += `</svg><div class="jc-tip" aria-hidden="true"></div>`;
+      const keyEntries = [];
+      if (o.key !== false) {
+        if (show.up) keyEntries.push({ swatch: `<i class="dot" style="background:${fv(up.tone || 'accent')}"></i>`, name: up.name || '' });
+        if (show.down) keyEntries.push({ swatch: `<i class="dot" style="background:${fv(dn.tone || 'compare')}"></i>`, name: dn.name || '' });
+        if (netOn && show.net) keyEntries.push({ swatch: `<i class="ln" style="border-color:${toneVar(netO.tone || 'accent-strong')}"></i>`, name: netO.name || 'Net' });
+      }
+      host.innerHTML = keyHTML(keyEntries.filter(e => e.name)) + s;
+      const svg = host.querySelector('svg'), barsEls = $$('.jc-bar', svg);
+      const tipLabels = o.tipLabels || labels;
+      const text = i => {
+        if (typeof o.tooltip === 'function') return o.tooltip(i);
+        const parts = [];
+        if (show.up) parts.push(`${up.name || 'Above'} ${fmtN(up.values[i] || 0, dec)}${unit}`);
+        if (show.down) parts.push(`${dn.name || 'Below'} ${fmtN(dn.values[i] || 0, dec)}${unit}`);
+        if (netOn && show.net && netVals[i] != null) parts.push(`${netO.name || 'Net'} ${fmtN(Math.abs(netVals[i]), dec)}${unit} ${netVals[i] >= 0 ? (o.upLabel || 'above').toLowerCase() : (o.downLabel || 'below').toLowerCase()}`);
+        return `${tipLabels[i]} · ${parts.join(' · ')}`;
+      };
+      if (o.interactive !== false) {
+        host._xToIndex = null;
+        wireTips(host, svg, nData, has, i => {
+          const cand = [base];
+          if (show.up && up.values[i]) cand.push(y(up.values[i]));
+          if (netOn && show.net && netVals[i] != null) cand.push(y(netVals[i]));
+          return [cx(i), Math.min(...cand) - 10 + (host.querySelector('.jc-key')?.offsetHeight || 0)];
+        }, text, i => barsEls.forEach(b => b.classList.toggle('on', +b.dataset.i === i)));
+      }
+    }
+
+    const renderers = { bars, line, hbars, meter, diverging };
 
     /* Declarative: <div data-chart="bars"><script type="application/json">{…}</script></div> */
     function render(root = document) {
@@ -453,6 +577,7 @@
     return {
       bars: (el, o) => mount(el, 'bars', o), line: (el, o) => mount(el, 'line', o),
       hbars: (el, o) => mount(el, 'hbars', o), meter: (el, o) => mount(el, 'meter', o),
+      diverging: (el, o) => mount(el, 'diverging', o),
       render, refresh, _draw: draw
     };
   })();

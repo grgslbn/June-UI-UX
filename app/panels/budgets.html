@@ -1,0 +1,586 @@
+<style>
+/* Budgets — tab-specific layout only (components come from components.css) */
+[data-tab="budgets"] .bg-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; flex-wrap: wrap; margin-bottom: var(--gap); }
+[data-tab="budgets"] .bg-bar .xs { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Hero */
+[data-tab="budgets"] .bg-pace { margin-top: var(--s-5); padding-top: var(--s-5); border-top: 1px solid var(--hairline); }
+[data-tab="budgets"] .bg-pace .overline { margin-bottom: var(--s-1); }
+[data-tab="budgets"] .bg-pace .hero__figure { margin-top: var(--s-1); }
+[data-tab="budgets"] .bg-pace .hero__caption { display: block; max-width: 44ch; }
+[data-tab="budgets"] .bg-pace .hero__caption .info { margin-left: 2px; }
+[data-tab="budgets"] .bg-aside { display: flex; flex-direction: column; gap: var(--s-5); }
+[data-tab="budgets"] .bg-aside .meter { margin-top: var(--s-3); }
+[data-tab="budgets"] .bg-aside .meter-key { gap: 8px 20px; }
+[data-tab="budgets"] .bg-period { display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-period .icon { color: var(--ink-400); }
+[data-tab="budgets"] .bg-recent { margin-top: var(--s-4); }
+
+/* Chart tile */
+[data-tab="budgets"] .bg-chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+[data-tab="budgets"] .bg-insight { margin: var(--s-3) 0 var(--s-5); }
+
+/* History & streak */
+[data-tab="budgets"] .bg-hist { display: flex; flex-direction: column; gap: var(--s-5); }
+[data-tab="budgets"] .bg-streak { display: flex; gap: 14px; align-items: center; }
+[data-tab="budgets"] .bg-streak__t { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: var(--w-semibold); color: var(--ink-900); line-height: var(--lh-snug); }
+[data-tab="budgets"] .bg-months { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+[data-tab="budgets"] .bg-month { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 2px; border-radius: var(--r-sm); background: var(--surface-sunken); font-size: var(--fs-xs); color: var(--ink-700); text-align: center; line-height: 1.3; }
+[data-tab="budgets"] .bg-month .icon { width: 16px; height: 16px; }
+[data-tab="budgets"] .bg-month__m { font-weight: var(--w-semibold); color: var(--ink-900); }
+[data-tab="budgets"] .bg-month.under { background: var(--accent-soft); }
+[data-tab="budgets"] .bg-month.under .icon { color: var(--accent-strong); }
+[data-tab="budgets"] .bg-month.over { background: var(--alert-soft); color: var(--alert); }
+[data-tab="budgets"] .bg-month.none { background: repeating-linear-gradient(135deg, var(--ink-100) 0 3px, transparent 3px 7px), var(--surface-sunken); }
+[data-tab="budgets"] .bg-month.none .icon { color: var(--ink-500); }
+[data-tab="budgets"] .bg-month.now { background: transparent; box-shadow: inset 0 0 0 1px var(--ink-200); border: 1px dashed var(--ink-400); padding: 9px 1px; }
+[data-tab="budgets"] .bg-month.now .icon { color: var(--ink-500); }
+[data-tab="budgets"] .bg-best { margin-top: auto; display: flex; align-items: center; gap: 10px; padding-top: var(--s-4); border-top: 1px solid var(--hairline); font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-best .icon { color: var(--ink-400); }
+[data-tab="budgets"] .bg-best b { margin-left: auto; }
+[data-tab="budgets"] .bg-foot-link { margin-top: auto; }
+
+/* Settings / setup: mode picker as radio cards */
+[data-tab="budgets"] .bg-settings { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+[data-tab="budgets"] .bg-modes { display: grid; gap: 12px; border: 0; margin: 0; padding: 0; min-width: 0; }
+[data-tab="budgets"] .bg-modes legend { padding: 0; margin-bottom: var(--s-3); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--ink-900); }
+[data-tab="budgets"] .bg-mode { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; padding: 16px 18px; border-radius: var(--r-md); background: var(--surface); box-shadow: inset 0 0 0 1px var(--ink-200); transition: box-shadow var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out); }
+[data-tab="budgets"] .bg-mode:hover { background: var(--surface-sunken); }
+[data-tab="budgets"] .bg-mode:has(input:checked) { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent-strong); }
+[data-tab="budgets"] .bg-mode label { display: contents; cursor: pointer; }
+[data-tab="budgets"] .bg-mode input[type="radio"] { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; margin: 2px 0 0; border-radius: 50%; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--ink-400); cursor: pointer; transition: box-shadow var(--dur-fast) var(--ease-out); grid-row: 1 / span 2; }
+[data-tab="budgets"] .bg-mode input[type="radio"]:checked { box-shadow: inset 0 0 0 6px var(--accent-strong); }
+[data-tab="budgets"] .bg-mode input[type="radio"]:focus-visible { box-shadow: inset 0 0 0 6px var(--accent-strong), var(--focus-ring); }
+[data-tab="budgets"] .bg-mode__t { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: var(--w-semibold); color: var(--ink-900); }
+[data-tab="budgets"] .bg-mode__d { grid-column: 2; margin-top: 4px; font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-mode__extra { grid-column: 2; display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--dur-base) var(--ease-in-out), visibility 0s linear var(--dur-base); }
+[data-tab="budgets"] .bg-mode__extra > div { overflow: hidden; min-height: 0; }
+[data-tab="budgets"] .bg-mode:has(input:checked) .bg-mode__extra { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows var(--dur-base) var(--ease-in-out); }
+[data-tab="budgets"] .bg-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: var(--s-4); }
+[data-tab="budgets"] .bg-field label { font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-input { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border-radius: var(--r-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--ink-200); font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-input:focus-within { box-shadow: inset 0 0 0 1px var(--accent-strong), var(--focus-ring); }
+[data-tab="budgets"] .bg-input input { width: 64px; border: 0; background: transparent; font: inherit; font-family: var(--font-display); font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); font-variant-numeric: tabular-nums; outline: none; padding: 0; }
+[data-tab="budgets"] .bg-field .xs { flex-basis: 100%; color: var(--ink-500); }
+[data-tab="budgets"] .bg-dl { display: grid; gap: 0; margin: 0; }
+[data-tab="budgets"] .bg-dl > div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--hairline); font-size: var(--fs-sm); }
+[data-tab="budgets"] .bg-dl dt { color: var(--ink-700); }
+[data-tab="budgets"] .bg-dl dd { margin: 0; color: var(--ink-900); font-weight: var(--w-semibold); text-align: right; }
+[data-tab="budgets"] .bg-settings-actions { margin-top: var(--s-5); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* Variants */
+[data-tab="budgets"] .bg-gap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: var(--s-5); }
+[data-tab="budgets"] .bg-gap .stat__label { font-size: var(--fs-xs); color: var(--ink-500); }
+[data-tab="budgets"] .bg-gap .icon { color: var(--ink-400); }
+[data-tab="budgets"] .bg-cta { display: flex; flex-direction: column; gap: var(--s-3); }
+[data-tab="budgets"] .bg-cta .btn { align-self: flex-start; margin-top: auto; }
+[data-tab="budgets"] .bg-next { display: flex; flex-direction: column; gap: var(--s-4); }
+[data-tab="budgets"] .bg-next li { display: flex; gap: 14px; align-items: flex-start; }
+[data-tab="budgets"] .bg-next li p { font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="budgets"] .bg-next li b { display: block; font-size: var(--fs-md); }
+[data-tab="budgets"] .bg-config { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: var(--s-5); padding: 12px 16px; border-radius: var(--r-md); background: var(--surface-sunken); font-size: var(--fs-sm); color: var(--ink-700); max-width: 520px; }
+[data-tab="budgets"] .bg-config b { margin-left: 4px; }
+[data-tab="budgets"] .bg-setup-head { margin-bottom: var(--s-6); }
+[data-tab="budgets"] .bg-setup-head .hero__sentence { margin-top: var(--s-2); }
+[data-tab="budgets"] .bg-how { display: flex; flex-direction: column; gap: var(--s-4); }
+
+@media (min-width: 961px) { [data-tab="budgets"] .grid.stretch > .surface { height: 100%; } }
+@media (max-width: 960px) { [data-tab="budgets"] .bg-settings { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 600px) {
+  [data-tab="budgets"] .bg-bar { flex-direction: column; align-items: stretch; }
+  [data-tab="budgets"] .bg-bar .seg { width: 100%; }
+  [data-tab="budgets"] .bg-month { padding: 10px 0; }
+  [data-tab="budgets"] .bg-cta .btn { align-self: stretch; }
+}
+</style>
+
+<!-- ════════════════════════════ BUDGETS · On track (main) ════════════════════════════ -->
+<section class="panel" id="panel-budgets" data-tab="budgets" data-label="Budgets · On track" aria-labelledby="bg-title">
+  <div class="bg-bar">
+    <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
+      <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
+      <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+    </div>
+    <span class="xs muted"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg>Updated today, 20:00</span>
+  </div>
+
+  <div class="grid stretch">
+    <!-- Hero: status + remaining allowance, the pace that keeps it, one meter -->
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <div class="hero__status">
+              <span class="chip positive"><span class="dot" aria-hidden="true"></span>On track</span>
+              <span class="xs muted">May 2026 · electricity</span>
+            </div>
+            <h1 class="hero__sentence" id="bg-title">On track — 113&nbsp;kWh left for 13&nbsp;days.</h1>
+            <div class="bg-pace">
+              <p class="overline">Stay under</p>
+              <p class="hero__figure hero-num"><span class="num" data-count="8.7">8.7</span><span class="unit">kWh/day</span></p>
+              <p class="hero__caption">Keep usage under this for the remaining 13 days and you'll stay within budget.
+                <button class="info" type="button" data-pop="bg-pop-pace" aria-label="How is this worked out?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+              </p>
+            </div>
+          </div>
+          <div class="hero__aside bg-aside">
+            <div>
+              <p class="overline">May so far</p>
+              <div class="meter" style="--used: 56.7; --fcast: 87.9; --limit: 90.9"
+                   role="img" aria-label="Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.">
+                <span class="meter__fcast grow-x"></span>
+                <span class="meter__fill grow-x"></span>
+                <span class="meter__limit"></span>
+              </div>
+              <div class="meter-key">
+                <span><i class="sw" aria-hidden="true"></i>Used so far <b>187&nbsp;kWh</b></span>
+                <span><i class="sw fcast" aria-hidden="true"></i>Forecast <b>290&nbsp;kWh</b></span>
+                <span><i class="sw limit" aria-hidden="true"></i>Budget <b>300&nbsp;kWh</b></span>
+              </div>
+            </div>
+            <p class="bg-period"><svg class="icon sm" aria-hidden="true"><use href="#i-calendar"/></svg>1–31 May · day 18, 13 days left</p>
+            <p class="callout accent"><svg class="icon sm" aria-hidden="true"><use href="#i-trend-down"/></svg><span>Your last 7 days averaged <b>7.9&nbsp;kWh/day</b> — already under the pace you need.</span></p>
+            <a class="link" href="#panel-forecast">See your full forecast <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Supporting: daily use against the pace line -->
+    <article class="surface span-8" id="bg-chart-tile" aria-labelledby="bg-chart-title">
+      <div class="bg-chart-head">
+        <h2 class="section-title" id="bg-chart-title">Daily use</h2>
+        <div class="seg" role="radiogroup" aria-label="Show" data-seg-target="#bg-chart-tile">
+          <button type="button" data-value="week" aria-checked="false">Week</button>
+          <button type="button" data-value="month" aria-checked="true">Month</button>
+        </div>
+      </div>
+      <div data-when="month">
+        <p class="insight bg-insight">Since 12 May you've used <b>7.9&nbsp;kWh a day</b> on average — under the 8.7&nbsp;kWh a day that keeps May within budget.</p>
+        <div id="bg-chart-month"></div>
+      </div>
+      <div data-when="week" hidden>
+        <p class="insight bg-insight">All of the last 7 days came in under <b>8.7&nbsp;kWh</b> — the highest was 8.4&nbsp;kWh on Tuesday 12 May.</p>
+        <div id="bg-chart-week"></div>
+      </div>
+    </article>
+
+    <!-- Supporting: history & streak -->
+    <article class="surface span-4 bg-hist" aria-labelledby="bg-hist-title">
+      <h2 class="section-title" id="bg-hist-title">History &amp; streak</h2>
+      <div class="bg-streak">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+        <div>
+          <p class="bg-streak__t">2-month streak</p>
+          <p class="small secondary">Under budget since March</p>
+        </div>
+      </div>
+      <ol class="bg-months" aria-label="Last 5 months">
+        <li class="bg-month none"><span class="bg-month__m">Jan</span><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>No data</span></li>
+        <li class="bg-month over"><span class="bg-month__m">Feb</span><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg><span>Over</span></li>
+        <li class="bg-month under"><span class="bg-month__m">Mar</span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Under</span></li>
+        <li class="bg-month under"><span class="bg-month__m">Apr</span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Under</span></li>
+        <li class="bg-month now"><span class="bg-month__m">May</span><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg><span>So far</span></li>
+      </ol>
+      <p class="bg-best"><svg class="icon sm" aria-hidden="true"><use href="#i-trophy"/></svg>Best ever (last 24 months)<b>5 months</b></p>
+    </article>
+
+    <!-- Detail: settings behind a disclosure -->
+    <article class="surface span-12 disclosure">
+      <button class="disc-btn" type="button" aria-expanded="false" aria-controls="bg-set-body">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-sliders"/></svg></span>
+        <span><span class="t">Budget settings</span><span class="s">Auto (20% margin) · Monthly, 1–31 May · 300&nbsp;kWh</span></span>
+        <span class="chev" aria-hidden="true"><svg class="icon sm"><use href="#i-chev-d"/></svg></span>
+      </button>
+      <div class="disc-body" id="bg-set-body">
+        <div><div class="disc-inner">
+          <div class="bg-settings">
+            <fieldset class="bg-modes">
+              <legend>How your limit is set</legend>
+              <div class="bg-mode">
+                <label>
+                  <input type="radio" name="bg-mode-main" value="auto" checked>
+                  <span class="bg-mode__t">Auto <span class="tag accent">Recommended</span></span>
+                </label>
+                <p class="bg-mode__d">We set your limit each period from your own forecast, +20% margin. No number to guess — it adapts as your usage changes.</p>
+              </div>
+              <div class="bg-mode">
+                <label>
+                  <input type="radio" name="bg-mode-main" value="manual">
+                  <span class="bg-mode__t">Manual</span>
+                </label>
+                <p class="bg-mode__d">Pick your own fixed limit. Stays the same every period until you change it.</p>
+                <div class="bg-mode__extra"><div>
+                  <div class="bg-field">
+                    <label for="bg-limit-main">Monthly limit</label>
+                    <span class="bg-input"><input id="bg-limit-main" type="number" inputmode="numeric" min="1" step="1" value="290">kWh</span>
+                    <span class="xs">Suggested: 290&nbsp;kWh, based on your forecast</span>
+                  </div>
+                </div></div>
+              </div>
+            </fieldset>
+            <div>
+              <dl class="bg-dl">
+                <div><dt>Energy</dt><dd>Electricity</dd></div>
+                <div><dt>Period</dt><dd>Monthly · 1–31 May</dd></div>
+                <div><dt>This month's limit</dt><dd>300 kWh</dd></div>
+                <div><dt>Mode</dt><dd>Auto (20% margin)</dd></div>
+              </dl>
+              <div class="bg-settings-actions">
+                <button class="btn btn--secondary" type="button"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: the daily figure is what's left of your budget divided by the days left. The forecast is our estimate of your total for May. Assumes fairly even usage the rest of the period.</span></p>
+
+  <div class="popover" id="bg-pop-pace" aria-label="Your daily pace" hidden>
+    <h3>Your daily pace</h3>
+    <p>What's left of your budget, shared evenly over the days left in May.</p>
+    <p><span class="formula">(300 − 187) ÷ 13 = 8.7 kWh/day</span></p>
+    <p>You've used 187 kWh in 18 days — about 10.4 kWh a day overall, but only 7.9 kWh a day over the last week.</p>
+    <p class="note">Assumes fairly even usage the rest of the period.</p>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Budgets</summary>
+    <h4>Approval &amp; structure</h4>
+    <ul>
+      <li>✓ Approved: progress chart (daily bars, month/week resolutions), pacing tip, history/streak — derived from the real Budget and BudgetHistory schemas (<code>oas/eliq-insights-api.yaml</code>). IA per ux-audit §3.3: hero (status + allowance + pace + one meter) → daily chart + history → settings disclosure.</li>
+      <li>Hero numeral = the pacing answer "≤ 8.7 kWh/day" (written "Stay under 8.7 kWh/day"). Pacing title "On track" = the status chip. Used / Forecast / Limit numbers row folded into the meter key (one reading line). "Limit" labelled "Budget" to match Overview.</li>
+      <li>Fuel/period tabs "⚡ Electricity · Monthly | 🔥 Gas · Weekly" kept as a fuel toggle; Gas is shown but disabled in this demo (no gas budget data in the source). Needs a gas state from product.</li>
+    </ul>
+    <h4>Data changes (demo-data.md)</h4>
+    <ul>
+      <li>Forecast 265 → <b>290 kWh</b>. "You're averaging 10.4 kWh/day so far — ease off slightly…" → "Your last 7 days averaged 7.9 kWh/day" so "On track" is true (10.4 kept in the popover as the overall figure). Streak "3-month" → <b>2-month</b>.</li>
+      <li>Chart: the source drew 31 <i>cumulative</i> columns with a limit line at 78% (forecast bars visually crossing it; legend said "daily"). Replaced by true daily bars against the 8.7 kWh/day pace line (to scale); the cumulative story (187 → 290 vs 300) lives in the hero meter, to scale on a 0–330 kWh track.</li>
+      <li>⚠ <b>Illustrative</b> daily values (sum 187, last 7 days = 55.3 → 7.9/day): 12.8, 13.4, 11.9, 12.2, 11.5, 12.6, 11.0, 10.8, 12.4, 11.7, 11.4, 8.4, 7.6, 8.1, 7.2, 7.9, 8.3, 7.8. Needs real series (ask #37: series step granularity).</li>
+      <li>Streak strip: Jan "No data" (hatched + clock + word), Feb ✕ Over, Mar ✓, Apr ✓, May "So far". Demo-data sets Feb ✕; Jan becomes the no-data cell so the "gap" cell type still ships — confirm with product. Best: "Best ever (last 24mo)" → "Best ever (last 24 months)" 5 months.</li>
+      <li>Manual suggestion "Suggested: 265 kWh, based on your forecast" → 290 kWh (forecast aligned).</li>
+      <li>⚠ Auto = forecast +20%, yet the limit is 300 with a 290 forecast (290 × 1.2 = 348). Presumably set from the forecast on 1 May — confirm how Auto derives the limit.</li>
+      <li>"Updated today, 20:00" and the "already under the pace you need" line are <b>derived copy</b>.</li>
+    </ul>
+    <h4>Motion</h4>
+    <ul><li>8.7 counts up; meter fills grow from the left; bars grow on first reveal. Settings: Manual reveals the limit field (grid-rows 240ms). Reduced motion: static.</li></ul>
+    <h4>Reason codes (<code>Budget.status.action</code>)</h4>
+    <ul><li>On track here. Other states: forecast over → "Cutting it close"; used &gt; limit → "Over budget"; no budget → "Setup"; <code>budget_awaiting_first_run</code>; <code>budget_not_enough_data</code>.</li></ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ BUDGETS · Cutting it close ════════════════════════════ -->
+<section class="panel" id="panel-budgets-close" data-tab="budgets" data-label="Budgets · Cutting it close" aria-labelledby="bgc-title">
+  <div class="bg-bar">
+    <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
+      <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
+      <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+    </div>
+  </div>
+
+  <div class="grid stretch">
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <div class="hero__status">
+              <span class="chip warn"><span class="dot" aria-hidden="true"></span>Forecast to exceed budget</span>
+              <span class="xs muted">May 2026 · electricity</span>
+            </div>
+            <h1 class="hero__sentence" id="bgc-title">Cut back to stay under — 85&nbsp;kWh left for 13&nbsp;days.</h1>
+            <div class="bg-pace">
+              <p class="overline">Cut back to</p>
+              <p class="hero__figure hero-num"><span class="num" data-count="6.5">6.5</span><span class="unit">kWh/day</span></p>
+              <p class="hero__caption">Forecast to go over — drop to this for the rest of the period.
+                <button class="info" type="button" data-pop="bg-pop-pace-close" aria-label="How is this worked out?"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg></button>
+              </p>
+            </div>
+          </div>
+          <div class="hero__aside bg-aside">
+            <div>
+              <p class="overline">May so far</p>
+              <div class="meter" style="--used: 65.2; --fcast: 96.4; --limit: 90.9"
+                   role="img" aria-label="Budget meter: 215 kWh used so far, 318 kWh forecast for May, budget 300 kWh. The forecast goes past the budget.">
+                <span class="meter__fcast grow-x"></span>
+                <span class="meter__fill grow-x"></span>
+                <span class="meter__limit"></span>
+              </div>
+              <div class="meter-key">
+                <span><i class="sw" aria-hidden="true"></i>Used so far <b>215&nbsp;kWh</b></span>
+                <span><i class="sw fcast" aria-hidden="true"></i>Forecast <b>318&nbsp;kWh</b></span>
+                <span><i class="sw limit" aria-hidden="true"></i>Budget <b>300&nbsp;kWh</b></span>
+              </div>
+            </div>
+            <p class="bg-period"><svg class="icon sm" aria-hidden="true"><use href="#i-calendar"/></svg>1–31 May · day 18, 13 days left</p>
+            <a class="link" href="#panel-forecast">See your full forecast <svg class="icon sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="surface span-7" aria-labelledby="bgc-why">
+      <h2 class="section-title" id="bgc-why">Why we think you'll go over</h2>
+      <p class="insight mt-2">Your last 7 days averaged <b>7.9&nbsp;kWh a day</b>. At that pace you'd reach about 318&nbsp;kWh by 31&nbsp;May — 18&nbsp;kWh over your budget.</p>
+      <div class="bg-gap" aria-label="Your recent pace is 7.9 kWh a day; to stay under you need 6.5 kWh a day.">
+        <span><span class="stat__label">Your recent pace</span><br><span class="mid-num">7.9<span class="unit">kWh/day</span></span></span>
+        <svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg>
+        <span><span class="stat__label">To stay under</span><br><span class="mid-num">6.5<span class="unit">kWh/day</span></span></span>
+      </div>
+    </article>
+
+    <article class="surface span-5 bg-cta" aria-labelledby="bgc-cta">
+      <h2 class="section-title" id="bgc-cta">Ways to cut back</h2>
+      <p class="small secondary">Your top tip — adjust your indoor temperature — saves about €150 a year.</p>
+      <div class="mt-4">
+        <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        <p class="btn-note">Personal tips, in Advice</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: the daily figure is what's left of your budget divided by the days left. Assumes fairly even usage the rest of the period.</span></p>
+
+  <div class="popover" id="bg-pop-pace-close" aria-label="Your daily pace" hidden>
+    <h3>Your daily pace</h3>
+    <p>What's left of your budget, shared evenly over the days left in May.</p>
+    <p><span class="formula">(300 − 215) ÷ 13 = 6.5 kWh/day</span></p>
+    <p class="note">Assumes fairly even usage the rest of the period.</p>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Budgets · Cutting it close</summary>
+    <ul>
+      <li>Pacing variant "cut-back": icon ⚠️ → warn chip; title "Cut back to stay under"; value "≤ 6.5 kWh/day"; body "Forecast to go over — drop to this for the rest of the period." (verbatim). Chip copy "Forecast to exceed budget" reused from the Forecast budget-link pill.</li>
+      <li>⚠ <b>Illustrative</b> numbers (source gives only 6.5/day): 85 kWh left ÷ 13 days = 6.5 → used 215 kWh; forecast 215 + 7.9 × 13 ≈ 318 kWh (18 over). Meter scale 0–330 kWh. Needs real data.</li>
+      <li>Advice CTA (primary) and "Why we think you'll go over" copy are <b>derived</b>. Top-tip € is canonical (≈ €150/year).</li>
+      <li>Trigger: budget exists and forecast &gt; limit, used ≤ limit.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ BUDGETS · Over budget ════════════════════════════ -->
+<section class="panel" id="panel-budgets-over" data-tab="budgets" data-label="Budgets · Over budget" aria-labelledby="bgo-title">
+  <div class="bg-bar">
+    <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
+      <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
+      <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+    </div>
+  </div>
+
+  <div class="grid stretch">
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <div class="hero__status">
+              <span class="chip alert"><span class="dot" aria-hidden="true"></span>Over budget</span>
+              <span class="xs muted">May 2026 · electricity</span>
+            </div>
+            <h1 class="hero__sentence" id="bgo-title">Already over — May's budget is used up.</h1>
+            <div class="bg-pace">
+              <p class="overline">Over by</p>
+              <p class="hero__figure hero-num"><span>+<span class="num" data-count="42">42</span></span><span class="unit">kWh over</span></p>
+              <p class="hero__caption">Nothing to pace now — a fresh budget starts in 6 days, on 1&nbsp;June.</p>
+            </div>
+          </div>
+          <div class="hero__aside bg-aside">
+            <div>
+              <p class="overline">May so far</p>
+              <div class="meter over" style="--used: 95; --fcast: 0; --limit: 83.3"
+                   role="img" aria-label="Budget meter: 342 kWh used so far, 42 kWh over the 300 kWh budget.">
+                <span class="meter__fill grow-x"></span>
+                <span class="meter__limit"></span>
+              </div>
+              <div class="meter-key">
+                <span><i class="sw" aria-hidden="true"></i>Used so far <b>342&nbsp;kWh</b></span>
+                <span><i class="sw limit" aria-hidden="true"></i>Budget <b>300&nbsp;kWh</b></span>
+              </div>
+            </div>
+            <p class="bg-period"><svg class="icon sm" aria-hidden="true"><use href="#i-calendar"/></svg>1–31 May · day 25, 6 days left</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="surface span-7" aria-labelledby="bgo-next">
+      <h2 class="section-title" id="bgo-next">What happens next</h2>
+      <ul class="bg-next mt-4">
+        <li><span class="well"><svg class="icon" aria-hidden="true"><use href="#i-repeat"/></svg></span>
+          <p><b>A fresh budget on 1 June</b>In Auto mode we set it from your own forecast, +20% margin.</p></li>
+        <li><span class="well"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+          <p><b>May still counts in your history</b>It will show as over budget in your history and streak.</p></li>
+      </ul>
+    </article>
+
+    <article class="surface span-5 bg-cta" aria-labelledby="bgo-cta">
+      <h2 class="section-title" id="bgo-cta">Get ahead of June</h2>
+      <p class="small secondary">Your top tip — adjust your indoor temperature — saves about €150 a year.</p>
+      <div class="mt-4">
+        <a class="btn btn--primary" href="#panel-advice">See tips to use less <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        <p class="btn-note">Personal tips, in Advice</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: "over" is your metered use so far minus this month's budget (342 − 300 = 42&nbsp;kWh).</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Budgets · Over budget</summary>
+    <ul>
+      <li>Pacing variant "already-over": icon ✕ → alert chip "Over budget"; title "Already over"; value "+42 kWh over"; body "Nothing to pace now — a fresh budget starts in 6 days." (verbatim; ", on 1 June" appended as the unambiguous date).</li>
+      <li>⚠ <b>Illustrative</b>: 6 days left ⇒ day 25 (25 May); used 300 + 42 = 342 kWh. Meter scale 0–360 kWh; the part past the limit is red (<code>.meter.over</code>). No forecast shown (nothing to pace).</li>
+      <li>Red used twice: status chip and the over-limit part of the meter. "What happens next" rows and the Advice CTA are <b>derived copy</b>.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ BUDGETS · Setup ════════════════════════════ -->
+<section class="panel" id="panel-budgets-setup" data-tab="budgets" data-label="Budgets · Setup (no budget yet)" aria-labelledby="bgs-title">
+  <div class="grid stretch">
+    <article class="surface span-8" aria-labelledby="bgs-title">
+      <div class="bg-setup-head">
+        <span class="chip">New budget</span>
+        <h1 class="hero__sentence" id="bgs-title">Setting up a new budget</h1>
+      </div>
+      <p class="small secondary" style="margin-bottom: var(--s-3)">Budget for</p>
+      <div class="seg seg--fuel" role="radiogroup" aria-label="Budget for" style="margin-bottom: var(--s-6)">
+        <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
+        <button type="button" data-value="gas" aria-checked="false"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+      </div>
+      <fieldset class="bg-modes">
+        <legend>How should we set your limit?</legend>
+        <div class="bg-mode">
+          <label>
+            <input type="radio" name="bg-mode-setup" value="auto" checked>
+            <span class="bg-mode__t">Auto <span class="tag accent">Recommended</span></span>
+          </label>
+          <p class="bg-mode__d">We set your limit each period from your own forecast, +20% margin. No number to guess — it adapts as your usage changes.</p>
+        </div>
+        <div class="bg-mode">
+          <label>
+            <input type="radio" name="bg-mode-setup" value="manual">
+            <span class="bg-mode__t">Manual</span>
+          </label>
+          <p class="bg-mode__d">Pick your own fixed limit. Stays the same every period until you change it.</p>
+          <div class="bg-mode__extra"><div>
+            <div class="bg-field">
+              <label for="bg-limit-setup">Monthly limit</label>
+              <span class="bg-input"><input id="bg-limit-setup" type="number" inputmode="numeric" min="1" step="1" value="290">kWh</span>
+              <span class="xs">Suggested: 290&nbsp;kWh, based on your forecast</span>
+            </div>
+          </div></div>
+        </div>
+      </fieldset>
+      <div class="bg-settings-actions">
+        <a class="btn btn--primary" href="#panel-budgets-awaiting">Start my budget <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+      </div>
+    </article>
+
+    <article class="surface span-4 bg-how" aria-labelledby="bgs-how">
+      <h2 class="section-title" id="bgs-how">What you'll see</h2>
+      <ul class="bg-next">
+        <li><span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span>
+          <p><b>A daily pace</b>How much you can use each day to stay under your limit.</p></li>
+        <li><span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-line"/></svg></span>
+          <p><b>A forecast check</b>Whether you're on track, so there are no surprises at the end of the month.</p></li>
+        <li><span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-trophy"/></svg></span>
+          <p><b>Your streak</b>Every period you stay under counts.</p></li>
+      </ul>
+    </article>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Budgets · Setup</summary>
+    <ul>
+      <li>Source §8.3 "Setting up a new budget" mode picker: Auto (badge "Recommended") vs Manual — copy verbatim. Suggestion 265 → <b>290 kWh</b> (forecast aligned with demo-data).</li>
+      <li>This is the Budgets-tab no-budget state (the Forecast tab's "No budget set up yet" card links here). One primary: "Start my budget" → goes to "Awaiting first run".</li>
+      <li>Radio cards are a scoped component (fieldset/legend, native radios; Manual reveals the limit field). "What you'll see" list and "Budget for" label are <b>derived copy</b>.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ BUDGETS · Awaiting first run ════════════════════════════ -->
+<section class="panel" id="panel-budgets-awaiting" data-tab="budgets" data-label="Budgets · Awaiting first run" aria-labelledby="bga-title">
+  <div class="bg-bar">
+    <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
+      <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
+      <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="surface span-12 empty motif">
+      <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-hourglass"/></svg></span>
+      <div>
+        <p style="margin-bottom: var(--s-3)"><span class="chip">Setting up</span></p>
+        <h1 class="empty__title" id="bga-title">Your budget is set</h1>
+        <p class="empty__body">First calculation is on its way — check back shortly and we'll show you where you stand.</p>
+        <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
+      </div>
+    </article>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Budgets · Awaiting first run</summary>
+    <ul>
+      <li>Reason code <code>budget_awaiting_first_run</code> (<code>Budget.status.action</code>). ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38).</li>
+      <li>Same chrome as source: fuel/period tabs, "Setting up" pill (neutral), config footer "Mode Auto (20% margin) · Period 1–31 May". Nothing for the person to do — no action shown.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ BUDGETS · Not enough data ════════════════════════════ -->
+<section class="panel" id="panel-budgets-nodata" data-tab="budgets" data-label="Budgets · Not enough data" aria-labelledby="bgn-title">
+  <div class="bg-bar">
+    <div class="seg seg--fuel" role="radiogroup" aria-label="Budget">
+      <button type="button" data-value="elec" aria-checked="true"><span class="fuel-dot elec" aria-hidden="true"></span>Electricity · Monthly</button>
+      <button type="button" data-value="gas" aria-checked="false" aria-disabled="true"><span class="fuel-dot gas" aria-hidden="true"></span>Gas · Weekly</button>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="surface span-12 empty motif">
+      <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bars"/></svg></span>
+      <div>
+        <p style="margin-bottom: var(--s-3)"><span class="chip">Setting up</span></p>
+        <h1 class="empty__title" id="bgn-title">Still collecting your data</h1>
+        <p class="empty__body">Your meter hasn't reported enough recent readings yet to track this budget. Nothing wrong with your setup — this should resolve once fresh data comes in.</p>
+        <p class="bg-config"><span>Mode<b>Auto (20% margin)</b></span><span>Period<b>1–31 May</b></span></p>
+      </div>
+    </article>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Budgets · Not enough data</summary>
+    <ul>
+      <li>Reason code <code>budget_not_enough_data</code>. ✓ Approved. Copy verbatim; deliberately <b>no timeframe</b> (ask #38: how long this lasts — needs Hani).</li>
+      <li>No readiness meter: there is no known count to show. Same chrome as "Awaiting first run".</li>
+    </ul>
+  </details>
+</section>
+
+<script>
+/* Budgets charts — one JuneCharts call each */
+(() => {
+  const days = n => Array.from({ length: n }, (_, i) => String(i + 1));
+  const may = [12.8, 13.4, 11.9, 12.2, 11.5, 12.6, 11.0, 10.8, 12.4, 11.7, 11.4, 8.4, 7.6, 8.1, 7.2, 7.9, 8.3, 7.8];
+  const last7 = [11, 12, 13, 14, 15, 16, 17].map(i => ({ index: i, tone: 'accent' }));
+  JuneCharts.bars('#bg-chart-month', {
+    values: may, slots: 31, labels: days(31), tipLabels: days(31).map(d => d + ' May'),
+    xTicks: [0, 4, 9, 14, 24, 29], now: { index: 17, label: 'Today' },
+    tone: 'muted', highlight: last7,
+    thresholds: [{ value: 8.7, label: 'Stay under', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
+    yMax: 15, yTicks: [0, 5, 10, 15], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
+    futureLabel: '19–31 May still to come',
+    ariaLabel: 'Bar chart of daily electricity use, 1 to 18 May 2026; 19 to 31 May have not happened yet. The first 11 days were between 10.8 and 13.4 kWh. Since 12 May every day has been under the 8.7 kWh a day line that keeps May within budget, averaging 7.9 kWh.'
+  });
+  JuneCharts.bars('#bg-chart-week', {
+    values: may.slice(11), labels: ['Tue 12', 'Wed 13', 'Thu 14', 'Fri 15', 'Sat 16', 'Sun 17', 'Mon 18'],
+    tipLabels: ['Tue 12 May', 'Wed 13 May', 'Thu 14 May', 'Fri 15 May', 'Sat 16 May', 'Sun 17 May', 'Today, 18 May'],
+    now: { index: 6, label: 'Today' }, maxBar: 36,
+    thresholds: [{ value: 8.7, label: 'Stay under', valueText: '8.7 kWh/day', tone: 'accent', emphasis: true }],
+    yMax: 10, yTicks: [0, 2, 4, 6, 8, 10], yLabel: 'Daily use (kWh)', unit: 'kWh', decimals: 1,
+    ariaLabel: 'Bar chart of daily electricity use for the last 7 days, 12 to 18 May 2026: 8.4, 7.6, 8.1, 7.2, 7.9, 8.3 and 7.8 kWh. All are under the 8.7 kWh a day line; the average is 7.9 kWh.'
+  });
+})();
+</script>
