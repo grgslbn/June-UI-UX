@@ -1,0 +1,12 @@
+---
+import { copy, type Locale } from '../content/i18n';
+import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+interface Props { locale: Locale; inverse?: boolean }
+const { locale, inverse = false } = Astro.props;
+const t = copy[locale].trust;
+---
+<p class:list={['trust', inverse && 'trust--inverse']}>
+  <span class="trust__item"><Stars value={4.3} label={t.stars} /><span><strong>{t.rating}</strong> · {t.reviews}<Fn n={2} locale={locale} /></span></span>
+  <span class="trust__item"><span>{t.customers}<Fn n={3} locale={locale} /></span></span>
+</p>

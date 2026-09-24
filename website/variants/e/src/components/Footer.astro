@@ -1,0 +1,49 @@
+---
+// Footer: official logo + heritage lock-up, 3 link columns, footnotes (claims register), legal row.
+import Logo from './Logo.astro';
+import { href } from '@shared/routes.mjs';
+import { copy, rich, type Locale } from '../content/copy';
+interface Props { locale: Locale; routeKey: string }
+const { locale, routeKey } = Astro.props;
+const t = copy[locale];
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const fns = [t.fn.saving, t.fn.reviews, t.fn.customers, t.fn.guarantee, t.fn.prices];
+const faqGuar = locale === 'nl-be' ? 'winstgarantie' : 'garantie-de-gain';
+const cols = [
+  { title: t.footer.cols.june, links: [
+    [t.footer.how, h('howItWorks')], [t.footer.plans, h('plans')], [t.footer.switch, `${h('plans')}#switch`],
+    [t.footer.switchPlus, h('switchPlus')], [t.footer.premium, `${h('plans')}#premium`], [t.footer.reviews, `${h('home')}#${t.reviewsId}`],
+  ] },
+  { title: t.footer.cols.help, links: [
+    [t.footer.faq, h('faq')], [t.footer.guarantee, `${h('faq')}#${faqGuar}`], [t.footer.signup, h('signup')], [t.footer.login, '#login'],
+  ] },
+];
+const o = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__top">
+      <div class="ftr__lockup">
+        <Logo class="ftr__mark" />
+        <p class="ftr__tag"><span>{t.footer.lockup[0]}</span><span>{t.footer.lockup[1]}</span></p>
+        <p class="ftr__about">{t.footer.tagline}</p>
+      </div>
+      {cols.map(c => (
+        <nav class="ftr__col" aria-label={c.title}>
+          <p class="ftr__h">{c.title}</p>
+          <ul role="list">{c.links.map(([l, u]) => <li><a href={u}>{l}</a></li>)}</ul>
+        </nav>
+      ))}
+      <div class="ftr__col">
+        <p class="ftr__h">{t.footer.cols.legal}</p>
+        <ul role="list">{t.footer.legalLinks.map(l => <li><span class="ftr__pending">{l} <small>{t.footer.pending}</small></span></li>)}</ul>
+        <p class="ftr__lang"><a href={href(routeKey, o, base)} hreflang={o === 'fr-be' ? 'fr-BE' : 'nl-BE'} lang={o === 'fr-be' ? 'fr' : 'nl'}>{o === 'fr-be' ? 'Français' : 'Nederlands'}</a></p>
+      </div>
+    </div>
+    <section class="ftr__notes" aria-label={t.footer.notes}>
+      <ol>{fns.map((x, i) => <li id={`fn-${i + 1}`} set:html={rich(x)} />)}</ol>
+    </section>
+    <p class="ftr__legal"><span set:html={rich(t.footer.legal)} /> · <span>{t.footer.heritage}</span></p>
+  </div>
+</footer>

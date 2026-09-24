@@ -1,0 +1,146 @@
+---
+// Home (NL + FR share this template; copy in i18n/home.js).
+// Hero: manifesto H1 (+ one squiggle) · three-question ledger (directly under the H1 on small screens) · postcode form
+// with proof · value/status tile (A) + the self-drawing "prijs van trouw" chart. Then: what June does → who pays
+// (money flow + prices) → product band → guarantee → rating → 5 sceptic FAQs → green closing field.
+import Site from '../layouts/Site.astro';
+import '../styles/home.css';
+import { Image } from 'astro:assets';
+import pointing from '@shared/assets/character/june-character-pointing.png';
+import MarketChart from './MarketChart.astro';
+import PostcodeForm from './PostcodeForm.astro';
+import Trust from './Trust.astro';
+import Icon from './Icon.astro';
+import Fn from './Fn.astro';
+import AnimIcon from './AnimIcon.astro';
+import SectionHead from './SectionHead.astro';
+import MoneyFlow from './MoneyFlow.astro';
+import Guarantee from './Guarantee.astro';
+import Reviews from './Reviews.astro';
+import FaqList from './FaqList.astro';
+import FinalCta from './FinalCta.astro';
+import HeroTile from './HeroTile.astro';
+import Squiggle from './Squiggle.astro';
+import ProductBand from './ProductBand.astro';
+import { homeCopy } from '../i18n/home.js';
+import { href } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = homeCopy(locale);
+const L = c.L;
+const base = import.meta.env.BASE_URL;
+const icons = ['home-analysis', 'compare', 'home-switch'] as const;
+---
+<Site locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description}>
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap hero-grid">
+      <div class="hero-head">
+        <p class="kicker"><span>{c.hero.kicker}</span></p>
+        <h1 id="h1">{c.hero.h1a} <span class="h1-turn"><Squiggle>{c.hero.h1b}</Squiggle></span></h1>
+      </div>
+      <ol class="ledger">
+        {c.ledger.map((r: any) => (
+          <li>
+            <span class="q">{r.q}</span>
+            <span class="a">{r.a}</span>
+            <span class="d">{r.d}{r.fn && <Fn n={r.fn} L={L} />}</span>
+          </li>
+        ))}
+      </ol>
+      <div class="hero-text">
+        <p class="lead">{c.hero.lead}<Fn n={5} L={L} /></p>
+        <p class="hero-cost">{c.hero.saving[0]}<strong>{c.hero.saving[1]}</strong>{c.hero.saving[2]}<Fn n={1} L={L} /></p>
+      </div>
+      <div class="hero-form">
+        <div data-sticky-hide id="bereken">
+          <PostcodeForm locale={locale} c={c} id="hero" entry="home-hero" />
+        </div>
+        <Trust c={c} id="hero" />
+      </div>
+      <div class="hero-fig">
+        <HeroTile c={c} plansUrl={href('plans', locale, base)} />
+        <MarketChart c={c} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 01 WHAT JUNE DOES ───────────────────────────── -->
+  <section class="section section--deep" id="hoe-werkt-het" aria-labelledby="hoe-h">
+    <div class="wrap">
+      <SectionHead n={c.how.n} kicker={c.how.kicker} id="hoe-h" title={c.how.h2} />
+      <ol class="steps steps--icons">
+        {c.steps.map((s: any, i: number) => (
+          <li>
+            <AnimIcon name={icons[i]} size={72} />
+            <span class="n" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+            <h3>{s.title}</h3>
+            <p set:html={s.body.replace(c.how.emph, `<em>${c.how.emph}</em>`)} />
+          </li>
+        ))}
+      </ol>
+      <div class="section-foot">
+        <div class="tip">
+          <Image src={pointing} alt="" widths={[96, 192]} sizes="96px" class="tip-char" loading="lazy" />
+          <p class="honest-limit"><span set:html={c.how.limit} /></p>
+        </div>
+        <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.how.more}<Icon name="arrow-r" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 WHO PAYS JUNE ────────────────────────────── -->
+  <section class="section" id="prijzen" aria-labelledby="model-h">
+    <div class="wrap model">
+      <div class="model-lede">
+        <SectionHead n={c.model.n} kicker={c.model.kicker} id="model-h" title={c.model.h2} />
+        <div class="prose">
+          <p><strong>{c.model.body[0]}</strong><Fn n={5} L={L} />{c.model.body[1]}</p>
+          <p>{c.model.body[2]}</p>
+        </div>
+      </div>
+      <div>
+        <table class="prices">
+          <caption>{c.model.caption}<Fn n={6} L={L} /></caption>
+          <thead><tr>{c.model.cols.map((h: string) => <th scope="col">{h}</th>)}</tr></thead>
+          <tbody>
+            {c.plans.map((p: any) => (
+              <tr class={p.slug === 'switch-plus' ? 'hl' : ''}>
+                <th scope="row">{p.name}{p.slug === 'switch-plus' && <span class="badge">{c.model.badge}</span>}</th>
+                <td class="yr num">{p.yearly}</td>
+                <td class="mo">{p.monthly}, {c.model.billed}{p.slug === 'premium' && `, ${c.model.dongle}`}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div class="prices-foot">
+          <a class="btn btn--ghost" href={href('plans', locale, base)}>{c.model.more}<Icon name="arrow-r" /></a>
+          <a class="link-arrow" href={`${href('plans', locale, base)}#vergelijking`}>{c.model.vs}</a>
+        </div>
+      </div>
+    </div>
+    <div class="wrap"><MoneyFlow c={c} /></div>
+  </section>
+
+  <!-- ── PRODUCT: the app + leaf dongle ──────────────── -->
+  <ProductBand variant="compact" locale={locale} id="premium-band" entry="home-premium" tone="deep" />
+
+  <!-- ── 03 THE HONEST PROMISE ───────────────────────── -->
+  <Guarantee c={c} locale={locale} n="03" cta="more" />
+
+  <!-- ── 04 REVIEWS ──────────────────────────────────── -->
+  <Reviews c={c} n="04" />
+
+  <!-- ── 05 FAQ ──────────────────────────────────────── -->
+  <section class="section section--deep" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead n={c.faq.n} kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <div>
+        <FaqList items={c.faq.items} L={L} />
+        <p class="faq-more"><a class="link-arrow" href={href('faq', locale, base)}>{c.faq.all}<Icon name="arrow-r" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} entry="home-final" />
+</Site>

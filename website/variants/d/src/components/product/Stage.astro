@@ -1,0 +1,191 @@
+---
+// Hero product composition: laptop (Overview) + phone (3 auto-cycling tiles) + June Dongle (placeholder render).
+// Recreated from the Insights app's visual language with NL/FR labels — not screenshots (the app UI is English).
+// Entirely decorative: aria-hidden visuals; the <figure> carries a text alternative.
+import QuarterChart from './QuarterChart.astro';
+import { totals as t } from '../../lib/demo.js';
+interface Props { c: any }
+const { c } = Astro.props;
+const a = c.app;
+const nl = c.nl;
+const pct = n => (nl ? `${n}%` : `${n} %`);
+const kwh = v => `${v} kWh`;
+// donut geometry
+const R = 70, C = 2 * Math.PI * R, selfLen = (C * t.selfPct) / 100;
+---
+<figure class="stage" data-stage>
+  <figcaption class="sr-only">{c.stage.alt}</figcaption>
+  <div class="stage-art" aria-hidden="true">
+    <div class="stage-glow"></div>
+
+    <!-- LAPTOP -->
+    <div class="laptop">
+      <div class="laptop-lid">
+        <div class="laptop-cam"></div>
+        <div class="laptop-screen">
+          <svg class="appsvg" viewBox="0 0 800 500" focusable="false">
+            <rect width="800" height="500" class="a-canvas" />
+            <text x="24" y="36" class="a-word" font-size="23">june</text>
+            <svg x="75" y="15" width="12" height="20" viewBox="0 0 16 24" class="a-bolt"><use href="#brand-bolt" /></svg>
+            <line x1="98" x2="98" y1="18" y2="36" class="a-hair" />
+            <text x="108" y="32" font-size="13" class="a-ink7 a-med">{a.product}</text>
+            <rect x="548" y="16" width="62" height="24" rx="12" class="a-accent-soft" />
+            <circle cx="563" cy="28" r="3.5" class="a-accent-fill a-livedot" />
+            <text x="573" y="32" font-size="11" class="a-accent a-semi">{a.live}</text>
+            <text x="736" y="32" font-size="11" class="a-ink5" text-anchor="end">{a.updated}</text>
+            <circle cx="767" cy="28" r="14" class="a-surface a-stroke" />
+            <circle cx="767" cy="24" r="4" class="a-noline" /><path d="M759 36a8 8 0 0 1 16 0" class="a-noline" />
+
+            <rect x="24" y="54" width="448" height="36" rx="18" class="a-track" />
+            <rect x="28" y="58" width="88" height="28" rx="14" class="a-surface a-thumb" />
+            {a.tabsWide.map((tab, i) => (
+              <text x={72 + i * 88} y="77" font-size="12.5" text-anchor="middle" class:list={[i === 0 ? 'a-ink9 a-semi' : 'a-ink7']}>{tab}</text>
+            ))}
+            <rect x="62" y="82" width="20" height="2.5" rx="1.25" class="a-accent-fill" />
+
+            <rect x="24" y="106" width="752" height="222" rx="18" class="a-surface a-tile" />
+            <rect x="48" y="128" width="164" height="24" rx="12" class="a-accent-soft" />
+            <circle cx="61" cy="140" r="3.5" class="a-accent-fill" />
+            <text x="71" y="144" font-size="11" class="a-accent a-semi">{a.today}</text>
+            <text x="48" y="190" font-size="15" class="a-ink7">{a.used}</text>
+            <text x="45" y="252" font-size="58" class="a-num">{t.used}<tspan dx="8" font-size="19" class="a-unit">kWh</tspan></text>
+            <rect x="48" y="284" width="10" height="10" rx="2" class="a-accent-fill" />
+            <text x="64" y="293" font-size="11" class="a-ink5">{nl ? 'Verbruik' : 'Consommation'}</text>
+            <line x1="148" x2="162" y1="289" y2="289" class="a-sun-line" />
+            <text x="168" y="293" font-size="11" class="a-ink5">{nl ? 'Zonnepanelen' : 'Panneaux'}</text>
+            <text x="320" y="134" font-size="11" class="a-ink5">{a.perQ}</text>
+            <QuarterChart x={316} y={128} w={444} h={188} now={a.now} from={24} to={80} fs={11} class="qc--hero" />
+
+            <rect x="24" y="344" width="368" height="140" rx="18" class="a-surface a-tile" />
+            <svg x="46" y="362" width="18" height="18" viewBox="0 0 24 24" class="a-icon a-elec-stroke"><use href="#i-sun" /></svg>
+            <text x="72" y="376" font-size="13" class="a-ink9 a-semi">{a.solarTitle}</text>
+            <text x="46" y="422" font-size="34" class="a-num">{t.made}<tspan dx="6" font-size="12.5" class="a-unit">kWh {a.made.toLowerCase()}</tspan></text>
+            <rect x="48" y="438" width="320" height="10" rx="5" class="a-elec-fill" />
+            <rect x="48" y="438" width={320 * t.selfPct / 100} height="10" rx="5" class="a-accent-fill" />
+            <text x="48" y="470" font-size="11" class="a-ink7">{pct(t.selfPct)} {a.self}</text>
+            <text x="368" y="470" font-size="11" class="a-ink7" text-anchor="end">{kwh(t.exported)} {a.exported.toLowerCase()}</text>
+
+            <rect x="408" y="344" width="368" height="140" rx="18" class="a-surface a-tile" />
+            <svg x="430" y="362" width="18" height="18" viewBox="0 0 24 24" class="a-icon a-accent-stroke"><use href="#i-repeat" /></svg>
+            <text x="456" y="376" font-size="13" class="a-ink9 a-semi">{a.contract}</text>
+            <rect x="696" y="361" width="58" height="22" rx="11" class="a-pos-soft" />
+            <text x="725" y="376" font-size="11" class="a-pos a-semi" text-anchor="middle">{a.active}</text>
+            <text x="432" y="414" font-size="13" class="a-ink9">{a.compared}</text>
+            <text x="754" y="414" font-size="12" class="a-ink5" text-anchor="end">{a.monthly}</text>
+            <line x1="432" x2="754" y1="428" y2="428" class="a-hair" />
+            <text x="432" y="454" font-size="13" class="a-ink9">{a.mode}</text>
+            <text x="754" y="454" font-size="12" class="a-accent a-semi" text-anchor="end">{a.auto}</text>
+          </svg>
+        </div>
+      </div>
+      <div class="laptop-base"></div>
+    </div>
+
+    <!-- PHONE: 3 tiles, cycled by src/scripts/site.js -->
+    <div class="phone" data-phone data-screen="0">
+      <svg class="appsvg" viewBox="0 0 300 620" focusable="false">
+        <rect width="300" height="620" class="a-canvas" />
+        <text x="30" y="32" font-size="13" class="a-ink9 a-semi">20:00</text>
+        <rect x="108" y="13" width="84" height="25" rx="12.5" class="a-island" />
+        <text x="22" y="80" class="a-word" font-size="21">june</text>
+        <svg x="68" y="61" width="11" height="18" viewBox="0 0 16 24" class="a-bolt"><use href="#brand-bolt" /></svg>
+        <rect x="220" y="62" width="60" height="24" rx="12" class="a-accent-soft" />
+        <circle cx="235" cy="74" r="3.5" class="a-accent-fill a-livedot" />
+        <text x="245" y="78" font-size="11" class="a-accent a-semi">{a.live}</text>
+
+        <g class="ph-screen is-active" data-i="0">
+          <rect x="14" y="100" width="272" height="296" rx="20" class="a-surface a-tile" />
+          <rect x="32" y="120" width="158" height="22" rx="11" class="a-accent-soft" />
+          <text x="44" y="135" font-size="10.5" class="a-accent a-semi">{a.today}</text>
+          <text x="32" y="172" font-size="13" class="a-ink7">{a.used}</text>
+          <text x="30" y="218" font-size="44" class="a-num">{t.used}<tspan dx="6" font-size="15" class="a-unit">kWh</tspan></text>
+          <QuarterChart x={22} y={232} w={258} h={150} now={a.now} from={48} to={80} fs={10} ticks={[12, 15, 18]} class="qc--hero" />
+          <rect x="14" y="408" width="272" height="124" rx="20" class="a-surface a-tile" />
+          <text x="32" y="438" font-size="12" class="a-ink5">{nl ? 'Hoogste kwartier vandaag' : 'Quart d’heure le plus élevé'}</text>
+          <text x="30" y="480" font-size="30" class="a-num">{t.peak}<tspan dx="6" font-size="13" class="a-unit">kWh</tspan></text>
+          <text x="32" y="510" font-size="12" class="a-ink5">{a.lastQt}</text>
+        </g>
+
+        <g class="ph-screen" data-i="1">
+          <rect x="14" y="100" width="272" height="432" rx="20" class="a-surface a-tile" />
+          <svg x="32" y="120" width="18" height="18" viewBox="0 0 24 24" class="a-icon a-elec-stroke"><use href="#i-sun" /></svg>
+          <text x="56" y="134" font-size="13" class="a-ink9 a-semi">{a.solarTitle}</text>
+          <circle cx="150" cy="248" r={R} class="a-donut-rest" />
+          <circle cx="150" cy="248" r={R} class="a-donut-self" stroke-dasharray={`${selfLen} ${C}`} transform="rotate(-90 150 248)" />
+          <text x="150" y="252" font-size="34" class="a-num" text-anchor="middle">{pct(t.selfPct)}</text>
+          <text x="150" y="274" font-size="12" class="a-ink7" text-anchor="middle">{a.self}</text>
+          {[
+            ['a-elec-fill', a.made, t.made],
+            ['a-accent-fill', nl ? 'Zelf verbruikt' : 'Autoconsommé', t.self],
+            ['a-elec-dim', a.exported, t.exported],
+            ['a-ink-fill', a.imported, t.imported],
+          ].map(([cls, label, v], i) => (
+            <g>
+              <circle cx="38" cy={362 + i * 40} r="5" class={cls} />
+              <text x="52" y={366 + i * 40} font-size="13" class="a-ink7">{label}</text>
+              <text x="268" y={366 + i * 40} font-size="13" class="a-ink9 a-semi" text-anchor="end">{kwh(v)}</text>
+            </g>
+          ))}
+        </g>
+
+        <g class="ph-screen" data-i="2">
+          <rect x="14" y="100" width="272" height="432" rx="20" class="a-surface a-tile" />
+          <svg x="32" y="120" width="18" height="18" viewBox="0 0 24 24" class="a-icon a-accent-stroke"><use href="#i-repeat" /></svg>
+          <text x="56" y="134" font-size="13" class="a-ink9 a-semi">{a.contract}</text>
+          <rect x="214" y="118" width="54" height="22" rx="11" class="a-pos-soft" />
+          <text x="241" y="133" font-size="11" class="a-pos a-semi" text-anchor="middle">{a.active}</text>
+          <svg x="30" y="162" width="30" height="30" viewBox="0 0 24 24" class="a-icon a-pos-stroke"><use href="#i-check-circle" /></svg>
+          <text x="32" y="222" font-size="16" class="a-ink9 a-semi">{a.status}</text>
+          <text x="32" y="246" font-size="12.5" class="a-ink7">{a.compared} · {a.monthly.toLowerCase()}</text>
+          <text x="32" y="292" font-size="12" class="a-ink5">{a.mode}</text>
+          <rect x="32" y="302" width="236" height="38" rx="19" class="a-track" />
+          <rect x="36" y="306" width="114" height="30" rx="15" class="a-surface a-thumb" />
+          <text x="93" y="325" font-size="12" class="a-ink9 a-semi" text-anchor="middle">{a.auto}</text>
+          <text x="209" y="325" font-size="12" class="a-ink7" text-anchor="middle">{a.ask}</text>
+          <line x1="32" x2="268" y1="370" y2="370" class="a-hair" />
+          <svg x="32" y="388" width="18" height="18" viewBox="0 0 24 24" class="a-icon a-accent-stroke"><use href="#i-shield" /></svg>
+          <text x="58" y="402" font-size="13" class="a-ink9">{a.guarantee}</text>
+          <text x="268" y="402" font-size="12.5" class="a-accent a-semi" text-anchor="end">{a.guaranteeV}</text>
+          <line x1="32" x2="268" y1="424" y2="424" class="a-hair" />
+          <text x="32" y="454" font-size="11.5" class="a-ink5">{a.next}</text>
+        </g>
+
+        <rect x="14" y="548" width="272" height="46" rx="23" class="a-track" />
+        <rect x="18" y="552" width="88" height="38" rx="19" class="a-surface a-thumb ph-thumb" />
+        {a.tabs.map((tab, i) => (
+          <text x={62 + i * 88} y="575" font-size="12" text-anchor="middle" class="a-ink7 ph-tab" data-i={i}>{tab}</text>
+        ))}
+        <rect x="110" y="606" width="80" height="4" rx="2" class="a-island" />
+      </svg>
+    </div>
+
+    <!-- DONGLE (placeholder render: no product photo yet) -->
+    <div class="dongle" data-placeholder="dongle-render">
+      <svg viewBox="0 0 240 230" focusable="false">
+        <defs>
+          <pattern id="ht" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.7" class="d-dot" /></pattern>
+          <clipPath id="ht-clip"><circle cx="150" cy="84" r="80" /></clipPath>
+          <linearGradient id="dg-top" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#ffffff" /><stop offset="1" stop-color="#dfe6e7" /></linearGradient>
+          <linearGradient id="dg-side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c4c6" /><stop offset="1" stop-color="#8d9a9d" /></linearGradient>
+          <linearGradient id="dg-cable" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3538" /><stop offset="0.75" stop-color="#2b3538" /><stop offset="1" stop-color="#2b3538" stop-opacity="0" /></linearGradient>
+        </defs>
+        <g clip-path="url(#ht-clip)" class="d-halftone"><rect width="240" height="230" fill="url(#ht)" /></g>
+        <path d="M112 158 C 112 190, 70 188, 58 230" class="d-cable" stroke="url(#dg-cable)" />
+        <rect x="100" y="150" width="24" height="16" rx="3" class="d-plug" />
+        <rect x="40" y="58" width="144" height="104" rx="26" fill="url(#dg-side)" />
+        <rect x="40" y="46" width="144" height="104" rx="26" fill="url(#dg-top)" class="d-body" />
+        <text x="62" y="130" class="d-word" font-size="20">june</text>
+        <svg x="109" y="113" width="11" height="18" viewBox="0 0 16 24" class="d-bolt"><use href="#brand-bolt" /></svg>
+        <circle cx="160" cy="70" r="10" class="d-led-glow" />
+        <circle cx="160" cy="70" r="4" class="d-led" />
+        <text x="62" y="76" class="d-p1" font-size="11">P1</text>
+      </svg>
+    </div>
+  </div>
+  <div class="stage-foot">
+    <p class="stage-caption"><span class="tag-placeholder">placeholder</span> {c.stage.caption}</p>
+    <button type="button" class="stage-toggle" data-stage-toggle hidden aria-pressed="false" data-label-pause={c.stage.pause} data-label-play={c.stage.play}>
+      <svg class="icon" width="16" height="16" aria-hidden="true"><use href="#i-pause" /></svg><span>{c.stage.pause}</span>
+    </button>
+  </div>
+</figure>

@@ -1,0 +1,38 @@
+---
+// The guarantee as three outcomes (ink block). Amount, condition, period and a link to the conditions always together (C7).
+import Icon from './Icon.astro';
+import Fn from './Fn.astro';
+import SectionHead from './SectionHead.astro';
+import CtaProof from './CtaProof.astro';
+import { href } from '@shared/routes.mjs';
+interface Props { c: any; locale: 'nl-be' | 'fr-be'; n?: string; id?: string; title?: string; cta?: 'signup' | 'more'; plan?: string; }
+const { c, locale, n, id = 'garantie', title, cta = 'signup' } = Astro.props;
+const p = c.promise;
+const base = import.meta.env.BASE_URL;
+---
+<section class="section promise" id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <SectionHead n={n} kicker={p.kicker} id={`${id}-h`} title={title || p.h2}>
+      <p>{p.summary}<Fn n={4} L={c.L} /></p>
+    </SectionHead>
+    <div class="outcomes">
+      {p.outcomes.map((o: any) => (
+        <div data-reveal>
+          <span class="o-label">{o.label}</span>
+          <span class:list={['o-big num', { 'o-big--accent': o.accent }]}>{o.big}</span>
+          <p set:html={o.p} />
+        </div>
+      ))}
+    </div>
+    <div class="promise-foot">
+      <p class="note">{c.footnotes[3].text} <a href="#fn-4">{p.terms}</a></p>
+      <div class="promise-actions">
+        {cta === 'more' && <a class="link-arrow" href={href('switchPlus', locale, base)}>{p.more}<Icon name="arrow-r" /></a>}
+        <div class="cta-group">
+          <a class="btn btn--inverse" href={`${href('signup', locale, base)}?plan=switch-plus&entry=guarantee`} data-cta="guarantee">{c.ui.cta}<Icon name="arrow-r" /></a>
+          <CtaProof c={c} id={id} tone="light" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,255 @@
+<title>June.energy Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#16242a; --ink-2:#4a5a61; --ink-3:#5f6f76; --line:#e1e8e8; --page:#f4f7f6; --surface:#ffffff; --sunken:#eaf1f0;
+  --green:#3bada8; --green-strong:#1b7773; --green-soft:#e3f3f2; --red:#d63f45; --red-soft:#fdecec; --warn:#8a6100; --warn-soft:#fdf4dc;
+  --display:"Montserrat",ui-sans-serif,system-ui,sans-serif; --ui:"Inter","Open Sans",ui-sans-serif,system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --ink:#e8eef0; --ink-2:#a3b1b6; --ink-3:#8a989d; --line:#253740; --page:#0f1a1e; --surface:#162429; --sunken:#1b2c32;
+  --green:#4fc4bf; --green-strong:#5fd0ca; --green-soft:rgba(79,196,191,.13); --red:#ff7479; --red-soft:rgba(255,107,112,.13); --warn:#f0b93a; --warn-soft:rgba(240,185,58,.12);}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --ink:#e8eef0; --ink-2:#a3b1b6; --ink-3:#8a989d; --line:#253740; --page:#0f1a1e; --surface:#162429; --sunken:#1b2c32;
+  --green:#4fc4bf; --green-strong:#5fd0ca; --green-soft:rgba(79,196,191,.13); --red:#ff7479; --red-soft:rgba(255,107,112,.13); --warn:#f0b93a; --warn-soft:rgba(240,185,58,.12);}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font:15px/1.55 var(--ui);padding-inline:20px;padding-block:0 72px}
+.wrap{max-width:1080px;margin:0 auto}
+header{padding-block:44px 28px;display:grid;gap:14px}
+.eyebrow{font:600 12px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--green-strong)}
+h1{font:500 clamp(30px,5vw,44px)/1.1 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance;max-width:20ch}
+h2{font:600 22px/1.25 var(--display);letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+h3{font:600 16px/1.3 var(--display);margin:0}
+p{margin:0}
+.lede{color:var(--ink-2);max-width:62ch;font-size:16px}
+section{padding-block:36px;border-top:1px solid var(--line);display:grid;gap:20px}
+.sub{color:var(--ink-3);max-width:65ch}
+.num{font-variant-numeric:tabular-nums}
+
+/* verdict */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pod{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.pod.win{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.pod .rank,.round .rank{display:flex;justify-content:space-between;align-items:center;font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.chip{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:99px;letter-spacing:0;text-transform:none}
+.chip.go{background:var(--green-soft);color:var(--green-strong)}
+.chip.no{background:var(--red-soft);color:var(--red)}
+.score{font:300 44px/1 var(--display);letter-spacing:-.02em}
+.score small{font:500 15px var(--ui);color:var(--ink-3);letter-spacing:0}
+.pod .who,.round .who{font-size:13px;color:var(--ink-3)}
+.bar{height:6px;background:var(--sunken);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:99px;transform-origin:left;animation:grow .9s var(--ease) both}
+.pod:not(.win) .bar i{background:var(--ink-3)}
+@keyframes grow{from{transform:scaleX(0)}}
+
+/* gates */
+.gates{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.gate{background:var(--surface);padding:16px 18px;display:grid;gap:4px}
+.gate b{font:500 26px/1.1 var(--display)}
+.gate span{font-size:13px;color:var(--ink-3)}
+.gate .was{color:var(--red);font-size:13px}
+
+/* table */
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{font:600 12px/1.2 var(--ui);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);background:var(--sunken)}
+td.c,th.c{text-align:right;font-variant-numeric:tabular-nums;width:92px}
+td.w{color:var(--ink-3);width:70px}
+tr.group td{font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--green-strong);background:transparent;padding-top:18px}
+td .best{font-weight:600;color:var(--green-strong)}
+td .low{color:var(--red)}
+tr.total td{font-weight:600;border-bottom:0}
+
+/* gallery */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font:500 14px var(--ui);border:1px solid var(--line);background:var(--surface);color:var(--ink-2);padding:8px 14px;border-radius:99px;cursor:pointer;transition:background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease)}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+.tab:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--green) 55%,transparent);outline-offset:2px}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+figure{margin:0;display:grid;gap:10px}
+figure .frame{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;max-height:560px;overflow-y:auto}
+figure img{display:block;width:100%;height:auto;transition:opacity .24s var(--ease)}
+figcaption{display:flex;justify-content:space-between;gap:8px;align-items:baseline;font-size:13px;color:var(--ink-3)}
+figcaption b{font:600 14px var(--display);color:var(--ink)}
+a{color:var(--green-strong);font-weight:500;text-decoration-thickness:1px;text-underline-offset:3px}
+.mobile .shots{grid-template-columns:repeat(3,minmax(0,300px));justify-content:start}
+
+/* directions */
+.dirs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dir{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:12px;align-content:start}
+.dir ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2);font-size:14px}
+.dir .lbl{font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.dir .lbl.bad{color:var(--red)}
+
+/* hybrid */
+.hybrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.hy{background:var(--surface);padding:18px 20px;display:grid;gap:10px;align-content:start}
+.hy ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
+.hy.drop h3{color:var(--red)}
+.fixes{background:var(--warn-soft);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+.fixes h3{color:var(--warn)}
+.fixes ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+
+.before{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.squig{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4' fill='none' stroke='%233bada8' stroke-width='2'/%3E%3C/svg%3E") repeat-x 0 100%/24px 8px;padding-bottom:6px}
+footer{padding-top:28px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
+
+.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.round{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+.round.now{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.round .score{font-size:36px}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--green-strong);color:var(--page);padding:12px 18px;border-radius:99px;text-decoration:none;font-weight:600;width:max-content}
+.cta:hover{filter:brightness(1.08)}
+.tabscore td.c,.tabscore th.c{width:auto;white-space:nowrap}
+.oq{display:grid;gap:18px}
+.oq details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.oq summary{cursor:pointer;font:600 15px var(--display);display:flex;justify-content:space-between;gap:10px}
+.oq summary span{font:500 13px var(--ui);color:var(--ink-3)}
+.oq ol{margin:12px 0 0;padding-left:22px;display:grid;gap:8px;color:var(--ink-2);font-size:14px}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.team div{background:var(--surface);padding:16px 18px;display:grid;gap:4px;align-content:start}
+.team b{font:600 14px var(--display)}
+.team span{font-size:13px;color:var(--ink-3)}
+.grid5{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cc{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px;align-content:start}
+.cc .frame{max-height:520px;overflow:hidden;overflow-y:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.cc img{display:block;width:100%;height:auto}
+.cc.mob .frame{max-height:620px}
+.cc h3{font-size:15px}
+.cc .meta{font-size:12.5px;color:var(--ink-3)}
+.cc .lh{font:500 12px var(--ui);font-variant-numeric:tabular-nums;color:var(--green-strong)}
+.pick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.pk{background:var(--surface);padding:16px 18px;display:grid;gap:8px;align-content:start}
+.pk .v{font:600 12px var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.pk .rec{font:600 12px var(--ui);color:var(--green-strong)}
+.pk .alt{font:600 12px var(--ui);color:var(--warn)}
+.pk ul{margin:0;padding-left:16px;font-size:13.5px;color:var(--ink-2);display:grid;gap:4px}
+.pk .lbl{font:600 11.5px var(--ui);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+@media (max-width:820px){
+  .grid5{grid-template-columns:1fr}
+  .pick{grid-template-columns:1fr}
+  .progress{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr 1fr}
+  .podium,.dirs,.hybrid,.shots,.before{grid-template-columns:1fr}
+  .gates{grid-template-columns:1fr 1fr}
+  .mobile .shots{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.prog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pr{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:8px;align-content:start}
+.pr.now{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.pr .k{font:600 12px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between;align-items:center}
+.pr .s{font:300 38px/1 var(--display);letter-spacing:-.02em}
+.pr .s small{font:500 14px var(--ui);color:var(--ink-3)}
+.pr p{font-size:13.5px;color:var(--ink-2)}
+.chip{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:99px;background:var(--green-soft);color:var(--green-strong);text-transform:none;letter-spacing:0}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.2 var(--ui);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);background:var(--sunken)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hl td{background:var(--green-soft);font-weight:600}
+.pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+.fr{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden auto;max-height:640px}
+.fr img{display:block;width:100%;height:auto}
+.cap{font-size:13px;color:var(--ink-3);margin-top:6px}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:10px;align-content:start}
+.box ul,.box ol{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px;color:var(--ink-2)}
+@media (max-width:820px){.prog,.cols,.pair{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
+<header>
+  <span class="eyebrow">june.energy redesign · final review</span>
+  <h1>One site, <span class="squig">built from five ideas</span>, scored by five evaluators.</h1>
+  <p class="lede">This is a complete Astro website in Dutch and French: home, plans, Switch Plus, how it works, FAQ and a working sign-up flow up to the savings estimate. It started from research by six specialists and five concepts. Four concepts were built in full and scored. The final site combines the winner (C · Honest Market) with the strongest parts of A, B and E, and was scored again.</p>
+</header>
+
+<section aria-labelledby="h-p">
+  <h2 id="h-p">How the score moved</h2>
+  <div class="prog">
+    <article class="pr"><div class="k">Round 1 · best of 4 builds</div><div class="s">4.24 <small>/ 5</small></div><p>C · Honest Market. A 4.03 · B 3.78 · E 3.70. None of them was June at its best: C was the most trusted but the least recognisably June.</p></article>
+    <article class="pr"><div class="k">Round 2 · final site</div><div class="s">4.46 <small>/ 5</small></div><p>Design 4.25 · UX 4.50 · Conversion 4.68 · Technical 4.37. Every simulated persona rated it at least as high as their round-1 favourite.</p></article>
+    <article class="pr now"><div class="k">After final polish <span class="chip">Ship bar met</span></div><div class="s">0 <small>gate failures</small></div><p>36/36 route × width (1280/390/320), Lighthouse mobile 97–99 perf, 100 a11y/BP/SEO, LCP ≤ 2.3 s, CLS 0, e2e sign-up 93/93.</p></article>
+  </div>
+</section>
+
+<section aria-labelledby="h-s">
+  <h2 id="h-s">The final site, page by page</h2>
+  <p class="sub">Desktop on the left, mobile on the right. Each frame scrolls. Placeholder data is never shown as fact: unconfirmed items use the safe wording from the claims register.</p>
+  <div class="tabs" role="group" aria-label="Page"><button class="tab" data-p="nl-be" aria-pressed="true">Home NL</button><button class="tab" data-p="nl-be_abonnementen" aria-pressed="false">Abonnementen</button><button class="tab" data-p="nl-be_switch-plus" aria-pressed="false">Switch Plus</button><button class="tab" data-p="nl-be_hoe-werkt-het" aria-pressed="false">Hoe werkt het</button><button class="tab" data-p="nl-be_veelgestelde-vragen" aria-pressed="false">FAQ</button><button class="tab" data-p="nl-be_aanmelden" aria-pressed="false">Aanmelden</button><button class="tab" data-p="fr-be" aria-pressed="false">Accueil FR</button><button class="tab" data-p="fr-be_abonnements" aria-pressed="false">Abonnements</button><button class="tab" data-p="fr-be_switch-plus" aria-pressed="false">Switch Plus FR</button><button class="tab" data-p="fr-be_comment-ca-marche" aria-pressed="false">Comment ça marche</button><button class="tab" data-p="fr-be_questions-frequentes" aria-pressed="false">Questions fréquentes</button><button class="tab" data-p="fr-be_inscription" aria-pressed="false">Inscription</button></div>
+  <div class="pair">
+    <div><div class="fr"><img id="d" alt="Desktop screenshot" loading="lazy"></div><p class="cap">Desktop · 1280px</p></div>
+    <div><div class="fr"><img id="m" alt="Mobile screenshot" loading="lazy"></div><p class="cap">Mobile · 390px</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-t">
+  <h2 id="h-t">Scores</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>Build</th><th class="n">Design 30%</th><th class="n">UX 25%</th><th class="n">Conversion 30%</th><th class="n">Technical 15%</th><th class="n">Weighted</th><th class="n">Personas*</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>Final site (round 2)</td><td class="n">4.25</td><td class="n">4.50</td><td class="n">4.68</td><td class="n">4.37</td><td class="n">4.46</td><td class="n">4.4</td></tr>
+      <tr><td>C · Honest Market (round 1)</td><td class="n">3.97</td><td class="n">4.34</td><td class="n">4.52</td><td class="n">4.03</td><td class="n">4.24</td><td class="n">4.1</td></tr>
+      <tr><td>A · Calm Confidence</td><td class="n">3.88</td><td class="n">4.14</td><td class="n">4.30</td><td class="n">3.60</td><td class="n">4.03</td><td class="n">3.9</td></tr>
+      <tr><td>B · Savings First</td><td class="n">3.53</td><td class="n">3.74</td><td class="n">4.12</td><td class="n">3.67</td><td class="n">3.78</td><td class="n">3.1</td></tr>
+      <tr><td>E · Bold June</td><td class="n">3.95</td><td class="n">3.54</td><td class="n">3.58</td><td class="n">3.70</td><td class="n">3.70</td><td class="n">2.6</td></tr>
+    </tbody></table></div>
+  <p class="sub">*Simulated persona panel (Saver NL mobile, Prudent FR, Tech enthusiast NL, sceptical senior FR). It is useful for finding problems, but it is not user research.</p>
+</section>
+
+<section aria-labelledby="h-w">
+  <h2 id="h-w">What the final site took from each concept</h2>
+  <div class="cols">
+    <div class="box"><h3>From C · the base</h3><ul><li>Manifesto hero: "Energieleveranciers rekenen op je trouw. Wij niet."</li><li>Three questions answered in the hero, and who pays June</li><li>A market chart that draws itself, footnotes, editorial type</li><li>The "Wat we van je weten" panel in sign-up</li></ul></div>
+    <div class="box"><h3>From A and B</h3><ul><li>A: hero tile with price, guarantee and "checked monthly", the Premium band with the real leaf dongle, and postcode → town and grid operator</li><li>B: "what you keep" per plan (only after an estimate), per-step URLs, and answers that survive the NL↔FR switch</li></ul></div>
+    <div class="box"><h3>From E and the assets</h3><ul><li>One hand-drawn squiggle per page and the button hover</li><li>The teal June character: pointing in the FAQ, cheering on confirmation</li><li>The official SVG logo, logo green #1CA498, the real NL/FR app mockups and the animated brand icons</li></ul></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-ab">
+  <h2 id="h-ab">Next: prove it with real traffic</h2>
+  <p class="sub">Primary metric is sign-up started (first valid postcode). Each test needs roughly 18.5k sessions per arm to detect a 10% relative lift at an 8% base rate. Run each for at least 2 weeks, stratified by language and device.</p>
+  <div class="tablebox"><table><thead><tr><th>#</th><th>Test</th><th>Challenger</th><th>Metric</th></tr></thead><tbody>
+    <tr><td>1</td><td>Mobile hero order</td><td>Form directly under the H1 (now the default) vs the three-question panel first</td><td>Mobile starts</td></tr>
+    <tr><td>2</td><td>Headline</td><td>A's outcome headline vs C's manifesto</td><td>Starts, NL and FR read separately</td></tr>
+    <tr><td>3</td><td>Premium for high savers</td><td>Switch Plus plus a Premium upgrade vs the current rule</td><td>Plan mix, ARPU, 14-day cancellations</td></tr>
+    <tr><td>4</td><td>Estimate headline</td><td>Gross first vs net first</td><td>Start → submitted</td></tr>
+    <tr><td>5</td><td>Proof inside the CTA group</td><td>Rating and guarantee on the button line vs separate lines</td><td>Starts</td></tr>
+    <tr><td>6</td><td>Cost of waiting</td><td>"Elke maand wachten ≈ € X" vs none</td><td>Submitted</td></tr>
+    <tr><td>7</td><td>FR-specific proof</td><td>FR reviews with a Walloon/Brussels example (once reviews exist)</td><td>FR starts</td></tr>
+  </tbody></table></div>
+</section>
+
+<section aria-labelledby="h-o">
+  <h2 id="h-o">Needed from June before launch</h2>
+  <div class="cols">
+    <div class="box"><h3>Facts to confirm</h3><ol><li>Phone or contact route for prospects</li><li>KBO/BCE number and address</li><li>Supplier commissions yes/no (the independence claim depends on it)</li><li>Basis of the €326 average</li><li>Premium guarantee amount, cancellation terms</li></ol></div>
+    <div class="box"><h3>Sign-offs and content</h3><ol><li>Legal sign-off on the in-browser estimate, or June's pricing engine behind <code>getEstimate()</code></li><li>Real Google reviews</li><li>Native Belgian-French proofread</li><li>Lifestyle photography and explainer video</li></ol></div>
+    <div class="box"><h3>Production plumbing</h3><ol><li>Sign-up backend (POST) and the rest of the funnel</li><li>Analytics and consent banner (hooks exist)</li><li>Host redirects for old URLs, security headers, 404 status</li><li>Rich Results check on live URLs</li></ol></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-c">
+  <h2 id="h-c">Where it started: the five concepts</h2>
+  <p class="sub">Checkpoint 2 homepages (NL desktop), before real assets arrived.</p>
+  <div class="grid5" id="grid"><article class="cc" data-v="a"><div class="frame"><img data-src="a" alt="Concept A · Calm Confidence" loading="lazy"></div><h3>A · Calm Confidence</h3></article><article class="cc" data-v="b"><div class="frame"><img data-src="b" alt="Concept B · Savings First" loading="lazy"></div><h3>B · Savings First</h3></article><article class="cc" data-v="c"><div class="frame"><img data-src="c" alt="Concept C · Honest Market" loading="lazy"></div><h3>C · Honest Market</h3></article><article class="cc" data-v="d"><div class="frame"><img data-src="d" alt="Concept D · Product Showcase" loading="lazy"></div><h3>D · Product Showcase</h3></article><article class="cc" data-v="e"><div class="frame"><img data-src="e" alt="Concept E · Bold June" loading="lazy"></div><h3>E · Bold June</h3></article></div>
+</section>
+
+<footer>Code: <code>website/variants/final</code> (Astro) on branch <code>claude/june-energy-ui-design-mnsn2a</code>, PR grgslbn/June-UI-UX#1. Briefs: <code>website/brief/</code>. Evaluations: <code>website/evaluations/</code>. Run checks with <code>node tools/check-site.mjs variants/final --narrow --site-files --lighthouse-all</code>.</footer>
+</div>
+<script>
+let p='nl-be';
+function render(){
+  document.getElementById('d').src=`final/${p}__desktop.png`;
+  document.getElementById('m').src=`final/${p}__mobile.png`;
+  document.querySelectorAll('.fr').forEach(f=>f.scrollTop=0);
+  document.querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===p));
+}
+document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{p=b.dataset.p;render()});
+render();
+document.querySelectorAll('#grid img').forEach(i=>i.src=`concepts/${i.dataset.src}-nl-be__desktop.png`);
+</script>

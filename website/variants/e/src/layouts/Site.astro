@@ -1,0 +1,44 @@
+---
+// Variant E layout: extends Base (lang, title, description, canonical, hreflang, robots) with fonts, tokens,
+// Open Graph and one JSON-LD @graph per page (Organization + WebSite + WebPage [+ Breadcrumb] [+ extra]).
+import Base from './Base.astro';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import { abs, LOCALES } from '@shared/routes.mjs';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale; routeKey: string; title: string; description: string; crumbs?: { key: string; name: string }[]; graph?: object[]; }
+const { locale, routeKey, title, description, crumbs = [], graph = [] } = Astro.props;
+const url = abs(routeKey, locale);
+const inLanguage = LOCALES[locale].html;
+const t = copy[locale];
+const ORG = 'https://www.june.energy/#org';
+const nodes: any[] = [
+  { '@type': 'Organization', '@id': ORG, name: 'June', legalName: 'June Energy', url: 'https://www.june.energy/', logo: 'https://www.june.energy/favicon.svg', areaServed: { '@type': 'Country', name: 'BE' }, slogan: t.footer.heritage },
+  { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: 'https://www.june.energy/', name: 'June', publisher: { '@id': ORG }, inLanguage: ['nl-BE', 'fr-BE'] },
+  { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: title, description, inLanguage, isPartOf: { '@id': 'https://www.june.energy/#website' }, ...(crumbs.length ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}) },
+];
+if (crumbs.length) nodes.push({
+  '@type': 'BreadcrumbList', '@id': `${url}#breadcrumb`,
+  itemListElement: [{ key: 'home', name: t.home }, ...crumbs].map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.key, locale) })),
+});
+nodes.push(...graph);
+const jsonld = { '@context': 'https://schema.org', '@graph': nodes };
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description}>
+  <Fragment slot="head">
+    <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#127a71" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="June" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:locale" content={locale === 'nl-be' ? 'nl_BE' : 'fr_BE'} />
+    <meta property="og:locale:alternate" content={locale === 'nl-be' ? 'fr_BE' : 'nl_BE'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
+  </Fragment>
+  <slot />
+</Base>

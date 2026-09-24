@@ -1,0 +1,124 @@
+---
+// Switch Plus — the guarantee page. Hero with price + guarantee facts → the guarantee as three outcomes (ink block)
+// → step by step (+ what is still to be confirmed) → annual report (real app card; FR rebuilt in HTML) → included
+// → Switch / Plus / Premium mini-table → guarantee FAQ → close (with the cheering character).
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import '../../styles/plans.css';
+import SectionHead from '../SectionHead.astro';
+import Icon from '../Icon.astro';
+import Fn from '../Fn.astro';
+import Guarantee from '../Guarantee.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Check from '../Check.astro';
+import Trust from '../Trust.astro';
+import { switchPlusCopy } from '../../i18n/pages.js';
+import { href, abs } from '@shared/routes.mjs';
+import reportNl from '@shared/assets/feature/savings-report.png';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = switchPlusCopy(locale);
+const L = c.L;
+const base = import.meta.env.BASE_URL;
+const signup = `${href('signup', locale, base)}?plan=switch-plus`;
+const p = c.plans[1];
+const ld = [{
+  '@type': 'Product', '@id': `${abs('switchPlus', locale)}#product`, name: p.full, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: `${p.value} ${c.promise.summary}`,
+  offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=switch-plus`, price: '99.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: { '@type': 'UnitPriceSpecification', price: '99.00', priceCurrency: 'EUR', valueAddedTaxIncluded: true, billingDuration: 'P1Y', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' } } },
+}];
+const sw = c.plans[0];
+---
+<Site locale={locale} routeKey="switchPlus" title={c.meta.title} description={c.meta.description} ld={ld}
+  sticky={{ strong: `Switch Plus · ${p.yearly} ${L === 'fr' ? 'par an' : 'per jaar'}`, sub: c.hero.monthly, label: c.hero.cta, url: signup }}>
+  <section class="page-hero sp-hero" aria-labelledby="h1">
+    <div class="wrap sp-grid">
+      <div class="hero-copy">
+        <p class="kicker"><span>{c.hero.kicker}</span></p>
+        <h1 id="h1">{c.hero.h1}</h1>
+        <p class="lead">{c.hero.lead}<Fn n={4} L={L} /></p>
+        <div class="sp-cta" data-sticky-hide>
+          <a class="btn" href={signup} data-cta="sp-hero">{c.hero.cta}<Icon name="arrow-r" /></a>
+          <a class="link-arrow" href={`${href('plans', locale, base)}#vergelijk`}>{c.hero.secondary}</a>
+        </div>
+        <Trust c={c} id="sp" />
+      </div>
+      <div class="sp-card">
+        <p class="sp-price"><span class="plan-yr num">{p.yearly}</span> <span class="plan-per">{c.hero.priceNote}</span></p>
+        <p class="plan-mo">{c.hero.monthly}<Fn n={6} L={L} /></p>
+        <dl class="sp-facts">
+          {c.hero.facts.map(([k, v]: string[]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <Guarantee c={c} locale={locale} id="garantie" cta="signup" />
+
+  <section class="section" id="stappen" aria-labelledby="gsteps-h">
+    <div class="wrap">
+      <SectionHead kicker={c.steps.kicker} id="gsteps-h" title={c.steps.h2} />
+      <ol class="steps">
+        {c.steps.items.map(([h, b]: string[], i: number) => (
+          <li>
+            <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{h}</h3>
+            <p>{b}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="honest-limit"><span class="tag tag--pending">{L === 'fr' ? 'À confirmer' : 'Wordt bevestigd'}</span><span>{c.steps.pending}</span></p>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="rapport" aria-labelledby="report-h">
+    <div class="wrap split">
+      <div>
+        <SectionHead kicker={c.report.kicker} id="report-h" title={c.report.h2}><p>{c.report.body}</p></SectionHead>
+        <h3 class="list-h">{c.included.h2}</h3>
+        <ul class="plan-feat plan-feat--wide">
+          {p.features.concat(sw.features.slice(0, 4)).filter((f: string, i: number, a: string[]) => a.indexOf(f) === i && !/^(Alles uit|Tout ce)/.test(f)).map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
+        </ul>
+      </div>
+      <figure class="report-fig">
+        {L === 'nl'
+          ? <Image src={reportNl} alt={c.report.alt} widths={[292, 584]} sizes="(max-width: 760px) 80vw, 292px" loading="eager" fetchpriority="low" class="report-img" />
+          : (
+            <div class="report-card" role="img" aria-label={`${c.report.card.title} : ${c.report.card.amount}, ${c.report.card.amountLabel.toLowerCase()}. ${c.report.card.row1}, ${c.report.card.row1b}. ${c.report.card.row2}, ${c.report.card.row2b}.`}>
+              <p class="rc-title">{c.report.card.title}</p>
+              <p class="rc-amount"><span class="rc-up" aria-hidden="true"><Icon name="arrow-r" /></span><span><strong class="num">{c.report.card.amount}</strong><span>{c.report.card.amountLabel}</span></span></p>
+              <p class="rc-row"><strong>{c.report.card.row1}</strong><span>{c.report.card.row1b}</span></p>
+              <p class="rc-row"><strong>{c.report.card.row2}</strong><span>{c.report.card.row2b}</span></p>
+            </div>
+          )}
+        <figcaption class="note">{c.report.sample}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="kiezen" aria-labelledby="choose-h">
+    <div class="wrap split">
+      <SectionHead kicker={c.choose.kicker} id="choose-h" title={c.choose.h2}><p>{c.choose.body}</p></SectionHead>
+      <table class="matrix matrix--mini">
+        <caption class="sr-only">{c.choose.caption}</caption>
+        <thead><tr><td></td>{c.plans.map((x: any) => <th scope="col" class:list={{ 'col-rec': x.slug === 'switch-plus' }}>{x.name}</th>)}</tr></thead>
+        <tbody>
+          {c.choose.rows.map((r: any[]) => (
+            <tr><th scope="row">{r[0]}</th>{r.slice(1).map((v, i) => <td class:list={['num', { 'col-rec': i === 1 }]}><Check v={v} ui={c.ui} /></td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <FaqList items={c.faqItems} L={L} />
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} title={c.close} plan="switch-plus" />
+</Site>

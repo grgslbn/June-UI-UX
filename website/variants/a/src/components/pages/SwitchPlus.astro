@@ -1,0 +1,162 @@
+---
+// Switch Plus (ux-research §4.4): hero with price + guarantee example → guarantee step by step + terms →
+// annual report (real app card) → also included → Switch or Switch Plus? → proof → FAQ → final CTA (+ sticky plan CTA).
+import { Picture } from 'astro:assets';
+import { copy, eur, planBySlug, to, signupHref, L, type Locale } from '../../content/i18n';
+import { pages } from '../../content/pages';
+import Site from '../../layouts/Site.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageHero from '../PageHero.astro';
+import GuaranteeExample from '../GuaranteeExample.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import StickyCta from '../StickyCta.astro';
+import TrustLine from '../TrustLine.astro';
+import Stars from '../Stars.astro';
+import Icon from '../Icon.astro';
+import Fn from '../Fn.astro';
+import report from '@shared/assets/feature/savings-report.png';
+import { graph, productNode } from '../../lib/schema';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = copy[locale];
+const P = pages[locale];
+const s = P.switchPlus;
+const lg = L(locale);
+const nl = locale === 'nl-be';
+const sw = planBySlug('switch') as any;
+const plans = ['switch', 'switch-plus', 'premium'].map(x => planBySlug(x) as any);
+const which = [
+  plans.map(p => eur(p.priceYearly, locale)),
+  [0, 1, 1], [0, 1, 1], [0, 0, 1],
+];
+const jsonld = graph({ locale, routeKey: 'switchPlus', title: s.title,
+  crumbs: [{ name: P.crumbsHome, key: 'home' }, { name: P.plans.crumb, key: 'plans' }, { name: s.crumb, key: 'switchPlus' }],
+  extra: [productNode('switch-plus', locale)] });
+---
+<Site locale={locale} routeKey="switchPlus" title={s.title} description={s.description} jsonld={jsonld}>
+  <Header locale={locale} routeKey="switchPlus" />
+  <main id="main">
+    <PageHero locale={locale} crumb={s.crumb} eyebrow={s.eyebrow} h1={s.h1} intro={s.sub} split>
+      <div class="sp-price" data-sticky-sentinel>
+        <p class="sp-price__main"><span class="plan__year">{s.priceMain}</span> <span class="plan__per">{s.pricePer}</span></p>
+        <p class="sp-price__sub">{s.priceSub}<Fn n={5} locale={locale} /></p>
+        <div class="sp-price__cta">
+          <a class="btn btn--primary btn--lg" href={signupHref(locale, 'plan=switch-plus&entry=sp-hero')}>{s.cta}<Icon name="i-arrow-r" size="sm" class="nudge" /></a>
+          <a class="link" href={to('plans', locale)}>{s.secondary}</a>
+        </div>
+        <TrustLine locale={locale} />
+      </div>
+      <GuaranteeExample slot="aside" locale={locale} tone="white" />
+    </PageHero>
+
+    <!-- The guarantee, step by step -->
+    <section class="section section--white" aria-labelledby="gsteps-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="eyebrow">{s.stepsEyebrow}</p>
+          <h2 id="gsteps-title" class="h2">{s.stepsTitle}</h2>
+        </header>
+        <ol class="gsteps" role="list">
+          {s.steps.map((st, i) => (
+            <li class="gsteps__item">
+              <span class="gsteps__n" aria-hidden="true">{i + 1}</span>
+              <h3 class="h3">{st.t}</h3>
+              <p>{st.b}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="gterms surface">
+          <h3 class="h4">{s.termsTitle}</h3>
+          <ul role="list">{s.terms.map(t => <li><Icon name="i-check" size="sm" />{t}</li>)}</ul>
+          <p class="footnote">{s.smallPrint} <a href="#" data-todo="T&C guarantee article">{P.plans.conditions}</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Annual report (real app card on NL; HTML rebuild on FR) -->
+    <section class="section section--canvas" aria-labelledby="report-title">
+      <div class="wrap split">
+        <div>
+          <p class="eyebrow">{s.reportEyebrow}</p>
+          <h2 id="report-title" class="h2">{s.reportTitle}</h2>
+          <p class="sec-head__intro">{s.reportBody}</p>
+          <h3 class="h4 also__t">{s.alsoTitle}</h3>
+          <ul class="also" role="list">{sw.features.map((f: any) => <li><Icon name="i-check" size="sm" />{f[lg]}</li>)}</ul>
+        </div>
+        <figure class="report">
+          {nl ? (
+            <Picture src={report} formats={['avif', 'webp']} widths={[300, 584]} sizes="(max-width: 720px) 86vw, 340px" alt={s.reportAlt} loading="lazy" decoding="async" class="report__img" />
+          ) : (
+            <div class="rcard surface" role="img" aria-label="Exemple de rapport d'économies dans l'app June : montant économisé, changement de fournisseur et conseils.">
+              <p class="rcard__t" aria-hidden="true">Rapport d'économies</p>
+              <div class="rcard__hero" aria-hidden="true"><span class="rcard__up"><Icon name="i-arrow-r" /></span><span><b>45,78 €</b><small>économisés ce mois-ci</small></span></div>
+              <p class="rcard__row" aria-hidden="true"><Icon name="i-repeat" size="sm" /><span>Changement automatique<small>Fournisseur X → Fournisseur Y</small></span><Icon name="i-check" size="sm" /></p>
+              <p class="rcard__row" aria-hidden="true"><Icon name="i-sun" size="sm" /><span>Consommation optimisée<small>Pics évités : 12</small></span></p>
+            </div>
+          )}
+          <figcaption class="tag tag--solid">{s.reportTag}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Switch or Switch Plus? -->
+    <section class="section section--white" aria-labelledby="which-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <h2 id="which-title" class="h2">{s.whichTitle}</h2>
+          <p class="sec-head__intro">{s.whichBody}</p>
+        </header>
+        <div class="cmp-wrap">
+          <table class="cmp cmp--mini">
+            <caption class="sr-only">{s.whichTitle}</caption>
+            <thead><tr><td></td>{plans.map(p => <th scope="col" class:list={[p.slug === 'switch-plus' && 'is-rec']}>{p.shortName}</th>)}</tr></thead>
+            <tbody>
+              {s.whichRows.map(([label], r) => (
+                <tr>
+                  <th scope="row">{label}</th>
+                  {which[r].map((v, i) => (
+                    <td class:list={[i === 1 && 'is-rec']}>
+                      {typeof v === 'string' ? <strong>{v}</strong> : v ? <><Icon name="i-check" class="cmp__yes" /><span class="sr-only">{P.plans.compare.yes}</span></> : <><Icon name="i-minus" class="cmp__no" /><span class="sr-only">{P.plans.compare.no}</span></>}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              <tr class="cmp__cta">
+                <td></td>
+                {plans.map(p => <td class:list={[p.slug === 'switch-plus' && 'is-rec']}><a class="link" href={p.slug === 'switch-plus' ? signupHref(locale, 'plan=switch-plus&entry=sp-table') : to('plans', locale, { hash: p.slug })}>{p.slug === 'switch-plus' ? s.cta : p.shortName}</a></td>)}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proof + FAQ -->
+    <section class="section section--canvas" aria-label={`${c.reviews.title} · ${c.faq.title}`}>
+      <div class="wrap rf">
+        <div>
+          <p class="eyebrow">{c.reviews.eyebrow}</p>
+          <h2 class="h2">{c.reviews.title}</h2>
+          <div class="rating surface">
+            <p class="rating__n">{c.reviews.rating}</p>
+            <Stars value={4.3} label={c.trust.stars} size={22} />
+            <p class="rating__c">{c.reviews.count}<Fn n={2} locale={locale} /></p>
+          </div>
+          <p class="review-ph">{c.reviews.placeholder}</p>
+        </div>
+        <div>
+          <p class="eyebrow">{c.faq.eyebrow}</p>
+          <h2 class="h2">{c.faq.title}</h2>
+          <FaqList locale={locale} ids={s.faqIds} />
+          <a class="link rf__all" href={to('faq', locale)}>{c.faq.all}<Icon name="i-arrow-r" size="sm" /></a>
+        </div>
+      </div>
+    </section>
+
+    <FinalCta locale={locale} title={s.final.title} sub={s.final.sub} entry="sp-final" plan="switch-plus" />
+  </main>
+  <Footer locale={locale} routeKey="switchPlus" />
+  <StickyCta lead={s.sticky.lead} label={s.sticky.label} href={signupHref(locale, 'plan=switch-plus&entry=sp-sticky')} proof={c.sticky} />
+</Site>

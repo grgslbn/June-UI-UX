@@ -1,0 +1,767 @@
+{
+ "file": "directions/c-soft-native/index.html",
+ "panels": {
+  "panel-overview": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Peak\" 51x32",
+     "[meta] button \"Peak · insufficient history\" 164x32",
+     "[meta] button \"Auto\" 48x32",
+     "[meta] button \"Light\" 50x32",
+     "[meta] button \"Dark\" 50x32",
+     "button \"Account\" 36x36",
+     "button/tab \"Overview\" 96x37",
+     "button/tab \"Peak\" 65x37",
+     "a \"1 Compare +73% More than similar homes in April. S\" 455x144",
+     "a \"2 Peak 5.8kW Your June 2025 peak drops out next mo\" 455x165",
+     "a \"3 Advice 3 new tips Top tip saves ≈ €150/year. See\" 455x144",
+     "a \"ForecastProjected this month — 8% more than May la\" 621x94",
+     "a \"Budgets187 of 300 kWh used, 13 days left. On track\" 621x73",
+     "a \"CompareMore than similar homes in April. +73% See \" 621x73",
+     "a \"Peak12-month average — sets your capacity tariff. \" 621x73",
+     "a \"BreakdownYour biggest category this month. Heating\" 621x73",
+     "a \"SolarNet exporter today: +3.2 kWh to the grid. 62%\" 621x73",
+     "a \"AdviceTop tip saves ≈ €150/year. 3 new tips See al\" 621x73",
+     "[meta] summary \"Spec notes · Overview\" 1086x18"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "Account",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Overview",
+      "w": 96,
+      "h": 37
+     },
+     {
+      "name": "Compare",
+      "w": 92,
+      "h": 37
+     },
+     {
+      "name": "Solar",
+      "w": 66,
+      "h": 37
+     },
+     {
+      "name": "Breakdown",
+      "w": 107,
+      "h": 37
+     },
+     {
+      "name": "Peak",
+      "w": 65,
+      "h": 37
+     },
+     {
+      "name": "Forecast",
+      "w": 89,
+      "h": 37
+     },
+     {
+      "name": "Advice",
+      "w": 79,
+      "h": 37
+     },
+     {
+      "name": "Budgets",
+      "w": 88,
+      "h": 37
+     }
+    ],
+    "expanders": [],
+    "charts": [],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 4,
+      "transitions": 60
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Peak\" 51x32",
+     "[meta] button \"Peak · insufficient history\" 164x32",
+     "[meta] button \"Auto\" 48x32",
+     "[meta] button \"Light\" 50x32",
+     "[meta] button \"Dark\" 50x32",
+     "button \"Account\" 36x36",
+     "button/tab \"Overview\" 96x37",
+     "button/tab \"Peak\" 65x37",
+     "a \"1 Compare +73% More than similar homes in April. S\" 358x136",
+     "a \"2 Peak 5.8kW Your June 2025 peak drops out next mo\" 358x157",
+     "a \"3 Advice 3 new tips Top tip saves ≈ €150/year. See\" 358x136",
+     "a \"ForecastProjected this month — 8% more than May la\" 334x96",
+     "a \"Budgets187 of 300 kWh used, 13 days left. On track\" 334x75",
+     "a \"CompareMore than similar homes in April. +73% See \" 334x75",
+     "a \"Peak12-month average — sets your capacity tariff. \" 334x96",
+     "a \"BreakdownYour biggest category this month. Heating\" 334x75",
+     "a \"SolarNet exporter today: +3.2 kWh to the grid. 62%\" 334x96",
+     "a \"AdviceTop tip saves ≈ €150/year. 3 new tips See al\" 334x75",
+     "[meta] summary \"Spec notes · Overview\" 324x18"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "Account",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Overview",
+      "w": 96,
+      "h": 37
+     },
+     {
+      "name": "Compare",
+      "w": 92,
+      "h": 37
+     },
+     {
+      "name": "Solar",
+      "w": 66,
+      "h": 37
+     },
+     {
+      "name": "Breakdown",
+      "w": 107,
+      "h": 37
+     },
+     {
+      "name": "Peak",
+      "w": 65,
+      "h": 37
+     },
+     {
+      "name": "Forecast",
+      "w": 89,
+      "h": 37
+     },
+     {
+      "name": "Advice",
+      "w": 79,
+      "h": 37
+     },
+     {
+      "name": "Budgets",
+      "w": 88,
+      "h": 37
+     }
+    ],
+    "expanders": [],
+    "charts": []
+   }
+  },
+  "panel-peak": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Peak · insufficient history\" 164x32",
+     "[meta] button \"Auto\" 48x32",
+     "[meta] button \"Light\" 50x32",
+     "[meta] button \"Dark\" 50x32",
+     "button \"Account\" 36x36",
+     "button/tab \"Overview\" 96x37",
+     "button/tab \"Peak\" 65x37",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"What is the capacity tariff?\" 24x24",
+     "button \"About this estimate\" 28x28",
+     "button/radio \"Month\" 70x33",
+     "button \"Previous month\" 32x32",
+     "button \"Next month\" 32x32",
+     "a \"Lower your peak\" 180x45",
+     "button \"How the 12-month average is calculatedSee the full\" 1120x89",
+     "[meta] summary \"Spec notes · Peak\" 1086x18"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "Account",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Overview",
+      "w": 96,
+      "h": 37
+     },
+     {
+      "name": "Compare",
+      "w": 92,
+      "h": 37
+     },
+     {
+      "name": "Solar",
+      "w": 66,
+      "h": 37
+     },
+     {
+      "name": "Breakdown",
+      "w": 107,
+      "h": 37
+     },
+     {
+      "name": "Peak",
+      "w": 65,
+      "h": 37
+     },
+     {
+      "name": "Forecast",
+      "w": 89,
+      "h": 37
+     },
+     {
+      "name": "Advice",
+      "w": 79,
+      "h": 37
+     },
+     {
+      "name": "Budgets",
+      "w": 88,
+      "h": 37
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "About this estimate",
+      "w": 28,
+      "h": 28
+     },
+     {
+      "name": "Day",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Week",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Month",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Year",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Previous month",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Next month",
+      "w": 32,
+      "h": 32
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-tariff",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "About this estimate",
+      "controls": "pop-est",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "How the 12-month average is calculatedSee the",
+      "controls": "calc-body",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "true",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "gauge",
+      "svgHidden": "true",
+      "alt": "Gauge: your rolling average 4.0 kW on a 0 to 6 kW scale, just below the Flemish average of 4.24 kW."
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peaks for 1 to 18 May 2026; days 19 to 31 have not happened yet. Most days sit between 1.9 and 3.4 kW. The month peak is 4.2 kW on 12 May at "
+     }
+    ],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 32,
+      "transitions": 79
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Peak · insufficient history\" 164x32",
+     "[meta] button \"Auto\" 48x32",
+     "[meta] button \"Light\" 50x32",
+     "[meta] button \"Dark\" 50x32",
+     "button \"Account\" 36x36",
+     "button/tab \"Overview\" 96x37",
+     "button/tab \"Peak\" 65x37",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"What is the capacity tariff?\" 24x24",
+     "button \"About this estimate\" 28x28",
+     "button/radio \"Month\" 62x33",
+     "button \"Previous month\" 32x32",
+     "button \"Next month\" 32x32",
+     "a \"Lower your peak\" 180x45",
+     "button \"How the 12-month average is calculatedSee the full\" 358x113",
+     "[meta] summary \"Spec notes · Peak\" 324x18"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "Account",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Overview",
+      "w": 96,
+      "h": 37
+     },
+     {
+      "name": "Compare",
+      "w": 92,
+      "h": 37
+     },
+     {
+      "name": "Solar",
+      "w": 66,
+      "h": 37
+     },
+     {
+      "name": "Breakdown",
+      "w": 107,
+      "h": 37
+     },
+     {
+      "name": "Peak",
+      "w": 65,
+      "h": 37
+     },
+     {
+      "name": "Forecast",
+      "w": 89,
+      "h": 37
+     },
+     {
+      "name": "Advice",
+      "w": 79,
+      "h": 37
+     },
+     {
+      "name": "Budgets",
+      "w": 88,
+      "h": 37
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "About this estimate",
+      "w": 28,
+      "h": 28
+     },
+     {
+      "name": "Day",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Week",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Month",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Year",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Previous month",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Next month",
+      "w": 32,
+      "h": 32
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-tariff",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "About this estimate",
+      "controls": "pop-est",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "How the 12-month average is calculatedSee the",
+      "controls": "calc-body",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "true",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "gauge",
+      "svgHidden": "true",
+      "alt": "Gauge: your rolling average 4.0 kW on a 0 to 6 kW scale, just below the Flemish average of 4.24 kW."
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peaks for 1 to 18 May 2026; days 19 to 31 have not happened yet. Most days sit between 1.9 and 3.4 kW. The month peak is 4.2 kW on 12 May at "
+     }
+    ]
+   }
+  },
+  "panel-peak-history": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Auto\" 48x32",
+     "[meta] button \"Light\" 50x32",
+     "[meta] button \"Dark\" 50x32",
+     "button \"Account\" 36x36",
+     "button/tab \"Overview\" 96x37",
+     "button/tab \"Peak\" 65x37",
+     "button \"What is a rolling average?\" 24x24",
+     "button/radio \"Month\" 70x33",
+     "button \"Previous month\" 32x32",
+     "button \"Next month\" 32x32",
+     "a \"Lower your peak\" 180x45",
+     "[meta] summary \"Spec notes · Peak · insufficient history\" 1086x18"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "Account",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Overview",
+      "w": 96,
+      "h": 37
+     },
+     {
+      "name": "Compare",
+      "w": 92,
+      "h": 37
+     },
+     {
+      "name": "Solar",
+      "w": 66,
+      "h": 37
+     },
+     {
+      "name": "Breakdown",
+      "w": 107,
+      "h": 37
+     },
+     {
+      "name": "Peak",
+      "w": 65,
+      "h": 37
+     },
+     {
+      "name": "Forecast",
+      "w": 89,
+      "h": 37
+     },
+     {
+      "name": "Advice",
+      "w": 79,
+      "h": 37
+     },
+     {
+      "name": "Budgets",
+      "w": 88,
+      "h": 37
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Day",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Week",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Month",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Year",
+      "w": 70,
+      "h": 33
+     },
+     {
+      "name": "Previous month",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Next month",
+      "w": 32,
+      "h": 32
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "gauge",
+      "svgHidden": "true",
+      "alt": "Gauge: your average so far 3.0 kW on a 0 to 6 kW scale; the 2.5 kW regulatory floor and the 4.24 kW Flemish average are marked."
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peaks for September 2025 so far. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today's latest peak is 3.1 kW. Thresholds: m"
+     }
+    ],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 32,
+      "transitions": 79
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Auto\" 48x32",
+     "[meta] button \"Light\" 50x32",
+     "[meta] button \"Dark\" 50x32",
+     "button \"Account\" 36x36",
+     "button/tab \"Overview\" 96x37",
+     "button/tab \"Peak\" 65x37",
+     "button \"What is a rolling average?\" 24x24",
+     "button/radio \"Month\" 62x33",
+     "button \"Previous month\" 32x32",
+     "button \"Next month\" 32x32",
+     "a \"Lower your peak\" 180x45",
+     "[meta] summary \"Spec notes · Peak · insufficient history\" 324x18"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "Account",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Overview",
+      "w": 96,
+      "h": 37
+     },
+     {
+      "name": "Compare",
+      "w": 92,
+      "h": 37
+     },
+     {
+      "name": "Solar",
+      "w": 66,
+      "h": 37
+     },
+     {
+      "name": "Breakdown",
+      "w": 107,
+      "h": 37
+     },
+     {
+      "name": "Peak",
+      "w": 65,
+      "h": 37
+     },
+     {
+      "name": "Forecast",
+      "w": 89,
+      "h": 37
+     },
+     {
+      "name": "Advice",
+      "w": 79,
+      "h": 37
+     },
+     {
+      "name": "Budgets",
+      "w": 88,
+      "h": 37
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Day",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Week",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Month",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Year",
+      "w": 62,
+      "h": 33
+     },
+     {
+      "name": "Previous month",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Next month",
+      "w": 32,
+      "h": 32
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "gauge",
+      "svgHidden": "true",
+      "alt": "Gauge: your average so far 3.0 kW on a 0 to 6 kW scale; the 2.5 kW regulatory floor and the 4.24 kW Flemish average are marked."
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peaks for September 2025 so far. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today's latest peak is 3.1 kW. Thresholds: m"
+     }
+    ]
+   }
+  }
+ }
+}

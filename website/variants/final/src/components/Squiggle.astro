@@ -1,0 +1,7 @@
+---
+// Hand-drawn squiggle (borrowed from E) under ONE word per page. Draws on load (700 ms) unless reduced motion.
+// Usage: <Squiggle>Wij niet.</Squiggle> — decorative, the text stays plain text.
+interface Props { tone?: 'green' | 'ink'; }
+const { tone = 'green' } = Astro.props;
+---
+<span class:list={['sq', `sq--${tone}`]}><slot /><svg class="sq-line" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M4 15 C 30 5, 52 21, 78 12 S 128 5, 154 14 S 204 21, 230 11 S 276 7, 296 12" /></svg></span>

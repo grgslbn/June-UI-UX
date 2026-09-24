@@ -1,0 +1,10 @@
+---
+// On-brand photo placeholder (brand-strategy §5 #1): mint/ink duotone + blob + house line, tagged "placeholder".
+interface Props { alt: string; tag: string; src: string }
+const { alt, tag, src } = Astro.props;
+---
+<figure class="photo">
+  <img src={src} alt={alt} width="720" height="840" loading="lazy" decoding="async" />
+  <figcaption class="photo__tag">{tag}</figcaption>
+  <span class="photo__halftone" aria-hidden="true"></span>
+</figure>

@@ -1,0 +1,154 @@
+---
+// Switch Plus — the guarantee page. Hero with price + facts (condition stated, "approve each switch" visible)
+// → worked guarantee examples (three years, three outcomes, the condition always spelled out; ink block)
+// → step by step → annual report (real app card; FR rebuilt in HTML) → included → Switch / Plus / Premium mini-table
+// → guarantee FAQ → close ("Klaar om te besparen, met winstgarantie?").
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import Squiggle from '../Squiggle.astro';
+import '../../styles/plans.css';
+import SectionHead from '../SectionHead.astro';
+import CtaProof from '../CtaProof.astro';
+import Icon from '../Icon.astro';
+import Fn from '../Fn.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Check from '../Check.astro';
+import { switchPlusCopy } from '../../i18n/pages.js';
+import { href, abs } from '@shared/routes.mjs';
+import reportNl from '@shared/assets/feature/savings-report.png';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = switchPlusCopy(locale);
+const L = c.L;
+// One squiggle word per page (brand spark), under the H1's key word.
+const mi = c.hero.h1.indexOf(c.hero.mark);
+const h1 = mi < 0 ? [c.hero.h1, ''] : [c.hero.h1.slice(0, mi), c.hero.h1.slice(mi + c.hero.mark.length)];
+const base = import.meta.env.BASE_URL;
+const signup = `${href('signup', locale, base)}?plan=switch-plus`;
+const p = c.plans[1];
+const ld = [{
+  '@type': 'Product', '@id': `${abs('switchPlus', locale)}#product`, name: p.full, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: `${L === 'fr' ? 'Économisez, avec garantie de gain.' : 'Besparen, met winstgarantie.'} ${c.promise.summary}`,
+  offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=switch-plus`, price: '99.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: { '@type': 'UnitPriceSpecification', price: '99.00', priceCurrency: 'EUR', valueAddedTaxIncluded: true, billingDuration: 'P1Y', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' } } },
+}];
+const sw = c.plans[0];
+const x = c.examples;
+const fee = p.yearlyN;
+---
+<Site locale={locale} routeKey="switchPlus" title={c.meta.title} description={c.meta.description} ld={ld}
+  stickyPlan="switch-plus">
+  <section class="page-hero sp-hero" aria-labelledby="h1">
+    <div class="wrap sp-grid">
+      <div class="hero-copy">
+        <p class="kicker"><span>{c.hero.kicker}</span></p>
+        <h1 id="h1">{h1[0]}<Squiggle>{c.hero.mark}</Squiggle>{h1[1]}</h1>
+        <p class="lead">{c.hero.lead}<Fn n={4} L={L} /></p>
+        <div class="sp-cta" data-sticky-hide>
+          <a class="btn" href={signup} data-cta="sp-hero">{c.hero.cta}<Icon name="arrow-r" /></a>
+          <CtaProof c={c} id="sp-hero" reducer={c.proof.risk} />
+        </div>
+        <p><a class="link-arrow" href={`${href('plans', locale, base)}#vergelijk`}>{c.hero.secondary}<Icon name="arrow-r" /></a></p>
+      </div>
+      <div class="sp-card">
+        <p class="sp-price"><span class="plan-yr num">{p.yearly}</span> <span class="plan-per">{c.hero.priceNote}</span></p>
+        <p class="plan-mo">{c.hero.monthly}<Fn n={6} L={L} /></p>
+        <dl class="sp-facts">
+          {c.hero.facts.map(([k, v]: string[]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section promise gx" id="garantie" aria-labelledby="gx-h">
+    <div class="wrap">
+      <SectionHead kicker={x.kicker} id="gx-h" title={x.h2}><p>{x.intro}<Fn n={4} L={L} /></p></SectionHead>
+      <ol class="gx-list" role="list">
+        {x.items.map((it: any) => (
+          <li class:list={['gx-item', { 'gx-item--refund': it.refund }]}>
+            <p class="gx-label">{it.label}</p>
+            <div class="gx-bar" aria-hidden="true" style={`--w:${Math.round((it.saved / 300) * 100)}%;--t:${Math.round((fee / 300) * 100)}%`}><span class="gx-fill"></span><span class="gx-t"></span></div>
+            <p class="gx-cond">{it.cond}</p>
+            <p class="gx-out"><Icon name={it.refund ? 'shield' : 'check-circle'} /><strong>{it.out}</strong></p>
+            <p class="gx-net">{it.net}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="gx-foot">
+        <p class="gx-legend"><span class="gx-legend-t" aria-hidden="true"></span>{x.threshold}</p>
+        <p class="note">{x.note} <a href="#fn-4">{L === 'fr' ? 'Conditions' : 'Voorwaarden'}</a></p>
+      </div>
+      <div class="gx-cta">
+        <a class="btn btn--light" href={signup} data-cta="sp-examples">{c.hero.cta}<Icon name="arrow-r" /></a>
+        <CtaProof c={c} id="sp-gx" tone="light" reducer={c.proof.risk} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="stappen" aria-labelledby="gsteps-h">
+    <div class="wrap">
+      <SectionHead kicker={c.steps.kicker} id="gsteps-h" title={c.steps.h2} />
+      <ol class="steps">
+        {c.steps.items.map(([h, b]: string[], i: number) => (
+          <li>
+            <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{h}</h3>
+            <p>{b}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="rapport" aria-labelledby="report-h">
+    <div class="wrap split">
+      <div>
+        <SectionHead kicker={c.report.kicker} id="report-h" title={c.report.h2}><p>{c.report.body}</p></SectionHead>
+        <h3 class="list-h">{c.included.h2}</h3>
+        <ul class="plan-feat plan-feat--wide">
+          {p.features.concat(sw.features.slice(0, 4)).filter((f: string, i: number, a: string[]) => a.indexOf(f) === i && !/^(Alles uit|Tout ce)/.test(f)).map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
+        </ul>
+      </div>
+      <figure class="report-fig">
+        {L === 'nl'
+          ? <Image src={reportNl} alt={c.report.alt} widths={[292, 584]} sizes="(max-width: 760px) 80vw, 292px" loading="eager" fetchpriority="low" class="report-img" />
+          : (
+            <div class="report-card" role="img" aria-label={`${c.report.card.title} : ${c.report.card.amount}, ${c.report.card.amountLabel.toLowerCase()}. ${c.report.card.row1}, ${c.report.card.row1b}. ${c.report.card.row2}, ${c.report.card.row2b}.`}>
+              <p class="rc-title">{c.report.card.title}</p>
+              <p class="rc-amount"><span class="rc-up" aria-hidden="true"><Icon name="arrow-r" /></span><span><strong class="num">{c.report.card.amount}</strong><span>{c.report.card.amountLabel}</span></span></p>
+              <p class="rc-row"><strong>{c.report.card.row1}</strong><span>{c.report.card.row1b}</span></p>
+              <p class="rc-row"><strong>{c.report.card.row2}</strong><span>{c.report.card.row2b}</span></p>
+            </div>
+          )}
+        <figcaption class="note">{c.report.sample}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="kiezen" aria-labelledby="choose-h">
+    <div class="wrap split">
+      <SectionHead kicker={c.choose.kicker} id="choose-h" title={c.choose.h2}><p>{c.choose.body}</p></SectionHead>
+      <div class="table-scroll" tabindex="0" role="region" aria-label={c.choose.caption}>
+      <table class="matrix matrix--mini">
+        <caption class="sr-only">{c.choose.caption}</caption>
+        <thead><tr><td></td>{c.plans.map((x: any) => <th scope="col" class:list={{ 'col-rec': x.slug === 'switch-plus' }}>{x.name}</th>)}</tr></thead>
+        <tbody>
+          {c.choose.rows.map((r: any[]) => (
+            <tr><th scope="row">{r[0]}</th>{r.slice(1).map((v, i) => <td class:list={['num', { 'col-rec': i === 1 }]}><Check v={v} ui={c.ui} /></td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <FaqList items={c.faqItems} L={L} />
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} title={c.close} plan="switch-plus" />
+</Site>

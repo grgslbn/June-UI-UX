@@ -1,0 +1,17 @@
+---
+// Root: production does a host-level 301 to /nl-be/. This static fallback redirects immediately, is noindex and
+// canonicalises to the Dutch home (seo-tech-strategy §1.5). No language guessing from Accept-Language.
+const target = `${import.meta.env.BASE_URL}nl-be/`;
+---
+<!doctype html>
+<html lang="nl-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>June</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://www.june.energy/nl-be/" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+  </head>
+  <body><p><a href={target}>June in het Nederlands</a> · <a href={`${import.meta.env.BASE_URL}fr-be/`} lang="fr-BE">June en français</a></p></body>
+</html>

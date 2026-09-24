@@ -1,0 +1,655 @@
+{
+ "file": "directions/b-energy-almanac/index.html",
+ "panels": {
+  "panel-overview": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Peak\" 51x31",
+     "[meta] button \"Peak · insufficient history\" 167x31",
+     "[meta] button \"Switch colour theme\" 94x31",
+     "a \"June home\" 70x24",
+     "button \"Account\" 40x40",
+     "button \"Overview\" 65x53",
+     "button \"Compare\" 60x53",
+     "button \"Solar\" 34x53",
+     "button \"Breakdown\" 75x53",
+     "button \"Peak\" 33x53",
+     "button \"Forecast\" 57x53",
+     "button \"Advice\" 47x53",
+     "button \"Budgets\" 56x53",
+     "a \"01 Compare+73% more than similar homes in AprilYou\" 752x107",
+     "a \"02 PeakYour 5.8 kW June 2025 peak drops out next m\" 752x107",
+     "a \"03 Advice3 new tipsTop tip saves ≈ €150/year.\" 752x107",
+     "a \"Compare+73%More than similar homes in April.\" 263x117",
+     "a \"Solar62% used at homeNet exporter today: +3.2 kWh \" 263x117",
+     "a \"BreakdownHeating 38%Your biggest category this mon\" 263x117",
+     "a \"Peak4.0 kW12-month average — sets your capacity ta\" 263x117",
+     "a \"Forecast290 kWhProjected this month — 8% more than\" 263x137",
+     "a \"Advice3 new tipsTop tip saves ≈ €150/year.\" 263x97",
+     "a \"BudgetsOn track187 of 300 kWh used, 13 days left.\" 263x118",
+     "[meta] summary \"Spec notes — Overview (not product UI)\" 1118x44"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 70,
+      "h": 24
+     },
+     {
+      "name": "Account",
+      "w": 40,
+      "h": 40
+     },
+     {
+      "name": "Solar",
+      "w": 34,
+      "h": 53
+     },
+     {
+      "name": "Peak",
+      "w": 33,
+      "h": 53
+     }
+    ],
+    "expanders": [],
+    "charts": [],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 11,
+      "transitions": 62
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Peak\" 51x31",
+     "[meta] button \"Peak · insufficient history\" 167x31",
+     "[meta] button \"Switch colour theme\" 94x31",
+     "a \"June home\" 70x24",
+     "button \"Account\" 40x40",
+     "button \"Overview\" 65x53",
+     "button \"Compare\" 60x53",
+     "button \"Solar\" 34x53",
+     "button \"Breakdown\" 75x53",
+     "button \"Peak\" 33x53",
+     "button \"Forecast\" 57x53",
+     "button \"Advice\" 47x53",
+     "button \"Budgets\" 56x53",
+     "a \"01 Compare+73% more than similar homes in AprilYou\" 358x150",
+     "a \"02 PeakYour 5.8 kW June 2025 peak drops out next m\" 358x150",
+     "a \"03 Advice3 new tipsTop tip saves ≈ €150/year.\" 358x107",
+     "a \"Compare+73%More than similar homes in April.\" 358x97",
+     "a \"Solar62% used at homeNet exporter today: +3.2 kWh \" 358x97",
+     "a \"BreakdownHeating 38%Your biggest category this mon\" 358x97",
+     "a \"Peak4.0 kW12-month average — sets your capacity ta\" 358x117",
+     "a \"Forecast290 kWhProjected this month — 8% more than\" 358x117",
+     "a \"Advice3 new tipsTop tip saves ≈ €150/year.\" 358x97",
+     "a \"BudgetsOn track187 of 300 kWh used, 13 days left.\" 358x98",
+     "[meta] summary \"Spec notes — Overview (not product UI)\" 356x44"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 70,
+      "h": 24
+     },
+     {
+      "name": "Account",
+      "w": 40,
+      "h": 40
+     },
+     {
+      "name": "Solar",
+      "w": 34,
+      "h": 53
+     },
+     {
+      "name": "Peak",
+      "w": 33,
+      "h": 53
+     }
+    ],
+    "expanders": [],
+    "charts": []
+   }
+  },
+  "panel-peak": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Peak · insufficient history\" 167x31",
+     "[meta] button \"Switch colour theme\" 94x31",
+     "a \"June home\" 70x24",
+     "button \"Account\" 40x40",
+     "button \"Overview\" 64x53",
+     "button \"Compare\" 60x53",
+     "button \"Solar\" 34x53",
+     "button \"Breakdown\" 75x53",
+     "button \"Peak\" 33x53",
+     "button \"Forecast\" 57x53",
+     "button \"Advice\" 47x53",
+     "button \"Budgets\" 56x53",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"What is the capacity tariff?\" 24x24",
+     "button \"Estimated. How this is calculated\" 24x25",
+     "button \"Day\" 54x34",
+     "button \"Week\" 65x34",
+     "button \"Month\" 73x34",
+     "button \"Year\" 58x34",
+     "button \"Previous month (April 2026)\" 36x36",
+     "a \"Lower your peak\" 178x44",
+     "button \"How the 12-month average is calculated\" 752x65",
+     "[meta] summary \"Spec notes — Peak (not product UI)\" 1118x44"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 70,
+      "h": 24
+     },
+     {
+      "name": "Account",
+      "w": 40,
+      "h": 40
+     },
+     {
+      "name": "Solar",
+      "w": 34,
+      "h": 53
+     },
+     {
+      "name": "Peak",
+      "w": 33,
+      "h": 53
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Estimated. How this is calculated",
+      "w": 24,
+      "h": 25
+     },
+     {
+      "name": "Day",
+      "w": 54,
+      "h": 34
+     },
+     {
+      "name": "Week",
+      "w": 65,
+      "h": 34
+     },
+     {
+      "name": "Month",
+      "w": 73,
+      "h": 34
+     },
+     {
+      "name": "Year",
+      "w": 58,
+      "h": 34
+     },
+     {
+      "name": "Previous month (April 2026)",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Next month",
+      "w": 36,
+      "h": 36
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "false",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-capacity",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "Estimated. How this is calculated",
+      "controls": "pop-approx",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "How the 12-month average is calculated",
+      "controls": "calc-body",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "true",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "hero-fig",
+      "svgHidden": "true",
+      "alt": ""
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peak power for May 2026, days 1 to 18. Most days peaked between 1.9 and 3.4 kW. The highest was 4.2 kW on 12 May at 18:30, which is this mont"
+     }
+    ],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 31,
+      "transitions": 64
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Peak · insufficient history\" 167x31",
+     "[meta] button \"Switch colour theme\" 94x31",
+     "a \"June home\" 70x24",
+     "button \"Account\" 40x40",
+     "button \"Overview\" 64x53",
+     "button \"Compare\" 60x53",
+     "button \"Solar\" 34x53",
+     "button \"Breakdown\" 75x53",
+     "button \"Peak\" 33x53",
+     "button \"Forecast\" 57x53",
+     "button \"Advice\" 47x53",
+     "button \"Budgets\" 56x53",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"What is the capacity tariff?\" 24x24",
+     "button \"Estimated. How this is calculated\" 24x25",
+     "button \"Day\" 48x34",
+     "button \"Week\" 59x34",
+     "button \"Month\" 67x34",
+     "button \"Year\" 52x34",
+     "button \"Previous month (April 2026)\" 36x36",
+     "a \"Lower your peak\" 178x44",
+     "button \"How the 12-month average is calculated\" 358x65",
+     "[meta] summary \"Spec notes — Peak (not product UI)\" 356x44"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 70,
+      "h": 24
+     },
+     {
+      "name": "Account",
+      "w": 40,
+      "h": 40
+     },
+     {
+      "name": "Solar",
+      "w": 34,
+      "h": 53
+     },
+     {
+      "name": "Peak",
+      "w": 33,
+      "h": 53
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Estimated. How this is calculated",
+      "w": 24,
+      "h": 25
+     },
+     {
+      "name": "Day",
+      "w": 48,
+      "h": 34
+     },
+     {
+      "name": "Week",
+      "w": 59,
+      "h": 34
+     },
+     {
+      "name": "Month",
+      "w": 67,
+      "h": 34
+     },
+     {
+      "name": "Year",
+      "w": 52,
+      "h": 34
+     },
+     {
+      "name": "Previous month (April 2026)",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Next month",
+      "w": 36,
+      "h": 36
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "false",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-capacity",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "Estimated. How this is calculated",
+      "controls": "pop-approx",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "How the 12-month average is calculated",
+      "controls": "calc-body",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "true",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "hero-fig",
+      "svgHidden": "true",
+      "alt": ""
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peak power for May 2026, days 1 to 18. Most days peaked between 1.9 and 3.4 kW. The highest was 4.2 kW on 12 May at 18:30, which is this mont"
+     }
+    ]
+   }
+  },
+  "panel-peak-history": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Switch colour theme\" 94x31",
+     "a \"June home\" 70x24",
+     "button \"Account\" 40x40",
+     "button \"Overview\" 64x53",
+     "button \"Compare\" 60x53",
+     "button \"Solar\" 34x53",
+     "button \"Breakdown\" 75x53",
+     "button \"Peak\" 33x53",
+     "button \"Forecast\" 57x53",
+     "button \"Advice\" 47x53",
+     "button \"Budgets\" 56x53",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"Day\" 54x34",
+     "button \"Week\" 65x34",
+     "button \"Month\" 73x34",
+     "button \"Year\" 58x34",
+     "button \"Previous month (August 2025)\" 36x36",
+     "a \"Lower your peak\" 178x44",
+     "[meta] summary \"Spec notes — Peak, insufficient history (not produ\" 1118x44"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 70,
+      "h": 24
+     },
+     {
+      "name": "Account",
+      "w": 40,
+      "h": 40
+     },
+     {
+      "name": "Solar",
+      "w": 34,
+      "h": 53
+     },
+     {
+      "name": "Peak",
+      "w": 33,
+      "h": 53
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Day",
+      "w": 54,
+      "h": 34
+     },
+     {
+      "name": "Week",
+      "w": 65,
+      "h": 34
+     },
+     {
+      "name": "Month",
+      "w": 73,
+      "h": 34
+     },
+     {
+      "name": "Year",
+      "w": 58,
+      "h": 34
+     },
+     {
+      "name": "Previous month (August 2025)",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Next month",
+      "w": 36,
+      "h": 36
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling-h",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "hero-fig",
+      "svgHidden": "true",
+      "alt": ""
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peak power for September 2025, days 1 to 10. The highest was 3.4 kW on 6 September at 19:00, this month's peak. Today peaked at 3.1 kW. Your "
+     }
+    ],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 23,
+      "transitions": 64
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Switch colour theme\" 94x31",
+     "a \"June home\" 70x24",
+     "button \"Account\" 40x40",
+     "button \"Overview\" 64x53",
+     "button \"Compare\" 60x53",
+     "button \"Solar\" 34x53",
+     "button \"Breakdown\" 75x53",
+     "button \"Peak\" 33x53",
+     "button \"Forecast\" 57x53",
+     "button \"Advice\" 47x53",
+     "button \"Budgets\" 56x53",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"Day\" 48x34",
+     "button \"Week\" 59x34",
+     "button \"Month\" 67x34",
+     "button \"Year\" 52x34",
+     "button \"Previous month (August 2025)\" 36x36",
+     "a \"Lower your peak\" 178x44",
+     "[meta] summary \"Spec notes — Peak, insufficient history (not produ\" 356x63"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 70,
+      "h": 24
+     },
+     {
+      "name": "Account",
+      "w": 40,
+      "h": 40
+     },
+     {
+      "name": "Solar",
+      "w": 34,
+      "h": 53
+     },
+     {
+      "name": "Peak",
+      "w": 33,
+      "h": 53
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Day",
+      "w": 48,
+      "h": 34
+     },
+     {
+      "name": "Week",
+      "w": 59,
+      "h": 34
+     },
+     {
+      "name": "Month",
+      "w": 67,
+      "h": 34
+     },
+     {
+      "name": "Year",
+      "w": 52,
+      "h": 34
+     },
+     {
+      "name": "Previous month (August 2025)",
+      "w": 36,
+      "h": 36
+     },
+     {
+      "name": "Next month",
+      "w": 36,
+      "h": 36
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling-h",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "false",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "hero-fig",
+      "svgHidden": "true",
+      "alt": ""
+     },
+     {
+      "cls": "chart",
+      "svgHidden": "true",
+      "alt": "Bar chart of daily peak power for September 2025, days 1 to 10. The highest was 3.4 kW on 6 September at 19:00, this month's peak. Today peaked at 3.1 kW. Your "
+     }
+    ]
+   }
+  }
+ }
+}

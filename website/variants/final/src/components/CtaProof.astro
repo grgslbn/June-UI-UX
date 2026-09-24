@@ -1,0 +1,13 @@
+---
+// Proof + one risk reducer, for placing directly under a primary CTA (≤ 40px): "★ 4,3/5 op Google · 20.000+ klanten · Vrijblijvend".
+import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+interface Props { c: any; id: string; tone?: 'ink' | 'light'; reducer?: string; }
+const { c, id, tone = 'ink', reducer } = Astro.props;
+---
+<p class:list={['cta-proof', `cta-proof--${tone}`]}>
+  <Stars value={c.rating} id={`cp-${id}`} />
+  <span><strong>{c.trust.rating}</strong><Fn n={2} L={c.L} /></span>
+  <span aria-hidden="true">·</span>
+  <span>{reducer || c.ui.reducer}</span>
+</p>

@@ -1,0 +1,184 @@
+---
+// Abonnementen / Abonnements — yearly price first, recommended plan obvious, then the honest context:
+// helper → full table → Premium & dongle → June vs doing it yourself → how June earns money → pricing FAQ → close.
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import '../../styles/plans.css';
+import SectionHead from '../SectionHead.astro';
+import Icon from '../Icon.astro';
+import Fn from '../Fn.astro';
+import MoneyFlow from '../MoneyFlow.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Check from '../Check.astro';
+import { plansCopy } from '../../i18n/pages.js';
+import { href, abs } from '@shared/routes.mjs';
+import dongle from '@shared/assets/dongle/dongle-leaf-closeup.png';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = plansCopy(locale);
+const L = c.L;
+const base = import.meta.env.BASE_URL;
+const signup = href('signup', locale, base);
+const canonical = abs('plans', locale);
+const ld = c.plans.map((p: any) => ({
+  '@type': 'Product', '@id': `${canonical}#${p.slug}`, name: p.full, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: p.value,
+  offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=${p.slug}`, price: p.yearlyN.toFixed(2), priceCurrency: 'EUR', availability: 'https://schema.org/InStock',
+    eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: { '@type': 'UnitPriceSpecification', price: p.yearlyN.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, billingDuration: 'P1Y', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' } } },
+}));
+const colNames = c.plans.map((p: any) => p.name);
+---
+<Site locale={locale} routeKey="plans" title={c.meta.title} description={c.meta.description} ld={ld}
+  sticky={{ strong: `Switch Plus · ${c.plans[1].yearly} ${c.card.perYear}`, sub: c.card.billed, label: `${c.card.choose} Switch Plus`, url: `${signup}?plan=switch-plus` }}>
+  <section class="page-hero" aria-labelledby="h1">
+    <div class="wrap">
+      <p class="kicker"><span>{c.hero.kicker}</span></p>
+      <h1 id="h1">{c.hero.h1}</h1>
+      <p class="lead">{c.hero.lead}<Fn n={6} L={L} /></p>
+    </div>
+  </section>
+
+  <section class="plans-wrap" aria-label={c.hero.kicker} data-sticky-hide>
+    <div class="wrap">
+      <ul class="plan-cards" role="list">
+        {c.plans.map((p: any) => {
+          const rec = p.slug === 'switch-plus';
+          return (
+            <li class:list={['plan', { 'plan--rec': rec }]} id={p.slug}>
+              {rec && <p class="plan-badge">{c.card.badge}</p>}
+              <h2 class="plan-name">{p.name}</h2>
+              <p class="plan-value">{p.value}</p>
+              <p class="plan-price"><span class="plan-yr num">{p.yearly}</span> <span class="plan-per">{c.card.perYear}</span></p>
+              <p class="plan-mo">{p.monthly} · {c.card.billed}</p>
+              <p class:list={['plan-g', { 'plan-g--none': p.slug === 'switch' }]}>
+                <Icon name={p.slug === 'switch' ? 'minus' : 'shield'} />
+                <span>{p.slug === 'switch' ? c.card.noGuarantee : c.card.guarantee}{p.slug !== 'switch' && <Fn n={4} L={L} />}</span>
+              </p>
+              <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}`} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
+              <h3 class="plan-fh">{c.card.features}</h3>
+              <ul class="plan-feat">
+                {p.features.map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
+              </ul>
+              {p.slug === 'premium' && <p class="plan-req"><Icon name="meter" />{c.card.needs}</p>}
+              <p class="plan-for">{p.whoFor}</p>
+            </li>
+          );
+        })}
+      </ul>
+      <p class="note plans-note">{c.footnotes[5].text}</p>
+    </div>
+  </section>
+
+  <section class="section" id="welk-abonnement" aria-labelledby="helper-h">
+    <div class="wrap">
+      <SectionHead kicker={c.helper.kicker} id="helper-h" title={c.helper.h2} />
+      <ol class="helper">
+        {c.helper.rows.map((r: any) => (
+          <li>
+            <p>{r.q}</p>
+            <a class="helper-a" href={`#${r.slug}`}>{r.a}<Icon name="arrow-r" /></a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="vergelijk" aria-labelledby="table-h">
+    <div class="wrap">
+      <SectionHead kicker={c.table.kicker} id="table-h" title={c.table.h2} />
+      <div class="table-scroll" tabindex="0" role="region" aria-labelledby="table-h">
+        <table class="matrix">
+          <caption class="sr-only">{c.table.caption}</caption>
+          <thead>
+            <tr><td></td>{c.plans.map((p: any) => <th scope="col" class:list={{ 'col-rec': p.slug === 'switch-plus' }}>{p.name}<span class="sub num">{p.yearly} {c.card.perYear}</span></th>)}</tr>
+          </thead>
+          <tbody>
+            {c.table.rows.map((r: any[]) => (
+              <tr>
+                <th scope="row">{r[0]}</th>
+                {r.slice(1).map((v, i) => <td class:list={{ 'col-rec': i === 1 }}><Check v={v} ui={c.ui} /></td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="premium-dongle" aria-labelledby="dongle-h">
+    <div class="wrap dongle" id="dongle">
+      <div>
+        <SectionHead kicker={c.dongle.kicker} id="dongle-h" title={c.dongle.h2}>
+          <p>{c.dongle.body}</p>
+        </SectionHead>
+        <p class="plan-req"><Icon name="meter" />{c.dongle.req}</p>
+        <a class="btn btn--ghost" href={`${signup}?plan=premium`} data-cta="dongle">{c.card.choose} Premium<Icon name="arrow-r" /></a>
+      </div>
+      <figure class="dongle-fig">
+        <Image src={dongle} alt={c.dongle.alt.dongle} widths={[220, 440]} sizes="(max-width: 760px) 40vw, 220px" class="dongle-img" loading="eager" fetchpriority="low" />
+        <Image src={L === 'fr' ? phoneFr : phoneNl} alt={c.dongle.alt.phone} widths={[200, 299]} sizes="(max-width: 760px) 44vw, 200px" class="phone-img" loading="eager" fetchpriority="low" />
+        <figcaption class="note">{c.dongle.app}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="vergelijking" aria-labelledby="vs-h">
+    <div class="wrap">
+      <SectionHead kicker={c.vs.kicker} id="vs-h" title={c.vs.h2}><p>{c.vs.intro}</p></SectionHead>
+      <table class="vs">
+        <thead>
+          <tr>
+            <td></td>
+            {c.vs.cols.map(([h, sub]: string[], i: number) => <th scope="col" class={i === 2 ? 'col-june' : ''}>{h}<span class="sub">{sub}</span></th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {c.vs.rows.map((r: any[], ri: number) => (
+            <tr>
+              <th scope="row">{r[0]}</th>
+              {r.slice(1).map((cell, i) => (
+                <td class={i === 2 ? 'col-june' : ''} data-label={c.vs.cols[i][0]}>
+                  <span>
+                    {i === 2 && <Icon name="check" />}
+                    {cell === null ? <><span aria-hidden="true">—</span><span class="sr-only">{c.vs.none}</span></> : cell}
+                    {i === 2 && ri === 4 && <Fn n={4} L={L} />}
+                  </span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="note vs-note">{c.vs.caption}</p>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="verdienmodel" aria-labelledby="earn-h">
+    <div class="wrap model">
+      <div>
+        <SectionHead kicker={c.earn.kicker} id="earn-h" title={c.earn.h2} />
+        <div class="prose">
+          <p><strong>{c.earn.body[0]}</strong><Fn n={5} L={L} /> {c.earn.body[1]}</p>
+          <p class="pending-line"><span class="tag tag--pending">{L === 'fr' ? 'À confirmer' : 'Wordt bevestigd'}</span> {c.earn.body[2]}</p>
+        </div>
+      </div>
+      <MoneyFlow c={c} />
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <div>
+        <FaqList items={c.faqItems} L={L} />
+        <p class="faq-more"><a class="link-arrow" href={href('faq', locale, base)}>{c.faq.all}<Icon name="arrow-r" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} plan="switch-plus" />
+</Site>

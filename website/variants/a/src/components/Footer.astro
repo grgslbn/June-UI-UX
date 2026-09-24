@@ -1,0 +1,45 @@
+---
+// Footer: brand + 3 link columns + regulators note + footnotes + legal row (ux-research §4.3).
+import { href } from '@shared/routes.mjs';
+import { copy, to, type Locale } from '../content/i18n';
+import Logo from './Logo.astro';
+interface Props { locale: Locale; routeKey?: string }
+const { locale, routeKey = 'home' } = Astro.props;
+const c = copy[locale];
+const f = c.footer;
+const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <Logo href={to('home', locale)} label={c.home} tone="inverse" width={96} />
+        <p class="ftr__tagline">{f.tagline}</p>
+        <p class="ftr__about">{f.about}</p>
+      </div>
+      <nav class="ftr__nav" aria-label={locale === 'nl-be' ? 'Voettekst' : 'Pied de page'}>
+        {f.cols.map(col => (
+          <div>
+            <h2 class="ftr__h">{col.title}</h2>
+            <ul>{col.links.map((l: any) => <li>{l.key
+              ? <a href={to(l.key, locale, { hash: l.hash })}>{l.label}</a>
+              : <a href="#" data-todo={l.todo}>{l.label}</a>}</li>)}</ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+    <p class="ftr__reg">{f.regulators}</p>
+    <section class="ftr__notes" aria-labelledby="fn-title">
+      <h2 id="fn-title" class="ftr__notes-title">{f.footnotesLabel}</h2>
+      <ol>{f.notes.map((n, i) => <li id={`fn-${i + 1}`}>{n}</li>)}</ol>
+    </section>
+    <div class="ftr__legal">
+      <span>{f.legal}</span>
+      <span>{f.mission}</span>
+      <a href={href(routeKey, other, import.meta.env.BASE_URL)} hreflang={other === 'fr-be' ? 'fr-BE' : 'nl-BE'} lang={other === 'fr-be' ? 'fr' : 'nl'}>{locale === 'nl-be' ? 'Version française' : 'Nederlandse versie'}</a>
+    </div>
+  </div>
+</footer>
+<script>
+  import '../scripts/site.ts';
+</script>

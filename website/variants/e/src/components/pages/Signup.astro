@@ -1,0 +1,286 @@
+---
+// Aanmelden / Inscription — sign-up step 1–2 (ux-research §4.4, conversion-strategy §2.3). Minimal chrome, noindex.
+// Progressive enhancement: without JS, step 1 is a plain form + a notice. With JS: estimate range → plan & email → done.
+// No backend: nothing leaves the browser; analytics events are pushed to window.dataLayer (no PII).
+import Site from '../../layouts/Site.astro';
+import Logo from '../Logo.astro';
+import Character from '../Character.astro';
+import AnimIcon from '../AnimIcon.astro';
+import Fn from '../Fn.astro';
+import '../../styles/signup.css';
+import { href } from '@shared/routes.mjs';
+import { copy, deep, money, plan, tp, lang, f, other, rich, type Locale } from '../../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const nl = locale === 'nl-be';
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const o = other(locale);
+const households = f.signup.householdPresets.options;
+const C = deep(nl ? {
+  title: 'Aanmelden | June',
+  description: 'Start je aanmelding bij June: bereken in een minuut je indicatieve besparing en kies je abonnement.',
+  help: 'Hulp nodig?', helpLink: 'Veelgestelde vragen', exit: 'Terug naar de website',
+  h1: 'Start met besparen',
+  steps: ['Je woning', 'Je plan & e-mail'], stepOf: (n: number) => `Stap ${n} van 2`, time: 'ongeveer 2 minuten',
+  s1: { h2: 'Vertel ons iets over je woning', intro: 'Geen persoonlijke gegevens nodig. Zo maken we een eerste, indicatieve schatting.',
+    pc: 'Je postcode', pcWhy: 'Netkosten en aanbiedingen verschillen per regio.', pcPh: 'bv. 9000',
+    energy: 'Wat wil je vergelijken?', energyWhy: 'Zo vergelijken we de juiste contracten.', elec: 'Elektriciteit', both: 'Elektriciteit + gas',
+    hh: 'Met hoeveel personen woon je?', hhWhy: 'Een snelle inschatting van je verbruik.', know: 'Ik ken mijn jaarverbruik', knowHide: 'Toch liever een inschatting',
+    kwh: 'Elektriciteit per jaar (kWh)', gas: 'Gas per jaar (kWh)', kwhWhy: 'Staat op je jaarafrekening.',
+    meter: 'Welke meter heb je?', meterWhy: 'Premium werkt alleen met een digitale meter.', digital: 'Digitaal', analog: 'Analoog', dk: 'Weet ik niet',
+    extras: 'Heb je een van deze? (optioneel)', solar: 'Zonnepanelen', ev: 'Elektrische wagen', hp: 'Warmtepomp',
+    budget: 'Budgetmeter of sociaal tarief?', budgetA: 'Laat het ons zeker weten bij de volgende stap. [Wat June voor budgetmeters en het sociaal tarief kan doen, volgt na bevestiging.]',
+    cta: 'Toon mijn schatting', micro: 'Gratis · Geen verplichtingen' },
+  est: { tag: 'Indicatieve schatting', h2: 'Zoveel kan je naar schatting besparen', per: 'per jaar',
+    low: 'Je zit misschien al goed. Met Switch Plus ben je gedekt: bespaar je in een abonnementsjaar niet meer dan je abonnement kost, dan krijg je € 99 terug.',
+    how: 'Hoe we dit schatten', method: 'Dit is een indicatieve bandbreedte, geen persoonlijke berekening. We nemen een gemiddeld verbruik voor je gezinsgrootte (of het verbruik dat je invulde) en een gangbaar prijsverschil tussen een contract dat nooit werd aangepast en een voordeliger contract uit onze vergelijking. Zonnepanelen, je huidige contract en je regio verfijnen we na je aanmelding. Na je aanmelding berekenen we je persoonlijke besparing.',
+    avg: 'Ter vergelijking: klanten besparen gemiddeld € 326 per jaar.',
+    fee: 'Switch Plus kost € 99 per jaar (€ 8,25 per maand, jaarlijks gefactureerd). Bespaar je niet meer dan dat? Dan krijg je € 99 terug.',
+    recPlus: 'Ons voorstel: Switch Plus', recPrem: 'Ons voorstel: Premium', recPremWhy: 'Met een digitale meter en zonnepanelen haal je meer uit Premium: je ziet live wat je zelf verbruikt en injecteert. June Dongle inbegrepen.', recPlusWhy: 'Besparen met winstgarantie. Werkt met elke meter.',
+    cta: 'Verder', edit: 'Gegevens aanpassen', compare: 'Vergelijk de abonnementen' },
+  s2: { h2: 'Kies je abonnement en bewaar je schatting', plan: 'Je abonnement', rec: 'Aanbevolen', planWhy: 'Je kan later nog wisselen.',
+    noGuar: 'Zonder winstgarantie', guar: 'Met winstgarantie', dig: 'Digitale meter nodig', analogWarn: 'Je gaf aan dat je een analoge meter hebt. Premium werkt alleen met een digitale meter.',
+    pref: 'Hoe wil je overstappen?', auto: 'Automatisch', autoB: 'Wij regelen elke voordeligere overstap en laten je weten waarom.', ask: 'Eerst mijn akkoord', askB: 'We stellen het contract voor, jij keurt goed.',
+    green: 'Alleen 100% groene stroom (volgens de leverancier)',
+    email: 'Je e-mailadres', emailWhy: 'We bewaren je schatting en sturen ze je door.', emailPh: 'naam@voorbeeld.be',
+    terms: 'Ik ga akkoord met de algemene voorwaarden en de privacyverklaring van June.', marketing: 'Stuur me af en toe tips en nieuws van June (optioneel).',
+    micro: 'Nog geen verplichting. Hierna: je adres, EAN-code en huidige leverancier. Hou je energiefactuur bij de hand. Je hebt 14 dagen bedenktijd.',
+    cta: 'Bewaar mijn schatting', back: 'Terug naar je schatting' },
+  done: { h2: 'Top! Je aanmelding is gestart.', b: 'We bewaarden je schatting. Je krijgt een e-mail op', next: 'Zo gaat het verder', steps: ['Je vult je adres, EAN-code en huidige leverancier aan.', 'Wij berekenen je persoonlijke besparing.', 'Wij regelen de overstap, en blijven elke maand vergelijken.'], demo: 'Demo: er werd niets verzonden.', home: 'Terug naar de homepage' },
+  err: { pc: 'Vul een Belgische postcode van 4 cijfers in, bijvoorbeeld 9000.', pcUnknown: 'Deze postcode kennen we niet. Typfout?', hh: 'Kies je gezinsgrootte, of vul je jaarverbruik in.', kwh: 'Vul je elektriciteitsverbruik in kWh in (tussen 300 en 20.000).', gas: 'Vul je gasverbruik in kWh in (tussen 1.000 en 60.000).', email: 'Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.be.', terms: 'Ga akkoord met de voorwaarden om verder te gaan.', summary: (n: number) => (n === 1 ? 'Er is 1 veld om na te kijken.' : `Er zijn ${n} velden om na te kijken.`) },
+  region: { bxl: 'Brussel', vl: 'Vlaanderen', wa: 'Wallonië' },
+  noscript: 'Je browser voert geen JavaScript uit. Je kan je gegevens invullen; je schatting berekenen we dan na je aanmelding.',
+  privacy: 'Privacy', termsLink: 'Voorwaarden',
+} : {
+  title: 'Inscription | June',
+  description: 'Commencez votre inscription chez June : estimez en une minute votre économie indicative et choisissez votre formule.',
+  help: 'Besoin d’aide ?', helpLink: 'Questions fréquentes', exit: 'Retour au site',
+  h1: 'Commencez à économiser',
+  steps: ['Votre logement', 'Formule & e-mail'], stepOf: (n: number) => `Étape ${n} sur 2`, time: 'environ 2 minutes',
+  s1: { h2: 'Parlez-nous de votre logement', intro: 'Aucune donnée personnelle requise. Nous faisons une première estimation indicative.',
+    pc: 'Votre code postal', pcWhy: 'Les frais de réseau et les offres varient selon la région.', pcPh: 'p. ex. 4000',
+    energy: 'Que souhaitez-vous comparer ?', energyWhy: 'Pour comparer les bons contrats.', elec: 'Électricité', both: 'Électricité + gaz',
+    hh: 'Combien de personnes vivent chez vous ?', hhWhy: 'Une estimation rapide de votre consommation.', know: 'Je connais ma consommation annuelle', knowHide: 'Plutôt une estimation',
+    kwh: 'Électricité par an (kWh)', gas: 'Gaz par an (kWh)', kwhWhy: 'Figure sur votre facture de régularisation.',
+    meter: 'Quel compteur avez-vous ?', meterWhy: 'Premium fonctionne uniquement avec un compteur numérique.', digital: 'Numérique', analog: 'Analogique', dk: 'Je ne sais pas',
+    extras: 'Avez-vous l’un de ces équipements ? (facultatif)', solar: 'Panneaux solaires', ev: 'Voiture électrique', hp: 'Pompe à chaleur',
+    budget: 'Compteur à budget ou tarif social ?', budgetA: 'Signalez-le-nous à l’étape suivante. [Ce que June peut faire pour les compteurs à budget et le tarif social : à confirmer.]',
+    cta: 'Voir mon estimation', micro: 'Gratuit · Sans engagement' },
+  est: { tag: 'Estimation indicative', h2: 'Votre économie estimée', per: 'par an',
+    low: 'Vous êtes peut-être déjà bien placé. Avec Switch Plus, vous êtes couvert : si vous n’économisez pas plus que le prix de votre abonnement sur une année, vous récupérez 99 €.',
+    how: 'Comment nous l’estimons', method: 'Il s’agit d’une fourchette indicative, pas d’un calcul personnel. Nous partons d’une consommation moyenne pour la taille de votre ménage (ou de la consommation indiquée) et d’un écart de prix courant entre un contrat jamais adapté et un contrat plus avantageux de notre comparaison. Panneaux solaires, contrat actuel et région sont affinés après votre inscription. Après votre inscription, nous calculons votre économie personnelle.',
+    avg: 'Pour comparaison : nos clients économisent en moyenne 326 € par an.',
+    fee: 'Switch Plus coûte 99 € par an (8,25 € par mois, facturé annuellement). Vous n’économisez pas plus ? Vous récupérez 99 €.',
+    recPlus: 'Notre proposition : Switch Plus', recPrem: 'Notre proposition : Premium', recPremWhy: 'Avec un compteur numérique et des panneaux solaires, Premium vous en donne plus : vous voyez en direct ce que vous autoconsommez et injectez. June Dongle inclus.', recPlusWhy: 'Des économies avec garantie de gain. Avec tout type de compteur.',
+    cta: 'Continuer', edit: 'Modifier mes données', compare: 'Comparer les formules' },
+  s2: { h2: 'Choisissez votre formule et sauvegardez votre estimation', plan: 'Votre formule', rec: 'Recommandé', planWhy: 'Vous pourrez encore changer plus tard.',
+    noGuar: 'Sans garantie de gain', guar: 'Avec garantie de gain', dig: 'Compteur numérique requis', analogWarn: 'Vous avez indiqué un compteur analogique. Premium fonctionne uniquement avec un compteur numérique.',
+    pref: 'Comment souhaitez-vous changer ?', auto: 'Automatiquement', autoB: 'Nous gérons chaque changement avantageux et vous expliquons pourquoi.', ask: 'D’abord mon accord', askB: 'Nous proposons le contrat, vous validez.',
+    green: 'Uniquement de l’électricité 100 % verte (selon le fournisseur)',
+    email: 'Votre adresse e-mail', emailWhy: 'Nous sauvegardons votre estimation et vous l’envoyons.', emailPh: 'nom@exemple.be',
+    terms: 'J’accepte les conditions générales et la déclaration de confidentialité de June.', marketing: 'Envoyez-moi de temps en temps des conseils et des nouvelles de June (facultatif).',
+    micro: 'Aucun engagement pour l’instant. Ensuite : votre adresse, votre code EAN et votre fournisseur actuel. Gardez votre facture d’énergie à portée de main. Vous disposez de 14 jours de rétractation.',
+    cta: 'Sauvegarder mon estimation', back: 'Retour à votre estimation' },
+  done: { h2: 'Bravo ! Votre inscription a commencé.', b: 'Nous avons sauvegardé votre estimation. Vous recevrez un e-mail à', next: 'La suite', steps: ['Vous complétez votre adresse, votre code EAN et votre fournisseur actuel.', 'Nous calculons votre économie personnelle.', 'Nous gérons le changement, puis nous continuons à comparer chaque mois.'], demo: 'Démo : rien n’a été envoyé.', home: 'Retour à l’accueil' },
+  err: { pc: 'Indiquez un code postal belge à 4 chiffres, par exemple 4000.', pcUnknown: 'Nous ne connaissons pas ce code postal. Une faute de frappe ?', hh: 'Choisissez la taille de votre ménage, ou indiquez votre consommation annuelle.', kwh: 'Indiquez votre consommation d’électricité en kWh (entre 300 et 20 000).', gas: 'Indiquez votre consommation de gaz en kWh (entre 1 000 et 60 000).', email: 'Indiquez une adresse e-mail valide, par exemple nom@exemple.be.', terms: 'Acceptez les conditions pour continuer.', summary: (n: number) => (n === 1 ? 'Un champ est à vérifier.' : `${n} champs sont à vérifier.`) },
+  region: { bxl: 'Bruxelles', vl: 'Flandre', wa: 'Wallonie' },
+  noscript: 'Votre navigateur n’exécute pas JavaScript. Vous pouvez remplir vos données ; nous calculerons votre estimation après votre inscription.',
+  privacy: 'Confidentialité', termsLink: 'Conditions',
+}, locale);
+const tiers = ['switch-plus', 'premium', 'switch'].map(s => plan(s));
+// Strings for the island (JSON, no PII). Functions are resolved here.
+const i18n = { locale, err: { ...C.err, summary1: C.err.summary(1), summaryN: C.err.summary(9).replace('9', '{n}') }, region: C.region, money: { nl }, est: { per: C.est.per, recPlus: C.est.recPlus, recPrem: C.est.recPrem, recPlusWhy: C.est.recPlusWhy, recPremWhy: C.est.recPremWhy, cta: C.est.cta }, planNames: Object.fromEntries(tiers.map(p => [p.slug, p.shortName])), stepOf: [C.stepOf(1), C.stepOf(2)], steps: C.steps };
+const stripBr = (s: string) => rich(s);
+---
+<Site locale={locale} routeKey="signup" title={C.title} description={C.description} crumbs={[{ key: 'signup', name: nl ? 'Aanmelden' : 'Inscription' }]}>
+  <a class="skip" href="#main">{t.skip}</a>
+  <header class="su-hdr">
+    <div class="su-hdr__in">
+      <a class="su-hdr__logo" href={h('home')} aria-label={t.nav.home}><Logo /></a>
+      <p class="su-hdr__help"><span>{C.help}</span> <a href={h('faq')}>{C.helpLink}</a></p>
+      <p class="lang su-hdr__lang"><span class="lang__cur">{t.nav.langCurrent}</span><span aria-hidden="true" class="lang__bar"></span><a href={href('signup', o, base)} hreflang={o === 'fr-be' ? 'fr-BE' : 'nl-BE'} lang={o === 'fr-be' ? 'fr' : 'nl'} aria-label={t.nav.langLabel}>{t.nav.langShort}</a></p>
+    </div>
+  </header>
+
+  <main id="main" class="su">
+    <div class="su__in">
+      <div class="su__top">
+        <h1 class="su__h1">{C.h1}</h1>
+        <div class="prog" data-prog>
+          <p class="prog__label"><span data-prog-label>{C.stepOf(1)} · {C.steps[0]}</span> <span class="prog__time">· {C.time}</span></p>
+          <ol class="prog__bar" role="list">
+            {C.steps.map((s: string, i: number) => <li class={i === 0 ? 'is-cur' : ''} data-prog-step={i + 1} aria-current={i === 0 ? 'step' : undefined}><span class="sr-only">{C.stepOf(i + 1)}: </span>{s}</li>)}
+          </ol>
+        </div>
+      </div>
+
+      <!-- ═════ STEP 1 ═════ -->
+      <section class="su__card" data-screen="s1" aria-labelledby="h-s1">
+        <h2 id="h-s1" class="su__h2" tabindex="-1">{C.s1.h2}</h2>
+        <p class="su__intro">{C.s1.intro}</p>
+        <noscript><p class="su__noscript">{C.noscript}</p></noscript>
+        <form id="f1" class="su__form" novalidate action={h('signup')} method="get">
+          <p class="su__status" role="status" aria-live="polite" data-status></p>
+          <div class="fld" data-field="postcode">
+            <label class="fld__l" for="pc">{C.s1.pc}</label>
+            <p class="fld__why" id="pc-why">{C.s1.pcWhy}</p>
+            <div class="fld__pc">
+              <input id="pc" name="postcode" class="inp inp--pc" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="4" pattern="[1-9][0-9]{3}" required placeholder={C.s1.pcPh} aria-describedby="pc-why pc-ok pc-err" />
+              <p class="fld__ok" id="pc-ok" data-pc-ok aria-live="polite"></p>
+            </div>
+            <p class="fld__err" id="pc-err" data-err></p>
+          </div>
+
+          <fieldset class="fld" data-field="energy">
+            <legend class="fld__l">{C.s1.energy}</legend>
+            <p class="fld__why">{C.s1.energyWhy}</p>
+            <div class="chips-in">
+              <label class="chip"><input type="radio" name="energy" value="elec" /><span>{C.s1.elec}</span></label>
+              <label class="chip"><input type="radio" name="energy" value="both" checked /><span>{C.s1.both}</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fld" data-field="household" aria-describedby="hh-err">
+            <legend class="fld__l">{C.s1.hh}</legend>
+            <p class="fld__why">{C.s1.hhWhy}</p>
+            <div class="chips-in chips-in--hh" data-hh-chips>
+              {households.map((x: any) => <label class="chip chip--big"><input type="radio" name="household" value={x.id} /><span>{tp(x.label[L], locale)}</span></label>)}
+            </div>
+            <button type="button" class="su__link" data-know aria-expanded="false" aria-controls="know" data-alt={C.s1.knowHide}>{C.s1.know}</button>
+            <div id="know" class="know" data-know-panel hidden>
+              <div class="fld__row">
+                <div><label class="fld__l fld__l--sm" for="kwh">{C.s1.kwh}</label><input id="kwh" name="kwh" class="inp" type="text" inputmode="numeric" autocomplete="off" aria-describedby="kwh-why kwh-err" /><p class="fld__err" id="kwh-err" data-err></p></div>
+                <div data-gas-field><label class="fld__l fld__l--sm" for="gaskwh">{C.s1.gas}</label><input id="gaskwh" name="gaskwh" class="inp" type="text" inputmode="numeric" autocomplete="off" aria-describedby="kwh-why gas-err" /><p class="fld__err" id="gas-err" data-err></p></div>
+              </div>
+              <p class="fld__why" id="kwh-why">{C.s1.kwhWhy}</p>
+            </div>
+            <p class="fld__err" id="hh-err" data-err></p>
+          </fieldset>
+
+          <fieldset class="fld" data-field="meter">
+            <legend class="fld__l">{C.s1.meter}</legend>
+            <p class="fld__why">{C.s1.meterWhy}</p>
+            <div class="chips-in">
+              {[['digital', C.s1.digital], ['analog', C.s1.analog], ['dk', C.s1.dk]].map(([v, l]) => <label class="chip"><input type="radio" name="meter" value={v} /><span>{l}</span></label>)}
+            </div>
+          </fieldset>
+
+          <fieldset class="fld" data-field="extras">
+            <legend class="fld__l">{C.s1.extras}</legend>
+            <div class="chips-in">
+              {[['solar', C.s1.solar], ['ev', C.s1.ev], ['hp', C.s1.hp]].map(([v, l]) => <label class="chip chip--check"><input type="checkbox" name="extras" value={v} /><span>{l}</span></label>)}
+            </div>
+            <details class="edge"><summary>{C.s1.budget}</summary><p set:html={stripBr(C.s1.budgetA)} /></details>
+          </fieldset>
+
+          <div class="su__actions">
+            <button class="btn btn--ink su__cta" type="submit">{C.s1.cta}<svg class="btn__arrow" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <p class="su__micro">{C.s1.micro}</p>
+          </div>
+        </form>
+      </section>
+
+      <!-- ═════ ESTIMATE ═════ -->
+      <section class="su__card su__card--est" data-screen="est" aria-labelledby="h-est" hidden>
+        <div class="est__head">
+          <AnimIcon name="calculator" class="est__icon" size={96} />
+          <div>
+            <p class="est__tag">{C.est.tag}</p>
+            <h2 id="h-est" class="su__h2" tabindex="-1">{C.est.h2}</h2>
+          </div>
+        </div>
+        <p class="est__range" data-est-range>–</p>
+        <p class="est__low" data-est-low hidden>{C.est.low}<Fn n={4} locale={locale} /></p>
+        <details class="est__method"><summary>{C.est.how}</summary><p>{C.est.method}</p><p>{C.est.avg}<Fn n={1} locale={locale} /></p></details>
+        <div class="est__rec" data-est-rec>
+          <p class="est__rech" data-est-rech>{C.est.recPlus}</p>
+          <p class="est__recb" data-est-recb>{C.est.recPlusWhy}</p>
+          <p class="est__fee">{C.est.fee}<Fn n={4} locale={locale} /></p>
+        </div>
+        <div class="su__actions">
+          <button class="btn btn--ink su__cta" type="button" data-go="s2">{C.est.cta}<svg class="btn__arrow" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <p class="su__micro">{C.s1.micro}</p>
+        </div>
+        <p class="su__links"><button type="button" class="su__link" data-go="s1">{C.est.edit}</button> <a class="su__link" href={h('plans')}>{C.est.compare}</a></p>
+      </section>
+
+      <!-- ═════ STEP 2 ═════ -->
+      <section class="su__card" data-screen="s2" aria-labelledby="h-s2" hidden>
+        <h2 id="h-s2" class="su__h2" tabindex="-1">{C.s2.h2}</h2>
+        <form id="f2" class="su__form" novalidate>
+          <p class="su__status" role="status" aria-live="polite" data-status></p>
+          <fieldset class="fld" data-field="plan">
+            <legend class="fld__l">{C.s2.plan}</legend>
+            <p class="fld__why">{C.s2.planWhy}</p>
+            <div class="pcards">
+              {tiers.map(p => (
+                <label class="pcard" data-pcard={p.slug}>
+                  <input type="radio" name="plan" value={p.slug} checked={p.slug === 'switch-plus'} />
+                  <span class="pcard__body">
+                    <span class="pcard__top"><span class="pcard__name">{p.shortName}</span><span class="pcard__rec" data-rec-badge hidden>{C.s2.rec}</span></span>
+                    <span class="pcard__price"><strong>{money(p.priceYearly, locale)} {t.perYear}</strong> · {money(p.priceMonthly, locale)} {t.perMonth}, {t.billed}</span>
+                    <span class="pcard__meta">{p.slug === 'switch' ? C.s2.noGuar : C.s2.guar}{p.slug === 'premium' && <> · {C.s2.dig}</>}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            <p class="fld__warn" data-analog-warn hidden>{C.s2.analogWarn}</p>
+            <p class="fld__why">{t.fn.prices}</p>
+          </fieldset>
+
+          <fieldset class="fld" data-field="pref">
+            <legend class="fld__l">{C.s2.pref}</legend>
+            <div class="prefs">
+              <label class="pref"><input type="radio" name="pref" value="auto" checked /><span><strong>{C.s2.auto}</strong>{C.s2.autoB}</span></label>
+              <label class="pref"><input type="radio" name="pref" value="ask" /><span><strong>{C.s2.ask}</strong>{C.s2.askB}</span></label>
+            </div>
+            <label class="check"><input type="checkbox" name="green" value="1" /><span>{C.s2.green}</span></label>
+          </fieldset>
+
+          <div class="fld" data-field="email">
+            <label class="fld__l" for="email">{C.s2.email}</label>
+            <p class="fld__why" id="email-why">{C.s2.emailWhy}</p>
+            <input id="email" name="email" class="inp" type="email" autocomplete="email" required placeholder={C.s2.emailPh} aria-describedby="email-why email-err" />
+            <p class="fld__err" id="email-err" data-err></p>
+          </div>
+
+          <div class="fld fld--checks" data-field="terms">
+            <label class="check"><input id="terms" type="checkbox" name="terms" value="1" required aria-describedby="terms-err" /><span set:html={stripBr(C.s2.terms)} /></label>
+            <p class="fld__err" id="terms-err" data-err></p>
+            <label class="check"><input type="checkbox" name="marketing" value="1" /><span>{C.s2.marketing}</span></label>
+          </div>
+
+          <div class="su__actions">
+            <button class="btn btn--ink su__cta" type="submit">{C.s2.cta}<svg class="btn__arrow" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <p class="su__micro su__micro--left">{C.s2.micro}</p>
+          </div>
+          <p class="su__links"><button type="button" class="su__link" data-go="est">{C.s2.back}</button></p>
+        </form>
+      </section>
+
+      <!-- ═════ DONE ═════ -->
+      <section class="su__card su__card--done" data-screen="done" aria-labelledby="h-done" hidden>
+        <div class="done__art" aria-hidden="true"><Character pose="cheering" class="done__char" sizes="220px" /></div>
+        <h2 id="h-done" class="su__h2 done__h2" tabindex="-1">{C.done.h2}</h2>
+        <p class="done__b">{C.done.b} <strong data-done-email></strong>.</p>
+        <p class="done__sum" data-done-sum></p>
+        <h3 class="done__next">{C.done.next}</h3>
+        <ol class="done__steps" role="list">{C.done.steps.map((s: string, i: number) => <li><span aria-hidden="true">{i + 1}</span>{s}</li>)}</ol>
+        <p class="done__demo">{C.done.demo}</p>
+        <a class="btn btn--ghost" href={h('home')}>{C.done.home}</a>
+      </section>
+
+      <p class="su__trust">★ {t.trust.rating}<Fn n={2} locale={locale} /> · {t.trust.customers}<Fn n={3} locale={locale} /> · {t.trust.notSupplier}</p>
+    </div>
+  </main>
+  <footer class="su-ftr">
+    <ol class="su-ftr__notes">{[t.fn.saving, t.fn.reviews, t.fn.customers, t.fn.guarantee, t.fn.prices].map((x, i) => <li id={`fn-${i + 1}`} set:html={rich(x)} />)}</ol>
+    <p><span set:html={rich(t.footer.legal)} /></p>
+  </footer>
+  <script type="application/json" id="su-i18n" set:html={JSON.stringify(i18n)} />
+</Site>
+<script src="../../scripts/signup.ts"></script>

@@ -1,0 +1,16 @@
+---
+// Hand-drawn squiggle: underline for ONE word per page (variant E), or a section divider.
+interface Props { class?: string; kind?: 'underline' | 'wave' }
+const { class: cls = '', kind = 'underline' } = Astro.props;
+---
+{kind === 'underline' ? (
+  <svg class={`squiggle ${cls}`} viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path pathLength="100" d="M6 24 C 26 8, 42 34, 64 20 S 102 8, 124 22 S 162 34, 186 20 S 224 8, 248 22 S 282 30, 294 14" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
+  </svg>
+) : (
+  <svg class={`squiggle squiggle--wave ${cls}`} viewBox="0 0 120 36" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <path d="M4 8 q7 -6 14 0 t14 0 t14 0 t14 0 t14 0" /><path d="M14 18 q7 -6 14 0 t14 0 t14 0 t14 0 t14 0" /><path d="M4 28 q7 -6 14 0 t14 0 t14 0 t14 0" />
+    </g>
+  </svg>
+)}

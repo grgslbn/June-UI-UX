@@ -1,0 +1,106 @@
+---
+// Head layer for variant C: Base (lang/title/canonical/hreflang/robots) + fonts, meta, one JSON-LD @graph, enhancement script.
+import Base from './Base.astro';
+import '../styles/global.css';
+import montserrat from '@shared/fonts/montserrat-latin.woff2?url';
+import inter from '@shared/fonts/inter-latin.woff2?url';
+import { ROUTES, abs, LOCALES } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; noindex?: boolean; crumbs?: { name: string; key: string }[]; ld?: any[]; }
+const { locale, routeKey, title, description, noindex = false, crumbs = [], ld: extra = [] } = Astro.props;
+const mapped = routeKey in ROUTES;
+const canonical = mapped ? abs(routeKey, locale) : null;
+const ld = mapped ? {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': 'https://www.june.energy/#org', name: 'June', url: 'https://www.june.energy/', areaServed: { '@type': 'Country', name: 'BE' },
+      logo: { '@type': 'ImageObject', url: 'https://www.june.energy/logo-512.png', width: 512, height: 512 },
+      contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: ['nl', 'fr'] } },
+    { '@type': 'WebSite', '@id': 'https://www.june.energy/#website', url: 'https://www.june.energy/', name: 'June', publisher: { '@id': 'https://www.june.energy/#org' }, inLanguage: ['nl-BE', 'fr-BE'] },
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: LOCALES[locale].html, isPartOf: { '@id': 'https://www.june.energy/#website' },
+      ...(crumbs.length ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}) },
+    ...(crumbs.length ? [{ '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.key, locale) })) }] : []),
+    ...extra,
+  ],
+} : null;
+const base = import.meta.env.BASE_URL;
+const ogImage = `https://www.june.energy/og/june-${locale === 'fr-be' ? 'fr' : 'nl'}.png`;
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description} noindex={noindex}>
+  <Fragment slot="head">
+    <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#f7f8f6" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon-32.png`} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    {canonical && <meta property="og:title" content={title} />}
+    {canonical && <meta property="og:description" content={description} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="June" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={locale === 'fr-be' ? 'June : les fournisseurs comptent sur votre fidélité. Pas nous.' : 'June: energieleveranciers rekenen op je trouw. Wij niet.'} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta property="og:locale" content={locale === 'nl-be' ? 'nl_BE' : 'fr_BE'} />
+    <meta property="og:locale:alternate" content={locale === 'nl-be' ? 'fr_BE' : 'nl_BE'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {ld && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  </Fragment>
+  <slot />
+  <script>
+    // ~1 KB, shared by every content page: chart draw-on-view, reveals, sticky CTA, menu, postcode forms, CTA analytics.
+    const dl = ((window as any).dataLayer ||= []);
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add(e.target.hasAttribute('data-draw') ? 'is-drawn' : 'is-in'); io.unobserve(e.target); }
+    }, { threshold: 0.3 });
+    document.querySelectorAll('[data-draw],[data-reveal]').forEach((el) => io.observe(el));
+
+    const sticky = document.querySelector<HTMLElement>('[data-sticky]');
+    const anchors = [...document.querySelectorAll('[data-sticky-hide]')];
+    if (sticky && anchors.length) {
+      const seen = new Map<Element, boolean>();
+      let passedHero = false;
+      const so = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          seen.set(e.target, e.isIntersecting);
+          if (e.target === anchors[0]) passedHero = !e.isIntersecting && e.boundingClientRect.top < 0;
+        }
+        const on = passedHero && ![...seen.values()].some(Boolean);
+        sticky.classList.toggle('is-on', on);
+        sticky.toggleAttribute('inert', !on);
+      });
+      anchors.forEach((a) => so.observe(a));
+      // WCAG 2.4.11: a focused element that sits behind the visible bar is scrolled clear of it.
+      document.addEventListener('focusin', (e) => {
+        if (!sticky.classList.contains('is-on')) return;
+        const t = e.target as HTMLElement; if (sticky.contains(t)) return;
+        const r = t.getBoundingClientRect(), bar = sticky.getBoundingClientRect();
+        if (r.bottom > bar.top - 8 && r.top < bar.bottom) window.scrollBy({ top: r.bottom - bar.top + 24, behavior: 'instant' as ScrollBehavior });
+      });
+    }
+
+    const m = new Date().getMonth();
+    document.querySelectorAll('[data-month-strip] li').forEach((li, i) => { li.classList.toggle('is-past', i < m); li.classList.toggle('is-now', i === m); });
+
+    const menu = document.querySelector<HTMLDetailsElement>('details.menu');
+    menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu?.open) { menu.open = false; menu.querySelector('summary')?.focus(); } });
+
+    document.querySelectorAll<HTMLElement>('[data-cta]').forEach((a) => a.addEventListener('click', () => dl.push({ event: 'cta_click', location: a.dataset.cta })));
+    document.querySelectorAll<HTMLDetailsElement>('details[data-faq]').forEach((d) => d.addEventListener('toggle', () => { if (d.open) dl.push({ event: 'faq_open', question_id: d.id }); }));
+
+    document.querySelectorAll<HTMLFormElement>('form[data-pc]').forEach((f) => {
+      const input = f.querySelector<HTMLInputElement>('input[name="postcode"]')!; const help = f.querySelector<HTMLElement>('.pc-help')!;
+      f.addEventListener('submit', (ev) => {
+        if (!/^[1-9]\d{3}$/.test(input.value.trim())) {
+          ev.preventDefault(); input.setAttribute('aria-invalid', 'true'); help.textContent = help.dataset.error!; help.classList.add('is-error'); input.focus();
+        } else dl.push({ event: 'cta_click', location: f.dataset.pc || 'form' });
+      });
+      input.addEventListener('input', () => { if (input.getAttribute('aria-invalid')) { input.removeAttribute('aria-invalid'); help.textContent = help.dataset.help!; help.classList.remove('is-error'); } });
+    });
+  </script>
+</Base>

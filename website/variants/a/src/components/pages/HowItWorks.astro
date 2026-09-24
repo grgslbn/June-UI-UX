@@ -1,0 +1,141 @@
+---
+// How it works (ux-research §4.4): H1 + 20-second summary → who's who → 4 steps with the animated brand icons
+// (auto vs approve visible) → you vs June + reassurance → meters (+ region note) → data & privacy → FAQ → CTA.
+import { Picture } from 'astro:assets';
+import { copy, to, type Locale } from '../../content/i18n';
+import { pages } from '../../content/pages';
+import Site from '../../layouts/Site.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageHero from '../PageHero.astro';
+import AnimIcon from '../AnimIcon.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import StickyCta from '../StickyCta.astro';
+import Icon from '../Icon.astro';
+import dongle from '@shared/assets/dongle/dongle-leaf.png';
+import { graph } from '../../lib/schema';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = copy[locale];
+const P = pages[locale];
+const h = P.how;
+const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
+const jsonld = graph({ locale, routeKey: 'howItWorks', title: h.title, crumbs: [{ name: P.crumbsHome, key: 'home' }, { name: h.crumb, key: 'howItWorks' }] });
+---
+<Site locale={locale} routeKey="howItWorks" title={h.title} description={h.description} jsonld={jsonld}>
+  <Header locale={locale} routeKey="howItWorks" />
+  <main id="main">
+    <PageHero locale={locale} crumb={h.crumb} eyebrow={h.eyebrow} h1={h.h1} intro={h.intro}>
+      <div class="summary surface" data-sticky-sentinel>
+        <p class="summary__l"><Icon name="i-repeat" size="sm" />{h.summaryLabel}</p>
+        <p class="summary__t">{h.summary}</p>
+      </div>
+    </PageHero>
+
+    <!-- Who's who -->
+    <section class="section section--white" aria-labelledby="who-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <h2 id="who-title" class="h2">{h.whoTitle}</h2>
+          <p class="sec-head__intro">{h.whoIntro}</p>
+        </header>
+        <ul class="who" role="list">
+          {h.who.map((w, i) => (
+            <li class:list={['who__item', i === 1 && 'who__item--june']}>
+              <p class="who__t">{i === 1 ? <span class="who__logo">June</span> : w.t}</p>
+              <p>{w.b}</p>
+              {w.tag && <p class:list={['chip', i === 3 ? 'positive' : '']}>{i === 3 ? <Icon name="i-check" size="sm" /> : <Icon name="i-repeat" size="sm" />}{w.tag}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Steps -->
+    <section class="section section--canvas" aria-labelledby="hsteps-title">
+      <div class="wrap">
+        <header class="sec-head"><h2 id="hsteps-title" class="h2">{h.stepsTitle}</h2></header>
+        <ol class="hsteps" role="list">
+          {h.steps.map((st, i) => (
+            <li class="hsteps__item surface">
+              <AnimIcon name={icons[i]} size={120} />
+              <div>
+                <p class="step__n" aria-hidden="true">0{i + 1}</p>
+                <h3 class="h3">{st.t}</h3>
+                <p>{st.b}</p>
+                {i === 2 && <p class="modes"><span class="chip accent"><Icon name="i-repeat" size="sm" />{h.modeAuto}</span><span class="modes__or">{locale === 'nl-be' ? 'of' : 'ou'}</span><span class="chip accent"><Icon name="i-check-circle" size="sm" />{h.modeAsk}</span></p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- You vs June + reassurance -->
+    <section class="section section--white" aria-labelledby="you-title">
+      <div class="wrap">
+        <header class="sec-head"><h2 id="you-title" class="h2">{h.youTitle}</h2></header>
+        <div class="youjune">
+          <div class="youjune__col"><h3 class="h3">{h.you.t}</h3><p>{h.you.b}</p></div>
+          <div class="youjune__col youjune__col--june"><h3 class="h3">{h.june.t}</h3><p>{h.june.b}</p></div>
+        </div>
+        <ul class="reassure" role="list">
+          {h.reassure.map(r => <li><span class="well well--sm" aria-hidden="true"><Icon name="i-check" size="sm" /></span><p><strong>{r.t}</strong> {r.b}</p></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Meters -->
+    <section class="section section--canvas" aria-labelledby="meters-title">
+      <div class="wrap">
+        <header class="sec-head"><h2 id="meters-title" class="h2">{h.metersTitle}</h2></header>
+        <div class="meters">
+          <div class="meters__card surface meters__card--digital">
+            <div>
+              <h3 class="h3">{h.digital.t}</h3>
+              <p>{h.digital.b}</p>
+              <a class="link" href={to('plans', locale, { hash: 'dongle' })}>{P.premium.eyebrow}<Icon name="i-arrow-r" size="sm" /></a>
+            </div>
+            <Picture src={dongle} formats={['avif', 'webp']} widths={[140, 280]} sizes="140px" alt={h.dongleAlt} loading="lazy" decoding="async" class="meters__img" />
+          </div>
+          <div class="meters__card surface">
+            <div>
+              <h3 class="h3">{h.analog.t}</h3>
+              <p>{h.analog.b}</p>
+            </div>
+          </div>
+        </div>
+        <p class="region"><Icon name="i-info" size="sm" /><span><strong>{h.region.t}.</strong> {h.region.b}</span></p>
+      </div>
+    </section>
+
+    <!-- Data & privacy -->
+    <section class="section section--white" aria-labelledby="data-title">
+      <div class="wrap split">
+        <div>
+          <h2 id="data-title" class="h2">{h.dataTitle}</h2>
+          <p class="sec-head__intro">{h.dataBody}</p>
+        </div>
+        <div class="data">
+          <div class="data__col surface"><h3 class="h4">{h.dataUse}</h3><ul role="list">{h.dataUseItems.map(d => <li><Icon name="i-check" size="sm" />{d}</li>)}</ul></div>
+          <div class="data__col surface"><h3 class="h4">{h.dataNever}</h3><ul role="list">{h.dataNeverItems.map(d => <li><Icon name="i-x" size="sm" />{d}</li>)}</ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--canvas" aria-labelledby="hfaq-title">
+      <div class="wrap narrow">
+        <h2 id="hfaq-title" class="h2">{c.faq.title}</h2>
+        <FaqList locale={locale} ids={h.faqIds} />
+        <a class="link rf__all" href={to('faq', locale)}>{c.faq.all}<Icon name="i-arrow-r" size="sm" /></a>
+      </div>
+    </section>
+
+    <FinalCta locale={locale} title={h.final.title} sub={h.final.sub} entry="hiw-final">
+      <a class="link final__sec" href={to('plans', locale)}>{h.secondary}<Icon name="i-arrow-r" size="sm" /></a>
+    </FinalCta>
+  </main>
+  <Footer locale={locale} routeKey="howItWorks" />
+  <StickyCta label={c.cta} href={to('signup', locale, { query: 'entry=hiw-sticky' })} proof={c.sticky} />
+</Site>

@@ -1,0 +1,21 @@
+---
+// Worked example of the Winstgarantie (illustrative): two bars against the €99 subscription line.
+import { copy, eur, type Locale } from '../content/i18n';
+import Icon from './Icon.astro';
+interface Props { locale: Locale; tone?: 'canvas' | 'white' }
+const { locale, tone = 'canvas' } = Astro.props;
+const g = copy[locale].guar;
+---
+<figure class:list={['guar__ex surface', tone === 'white' && 'guar__ex--white']} aria-labelledby={`guar-ex-${locale}`}>
+  <figcaption class="guar__ex-head"><span id={`guar-ex-${locale}`} class="h4">{g.exTitle}</span><span class="tag">{g.exTag}</span></figcaption>
+  {[g.exA, g.exB].map((ex, i) => (
+    <div class:list={['exrow', i === 1 && 'exrow--refund']}>
+      <p class="exrow__label">{ex.label} <strong>{eur(ex.saved, locale)}</strong></p>
+      <div class="exbar" aria-hidden="true" style={`--w:${Math.min(ex.saved / 300, 1) * 100}%; --t:${(99 / 300) * 100}%`}>
+        <span class="exbar__fill"></span><span class="exbar__t"></span>
+      </div>
+      <p class="exrow__out">{i === 1 ? <Icon name="i-check-circle" size="sm" /> : <Icon name="i-check" size="sm" />}{ex.out}</p>
+    </div>
+  ))}
+  <p class="exbar__legend"><span class="exbar__legend-t" aria-hidden="true"></span>{g.threshold}</p>
+</figure>

@@ -1,0 +1,31 @@
+---
+// "The live tile" at full size: a day of quarter-hour bars + solar, Nu marker. Bars grow once when scrolled into view.
+import QuarterChart from './QuarterChart.astro';
+import { totals as t } from '../../lib/demo.js';
+interface Props { c: any }
+const { c } = Astro.props;
+const a = c.app; const nl = c.nl;
+---
+<div class="ptile ptile--live">
+  <div class="ptile-head">
+    <span class="pchip pchip--accent"><span class="pdot"></span>{a.today}</span>
+    <span class="pchip pchip--live"><span class="pdot pdot--live"></span>{a.live}</span>
+  </div>
+  <div class="plive-top">
+    <div>
+      <p class="plive-lbl">{a.used}</p>
+      <p class="pnum">{t.used}<span class="punit">kWh</span></p>
+    </div>
+    <div class="plegend">
+      <span><i class="lg-bar"></i>{nl ? 'Verbruik' : 'Consommation'}</span>
+      <span><i class="lg-sun"></i>{nl ? 'Zonnepanelen' : 'Panneaux solaires'}</span>
+    </div>
+  </div>
+  <p class="plive-axis">{a.perQ}</p>
+  <QuarterChart w={560} h={210} now={a.now} from={0} to={80} fs={12} ticks={[0, 6, 12, 18]} class="qc--reveal" />
+  <dl class="pstats">
+    <div><dt>{nl ? 'Hoogste kwartier' : 'Quart d’heure max.'}</dt><dd>{t.peak} kWh <span>{a.lastQt}</span></dd></div>
+    <div><dt>{a.solarTitle}</dt><dd>{t.made} kWh <span>{a.made.toLowerCase()}</span></dd></div>
+  </dl>
+  <p class="ptile-foot"><span class="pchip pchip--soft">{a.example}</span> {nl ? 'Illustratieve gegevens' : 'Données illustratives'}</p>
+</div>

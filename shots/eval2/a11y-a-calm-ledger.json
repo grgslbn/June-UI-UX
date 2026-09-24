@@ -1,0 +1,753 @@
+{
+ "file": "directions/a-calm-ledger/index.html",
+ "panels": {
+  "panel-overview": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Peak\" 51x27",
+     "[meta] button \"Peak · <12 months\" 145x27",
+     "[meta] button \"Auto\" 51x27",
+     "[meta] button \"Light\" 58x27",
+     "[meta] button \"Dark\" 51x27",
+     "a \"June home\" 47x20",
+     "button \"Your account\" 32x32",
+     "button/tab \"Overview\" 68x48",
+     "a \"You used 73% more than similar homes in April.\" 364x20 NO-RING",
+     "a \"Your 5.8 kW June 2025 peak drops out next month.\" 394x20 NO-RING",
+     "a \"3 new tips picked for your home.\" 250x20 NO-RING",
+     "button \"Estimate: how this € figure is calculated\" 14x15",
+     "a \"Forecast — See forecast\" 57x17 NO-RING",
+     "a \"Budgets — See your budget\" 56x17 NO-RING",
+     "a \"Compare — See comparison\" 60x17 NO-RING",
+     "a \"Peak — See peak details\" 33x17 NO-RING",
+     "button \"What is the capacity tariff?\" 24x24",
+     "a \"Breakdown — See full breakdown\" 75x17 NO-RING",
+     "a \"Solar — See solar flow\" 34x17 NO-RING",
+     "button \"What does used at home mean?\" 24x24",
+     "a \"Advice — See all advice\" 47x17 NO-RING",
+     "[meta] summary \"Spec notes · Overview\" 1118x43"
+    ],
+    "noRing": [
+     "You used 73% more than similar homes in April.",
+     "Your 5.8 kW June 2025 peak drops out next month.",
+     "3 new tips picked for your home.",
+     "Forecast — See forecast",
+     "Budgets — See your budget",
+     "Compare — See comparison",
+     "Peak — See peak details",
+     "Breakdown — See full breakdown",
+     "Solar — See solar flow",
+     "Advice — See all advice"
+    ],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 47,
+      "h": 20
+     },
+     {
+      "name": "Your account",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Solar",
+      "w": 38,
+      "h": 48
+     },
+     {
+      "name": "Peak",
+      "w": 37,
+      "h": 48
+     },
+     {
+      "name": "You used 73% more than similar homes in ",
+      "w": 364,
+      "h": 20
+     },
+     {
+      "name": "Your 5.8 kW June 2025 peak drops out nex",
+      "w": 394,
+      "h": 20
+     },
+     {
+      "name": "3 new tips picked for your home.",
+      "w": 250,
+      "h": 20
+     },
+     {
+      "name": "Estimate: how this € figure is calculate",
+      "w": 14,
+      "h": 15
+     },
+     {
+      "name": "Forecast — See forecast",
+      "w": 57,
+      "h": 17
+     },
+     {
+      "name": "Budgets — See your budget",
+      "w": 56,
+      "h": 17
+     },
+     {
+      "name": "Compare — See comparison",
+      "w": 60,
+      "h": 17
+     },
+     {
+      "name": "Peak — See peak details",
+      "w": 33,
+      "h": 17
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Breakdown — See full breakdown",
+      "w": 75,
+      "h": 17
+     },
+     {
+      "name": "Solar — See solar flow",
+      "w": 34,
+      "h": 17
+     },
+     {
+      "name": "What does used at home mean?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Advice — See all advice",
+      "w": 47,
+      "h": 17
+     }
+    ],
+    "expanders": [
+     {
+      "name": "Estimate: how this € figure is calculated",
+      "controls": "pop-price",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-capacity",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What does used at home mean?",
+      "controls": "pop-selfcons",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 8,
+      "transitions": 57
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Peak\" 51x27",
+     "[meta] button \"Peak · <12 months\" 145x27",
+     "[meta] button \"Auto\" 51x27",
+     "[meta] button \"Light\" 58x27",
+     "[meta] button \"Dark\" 51x27",
+     "a \"June home\" 47x20",
+     "button \"Your account\" 32x32",
+     "button/tab \"Overview\" 68x48",
+     "a \"You used 73% more than similar homes in April.\" 246x42 NO-RING",
+     "a \"Your 5.8 kW June 2025 peak drops out next month.\" 270x42 NO-RING",
+     "a \"3 new tips picked for your home.\" 250x20 NO-RING",
+     "button \"Estimate: how this € figure is calculated\" 14x15",
+     "a \"Forecast — See forecast\" 57x17 NO-RING",
+     "a \"Budgets — See your budget\" 56x17 NO-RING",
+     "a \"Compare — See comparison\" 60x17 NO-RING",
+     "a \"Peak — See peak details\" 33x17 NO-RING",
+     "button \"What is the capacity tariff?\" 24x24",
+     "a \"Breakdown — See full breakdown\" 75x17 NO-RING",
+     "a \"Solar — See solar flow\" 34x17 NO-RING",
+     "button \"What does used at home mean?\" 24x24",
+     "a \"Advice — See all advice\" 47x17 NO-RING",
+     "[meta] summary \"Spec notes · Overview\" 356x43"
+    ],
+    "noRing": [
+     "You used 73% more than similar homes in April.",
+     "Your 5.8 kW June 2025 peak drops out next month.",
+     "3 new tips picked for your home.",
+     "Forecast — See forecast",
+     "Budgets — See your budget",
+     "Compare — See comparison",
+     "Peak — See peak details",
+     "Breakdown — See full breakdown",
+     "Solar — See solar flow",
+     "Advice — See all advice"
+    ],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 47,
+      "h": 20
+     },
+     {
+      "name": "Your account",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Solar",
+      "w": 38,
+      "h": 48
+     },
+     {
+      "name": "Peak",
+      "w": 37,
+      "h": 48
+     },
+     {
+      "name": "You used 73% more than similar homes in ",
+      "w": 246,
+      "h": 42
+     },
+     {
+      "name": "Your 5.8 kW June 2025 peak drops out nex",
+      "w": 270,
+      "h": 42
+     },
+     {
+      "name": "3 new tips picked for your home.",
+      "w": 250,
+      "h": 20
+     },
+     {
+      "name": "Estimate: how this € figure is calculate",
+      "w": 14,
+      "h": 15
+     },
+     {
+      "name": "Forecast — See forecast",
+      "w": 57,
+      "h": 17
+     },
+     {
+      "name": "Budgets — See your budget",
+      "w": 56,
+      "h": 17
+     },
+     {
+      "name": "Compare — See comparison",
+      "w": 60,
+      "h": 17
+     },
+     {
+      "name": "Peak — See peak details",
+      "w": 33,
+      "h": 17
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Breakdown — See full breakdown",
+      "w": 75,
+      "h": 17
+     },
+     {
+      "name": "Solar — See solar flow",
+      "w": 34,
+      "h": 17
+     },
+     {
+      "name": "What does used at home mean?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Advice — See all advice",
+      "w": 47,
+      "h": 17
+     }
+    ],
+    "expanders": [
+     {
+      "name": "Estimate: how this € figure is calculated",
+      "controls": "pop-price",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-capacity",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What does used at home mean?",
+      "controls": "pop-selfcons",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": []
+   }
+  },
+  "panel-peak": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Peak · <12 months\" 145x27",
+     "[meta] button \"Auto\" 51x27",
+     "[meta] button \"Light\" 58x27",
+     "[meta] button \"Dark\" 51x27",
+     "a \"June home\" 47x20",
+     "button \"Your account\" 32x32",
+     "button/tab \"Peak\" 37x48",
+     "button \"What is the capacity tariff?\" 24x24",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"Estimate: how this € figure is calculated\" 25x29",
+     "button/radio \"Month\" 70x30",
+     "button \"Previous period\" 32x32",
+     "button \"Next period\" 32x32",
+     "figure \"kW1230Month peak 4.2 kW12-mo avg 4.0 kW4.2 kW · 12\" 832x280",
+     "button \"How the 12-month average is calculatedSee the full\" 1120x71",
+     "a \"Lower your peak in Advice\" 248x44",
+     "[meta] summary \"Spec notes · Peak\" 1118x43"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 47,
+      "h": 20
+     },
+     {
+      "name": "Your account",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Solar",
+      "w": 38,
+      "h": 48
+     },
+     {
+      "name": "Peak",
+      "w": 37,
+      "h": 48
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Estimate: how this € figure is calculate",
+      "w": 25,
+      "h": 29
+     },
+     {
+      "name": "Day",
+      "w": 54,
+      "h": 30
+     },
+     {
+      "name": "Week",
+      "w": 65,
+      "h": 30
+     },
+     {
+      "name": "Month",
+      "w": 70,
+      "h": 30
+     },
+     {
+      "name": "Year",
+      "w": 58,
+      "h": 30
+     },
+     {
+      "name": "Previous period",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Next period",
+      "w": 32,
+      "h": 32
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-capacity",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "Estimate: how this € figure is calculated",
+      "controls": "pop-charge",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "How the 12-month average is calculatedSee the",
+      "controls": "calc",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "true",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "",
+      "svgHidden": null,
+      "alt": "Bar chart of your daily peaks for 1 to 18 May 2026. Highest: 4.2 kW on 12 May at 18:30, the month peak. Lowest: 1.9 kW on 6 May. Today, 18 May: 3.8 kW. Most day"
+     }
+    ],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 28,
+      "transitions": 76
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Peak · <12 months\" 145x27",
+     "[meta] button \"Auto\" 51x27",
+     "[meta] button \"Light\" 58x27",
+     "[meta] button \"Dark\" 51x27",
+     "a \"June home\" 47x20",
+     "button \"Your account\" 32x32",
+     "button/tab \"Peak\" 37x48",
+     "button \"What is the capacity tariff?\" 24x24",
+     "button \"What is a rolling average?\" 24x24",
+     "button \"Estimate: how this € figure is calculated\" 25x29",
+     "button/radio \"Month\" 64x30",
+     "button \"Previous period\" 32x32",
+     "button \"Next period\" 32x32",
+     "figure \"kW1230Peak 4.2Avg 4.04.2 kW · 12 May, 18:301713Tod\" 358x260",
+     "button \"How the 12-month average is calculatedSee the full\" 358x123",
+     "a \"Lower your peak in Advice\" 358x44",
+     "[meta] summary \"Spec notes · Peak\" 356x43"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 47,
+      "h": 20
+     },
+     {
+      "name": "Your account",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Solar",
+      "w": 38,
+      "h": 48
+     },
+     {
+      "name": "Peak",
+      "w": 37,
+      "h": 48
+     },
+     {
+      "name": "What is the capacity tariff?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     },
+     {
+      "name": "Estimate: how this € figure is calculate",
+      "w": 25,
+      "h": 29
+     },
+     {
+      "name": "Day",
+      "w": 48,
+      "h": 30
+     },
+     {
+      "name": "Week",
+      "w": 59,
+      "h": 30
+     },
+     {
+      "name": "Month",
+      "w": 64,
+      "h": 30
+     },
+     {
+      "name": "Year",
+      "w": 52,
+      "h": 30
+     },
+     {
+      "name": "Previous period",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Next period",
+      "w": 32,
+      "h": 32
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is the capacity tariff?",
+      "controls": "pop-capacity",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "Estimate: how this € figure is calculated",
+      "controls": "pop-charge",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     },
+     {
+      "name": "How the 12-month average is calculatedSee the",
+      "controls": "calc",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "true",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "",
+      "svgHidden": null,
+      "alt": "Bar chart of your daily peaks for 1 to 18 May 2026. Highest: 4.2 kW on 12 May at 18:30, the month peak. Lowest: 1.9 kW on 6 May. Today, 18 May: 3.8 kW. Most day"
+     }
+    ]
+   }
+  },
+  "panel-peak-history": {
+   "desktop": {
+    "tabOrder": [
+     "[meta] button \"Auto\" 51x27",
+     "[meta] button \"Light\" 58x27",
+     "[meta] button \"Dark\" 51x27",
+     "a \"June home\" 47x20",
+     "button \"Your account\" 32x32",
+     "button/tab \"Peak\" 37x48",
+     "button \"What is a rolling average?\" 24x24",
+     "a \"Lower your peak in Advice\" 248x44",
+     "[meta] summary \"Spec notes · Peak, insufficient history\" 1118x43"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 47,
+      "h": 20
+     },
+     {
+      "name": "Your account",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Solar",
+      "w": 38,
+      "h": 48
+     },
+     {
+      "name": "Peak",
+      "w": 37,
+      "h": 48
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "ph-hero grid12",
+      "svgHidden": "true",
+      "alt": "How you compare"
+     }
+    ],
+    "motion": {
+     "reduce": {
+      "anims": 0,
+      "transitions": 0
+     },
+     "full": {
+      "anims": 11,
+      "transitions": 57
+     }
+    }
+   },
+   "mobile": {
+    "tabOrder": [
+     "[meta] button \"Auto\" 51x27",
+     "[meta] button \"Light\" 58x27",
+     "[meta] button \"Dark\" 51x27",
+     "a \"June home\" 47x20",
+     "button \"Your account\" 32x32",
+     "button/tab \"Peak\" 37x48",
+     "button \"What is a rolling average?\" 24x24",
+     "a \"Lower your peak in Advice\" 358x44",
+     "[meta] summary \"Spec notes · Peak, insufficient history\" 356x43"
+    ],
+    "noRing": [],
+    "smallTargets": [
+     {
+      "name": "June home",
+      "w": 47,
+      "h": 20
+     },
+     {
+      "name": "Your account",
+      "w": 32,
+      "h": 32
+     },
+     {
+      "name": "Solar",
+      "w": 38,
+      "h": 48
+     },
+     {
+      "name": "Peak",
+      "w": 37,
+      "h": 48
+     },
+     {
+      "name": "What is a rolling average?",
+      "w": 24,
+      "h": 24
+     }
+    ],
+    "expanders": [
+     {
+      "name": "What is a rolling average?",
+      "controls": "pop-rolling",
+      "before": "false",
+      "tag": "button",
+      "afterEnter": "true",
+      "targetVisible": true,
+      "afterEsc": "false",
+      "focusBack": true
+     }
+    ],
+    "charts": [
+     {
+      "cls": "ph-hero grid12",
+      "svgHidden": "true",
+      "alt": "How you compare"
+     }
+    ]
+   }
+  }
+ }
+}

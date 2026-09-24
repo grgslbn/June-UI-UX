@@ -1,0 +1,195 @@
+---
+// Abonnementen / Abonnements. Yearly price first, recommended plan obvious, then the honest context:
+// hero (+ 3 facts: yearly price · approve each switch yourself · guarantee with its condition)
+// → two-question helper + "what do you keep?" (method, or the visitor's own estimate) → 3 cards (ledger only with an
+// estimate) → full table → Premium product band → June vs doing it yourself → what you pay June → pricing FAQ → close.
+import Site from '../../layouts/Site.astro';
+import Squiggle from '../Squiggle.astro';
+import '../../styles/plans.css';
+import SectionHead from '../SectionHead.astro';
+import Icon from '../Icon.astro';
+import Fn from '../Fn.astro';
+import CtaProof from '../CtaProof.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Check from '../Check.astro';
+import PlanHelper from '../PlanHelper.astro';
+import PlanLedger from '../PlanLedger.astro';
+import ProductBand from '../ProductBand.astro';
+import { plansCopy } from '../../i18n/pages.js';
+import { href, abs } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = plansCopy(locale);
+const L = c.L;
+// One squiggle word per page (brand spark), under the H1's key word.
+const mi = c.hero.h1.indexOf(c.hero.mark);
+const h1 = mi < 0 ? [c.hero.h1, ''] : [c.hero.h1.slice(0, mi), c.hero.h1.slice(mi + c.hero.mark.length)];
+const base = import.meta.env.BASE_URL;
+const signup = href('signup', locale, base);
+const canonical = abs('plans', locale);
+const faqCancel = `${href('faq', locale, base)}#cancel`;
+// Switch Plus's value proposition in facts.json ("gegarandeerd resultaat") overstates the guarantee: use the qualified line.
+const valueOf = (p: any) => p.slug === 'switch-plus' ? (L === 'fr' ? 'Économisez, avec garantie de gain.' : 'Besparen, met winstgarantie.') : p.value;
+const ld = c.plans.map((p: any) => ({
+  '@type': 'Product', '@id': `${canonical}#${p.slug}`, name: p.full, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' },
+  description: valueOf(p),
+  offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=${p.slug}`, price: p.yearlyN.toFixed(2), priceCurrency: 'EUR', availability: 'https://schema.org/InStock',
+    eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: { '@type': 'UnitPriceSpecification', price: p.yearlyN.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, billingDuration: 'P1Y', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' } } },
+}));
+const e = c.earn;
+---
+<Site locale={locale} routeKey="plans" title={c.meta.title} description={c.meta.description} ld={ld}
+  stickyPlan="switch-plus">
+  <section class="page-hero plans-hero" aria-labelledby="h1">
+    <div class="wrap">
+      <p class="kicker"><span>{c.hero.kicker}</span></p>
+      <h1 id="h1">{h1[0]}<Squiggle>{c.hero.mark}</Squiggle>{h1[1]}</h1>
+      <p class="lead">{c.hero.lead}<Fn n={6} L={L} /></p>
+      <ul class="hero-facts" role="list" data-sticky-hide>
+        {c.hero.facts.map(([ic, t]: string[], i: number) => <li><Icon name={ic} /><span>{t}{i === 2 && <Fn n={4} L={L} />}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="plans-wrap" aria-label={L === "fr" ? "Les trois abonnements" : "De drie abonnementen"}>
+    <div class="wrap">
+      <div class="plans-tools">
+        <PlanHelper c={c} meterHref={`${href('howItWorks', locale, base)}#meter`} />
+        <PlanLedger mode="boot" c={c} signup={signup} />
+      </div>
+
+      <ul class="plan-cards" role="list" data-plan-cards>
+        {c.plans.map((p: any) => {
+          const rec = p.slug === 'switch-plus';
+          return (
+            <li class:list={['plan', `plan--${p.slug}`, { 'plan--rec': rec }]} id={p.slug}>
+              {rec && <p class="plan-badge">{c.card.badge}</p>}
+              <p class="plan-fit" aria-hidden="true"><Icon name="check-circle" />{c.card.fit}</p>
+              {p.slug === 'premium' && <p class="plan-nofit" aria-hidden="true"><Icon name="info" />{c.card.notFit}</p>}
+              <h2 class="plan-name">{p.name}</h2>
+              <p class="plan-value">{valueOf(p)}</p>
+              <p class="plan-price"><span class="plan-yr num">{p.yearly}</span> <span class="plan-per">{c.card.perYear}</span></p>
+              <p class="plan-mo">{p.monthly} · {c.card.billed}{p.slug === 'premium' && (L === 'fr' ? ' · dongle inclus' : ' · dongle inbegrepen')}</p>
+              <p class:list={['plan-g', { 'plan-g--none': p.slug === 'switch' }]}>
+                <Icon name={p.slug === 'switch' ? 'minus' : 'shield'} />
+                <span>{p.slug === 'switch' ? c.card.noGuarantee : c.card.guarantee}{p.slug !== 'switch' && <Fn n={4} L={L} />}</span>
+              </p>
+              <PlanLedger mode="card" c={c} slug={p.slug} fee={p.yearlyN} name={p.name} />
+              <a class:list={['btn', { 'btn--ghost': !rec }]} href={`${signup}?plan=${p.slug}&entry=plans-${p.slug}`} data-plan-link={p.slug} data-cta={`plans-${p.slug}`}>{c.card.choose} {p.name}<Icon name="arrow-r" /></a>
+              <h3 class="plan-fh">{c.card.features}</h3>
+              <ul class="plan-feat" role="list">
+                {p.features.map((f: string) => <li><Icon name="check" /><span>{f}</span></li>)}
+              </ul>
+              {p.slug === 'premium' && <p class="plan-req"><Icon name="meter" />{c.card.needs}</p>}
+              <p class="plan-for">{p.whoFor}</p>
+            </li>
+          );
+        })}
+      </ul>
+      <PlanLedger mode="fill" c={c} />
+      <div class="plans-foot">
+        <CtaProof c={c} id="plans-row" reducer={c.proof.risk} />
+        <p class="note">{c.footnotes[5].text} <a href={faqCancel}>{c.card.cancel}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="vergelijk" aria-labelledby="table-h">
+    <div class="wrap">
+      <SectionHead kicker={c.table.kicker} id="table-h" title={c.table.h2} />
+      <div class="table-scroll" tabindex="0" role="region" aria-label={c.table.caption}>
+        <table class="matrix">
+          <caption class="sr-only">{c.table.caption}</caption>
+          <thead>
+            <tr><td></td>{c.plans.map((p: any) => <th scope="col" class:list={{ 'col-rec': p.slug === 'switch-plus' }}>{p.name}<span class="sub num"><span class="nowrap">{p.yearly}</span> {c.card.perYear}</span></th>)}</tr>
+          </thead>
+          <tbody>
+            {c.table.rows.map((r: any[]) => (
+              <tr>
+                <th scope="row">{r[0]}</th>
+                {r.slice(1).map((v, i) => <td class:list={{ 'col-rec': i === 1 }}><Check v={v} ui={c.ui} /></td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <ProductBand locale={locale} variant="full" id="dongle" entry="plans-band" />
+
+  <section class="section section--deep" id="vergelijking" aria-labelledby="vs-h">
+    <div class="wrap">
+      <SectionHead kicker={c.vs.kicker} id="vs-h" title={c.vs.h2}><p>{c.vs.intro}</p></SectionHead>
+      <table class="vs">
+        <thead>
+          <tr>
+            <td></td>
+            {c.vs.cols.map(([h, sub]: string[], i: number) => <th scope="col" class={i === 2 ? 'col-june' : ''}>{h}<span class="sub">{sub}</span></th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {c.vs.rows.map((r: any[], ri: number) => (
+            <tr>
+              <th scope="row">{r[0]}</th>
+              {r.slice(1).map((cell, i) => (
+                <td class={i === 2 ? 'col-june' : ''} data-label={c.vs.cols[i][0]}>
+                  <span>
+                    {i === 2 && <Icon name="check" />}
+                    {cell === null ? <><span aria-hidden="true">—</span><span class="sr-only">{c.vs.none}</span></> : cell}
+                    {i === 2 && ri === 4 && <Fn n={4} L={L} />}
+                  </span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="note vs-note">{c.vs.caption}</p>
+    </div>
+  </section>
+
+  <section class="section" id="verdienmodel" aria-labelledby="earn-h">
+    <div class="wrap">
+      <div class="earn-head">
+        <SectionHead kicker={e.kicker} id="earn-h" title={e.h2} />
+        <div class="prose earn-body">
+          <p><strong>{e.body[0]}</strong></p>
+          <p>{e.body[1]}</p>
+          <p class="note">{e.fn}</p>
+        </div>
+      </div>
+      <div class="mf" role="img" aria-label={e.aria}>
+        {e.flow.map((n: any, i: number) => (
+          <>
+            <div class:list={['mf-node', { 'mf-node--june': n.june }]}>
+              <p class="mf-who">{n.who}</p>
+              <p class="mf-what">{n.what}</p>
+            </div>
+            {i < e.edges.length && (
+              <div class:list={['mf-edge', { 'mf-edge--money': i === 0 }]}>
+                <span class="mf-label">{e.edges[i]}</span>
+                <span class="mf-line"></span>
+              </div>
+            )}
+          </>
+        ))}
+        <p class="mf-back"><Icon name="arrow-l" /><span>{e.back}</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <div>
+        <FaqList items={c.faqItems} L={L} />
+        <p class="faq-more"><a class="link-arrow" href={href('faq', locale, base)}>{c.faq.all}<Icon name="arrow-r" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} plan="switch-plus" />
+</Site>

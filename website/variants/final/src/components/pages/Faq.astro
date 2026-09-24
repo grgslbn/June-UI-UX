@@ -1,0 +1,104 @@
+---
+// Veelgestelde vragen / Questions fréquentes — "Eerlijke antwoorden". Category jump links, native <details>
+// (deep-linkable ids, e.g. #cancel from the price blocks), FAQPage JSON-LD mirroring the visible text.
+// Unconfirmed facts use the interim safe wording (pages.js), never a placeholder or a "to be confirmed" tag.
+// "Niet gevonden?" block: contact via the account + the pointing June character (its only use on this page).
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import Squiggle from '../Squiggle.astro';
+import Icon from '../Icon.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import { faqCopy } from '../../i18n/pages.js';
+import { href, abs } from '@shared/routes.mjs';
+import pointing from '@shared/assets/character/june-character-pointing.png';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = faqCopy(locale);
+const L = c.L;
+// One squiggle word per page (brand spark), under the H1's key word.
+const mi = c.hero.h1.indexOf(c.hero.mark);
+const h1 = mi < 0 ? [c.hero.h1, ''] : [c.hero.h1.slice(0, mi), c.hero.h1.slice(mi + c.hero.mark.length)];
+const base = import.meta.env.BASE_URL;
+const all = c.cats.flatMap((k: any) => k.items);
+const ld = [{
+  '@type': 'FAQPage', '@id': `${abs('faq', locale)}#faq`, inLanguage: L === 'fr' ? 'fr-BE' : 'nl-BE',
+  mainEntity: all.map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+}];
+---
+<Site locale={locale} routeKey="faq" title={c.meta.title} description={c.meta.description} ld={ld}>
+  <section class="page-hero" aria-labelledby="h1">
+    <div class="wrap">
+      <p class="kicker"><span>{c.hero.kicker}</span></p>
+      <h1 id="h1">{h1[0]}<Squiggle>{c.hero.mark}</Squiggle>{h1[1]}</h1>
+      <p class="lead">{c.hero.lead}</p>
+      <nav class="chips" aria-label={c.hero.jump} data-sticky-hide>
+        <span class="chips-label">{c.hero.jump}</span>
+        {c.cats.map((k: any) => <a class="chip" href={`#${k.id}`}>{k.name}<span class="chip-n">{k.items.length}</span></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <div class="faq-page">
+    {c.cats.map((k: any, i: number) => (
+      <section class:list={['section', { 'section--deep': i % 2 === 1 }]} id={k.id} aria-labelledby={`${k.id}-h`}>
+        <div class="wrap faq-split">
+          <div class="section-head">
+            <p class="kicker"><span class="kicker-n">{String(i + 1).padStart(2, '0')}</span><span>{k.items.length} {L === 'fr' ? 'questions' : 'vragen'}</span></p>
+            <h2 id={`${k.id}-h`}>{k.name}</h2>
+          </div>
+          <FaqList items={k.items} L={L} group={k.id} openFirst={i === 0} />
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <section class="section" id="niet-gevonden" aria-labelledby="nf-h">
+    <div class="wrap">
+      <div class="nf-card">
+        <Image src={pointing} alt="" widths={[140, 280]} sizes="140px" width={140} class="nf-char" loading="lazy" decoding="async" />
+        <div class="nf-body">
+          <h2 id="nf-h">{c.notFound.h2}</h2>
+          <div class="nf-cols">
+            <div>
+              <h3>{c.notFound.client}</h3>
+              <p>{c.notFound.clientP}</p>
+              <p><a class="link-arrow" href="https://www.june.energy/" rel="noopener" target="_blank">{c.notFound.account}<Icon name="ext" /><span class="sr-only"> ({c.notFound.ext})</span></a></p>
+            </div>
+            <div>
+              <h3>{c.notFound.other}</h3>
+              <p>{c.notFound.otherP}</p>
+              <p class="nf-links">
+                <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.notFound.how}<Icon name="arrow-r" /></a>
+                <a class="link-arrow" href={href('plans', locale, base)}>{c.notFound.plans}<Icon name="arrow-r" /></a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} />
+</Site>
+
+<style>
+  :global(.page-hero h1#h1) { line-height: 1.22; }
+  :global(.page-hero h1#h1 .sq-line) { bottom: -0.16em; }
+  /* Category heads sit at the top of their question list, also when an item is open. */
+  :global(.faq-page .faq-split) { align-items: start; }
+  :global(.faq-page .faq-split > .section-head) { align-self: start; }
+  .nf-card { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--s-8); align-items: start; padding: var(--s-8); background: var(--surface); border: 2px solid var(--rule-strong); border-radius: var(--r-md); }
+  .nf-card :global(.nf-char) { width: 140px; height: auto; }
+  .nf-body h2 { font-size: var(--fs-h2); max-width: 22ch; }
+  .nf-cols { margin-top: var(--s-6); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-10); }
+  .nf-cols > div { display: grid; gap: var(--s-2); align-content: start; padding-top: var(--s-4); border-top: 1px solid var(--rule); }
+  .nf-cols h3 { font-size: 19px; }
+  .nf-cols p { color: var(--ink-700); font-size: 16px; }
+  .nf-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); }
+  @media (max-width: 760px) {
+    .nf-card { grid-template-columns: minmax(0, 1fr); padding: var(--s-6); gap: var(--s-4); }
+    .nf-card :global(.nf-char) { width: 96px; }
+    .nf-cols { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

@@ -1,0 +1,15 @@
+---
+// Trust set shown near every primary CTA: rating (partial stars), customers, not-a-supplier, guarantee.
+import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+import { copy, type Locale } from '../content/copy';
+interface Props { locale: Locale; id: string; tone?: 'field' | 'light'; items?: ('rating' | 'customers' | 'supplier' | 'guarantee')[] }
+const { locale, id, tone = 'field', items = ['rating', 'customers', 'supplier', 'guarantee'] } = Astro.props;
+const t = copy[locale];
+---
+<ul class={`trust trust--${tone}`} role="list">
+  {items.includes('rating') && <li><Stars id={`st-${id}`} label={t.trust.ratingAria} class="trust__stars" /><span>{t.trust.rating}<Fn n={2} locale={locale} /></span></li>}
+  {items.includes('customers') && <li><span>{t.trust.customers}<Fn n={3} locale={locale} /></span></li>}
+  {items.includes('supplier') && <li><span>{t.trust.notSupplier}</span></li>}
+  {items.includes('guarantee') && <li><span>{t.trust.guarantee}<Fn n={4} locale={locale} /></span></li>}
+</ul>

@@ -1,0 +1,26 @@
+---
+// Content-page shell: head + masthead + <main> + footer + sticky mobile CTA. Every indexable page uses this.
+import Page from './Page.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { siteCopy } from '../i18n/site.js';
+import { href } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; crumbs?: boolean; ld?: any[]; sticky?: { strong: string; sub: string; label?: string; url?: string }; }
+const { locale, routeKey, title, description, crumbs = true, ld = [], sticky } = Astro.props;
+const c = siteCopy(locale);
+const trail = crumbs && routeKey !== 'home' ? [{ name: c.pageNames.home, key: 'home' }, ...(routeKey === 'switchPlus' ? [{ name: c.pageNames.plans, key: 'plans' }] : []), { name: c.pageNames[routeKey], key: routeKey }] : [];
+const s = sticky || c.sticky;
+---
+<Page locale={locale} routeKey={routeKey} title={title} description={description} crumbs={trail} ld={ld}>
+  <Header locale={locale} routeKey={routeKey} c={c} />
+  <main id="inhoud" tabindex="-1">
+    {trail.length > 0 && <Crumbs trail={trail} locale={locale} label={c.ui.crumbs} />}
+    <slot />
+  </main>
+  <Footer locale={locale} routeKey={routeKey} c={c} />
+  <div class="sticky" data-sticky inert>
+    <p class="sticky-proof"><strong>{s.strong}</strong>{s.sub}</p>
+    <a class="btn" href={s.url || href('signup', locale, import.meta.env.BASE_URL)} data-cta="sticky">{s.label || c.ui.cta}</a>
+  </div>
+</Page>

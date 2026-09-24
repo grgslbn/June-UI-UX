@@ -1,0 +1,39 @@
+---
+// Plan cards — yearly total first (price-indication rule C8), monthly as equivalent, Switch Plus recommended.
+import Fn from './Fn.astro';
+import { href } from '@shared/routes.mjs';
+import { copy, plan, money, tp, lang, confirmedFeatures, type Locale } from '../content/copy';
+interface Props { locale: Locale; mode?: 'teaser' | 'full'; headingLevel?: 'h2' | 'h3' }
+const { locale, mode = 'teaser' } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const signup = href('signup', locale, import.meta.env.BASE_URL);
+const nl = locale === 'nl-be';
+const extra: Record<string, { guar: string | null; req?: string }> = {
+  switch: { guar: null },
+  'switch-plus': { guar: nl ? `Winstgarantie: ${money(99, locale)} terug` : `Garantie de gain : ${money(99, locale)} remboursés` },
+  premium: { guar: nl ? 'Winstgarantie inbegrepen' : 'Garantie de gain comprise', req: nl ? 'Digitale meter met P1-poort nodig' : 'Compteur numérique avec port P1 requis' },
+};
+const noGuar = nl ? 'Zonder winstgarantie' : 'Sans garantie de gain';
+---
+<div class={`plans__grid plans__grid--${mode}`}>
+  {['switch', 'switch-plus', 'premium'].map(slug => {
+    const p = plan(slug); const rec = slug === 'switch-plus'; const x = extra[slug];
+    const feats = confirmedFeatures(p);
+    const teaser: Record<string, number[]> = { switch: [0, 1, 2], 'switch-plus': [0, 2], premium: [1, 2, 3] };
+    const list = mode === 'teaser' ? teaser[slug].map(i => feats[i]).filter(Boolean) : feats;
+    return (
+      <article class={`plan ${rec ? 'plan--rec' : ''}`} id={mode === 'full' ? slug : undefined} aria-labelledby={`plan-${mode}-${slug}`} data-plan={slug}>
+        {rec ? <p class="plan__badge">{t.recommended}</p> : <p class="plan__badge plan__badge--quiet">{slug === 'premium' ? (nl ? 'Voor digitale meters' : 'Pour compteurs numériques') : (nl ? 'Budgetkeuze' : 'Le choix budget')}</p>}
+        <h3 class="plan__name" id={`plan-${mode}-${slug}`}>{p.shortName}</h3>
+        <p class="plan__vp">{tp(mode === 'full' ? p.whoFor[L] : p.valueProposition[L], locale)}</p>
+        <p class="plan__price"><span class="plan__big">{money(p.priceYearly, locale)}</span> <span class="plan__per">{t.perYear}</span></p>
+        <p class="plan__sub">= {money(p.priceMonthly, locale)} {t.perMonth} · {t.billed}, {t.vat}<Fn n={5} locale={locale} /></p>
+        <p class={`plan__guar ${x.guar ? '' : 'plan__guar--no'}`}>{x.guar || noGuar}{x.guar && <Fn n={4} locale={locale} />}</p>
+        {x.req && <p class="plan__req">{x.req}</p>}
+        <ul class="plan__feat" role="list">{list.map((ft: any) => <li>{tp(ft[L], locale)}</li>)}</ul>
+        <a class={`btn ${rec ? 'btn--white' : 'btn--ghost'} plan__cta`} href={`${signup}?plan=${slug}`} data-cta="plans" data-plan-cta={slug}>{t.choose} {p.shortName}</a>
+      </article>
+    );
+  })}
+</div>

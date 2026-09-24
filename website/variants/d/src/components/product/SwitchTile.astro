@@ -1,0 +1,32 @@
+---
+// Recreated "Mijn contract" tile: the switching engine as the app shows it (NL/FR, illustrative).
+interface Props { c: any }
+const { c } = Astro.props;
+const a = c.app; const nl = c.nl;
+const steps = [
+  { icon: 'gauge', t: nl ? 'Jouw verbruiksprofiel' : 'Votre profil de consommation', s: nl ? 'Digitale meter of je meterstanden' : 'Compteur numérique ou vos index' },
+  { icon: 'repeat', t: a.compared, s: a.monthly },
+  { icon: 'check-circle', t: nl ? 'Voordeliger contract? Wij wisselen.' : 'Contrat plus avantageux ? Nous changeons.', s: nl ? 'Wij regelen de volledige overstap' : 'Nous gérons tout le changement' },
+];
+---
+<div class="ptile ptile--switch">
+  <div class="ptile-head">
+    <svg class="icon ptile-ic" width="18" height="18" aria-hidden="true"><use href="#i-repeat" /></svg>
+    <span class="ptile-title">{a.contract}</span>
+    <span class="pchip pchip--pos"><span class="pdot"></span>{a.active}</span>
+  </div>
+  <ol class="ptl">
+    {steps.map((s, i) => (
+      <li class:list={['ptl-item', { 'ptl-item--done': i < 2 }]}>
+        <span class="ptl-ic"><svg class="icon" width="16" height="16" aria-hidden="true"><use href={`#i-${s.icon}`} /></svg></span>
+        <span class="ptl-t">{s.t}</span>
+        <span class="ptl-s">{s.s}</span>
+      </li>
+    ))}
+  </ol>
+  <div class="pseg-wrap">
+    <span class="pseg-label">{a.mode}</span>
+    <span class="pseg"><span class="pseg-opt is-on">{a.auto}</span><span class="pseg-opt">{a.ask}</span></span>
+  </div>
+  <p class="ptile-foot"><span class="pchip pchip--soft">{a.example}</span> {a.next}</p>
+</div>

@@ -1,0 +1,192 @@
+---
+// Hoe werkt het / Comment ça marche — the editorial deep-dive. 20-second answer → who's who (four-party strip with
+// the flows between them: money to June, contract to the supplier, delivery via the grid; the bill bypasses June)
+// → why keep watching (market facts) → the 4 steps with what you do / see → data & privacy → what stays the same
+// → meters → regional notes (FR qualifies the Flanders-only capacity tariff) → FAQ → close.
+import { Image } from 'astro:assets';
+import Site from '../../layouts/Site.astro';
+import Squiggle from '../Squiggle.astro';
+import '../../styles/how.css';
+import SectionHead from '../SectionHead.astro';
+import CtaProof from '../CtaProof.astro';
+import Icon from '../Icon.astro';
+import AnimIcon from '../AnimIcon.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import Stars from '../Stars.astro';
+import Fn from '../Fn.astro';
+import { howCopy } from '../../i18n/pages.js';
+import { href } from '@shared/routes.mjs';
+import pointing from '@shared/assets/character/june-character-pointing.png';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = howCopy(locale);
+const L = c.L;
+// One squiggle word per page (brand spark), under the H1's key word.
+const mi = c.hero.h1.indexOf(c.hero.mark);
+const h1 = mi < 0 ? [c.hero.h1, ''] : [c.hero.h1.slice(0, mi), c.hero.h1.slice(mi + c.hero.mark.length)];
+const base = import.meta.env.BASE_URL;
+const icons = ['home-analysis', 'compare', 'home-switch', 'relax'] as const;
+---
+<Site locale={locale} routeKey="howItWorks" title={c.meta.title} description={c.meta.description}>
+  <section class="page-hero" aria-labelledby="h1">
+    <div class="wrap hw-hero">
+      <div>
+        <p class="kicker"><span>{c.hero.kicker}</span></p>
+        <h1 id="h1">{h1[0]}<Squiggle>{c.hero.mark}</Squiggle>{h1[1]}</h1>
+        <p class="lead">{c.hero.lead}</p>
+      </div>
+      <aside class="tldr" aria-labelledby="tldr-h" data-sticky-hide>
+        <h2 id="tldr-h" class="tldr-h"><Icon name="clock" />{c.hero.tldr}</h2>
+        <ol>{c.hero.summary.map((s: string) => <li>{s}</li>)}</ol>
+        <a class="btn" href={href('signup', locale, base)} data-cta="hw-hero">{c.ui.cta}<Icon name="arrow-r" /></a>
+        <CtaProof c={c} id="hw-hero" reducer={c.proof.risk} />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="wie-doet-wat" aria-labelledby="who-h">
+    <div class="wrap">
+      <SectionHead n="01" kicker={c.who.kicker} id="who-h" title={c.who.h2}><p>{c.who.intro}</p></SectionHead>
+      <div class="who">
+        <p class="sr-only">{c.who.nodes[0].name} → {c.who.nodes[1].name}: {c.who.edges[0]}. {c.who.nodes[1].name} → {c.who.nodes[2].name}: {c.who.edges[1]}. {c.who.nodes[2].name} → {c.who.nodes[3].name}: {c.who.edges[2]}. {c.who.back}</p>
+        {c.who.nodes.map((n: any, i: number) => (
+          <>
+            <div class:list={['who-node', { 'who-node--june': n.june, 'who-node--changes': n.changes }]}>
+              <h3>{n.name}{n.changes && <span class="who-tag">{c.who.changesTag}</span>}</h3>
+              <p class="who-role"><span class="who-label">{c.who.cols[0]}</span>{n.role}</p>
+              <p class="who-change"><span class="who-label">{c.who.cols[1]}</span><span class="who-flag"><Icon name={n.changes ? 'repeat' : 'check'} />{n.change}</span></p>
+            </div>
+            {i < 3 && (
+              <div class:list={['who-edge', { 'who-edge--money': i === 0 }]} aria-hidden="true">
+                <span class="who-edge-l">{c.who.edges[i]}</span>
+                <span class="who-line"></span>
+              </div>
+            )}
+          </>
+        ))}
+        <p class="who-back" aria-hidden="true"><Icon name="arrow-l" /><span>{c.who.back}</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="markt" aria-labelledby="markt-h">
+    <div class="wrap">
+      <SectionHead n="02" kicker={c.market.kicker} id="markt-h" title={c.market.h2} />
+      <ol class="facts">
+        {c.market.facts.map((f: any, i: number) => (
+          <li data-reveal>
+            <span class="fact-n" aria-hidden="true">{i + 1}</span>
+            <h3>{f.h}</h3>
+            <p>{f.p}</p>
+          </li>
+        ))}
+      </ol>
+      <figure class="pull" data-reveal>
+        <span class="pull-mark" aria-hidden="true">“</span>
+        <div>
+          <blockquote><p>{c.market.quote}</p></blockquote>
+          <figcaption class="note">{c.market.quoteNote}</figcaption>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="stappen" aria-labelledby="steps-h">
+    <div class="wrap">
+      <SectionHead n="03" kicker={c.steps.kicker} id="steps-h" title={c.steps.h2} />
+      <ol class="deep-steps">
+        {c.detailed.map((s: any, i: number) => {
+          const note = c.stepNotes[i];
+          return (
+            <li class="deep-step">
+              <div class="ds-head">
+                <AnimIcon name={icons[i]} size={80} eager />
+                <span class="n" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+              </div>
+              <div class="ds-body">
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+                {i === 3 && (
+                  <figure class="ds-phone">
+                    <Image src={L === 'fr' ? phoneFr : phoneNl} alt={c.app.alt} widths={[160, 299]} sizes="160px" loading="eager" fetchpriority="low" />
+                    <figcaption class="note">{c.app.cap}</figcaption>
+                  </figure>
+                )}
+              </div>
+              <div class="ds-note">
+                <h4>{note.h}</h4>
+                <ul>{note.list.map((x: string) => <li><Icon name="check" /><span>{x}</span></li>)}</ul>
+                {note.limit && (
+                  <div class="tip">
+                    <Image src={pointing} alt="" widths={[88, 176]} sizes="88px" class="tip-char" loading="eager" fetchpriority="low" />
+                    <p class="honest-limit" set:html={note.limit} />
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="gegevens" aria-labelledby="data-h">
+    <div class="wrap">
+      <SectionHead n="04" kicker={c.data.kicker} id="data-h" title={c.data.h2}><p>{c.data.intro}</p></SectionHead>
+      <div class="data-grid">
+        <table class="ledger-table">
+          <caption class="sr-only">{c.data.h2}</caption>
+          <thead><tr>{c.data.cols.map((h: string) => <th scope="col">{h}</th>)}</tr></thead>
+          <tbody>{c.data.rows.map((r: string[]) => <tr><th scope="row">{r[0]}</th><td data-label={c.data.cols[1]}>{r[1]}</td><td data-label={c.data.cols[2]}>{r[2]}</td></tr>)}</tbody>
+        </table>
+        <div class="never">
+          <h3><Icon name="lock" />{c.data.neverH}</h3>
+          {c.data.never.map((p: string) => <p>{p}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="hetzelfde" aria-labelledby="same-h">
+    <div class="wrap">
+      <SectionHead n="05" kicker={c.same.kicker} id="same-h" title={c.same.h2} />
+      <ul class="same">
+        {c.same.items.map(([ic, h, p]: string[]) => <li><Icon name={ic} /><h3>{h}</h3><p>{p}</p></li>)}
+      </ul>
+      <div class="meters">
+        <h3 class="list-h" id="meter">{c.meters.h2}</h3>
+        <div class="meter-grid">
+          {c.meters.items.map(([h, p]: string[]) => <div><h4>{h}</h4><p>{p}</p></div>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--deep" id="regio" aria-labelledby="region-h">
+    <div class="wrap">
+      <SectionHead n="06" kicker={c.regions.kicker} id="region-h" title={c.regions.h2}><p>{c.regions.intro}</p></SectionHead>
+      <ul class="regions">
+        {c.regions.items.map((r: any) => <li><h3>{r.h}</h3><p class="region-net">{r.net}</p><p>{r.p}</p></li>)}
+      </ul>
+      <p class="note regions-note"><Icon name="info" /><span>{c.regions.note}</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq-split">
+      <SectionHead kicker={c.faq.kicker} id="faq-h" title={c.faq.h2} />
+      <div>
+        <FaqList items={c.faqItems} L={L} />
+        <p class="faq-more">
+          <a class="link-arrow" href={href('faq', locale, base)}>{c.faqAll}<Icon name="arrow-r" /></a>
+          <a class="link-arrow" href={href('plans', locale, base)}>{c.plansLink}<Icon name="arrow-r" /></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta c={c} locale={locale} />
+</Site>

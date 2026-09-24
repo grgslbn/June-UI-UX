@@ -1,0 +1,229 @@
+---
+// Abonnementen / Abonnements — ux-research §4.4 "Plans & pricing". No character here (prices on every screen).
+import Site from '../../layouts/Site.astro';
+import PageHero from '../PageHero.astro';
+import Footer from '../Footer.astro';
+import Trust from '../Trust.astro';
+import PlanCards from '../PlanCards.astro';
+import AnimIcon from '../AnimIcon.astro';
+import Faq from '../Faq.astro';
+import Fn from '../Fn.astro';
+import Closing from '../Closing.astro';
+import Sticky from '../Sticky.astro';
+import { Picture } from 'astro:assets';
+import dongleLaptop from '@shared/assets/dongle/dongle-phone-laptop.png';
+import dongleAlt from '@shared/assets/dongle/dongle-leaf-alt.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+import solarCard from '@shared/assets/feature/solar-flow.png';
+import { href, abs } from '@shared/routes.mjs';
+import { copy, deep, money, plan, rich, tp, lang, faqById, faqSlug, type Locale } from '../../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const nl = locale === 'nl-be';
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const signup = h('signup');
+const C = deep(nl ? {
+  title: 'Abonnementen en prijzen | June',
+  description: 'Switch € 69, Switch Plus € 99 met winstgarantie of Premium € 198 met June Dongle: één jaarprijs, jaarlijks gefactureerd, incl. btw. Vergelijk de abonnementen.',
+  crumb: 'Abonnementen',
+  eyebrow: 'Abonnementen & prijzen',
+  h1: 'Kies je abonnement. Eén jaarprijs, geen verrassingen.', mark: 'jaarprijs',
+  lede: 'Je betaalt June één keer per jaar. Je energie zelf betaal je gewoon aan je leverancier. Twijfel je? Switch Plus is het veilige midden: bespaar je niet meer dan je abonnement kost, dan krijg je € 99 terug.',
+  helper: { h2: 'Welk abonnement past bij jou?', q1: 'Heb je een digitale meter?', q2: 'Heb je zonnepanelen?', yes: 'Ja', no: 'Nee', dk: 'Weet ik niet',
+    r0: 'Beantwoord twee vragen, dan markeren we het abonnement dat bij je past.',
+    rPlus: 'Switch Plus past bij jou: besparen met winstgarantie, met elke meter.',
+    rPrem: 'Premium haalt het meeste uit je digitale meter en zonnepanelen: June Dongle inbegrepen.',
+    rPlusDig: 'Switch Plus past bij jou. Wil je je verbruik live volgen? Kijk dan ook naar Premium.' },
+  table: { h2: 'Alles naast elkaar', cap: 'Vergelijking van de abonnementen Switch, Switch Plus en Premium', feature: 'Wat je krijgt', digitalOnly: 'Alleen digitaal', yes: 'Inbegrepen', no: 'Niet inbegrepen',
+    rows: [
+      ['Maandelijkse analyse van 17+ leveranciers', 1, 1, 1],
+      ['Automatisch wisselen, of eerst zelf goedkeuren', 1, 1, 1],
+      ['Wij regelen de volledige overstap', 1, 1, 1],
+      ['Analoge en digitale meters', 1, 1, 'd'],
+      ['Optie voor 100% groene energie', 1, 1, 1],
+      ['Winstgarantie: € 99 terug', 0, 1, 1],
+      ['Jaarlijks besparingsrapport', 0, 1, 1],
+      ['June Dongle inbegrepen (P1-poort)', 0, 0, 1],
+      ['Dashboard met je verbruik per kwartier', 0, 0, 1],
+      ['Zonnepanelen: zelfverbruik en injectie', 0, 0, 1],
+    ] },
+  diy: { eyebrow: 'June vs. zelf doen', h2: 'Een vergelijker kijkt één keer. June blijft kijken.', them: 'Zelf vergelijken', us: 'Met June',
+    rows: [['Je zoekt zelf, wanneer je eraan denkt', 'We vergelijken minstens elke maand, voor jouw verbruik'], ['Je vult zelf contracten en opzeggingen in', 'Wij regelen de volledige overstap'], ['Een momentopname', 'We blijven opvolgen na de overstap'], ['Geen garantie op resultaat', 'Winstgarantie bij Switch Plus en Premium']] },
+  earn: { eyebrow: 'Hoe verdient June geld?', h2: 'Jij betaalt June een vast abonnement.' },
+  prem: { eyebrow: 'Premium · June Dongle', h2: 'Je digitale meter, eindelijk slim.', body: 'De June Dongle steek je in de P1-poort van je digitale meter. Hij stuurt je verbruik en injectie live door, en in de June-app zie je je historiek per kwartier.', req: 'Nodig: digitale meter met geactiveerde P1-poort en wifi in de buurt van je meter.', imgAlt: 'De June Dongle naast een smartphone en een laptop met het June-dashboard.', cardAlt: 'Kaart uit de June-app: productie van zonnepanelen, afname van het net en zelfverbruik in kWh.', cardCap: 'Uit de June-app: je zonnepanelen in één oogopslag.', cta: 'Kies Premium' },
+  faq: { h2: 'Vragen over prijzen' },
+  close: { h2: 'Niet zeker welk abonnement? Start met je schatting.', body: 'Na je schatting stellen we het abonnement voor dat bij je past. Je kan altijd nog wisselen.' },
+} : {
+  title: 'Abonnements et prix | June',
+  description: 'Switch 69 €, Switch Plus 99 € avec garantie de gain ou Premium 198 € avec June Dongle : un prix annuel, facturé une fois par an, TVA comprise. Comparez.',
+  crumb: 'Abonnements',
+  eyebrow: 'Abonnements & prix',
+  h1: 'Choisissez votre formule. Un prix annuel, sans surprise.', mark: 'annuel',
+  lede: 'Vous payez June une fois par an. Votre énergie, vous la payez normalement à votre fournisseur. Vous hésitez ? Switch Plus est le choix serein : si vous n’économisez pas plus que le prix de l’abonnement, vous récupérez 99 €.',
+  helper: { h2: 'Quelle formule vous convient ?', q1: 'Avez-vous un compteur numérique ?', q2: 'Avez-vous des panneaux solaires ?', yes: 'Oui', no: 'Non', dk: 'Je ne sais pas',
+    r0: 'Répondez à deux questions : nous mettons en évidence la formule qui vous convient.',
+    rPlus: 'Switch Plus vous convient : des économies avec garantie de gain, quel que soit votre compteur.',
+    rPrem: 'Premium tire le meilleur de votre compteur numérique et de vos panneaux solaires : June Dongle inclus.',
+    rPlusDig: 'Switch Plus vous convient. Vous voulez suivre votre consommation en direct ? Regardez aussi Premium.' },
+  table: { h2: 'Tout côte à côte', cap: 'Comparaison des formules Switch, Switch Plus et Premium', feature: 'Ce qui est inclus', digitalOnly: 'Numérique uniquement', yes: 'Inclus', no: 'Non inclus',
+    rows: [
+      ['Analyse mensuelle de plus de 17 fournisseurs', 1, 1, 1],
+      ['Changement automatique, ou validation par vous', 1, 1, 1],
+      ['Nous gérons tout le changement de fournisseur', 1, 1, 1],
+      ['Compteurs analogiques et numériques', 1, 1, 'd'],
+      ['Option 100 % énergie verte', 1, 1, 1],
+      ['Garantie de gain : 99 € remboursés', 0, 1, 1],
+      ['Rapport d’économies annuel', 0, 1, 1],
+      ['June Dongle inclus (port P1)', 0, 0, 1],
+      ['Tableau de bord par quart d’heure', 0, 0, 1],
+      ['Panneaux solaires : autoconsommation et injection', 0, 0, 1],
+    ] },
+  diy: { eyebrow: 'June ou vous-même ?', h2: 'Un comparateur regarde une fois. June continue de regarder.', them: 'Comparer vous-même', us: 'Avec June',
+    rows: [['Vous cherchez quand vous y pensez', 'Nous comparons au moins une fois par mois, selon votre consommation'], ['Vous remplissez contrats et résiliations', 'Nous gérons tout le changement'], ['Une photo à un instant donné', 'Nous continuons à suivre après le changement'], ['Aucune garantie de résultat', 'Garantie de gain avec Switch Plus et Premium']] },
+  earn: { eyebrow: 'Comment June gagne-t-elle de l’argent ?', h2: 'Vous payez à June un abonnement fixe.' },
+  prem: { eyebrow: 'Premium · June Dongle', h2: 'Votre compteur numérique, enfin intelligent.', body: 'Le June Dongle se branche sur le port P1 de votre compteur numérique. Il transmet en direct votre consommation et votre injection ; dans l’app June, vous voyez votre historique par quart d’heure.', req: 'Requis : compteur numérique avec port P1 activé et Wi-Fi à proximité du compteur.', imgAlt: 'Le June Dongle, un boîtier blanc avec un câble vert en forme de feuille.', phoneAlt: 'App June en français sur un smartphone : l’écran Consommation.', cta: 'Choisir Premium' },
+  faq: { h2: 'Questions sur les prix' },
+  close: { h2: 'Pas sûr de la formule ? Commencez par votre estimation.', body: 'Après votre estimation, nous vous proposons la formule qui vous convient. Vous pourrez toujours changer.' },
+}, locale);
+const indep = faqById('independence');
+const prod = (slug: string, desc: string) => { const p = plan(slug); return {
+  '@type': 'Product', '@id': `${abs('plans', locale)}#${slug}`, name: p.name, category: 'Energy switching service', brand: { '@id': 'https://www.june.energy/#org' }, description: desc,
+  offers: { '@type': 'Offer', url: `${abs('signup', locale)}?plan=${slug}`, price: p.priceYearly.toFixed(2), priceCurrency: 'EUR', availability: 'https://schema.org/InStock', eligibleRegion: { '@type': 'Country', name: 'BE' }, seller: { '@id': 'https://www.june.energy/#org' },
+    priceSpecification: [
+      { '@type': 'UnitPriceSpecification', price: p.priceYearly.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' }, billingDuration: 'P1Y' },
+      { '@type': 'UnitPriceSpecification', price: p.priceMonthly.toFixed(2), priceCurrency: 'EUR', valueAddedTaxIncluded: true, referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' }, priceType: 'https://schema.org/ListPrice', description: nl ? 'Maandelijks equivalent, jaarlijks gefactureerd' : 'Équivalent mensuel, facturé annuellement' } ] } }; };
+const graph = ['switch', 'switch-plus', 'premium'].map(s => prod(s, plan(s).valueProposition[L]));
+const mark = (v: any) => v === 1 ? `<span class="tick" aria-hidden="true"></span><span class="sr-only">${C.table.yes}</span>` : v === 'd' ? `<span class="tbl__note">${C.table.digitalOnly}</span>` : `<span class="dash" aria-hidden="true">–</span><span class="sr-only">${C.table.no}</span>`;
+---
+<Site locale={locale} routeKey="plans" title={C.title} description={C.description} crumbs={[{ key: 'plans', name: C.crumb }]} graph={graph}>
+  <PageHero locale={locale} routeKey="plans" crumbs={[{ key: 'plans', name: C.crumb }]} eyebrow={C.eyebrow} h1={C.h1} mark={C.mark} lede={C.lede} blob="green">
+    <div class="phero__actions" data-sticky-trigger>
+      <a class="btn btn--white" href={signup} data-cta="hero">{t.cta}<svg class="btn__arrow" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10h11m-4-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <Trust locale={locale} id="hero" items={['rating', 'customers', 'supplier']} />
+  </PageHero>
+
+  <main id="main">
+    <section class="plans sec plans--page" aria-labelledby="h-helper" data-helper-scope>
+      <div class="wrap">
+        <form class="helper" aria-labelledby="h-helper" data-helper>
+          <div class="helper__head">
+            <AnimIcon name="home-analysis" class="helper__icon" size={88} eager />
+            <h2 id="h-helper" class="helper__h2">{C.helper.h2}</h2>
+          </div>
+          <fieldset class="seg"><legend>{C.helper.q1}</legend>
+            {[['yes', C.helper.yes], ['no', C.helper.no], ['dk', C.helper.dk]].map(([v, l]) => <label class="seg__opt"><input type="radio" name="digital" value={v} /><span>{l}</span></label>)}
+          </fieldset>
+          <fieldset class="seg"><legend>{C.helper.q2}</legend>
+            {[['yes', C.helper.yes], ['no', C.helper.no]].map(([v, l]) => <label class="seg__opt"><input type="radio" name="solar" value={v} /><span>{l}</span></label>)}
+          </fieldset>
+          <p class="helper__out" aria-live="polite" data-helper-out data-r0={C.helper.r0} data-rplus={C.helper.rPlus} data-rprem={C.helper.rPrem} data-rplusdig={C.helper.rPlusDig}>{C.helper.r0}</p>
+        </form>
+        <PlanCards locale={locale} mode="full" />
+        <p class="plans__fn">{t.fn.prices} <a class="link-arrow" href={`${h('faq')}#${faqSlug[locale].cancel}`}>{nl ? 'Opzeggen en verlengen' : 'Résiliation et reconduction'}</a></p>
+      </div>
+    </section>
+
+    <section class="sec cmp" aria-labelledby="h-table">
+      <div class="wrap">
+        <h2 id="h-table" class="display-3 cmp__h2">{C.table.h2}</h2>
+        <div class="tbl__scroll" tabindex="0" role="region" aria-labelledby="h-table">
+          <table class="tbl">
+            <caption class="sr-only">{C.table.cap}</caption>
+            <thead><tr><th scope="col">{C.table.feature}</th>{['switch', 'switch-plus', 'premium'].map(s => <th scope="col" class={s === 'switch-plus' ? 'is-rec' : ''}><span class="tbl__plan">{plan(s).shortName}</span><span class="tbl__price">{money(plan(s).priceYearly, locale)} {t.perYear}</span><span class="tbl__m">{money(plan(s).priceMonthly, locale)} {t.perMonth}</span></th>)}</tr></thead>
+            <tbody>{C.table.rows.map((r: any[]) => <tr><th scope="row">{r[0]}</th>{r.slice(1).map((v, i) => <td class={i === 1 ? 'is-rec' : ''} set:html={mark(v)} />)}</tr>)}</tbody>
+            <tfoot><tr><td></td>{['switch', 'switch-plus', 'premium'].map(s => <td class={s === 'switch-plus' ? 'is-rec' : ''}><a class={`btn btn--sm ${s === 'switch-plus' ? 'btn--ink' : 'btn--ghost'}`} href={`${signup}?plan=${s}`} data-cta="table">{t.choose} {plan(s).shortName}</a></td>)}</tr></tfoot>
+          </table>
+        </div>
+        <p class="tbl__fn">{t.fn.prices}<Fn n={5} locale={locale} /></p>
+      </div>
+    </section>
+
+    <section class="sec diy" aria-labelledby="h-diy">
+      <div class="wrap diy__in">
+        <div>
+          <p class="eyebrow">{C.diy.eyebrow}</p>
+          <h2 id="h-diy" class="display-3">{C.diy.h2}</h2>
+          <AnimIcon name="compare" class="diy__icon" size={140} />
+        </div>
+        <div class="vs" role="table" aria-label={C.diy.eyebrow}>
+          <div class="vs__row vs__row--head" role="row"><span role="columnheader">{C.diy.them}</span><span role="columnheader">{C.diy.us}</span></div>
+          {C.diy.rows.map((r: string[]) => <div class="vs__row" role="row"><span role="cell" class="vs__them">{r[0]}</span><span role="cell" class="vs__us">{r[1]}</span></div>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec--tight earn tone-dark" aria-labelledby="h-earn">
+      <div class="wrap earn__in">
+        <div>
+          <p class="eyebrow eyebrow--ink">{C.earn.eyebrow}</p>
+          <h2 id="h-earn" class="display-3">{C.earn.h2}</h2>
+        </div>
+        <p class="earn__body" set:html={rich(tp(indep.a[L], locale))} />
+      </div>
+    </section>
+
+    <section class="sec prem" id="dongle" aria-labelledby="h-prem">
+      <div class="wrap prem__in">
+        <div class="prem__art">
+          {nl ? (
+            <Picture src={dongleLaptop} formats={['avif', 'webp']} widths={[480, 720, 1080]} sizes="(max-width: 860px) 92vw, 620px" alt={C.prem.imgAlt} loading="eager" decoding="async" fallbackFormat="webp" class="prem__img" />
+          ) : (
+            <div class="prem__pair">
+              <Picture src={phoneFr} formats={['avif', 'webp']} widths={[200, 300, 450]} sizes="(max-width: 860px) 40vw, 240px" alt={C.prem.phoneAlt} loading="eager" decoding="async" fallbackFormat="webp" class="prem__phone" />
+              <Picture src={dongleAlt} formats={['avif', 'webp']} widths={[200, 300, 450]} sizes="(max-width: 860px) 40vw, 240px" alt={C.prem.imgAlt} loading="eager" decoding="async" fallbackFormat="webp" class="prem__dongle" />
+            </div>
+          )}
+        </div>
+        <div>
+          <p class="eyebrow">{C.prem.eyebrow}</p>
+          <h2 id="h-prem" class="display-3">{C.prem.h2}</h2>
+          <p class="prem__body">{C.prem.body}</p>
+          <p class="prem__req">{C.prem.req}</p>
+          {nl && (
+            <figure class="prem__card">
+              <Picture src={solarCard} formats={['avif', 'webp']} widths={[240, 330, 480]} sizes="240px" alt={C.prem.cardAlt} loading="eager" decoding="async" fallbackFormat="webp" />
+              <figcaption>{C.prem.cardCap}</figcaption>
+            </figure>
+          )}
+          <p class="prem__price"><strong>{money(198, locale)} {t.perYear}</strong> · {money(16.5, locale)} {t.perMonth}, {t.billed}, {t.vat}</p>
+          <a class="btn btn--ink" href={`${signup}?plan=premium`} data-cta="premium">{C.prem.cta}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq sec" aria-labelledby="h-faq">
+      <div class="wrap faq__in">
+        <header>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="h-faq" class="display-2">{C.faq.h2}</h2>
+          <p class="sec__more"><a class="link-arrow" href={h('faq')}>{t.allFaq}</a></p>
+        </header>
+        <Faq locale={locale} ids={['cost', 'cancel', 'guarantee', 'meters', 'exit-fee']} group="plans-faq" />
+      </div>
+    </section>
+
+    <Closing locale={locale} h2={C.close.h2} body={C.close.body} />
+  </main>
+  <Footer locale={locale} routeKey="plans" />
+  <Sticky locale={locale} />
+</Site>
+<script>
+  // Plan helper (≈0.6 KB): highlights the fitting plan card and announces it. Without JS the cards stand on their own.
+  const form = document.querySelector<HTMLFormElement>('[data-helper]');
+  const out = document.querySelector<HTMLElement>('[data-helper-out]');
+  if (form && out) {
+    form.addEventListener('change', () => {
+      const d = (form.elements.namedItem('digital') as RadioNodeList).value;
+      const s = (form.elements.namedItem('solar') as RadioNodeList).value;
+      if (!d && !s) return;
+      const pick = d === 'yes' && s === 'yes' ? 'premium' : 'switch-plus';
+      document.querySelectorAll<HTMLElement>('[data-plan]').forEach(c => c.classList.toggle('is-fit', c.dataset.plan === pick));
+      out.textContent = pick === 'premium' ? out.dataset.rprem! : d === 'yes' ? out.dataset.rplusdig! : out.dataset.rplus!;
+    });
+  }
+</script>

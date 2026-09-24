@@ -1,0 +1,186 @@
+---
+// Home · Variant A "Calm Confidence". Section order (ux-research §4.4, one change): hero → proof → how →
+// what stays the same → plans → guarantee → Premium (D's product story, real dongle + app) → reviews + FAQ → final CTA.
+// Premium sits after the guarantee so the recommended, risk-free plan is read first; Premium is the qualified upsell.
+import { copy, faqById, L, to, type Locale } from '../content/i18n';
+import Site from '../layouts/Site.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import HeroTile from './HeroTile.astro';
+import PostcodeForm from './PostcodeForm.astro';
+import TrustLine from './TrustLine.astro';
+import Stars from './Stars.astro';
+import Icon from './Icon.astro';
+import Fn from './Fn.astro';
+import AnimIcon from './AnimIcon.astro';
+import PlanCards from './PlanCards.astro';
+import GuaranteeExample from './GuaranteeExample.astro';
+import PremiumStory from './PremiumStory.astro';
+import FaqList from './FaqList.astro';
+import FinalCta from './FinalCta.astro';
+import StickyCta from './StickyCta.astro';
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+import facts from '@shared/content/facts.json';
+import { graph } from '../lib/schema';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = copy[locale];
+const lg = L(locale);
+const base = import.meta.env.BASE_URL;
+const ids = locale === 'nl-be' ? { how: 'hoe-het-werkt', plans: 'prijzen', reviews: 'reviews' } : { how: 'comment-ca-marche', plans: 'prix', reviews: 'avis' };
+const steps = facts.howItWorks.short;
+const stepIcons = ['home-analysis', 'compare', 'home-switch'] as const;
+const g = c.guar;
+const jsonld = graph({ locale, routeKey: 'home', title: c.meta.title });
+---
+<Site locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description} jsonld={jsonld}>
+  <Header locale={locale} routeKey="home" />
+  <main id="main">
+
+    <!-- ① HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="kicker"><span class="kicker__dot" aria-hidden="true"></span>{c.hero.kicker}</p>
+          <h1 id="hero-title" class="display">{c.hero.h1a} <span class="display__soft">{c.hero.h1b}</span></h1>
+          <p class="lede">{c.hero.sub}</p>
+          <div id="start" class="hero__start" data-sticky-sentinel>
+            <PostcodeForm locale={locale} id="pc-hero" entry="home-hero" />
+            <TrustLine locale={locale} />
+          </div>
+          <ul class="assure" role="list">
+            {c.hero.assure.map(a => <li><Icon name="i-check" size="sm" />{a}</li>)}
+          </ul>
+        </div>
+        <HeroTile locale={locale} />
+      </div>
+    </section>
+
+    <!-- ② PROOF STRIP -->
+    <section class="proof" aria-labelledby="proof-title">
+      <div class="wrap">
+        <h2 id="proof-title" class="sr-only">{c.proof.title}</h2>
+        <ul class="proof__list" role="list">
+          {c.proof.items.map(p => (
+            <li class="proof__item">
+              <span class="proof__n">{p.n}{p.stars && <Stars value={4.3} label={c.trust.stars} size={16} />}</span>
+              <span class="proof__t">{p.t}{p.fn && <Fn n={p.fn} locale={locale} />}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ③ HOW IT WORKS — animated brand icons (static frame under reduced motion) -->
+    <section class="section section--canvas" id={ids.how} aria-labelledby="how-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="eyebrow">{c.how.eyebrow}</p>
+          <h2 id="how-title" class="h2">{c.how.title}</h2>
+          <p class="sec-head__intro">{c.how.intro}</p>
+        </header>
+        <ol class="steps" role="list">
+          {steps.map((s, i) => (
+            <li class="step surface">
+              <div class="step__head">
+                <AnimIcon name={stepIcons[i]} size={88} />
+                <span class="step__n" aria-hidden="true">0{s.n}</span>
+              </div>
+              <h3 class="h3">{s.title[lg]}</h3>
+              <p>{s.body[lg]}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="steps__after">
+          <span class="steps__after-l"><Icon name="i-repeat" size="sm" />{c.how.after}</span>
+          <a class="link" href={to('howItWorks', locale)}>{c.how.link}<Icon name="i-arrow-r" size="sm" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ WHAT STAYS THE SAME (anti-anxiety) -->
+    <section class="section section--white" aria-labelledby="same-title">
+      <div class="wrap same">
+        <PhotoPlaceholder src={`${base}img/placeholder-photo-home-livingroom.svg`} alt={c.same.photoAlt} tag={c.same.photoTag} />
+        <div class="same__copy">
+          <p class="eyebrow">{c.same.eyebrow}</p>
+          <h2 id="same-title" class="h2">{c.same.title}</h2>
+          <p class="sec-head__intro">{c.same.intro}</p>
+          <ul class="same__list" role="list">
+            {c.same.items.map(it => (
+              <li>
+                <span class="well well--sm" aria-hidden="true"><Icon name="i-check" size="sm" /></span>
+                <div><h3 class="h4">{it.t}</h3><p>{it.d}</p></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ PLANS TEASER -->
+    <section class="section section--canvas" id={ids.plans} aria-labelledby="plans-title">
+      <div class="wrap">
+        <header class="sec-head sec-head--center">
+          <p class="eyebrow">{c.plans.eyebrow}</p>
+          <h2 id="plans-title" class="h2">{c.plans.title}</h2>
+          <p class="sec-head__intro">{c.plans.intro}</p>
+        </header>
+        <PlanCards locale={locale} mode="teaser" entry="home-plans" />
+        <div class="plans__foot">
+          <a class="link" href={to('plans', locale)}>{c.plans.all}<Icon name="i-arrow-r" size="sm" /></a>
+          <p class="plans__note">{c.plans.note}</p>
+          <p class="footnote">{c.plans.footnote}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ GUARANTEE SPOTLIGHT -->
+    <section class="section section--white" aria-labelledby="guar-title">
+      <div class="wrap guar">
+        <div class="guar__copy">
+          <p class="eyebrow">{g.eyebrow}</p>
+          <h2 id="guar-title" class="h2">{g.title}<Fn n={4} locale={locale} /></h2>
+          <ul class="guar__terms" role="list">
+            {g.terms.map(t => <li><Icon name="i-check" size="sm" />{t}</li>)}
+            <li><Icon name="i-check" size="sm" />{g.conditions}</li>
+          </ul>
+          <a class="link guar__link" href={to('switchPlus', locale)}>{g.link}<Icon name="i-arrow-r" size="sm" /></a>
+        </div>
+        <GuaranteeExample locale={locale} />
+      </div>
+    </section>
+
+    <!-- ⑦ PREMIUM: product story with the real dongle + app -->
+    <PremiumStory locale={locale} entry="home-premium" />
+
+    <!-- ⑧ REVIEWS + FAQ -->
+    <section class="section section--white" aria-label={`${c.reviews.title} · ${c.faq.title}`}>
+      <div class="wrap rf">
+        <div class="rf__reviews" id={ids.reviews}>
+          <p class="eyebrow">{c.reviews.eyebrow}</p>
+          <h2 class="h2">{c.reviews.title}</h2>
+          <div class="rating surface">
+            <p class="rating__n">{c.reviews.rating}</p>
+            <Stars value={4.3} label={c.trust.stars} size={22} />
+            <p class="rating__c">{c.reviews.count}<Fn n={2} locale={locale} /></p>
+            <a class="link" href="#" data-todo="Google profile URL">{c.reviews.link}<Icon name="i-arrow-up-r" size="sm" /></a>
+          </div>
+          <p class="review-ph">{c.reviews.placeholder}</p>
+        </div>
+        <div class="rf__faq" id="faq">
+          <p class="eyebrow">{c.faq.eyebrow}</p>
+          <h2 class="h2">{c.faq.title}</h2>
+          <FaqList locale={locale} ids={c.faq.ids} />
+          <a class="link rf__all" href={to('faq', locale)}>{c.faq.all}<Icon name="i-arrow-r" size="sm" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑨ FINAL CTA -->
+    <FinalCta locale={locale} title={c.final.title} sub={c.final.sub} entry="home-final" />
+  </main>
+  <Footer locale={locale} routeKey="home" />
+  <StickyCta label={c.cta} href="#start" focus="pc-hero" proof={c.sticky} />
+</Site>

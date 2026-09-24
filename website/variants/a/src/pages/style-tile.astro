@@ -1,0 +1,316 @@
+---
+// Style tile · Variant A "Calm Confidence". Internal review page: noindex, not linked from nav.
+import '../styles/tokens.css';
+import '../styles/global.css';
+import Icons from '../components/Icons.astro';
+import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
+import Stars from '../components/Stars.astro';
+import HeroTile from '../components/HeroTile.astro';
+import PostcodeForm from '../components/PostcodeForm.astro';
+import TrustLine from '../components/TrustLine.astro';
+import facts from '@shared/content/facts.json';
+
+// WCAG contrast, computed at build time from the token hex values.
+const lum = (hex: string) => { const n = hex.replace('#', ''); return [0, 2, 4].map(i => parseInt(n.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4).reduce((a, v, i) => a + v * [0.2126, 0.7152, 0.0722][i], 0); };
+const ratio = (a: string, b: string) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const W = '#ffffff', C = '#edf4f3';
+const palette = [
+  { name: 'Ink 900', token: '--ink-900', hex: '#14232a', role: 'Text, footer band', text: true },
+  { name: 'Ink 700', token: '--ink-700', hex: '#435359', role: 'Secondary text, lede', text: true },
+  { name: 'Ink 500', token: '--ink-500', hex: '#56666d', role: 'Muted text (lowest allowed)', text: true },
+  { name: 'June Green strong', token: '--accent-strong', hex: '#19736f', role: 'The only CTA / link / focus colour', text: true },
+  { name: 'June Green', token: '--accent', hex: '#3bada8', role: 'Fills, marks, "your data". Never text', text: false },
+  { name: 'Mint soft', token: '--accent-soft', hex: '#e2f3f1', role: 'Icon wells, recommended wash', text: false },
+  { name: 'Ambient', token: '--ambient', hex: '#b6e3df', role: 'The one blob per viewport', text: false },
+  { name: 'Canvas', token: '--canvas', hex: '#edf4f3', role: 'Page background (alternates with white)', text: false },
+  { name: 'Surface', token: '--surface', hex: '#ffffff', role: 'Tiles, white bands', text: false },
+  { name: 'Positive', token: '--positive', hex: '#23744a', role: '"Gecontroleerd" state only', text: true },
+].map(p => ({ ...p, onWhite: ratio(p.hex, W), onCanvas: ratio(p.hex, C) }));
+const f2 = (n: number) => n.toFixed(1).replace('.', ',');
+const scale = [
+  { px: '60', role: 'Display · H1', cls: 'display', sample: 'Altijd het juiste energiecontract.' },
+  { px: '44', role: 'H2 · section', cls: 'h2', sample: 'Kies hoeveel June voor je doet' },
+  { px: '32', role: 'Proof numerals', cls: 'proof__n', sample: '20.000+ · 4,3/5 · € 326' },
+  { px: '22', role: 'H3 · tile sentence', cls: 'h3', sample: 'June heeft de markt voor je nagekeken.' },
+  { px: '18', role: 'Lede · H4 (Inter 600)', cls: 'h4', sample: 'Je stroom en gas blijven komen' },
+  { px: '17', role: 'Body (Inter 400)', cls: 'st-body', sample: 'We toetsen je contract minstens elke maand aan de aanbiedingen van 17+ leveranciers, op basis van jouw verbruik.' },
+  { px: '14', role: 'UI · labels · trust', cls: 'st-14', sample: 'Voor de netkosten in jouw regio. Vrijblijvend.' },
+  { px: '12', role: 'Footnotes · tags (minimum)', cls: 'footnote', sample: 'Alle prijzen incl. 21% btw. Je energieverbruik betaal je aan je leverancier.' },
+];
+const icons = ['i-plug', 'i-scale', 'i-repeat', 'i-check', 'i-check-circle', 'i-home', 'i-calendar', 'i-arrow-r', 'i-arrow-up-r', 'i-plus', 'i-user', 'i-chev-d'];
+const steps = facts.howItWorks.short;
+---
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Style tile · June A</title>
+  <meta name="description" content="Style tile voor variant A, Calm Confidence: palet, typografie, componenten, motieven en beweging." />
+  <meta name="robots" content="noindex, nofollow" />
+</head>
+<body class="st">
+  <Icons />
+  <header class="st-hdr">
+    <div class="wrap st-hdr__in">
+      <Logo label="June" />
+      <p class="st-hdr__t">Style tile · <strong>A · Calm Confidence</strong></p>
+      <span class="tag">Concept · Phase 3 · noindex</span>
+    </div>
+  </header>
+
+  <main class="wrap st-main">
+    <section class="st-intro">
+      <p class="eyebrow">Idee</p>
+      <h1 class="display">De beste energiebeslissing is die je nooit meer hoeft te nemen.</h1>
+      <p class="lede">De Insights-app, opgeschaald tot een verhaal. Mint canvas, witte tegels, één groene knop, één cijfer per scherm. Zelfzeker genoeg om niet te roepen. Merkvolume 3/10.</p>
+      <ul class="st-keys" role="list">
+        <li><b>Persona</b> Druk gezin, 35–50 · risicomijdende Switch Plus-koper</li>
+        <li><b>Hero-object</b> Eén zin + één cijfertegel (app hero contract)</li>
+        <li><b>Mechanisme</b> Vertrouwen en lage cognitieve belasting</li>
+        <li><b>Signatuur</b> "De maandelijkse controle"</li>
+      </ul>
+    </section>
+
+    <!-- Palette -->
+    <section class="st-sec" aria-labelledby="st-pal">
+      <h2 id="st-pal" class="st-h">Palet <span>app-tokens 1:1 · contrast op wit / canvas</span></h2>
+      <div class="st-pal">
+        {palette.map(p => (
+          <div class="st-sw">
+            <span class="st-sw__chip" style={`background:${p.hex}`}></span>
+            <div class="st-sw__meta">
+              <p class="st-sw__n">{p.name}</p>
+              <p class="st-sw__h"><code>{p.token}</code> {p.hex}</p>
+              <p class="st-sw__r">{p.role}</p>
+              <p class="st-sw__c">
+                {p.text
+                  ? <>{f2(p.onWhite)}:1 wit · {f2(p.onCanvas)}:1 canvas {p.onCanvas >= 4.5 ? <span class="st-ok">AA</span> : <span class="st-no">groot</span>}</>
+                  : <>{f2(p.onWhite)}:1 op wit · niet voor tekst</>}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="st-note">Geen rood op de site (enkel een kleine Junior op de bevestiging). Elektriciteit-geel en gas-blauw verschijnen alleen in data-context, nooit als achtergrond. Donkere modus volgt de app-tokens automatisch.</p>
+    </section>
+
+    <!-- Type -->
+    <section class="st-sec" aria-labelledby="st-type">
+      <h2 id="st-type" class="st-h">Typografie <span>Montserrat 600 (display, cijfers) · Inter 400–600 (alles andere)</span></h2>
+      <div class="st-type">
+        {scale.map(s => (
+          <div class="st-type__row">
+            <p class="st-type__meta"><b>{s.px}px</b>{s.role}</p>
+            <p class={s.cls}>{s.sample}</p>
+          </div>
+        ))}
+      </div>
+      <p class="st-note">Kopregels 1,08–1,1, <code>text-wrap: balance</code>, −0,02 tot −0,03em. Tekst max. 60 tekens per regel. Zinsletters overal, geen hoofdletters. Tabular figures voor alle bedragen. FR mag 20% langer zijn: koppen zijn op ch-breedte ingesteld, niet op pixels.</p>
+    </section>
+
+    <!-- Components -->
+    <section class="st-sec" aria-labelledby="st-comp">
+      <h2 id="st-comp" class="st-h">Knoppen, velden, chips</h2>
+      <div class="st-grid2">
+        <div class="surface st-pad">
+          <p class="st-lbl">Knoppen: één primaire kleur, werkwoord + object, max. 4 woorden</p>
+          <div class="st-row">
+            <a class="btn btn--primary btn--lg" href="#st-comp">Bereken je besparing<Icon name="i-arrow-r" size="sm" class="nudge" /></a>
+            <a class="btn btn--primary" href="#st-comp">Bereken je besparing</a>
+            <a class="btn btn--primary btn--sm" href="#st-comp">Bereken je besparing</a>
+          </div>
+          <div class="st-row">
+            <a class="btn btn--secondary" href="#st-comp">Hoe werkt het?</a>
+            <a class="link" href="#st-comp">Vergelijk de abonnementen<Icon name="i-arrow-r" size="sm" /></a>
+            <a class="hdr__login" href="#st-comp">Inloggen</a>
+          </div>
+          <p class="st-lbl">Chips en tags</p>
+          <div class="st-row">
+            <span class="check-chip"><span class="check-chip__state check-chip__state--done"><Icon name="i-check" size="sm" />Gecontroleerd deze maand</span></span>
+            <span class="check-chip is-checking"><span class="check-chip__state check-chip__state--busy"><span class="spinner"></span>Bezig met vergelijken…</span></span>
+            <span class="chip accent">Switch Plus</span>
+            <span class="tag">Voorbeeld</span>
+            <span class="tag">Illustratief</span>
+            <div class="lang"><span class="lang__cur">NL</span><a class="lang__alt" href="#st-comp">FR</a></div>
+          </div>
+        </div>
+        <div class="surface st-pad">
+          <p class="st-lbl">Postcodeveld (hero): één pil, veld + knop; gestapeld onder 720px</p>
+          <PostcodeForm locale="nl-be" id="st-pc" entry="style-tile" />
+          <TrustLine locale="nl-be" />
+          <p class="st-lbl" style="margin-top:28px">Focus: 2px June Green-ring, 3px offset; velden krijgen een 2px inset-rand</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cards -->
+    <section class="st-sec" aria-labelledby="st-cards">
+      <h2 id="st-cards" class="st-h">Tegels <span>r-lg 24px · shadow-1 · 28px padding · op canvas of wit</span></h2>
+      <div class="st-cards">
+        <article class="step surface">
+          <div class="step__head"><span class="well" aria-hidden="true"><Icon name="i-plug" /></span><span class="step__n">01</span></div>
+          <h3 class="h3">{steps[0].title.nl}</h3>
+          <p>{steps[0].body.nl}</p>
+        </article>
+        <article class="plan surface plan--rec" style="margin-top:14px">
+          <p class="plan__badge"><Icon name="i-check-circle" size="sm" />Aanbevolen · met winstgarantie</p>
+          <h3 class="plan__name">Switch Plus</h3>
+          <p class="plan__who">Voor wie zekerheid wil</p>
+          <p class="plan__price"><span class="plan__year">€&nbsp;99</span><span class="plan__per">per jaar</span></p>
+          <p class="plan__month">€&nbsp;8,25 per maand · jaarlijks gefactureerd</p>
+        </article>
+        <div>
+          <details class="faq__item" open>
+            <summary><span>Zijn jullie een energieleverancier?</span><Icon name="i-plus" size="sm" /></summary>
+            <p>{facts.faq[0].a.nl}</p>
+          </details>
+          <div class="rating surface" style="margin-top:16px">
+            <p class="rating__n">4,3 op 5</p>
+            <Stars value={4.3} label="4,3 van 5 sterren" size={22} />
+            <p class="rating__c">1.200+ reviews op Google · gedeeltelijke sterren, nooit 5 volle</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Icons + motifs -->
+    <section class="st-sec" aria-labelledby="st-icons">
+      <h2 id="st-icons" class="st-h">Iconen en motieven</h2>
+      <div class="st-grid2">
+        <div class="surface st-pad">
+          <p class="st-lbl">App-sprite · 1,5px lijn, ronde uiteinden · in mint icon wells · nooit emoji · bliksem enkel in het woordmerk</p>
+          <div class="st-icons">
+            {icons.map(i => <span class="well" title={i}><Icon name={i} /></span>)}
+          </div>
+          <div class="st-row" style="margin-top:20px"><Logo label="June" /><span class="st-lbl" style="margin:0">Woordmerk + bolt (placeholder tot het echte logo-SVG er is)</span></div>
+        </div>
+        <div class="surface st-pad st-motifs">
+          <div class="st-motif st-motif--blob ambient"><span>Ambient blob · max. 1 per viewport, achter een tegel</span></div>
+          <div class="st-motif st-motif--dots"><span class="photo__halftone" style="position:absolute;right:8px;bottom:8px;z-index:0"></span><span>Halftoon · 1 per sectie, in een hoek, nooit achter tekst</span></div>
+          <div class="st-motif">
+            <ol class="months" aria-label="Maandritme">
+              {['j','f','m','a','m','j','j','a','s','o','n','d'].map((m, i) => <li class:list={['months__m', i < 8 && 'is-done', i === 8 && 'is-now', i > 8 && 'is-future']}><span class="months__dot" aria-hidden="true">{i <= 8 && <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>}</span><span class="months__l" aria-hidden="true">{m}</span></li>)}
+            </ol>
+            <span>Maandringen · het data-motief van A: "we blijven kijken"</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Motion -->
+    <section class="st-sec" aria-labelledby="st-motion">
+      <h2 id="st-motion" class="st-h">Beweging <span>één signatuur per pagina · CSS eerst · app-easing</span></h2>
+      <div class="st-grid2">
+        <ol class="st-motion-list">
+          <li><b>Signatuur: de maandelijkse controle.</b> De chip gaat van "Bezig met vergelijken…" (spinner, huidige maand pulseert) naar "Gecontroleerd deze maand" (vinkje tekent in 480ms), daarna telt het cijfer één keer op in 700ms. Start na 1,1s, loopt één keer.</li>
+          <li><b>H1 en LCP</b> zijn meteen zichtbaar, nooit vanaf opacity 0. De eindtoestand staat in de HTML.</li>
+          <li><b>Scroll-reveals</b>: enkel fade (geen beweging), via <code>animation-timeline: view()</code> in <code>@supports</code>. Inhoud is standaard zichtbaar.</li>
+          <li><b>Hover</b>: knop 1px omhoog + shadow-2 in 160ms; pijl schuift 3px.</li>
+          <li><b>Easing</b> <code>cubic-bezier(.2,.8,.2,1)</code>, duur 90 / 160 / 240 / 480 / 700ms, geen overshoot.</li>
+          <li><b>prefers-reduced-motion</b>: geen chip-animatie, geen count-up, geen reveals, geen smooth scroll.</li>
+        </ol>
+        <div class="st-motion-demo">
+          <button class="btn btn--secondary btn--sm" type="button" data-replay>Speel de controle opnieuw af</button>
+          <HeroTile locale="nl-be" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Sample section -->
+    <section class="st-sec" aria-labelledby="st-sample">
+      <h2 id="st-sample" class="st-h">Voorbeeldsectie (NL) <span>ritme: eyebrow → H2 → intro → drie witte tegels op canvas</span></h2>
+      <div class="st-sample">
+        <header class="sec-head">
+          <p class="eyebrow">Hoe werkt het</p>
+          <p class="h2">Drie stappen. Daarna doet June het werk.</p>
+          <p class="sec-head__intro">Je doet het één keer. Wij blijven kijken, elke maand opnieuw.</p>
+        </header>
+        <ol class="steps" role="list">
+          {steps.map((s, i) => (
+            <li class="step surface">
+              <div class="step__head"><span class="well" aria-hidden="true"><Icon name={['i-plug', 'i-scale', 'i-repeat'][i]} /></span><span class="step__n" aria-hidden="true">0{s.n}</span></div>
+              <h3 class="h3">{s.title.nl}</h3>
+              <p>{s.body.nl}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline>
+  (() => {
+    const btn = document.querySelector('[data-replay]');
+    const run = () => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const tile = btn.nextElementSibling; const chip = tile.querySelector('[data-check-chip]'); const num = tile.querySelector('[data-count]');
+      chip.classList.remove('is-checked'); chip.classList.add('is-checking'); num.textContent = '0';
+      setTimeout(() => { chip.classList.remove('is-checking'); chip.classList.add('is-checked'); const t0 = performance.now(), T = +num.dataset.count;
+        const step = t => { const p = Math.min((t - t0) / 700, 1); num.textContent = String(Math.round(T * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }, 1100);
+    };
+    btn.addEventListener('click', run); run();
+  })();
+  </script>
+
+  <style>
+    .st { background: var(--canvas); }
+    .st-hdr { border-bottom: 1px solid var(--hairline); background: var(--surface); }
+    .st-hdr__in { display: flex; align-items: center; gap: 20px; min-height: 68px; flex-wrap: wrap; }
+    .st-hdr__t { font-size: 15px; color: var(--ink-700); }
+    .st-hdr .tag { margin-left: auto; }
+    .st-main { padding-block: 56px 96px; }
+    .st-intro .display { max-width: 20ch; margin-top: 4px; }
+    .st-intro .lede { margin-top: 20px; }
+    .st-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px; font-size: 14px; color: var(--ink-700); }
+    .st-keys b { display: block; color: var(--ink-900); font-size: 12px; margin-bottom: 4px; font-weight: 600; }
+    .st-sec { margin-top: 80px; }
+    .st-h { font-family: var(--font-display); font-weight: 600; font-size: 28px; letter-spacing: -0.02em; padding-bottom: 16px; margin-bottom: 28px; border-bottom: 1px solid var(--ink-200); display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+    .st-h span { font-family: var(--font-ui); font-size: 14px; font-weight: 500; color: var(--ink-500); letter-spacing: 0; }
+    .st-pal { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .st-sw { background: var(--surface); border-radius: var(--r-md); box-shadow: var(--shadow-1); overflow: hidden; }
+    .st-sw__chip { display: block; height: 88px; box-shadow: inset 0 -1px 0 var(--hairline); }
+    .st-sw__meta { padding: 12px 14px 14px; display: grid; gap: 2px; }
+    .st-sw__n { font-weight: 600; font-size: 14px; }
+    .st-sw__h, .st-sw__r, .st-sw__c { font-size: 12px; color: var(--ink-700); }
+    .st-sw__h code { font-size: 12px; color: var(--ink-900); }
+    .st-ok, .st-no { font-weight: 700; margin-left: 4px; }
+    .st-ok { color: var(--positive); }
+    .st-no { color: var(--ink-700); }
+    .st-note { margin-top: 20px; font-size: 14px; color: var(--ink-700); max-width: 90ch; }
+    .st-type { display: grid; gap: 0; background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-1); padding: 8px 28px; }
+    .st-type__row { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--hairline); }
+    .st-type__row:last-child { border-bottom: 0; }
+    .st-type__meta { font-size: 12px; color: var(--ink-500); display: grid; }
+    .st-type__meta b { font-size: 14px; color: var(--ink-900); }
+    .st-type .display { font-size: 60px; }
+    .st-body { font-size: 17px; max-width: 60ch; }
+    .st-14 { font-size: 14px; color: var(--ink-700); }
+    .st-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    .st-pad { padding: 28px; }
+    .st-lbl { font-size: 12px; font-weight: 600; color: var(--ink-500); margin: 0 0 14px; }
+    .st-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-bottom: 24px; }
+    .st-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+    .st-icons { display: grid; grid-template-columns: repeat(6, 48px); gap: 12px; }
+    .st-motifs { display: grid; gap: 16px; }
+    .st-motif { position: relative; isolation: isolate; min-height: 120px; border-radius: var(--r-md); background: var(--surface-sunken); padding: 16px; display: grid; align-content: end; gap: 12px; font-size: 12px; color: var(--ink-700); overflow: hidden; }
+    .st-motif > span { position: relative; z-index: 1; font-weight: 500; }
+    .st-motif--blob::before { width: 260px; height: 180px; right: -40px; top: -40px; }
+    .st-motif .months { margin-top: 0; background: var(--surface); }
+    .st-motion-list { display: grid; gap: 14px; font-size: 15px; color: var(--ink-700); padding-left: 20px; }
+    .st-motion-list b { color: var(--ink-900); }
+    .st-motion-demo { display: grid; gap: 16px; justify-items: start; }
+    .st-motion-demo :global(.htile-wrap) { justify-self: stretch; max-width: none; }
+    .st-sample { background: var(--canvas); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--ink-100); padding: clamp(24px, 5vw, 64px); }
+    @media (max-width: 960px) {
+      .st-pal { grid-template-columns: repeat(2, 1fr); }
+      .st-keys, .st-grid2, .st-cards { grid-template-columns: 1fr; }
+      .st-type__row { grid-template-columns: 1fr; gap: 6px; }
+      .st-type .display { font-size: 40px; }
+      .st-icons { grid-template-columns: repeat(6, 1fr); }
+      .st-hdr .tag { margin-left: 0; }
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,91 @@
+---
+// "Wat jij overhoudt" ledger (borrowed from variant B), shown ONLY when the visitor already has an estimate from the
+// sign-up funnel in this session. Before that there are no preset numbers at all: the plans page shows the method
+// (besparing − abonnement = wat jij overhoudt) and a CTA to get an estimate.
+//
+// Contract with the funnel (src/lib, owned by the funnel builder): the answers live in sessionStorage['june-signup']
+// (funnel-state.js). An estimate "exists" once the estimate step could be shown (energy + household or own kWh).
+// All maths comes from getEstimate() in src/lib/estimate.js — nothing is recomputed here.
+//
+// Three modes, used in this order on the page. CLS stays 0: a tiny inline script decides visibility BEFORE the
+// ledgers are parsed (html[data-est]); the async getEstimate() then only replaces "≈ …" in boxes of fixed height.
+//   <PlanLedger mode="boot" c={c} signup={url} />   method box / "your estimate" box + sets html[data-est]
+//   <PlanLedger mode="card" c={c} slug="switch" fee={69} name="Switch" />   one per plan card
+//   <PlanLedger mode="fill" c={c} />                 fills every ledger (module script, lib/estimate.js)
+import CtaProof from './CtaProof.astro';
+import Icon from './Icon.astro';
+import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+interface Props { c: any; mode: 'boot' | 'card' | 'fill'; slug?: string; fee?: number; name?: string; signup?: string; }
+const { c, mode, slug, fee, name, signup } = Astro.props;
+const l = c.ledger;
+const m = c.method;
+const L = c.L;
+---
+{mode === 'boot' && (
+  <>
+    <script is:inline>
+      (function () {
+        try {
+          var a = JSON.parse(sessionStorage.getItem('june-signup') || 'null');
+          if (a && (a.estSeen || (a.energy && (a.household || Number(a.kwhElec) > 0)))) document.documentElement.setAttribute('data-est', '');
+        } catch (_) { /* no storage: method only */ }
+      })();
+    </script>
+    <div class="pl-box">
+      <div class="pl-method">
+        <p class="pl-h">{m.h}</p>
+        <p class="pl-eq">
+          <span class="sr-only">{`${m.eq[0]} − ${m.eq[1]} = ${m.eq[2]}`}</span>
+          <span aria-hidden="true">{m.eq[0]}</span><b aria-hidden="true">−</b><span aria-hidden="true">{m.eq[1]}</span><b aria-hidden="true">=</b><span class="pl-eq-you" aria-hidden="true">{m.eq[2]}</span>
+        </p>
+        <p class="pl-p">{m.p}</p>
+        <a class="btn" href={signup} data-cta="plans-method">{m.cta}<Icon name="arrow-r" /></a>
+        <CtaProof c={c} id="pl-method" tone="light" reducer={c.proof.riskAlt} />
+      </div>
+      <div class="pl-mine">
+        <p class="pl-h">{l.title}</p>
+        <p class="pl-p">{L === 'fr' ? 'Votre économie estimée' : 'Je geschatte besparing'}: <strong class="num" data-est-gross>≈ …</strong> {l.per}</p>
+        <p class="pl-p">{L === 'fr' ? 'Pour chaque abonnement, vous voyez ci-dessous ce qui vous reste, abonnement déduit.' : 'Per abonnement zie je hieronder wat je overhoudt, na aftrek van je abonnement.'}</p>
+        <p class="pl-p pl-advice">{l.advice}: <strong data-est-advice>…</strong></p>
+        <p class="pl-cap">{l.cap}</p>
+        <a class="link-arrow" href={signup}>{l.edit}<Icon name="arrow-r" /></a>
+      </div>
+    </div>
+  </>
+)}
+{mode === 'card' && (
+  <div class="pl-card" data-ledger data-plan={slug} data-fee={fee}>
+    <p class="pl-title">{l.title}</p>
+    <dl>
+      <div><dt>{l.save}</dt><dd class="num" data-l-gross>≈ …</dd></div>
+      <div><dt>− {l.fee}</dt><dd class="num">− {c.plans.find((p: any) => p.slug === slug)?.yearly}</dd></div>
+      <div class="pl-you"><dt>= {l.you}</dt><dd class="num" data-l-net>≈ …</dd></div>
+    </dl>
+    {slug !== 'switch' && <p class="pl-low">{l.guard}</p>}
+  </div>
+)}
+{mode === 'fill' && (
+  <div hidden data-ledger-fill data-locale={L} data-names={JSON.stringify(Object.fromEntries(c.plans.map((p: any) => [p.slug, p.name])))}></div>
+)}
+<script>
+  // Fills the ledgers from the funnel's answers through the one estimate function. Loaded only for visitors
+  // who have an estimate (dynamic import: the estimate code and facts stay out of everyone else's bundle).
+  const cfg = document.querySelector<HTMLElement>('[data-ledger-fill]');
+  if (cfg && document.documentElement.hasAttribute('data-est')) {
+    Promise.all([import('../lib/estimate.js'), import('../lib/funnel-state.js')]).then(async ([E, S]) => {
+      const L = cfg.dataset.locale as 'nl' | 'fr';
+      const names = JSON.parse(cfg.dataset.names || '{}');
+      const a: any = S.load();
+      const e: any = await E.getEstimate({ energy: a.energy || 'both', household: a.household, kwhElec: a.kwhElec, kwhGas: a.kwhGas, meter: a.meter, solar: !!a.solar, ev: !!a.ev, heatpump: !!a.heatpump });
+      const set = (el: Element | null, t: string) => { if (el) el.textContent = t; };
+      set(document.querySelector('[data-est-gross]'), `≈ ${E.fmtRange(e.gross, L)}`);
+      set(document.querySelector('[data-est-advice]'), names[e.recommended] || '');
+      document.querySelectorAll<HTMLElement>('[data-ledger]').forEach((box) => {
+        const n = e.nets?.[box.dataset.plan || ''];
+        set(box.querySelector('[data-l-gross]'), `≈ ${E.fmtRange(e.gross, L)}`);
+        if (n) set(box.querySelector('[data-l-net]'), `≈ ${E.fmtRange(n, L)}`);
+      });
+    }).catch(() => { /* keep "≈ …"; the "adjust estimate" link stays available */ });
+  }
+</script>

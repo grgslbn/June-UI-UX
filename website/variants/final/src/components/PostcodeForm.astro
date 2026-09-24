@@ -1,0 +1,21 @@
+---
+// Inline postcode → sign-up step 1 (GET, works without JS). "Sign-up started" fires in the funnel on the first valid postcode.
+import Icon from './Icon.astro';
+import { href } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; c: any; id: string; plan?: string; entry?: string; }
+// entry= follows the funnel deep-link contract (src/lib/funnel-state.js): where the start came from.
+const { locale, c, id, plan, entry = id } = Astro.props;
+const action = href('signup', locale, import.meta.env.BASE_URL);
+---
+<form class="pc" action={action} method="get" data-pc={id} novalidate>
+  {plan && <input type="hidden" name="plan" value={plan} />}
+  <input type="hidden" name="entry" value={entry} />
+  <div class="pc-row">
+    <div class="field">
+      <label for={`pc-${id}`}>{c.form.label}</label>
+      <input class="input" id={`pc-${id}`} name="postcode" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{3}" maxlength="4" required placeholder={c.form.placeholder} aria-describedby={`pc-${id}-help`} />
+    </div>
+    <button class="btn" type="submit">{c.ui.cta}<Icon name="arrow-r" /></button>
+  </div>
+  <p class="pc-help" id={`pc-${id}-help`} data-help={c.form.help} data-error={c.form.error} aria-live="polite">{c.form.help}</p>
+</form>

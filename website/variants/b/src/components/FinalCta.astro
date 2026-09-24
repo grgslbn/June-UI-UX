@@ -1,0 +1,28 @@
+---
+// Closing band: headline, one line, primary CTA, trust set (rating · customers · guarantee).
+import Stars from './Stars.astro';
+import Fn from './Fn.astro';
+import type { Locale } from '../lib/estimate';
+import { copy } from '../content/home';
+interface Props { locale: Locale; h2: string; body: string; cta: string; href: string; secondary?: { label: string; href: string }; }
+const { locale, h2, body, cta, href, secondary } = Astro.props;
+const c = copy(locale); const fr = locale === 'fr-be';
+---
+<section class="section section--mint final" data-final aria-labelledby="final-h">
+  <div class="wrap final-in">
+    <h2 id="final-h">{h2}</h2>
+    <p class="final-body">{body}</p>
+    <div class="final-acts">
+      <a class="btn btn--lg" href={href} data-cta="final">{cta}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+      {secondary && <a class="link-arrow" href={secondary.href}>{secondary.label}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>}
+    </div>
+    <p class="final-proof"><Stars label={c.hero.starsLabel} size={14} /> <span>{c.sticky.proof}<Fn n={3} fr={fr} /></span> <span aria-hidden="true">·</span> <span>{c.guarantee}<Fn n={4} fr={fr} /></span> <span aria-hidden="true">·</span> <span>{fr ? 'Pas un fournisseur' : 'Geen leverancier'}</span></p>
+  </div>
+</section>
+<style>
+  .final-in { display: grid; justify-items: center; text-align: center; gap: var(--s-4); }
+  .final-in h2 { max-width: 22ch; }
+  .final-body { color: var(--ink-700); max-width: 52ch; }
+  .final-acts { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--s-4) var(--s-8); margin-top: var(--s-2); }
+  .final-proof { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: var(--fs-14); color: var(--ink-700); }
+</style>

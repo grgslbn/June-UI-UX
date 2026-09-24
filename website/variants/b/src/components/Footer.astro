@@ -1,0 +1,92 @@
+---
+// Footer: logo + sign-off · 3 link columns (June / Hulp / Over June) · Google rating · regulators note ·
+// numbered footnotes (fn-1…fn-6, referenced by <Fn n>) · legal row with placeholders.
+// `minimal` = funnel footer (notes + legal only).
+import { href } from '@shared/routes.mjs';
+import Logo from './Logo.astro';
+import Stars from './Stars.astro';
+import { copy } from '../content/home';
+import type { Locale } from '../lib/estimate';
+interface Props { locale: Locale; minimal?: boolean; }
+const { locale, minimal = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const c = copy(locale); const f = c.footer, n = c.nav;
+const fr = locale === 'fr-be';
+const plans = href('plans', locale, base);
+const faq = href('faq', locale, base);
+---
+<footer class="ftr on-ink" data-footer>
+  <div class="wrap">
+    {!minimal && (
+      <div class="ftr-top">
+        <div class="ftr-brand">
+          <Logo href={href('home', locale, base)} tone="white" width={112} />
+          <p class="ftr-sign">{f.sign}</p>
+          <p class="ftr-tag">{f.tagline}</p>
+          <p class="ftr-rating"><Stars label={c.hero.starsLabel} size={14} tone="ink" /><span>{f.rating}<sup><a href="#fn-2" aria-label={fr ? 'Note 2' : 'Voetnoot 2'}>2</a></sup></span></p>
+        </div>
+        <nav aria-label={fr ? 'Pied de page' : 'Footer'} class="ftr-nav">
+          <div>
+            <p class="ftr-h">{f.colJune}</p>
+            <ul role="list">
+              <li><a href={href('howItWorks', locale, base)}>{n.how}</a></li>
+              <li><a href={plans}>{fr ? 'Abonnements et prix' : 'Abonnementen en prijzen'}</a></li>
+              <li><a href={href('switchPlus', locale, base)}>Switch Plus</a></li>
+              <li><a href={`${plans}#premium`}>{f.premium}</a></li>
+              <li><a href={`${href('home', locale, base)}#reviews`}>{f.reviews}</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="ftr-h">{f.colHelp}</p>
+            <ul role="list">
+              <li><a href={faq}>{fr ? 'Questions fréquentes' : 'Veelgestelde vragen'}</a></li>
+              <li><a href={`${faq}#winstgarantie`}>{f.guaranteeTerms}</a></li>
+              <li><a href="#inloggen" data-todo="login portal URL needsConfirmation">{n.login}</a></li>
+              <li><span class="ftr-todo">{f.contact}</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="ftr-h">{f.colAbout}</p>
+            <ul role="list">
+              <li><a href={`${plans}#geld`}>{f.earn}</a></li>
+              <li><a href={href('signup', locale, base)}>{f.signup}</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    )}
+    <ol class="notes" role="list" aria-label={fr ? 'Notes' : 'Voetnoten'}>
+      {f.notes.map((x, i) => <li id={`fn-${i + 1}`}><span class="fn-n">{i + 1}</span><span>{x}</span></li>)}
+    </ol>
+    <div class="ftr-legal">
+      <p>{f.legal} · <span class="chip chip--placeholder">{f.kbo}</span></p>
+      <p class="ftr-reg">{f.regulators}</p>
+      <p>{f.mission}</p>
+    </div>
+  </div>
+</footer>
+<style>
+  .ftr { background: var(--ink-900); color: var(--on-ink); padding-block: var(--s-16) var(--s-10); }
+  .ftr a { color: #fff; }
+  .ftr-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-10); padding-bottom: var(--s-10); border-bottom: 1px solid var(--on-ink-faint); }
+  .ftr-brand { max-width: 380px; display: grid; gap: var(--s-3); justify-items: start; }
+  .ftr-sign { font: 700 var(--fs-22)/1.3 var(--font-display); }
+  .ftr-tag { color: var(--on-ink-muted); font-size: var(--fs-16); }
+  .ftr-rating { display: flex; align-items: center; gap: 10px; font-size: var(--fs-14); color: var(--on-ink-muted); }
+  .ftr-rating sup a { color: var(--accent); }
+  .ftr-nav { display: flex; flex-wrap: wrap; gap: var(--s-10) var(--s-16); }
+  .ftr-h { font-size: var(--fs-12); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent); margin-bottom: var(--s-3); }
+  .ftr-nav ul { display: grid; gap: 2px; }
+  .ftr-nav a, .ftr-todo { display: inline-flex; align-items: center; min-height: 36px; font-size: var(--fs-16); text-decoration: none; }
+  .ftr-todo { color: var(--on-ink-muted); }
+  .ftr-nav a:hover { text-decoration: underline; }
+  .notes { display: grid; gap: var(--s-2); padding-block: var(--s-8); font-size: var(--fs-12); line-height: 1.55; color: var(--on-ink-muted); max-width: 900px; }
+  .notes li { display: flex; gap: 10px; scroll-margin-top: 120px; }
+  .notes li:target { color: #fff; }
+  .fn-n { flex: none; width: 18px; font-weight: 700; color: var(--accent); }
+  .ftr-legal { display: grid; grid-template-columns: auto 1fr auto; gap: var(--s-3) var(--s-8); font-size: var(--fs-12); color: var(--on-ink-muted); padding-top: var(--s-6); border-top: 1px solid var(--on-ink-faint); }
+  .ftr-legal .chip { background: transparent; color: var(--on-ink-muted); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
+  .ftr-reg { max-width: 60ch; }
+  @media (max-width: 900px) { .ftr-legal { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .ftr-nav { gap: var(--s-8) var(--s-10); } .ftr-nav > div { min-width: 40%; } }
+</style>

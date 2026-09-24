@@ -1,0 +1,85 @@
+---
+// Premium: real leaf dongle + the real current app screen (FR mockup on FR pages). Lazy, AVIF/WebP via astro:assets.
+import { Picture } from 'astro:assets';
+import { href } from '@shared/routes.mjs';
+import facts from '@shared/content/facts.json';
+import Fn from './Fn.astro';
+import dongle from '@shared/assets/dongle/dongle-leaf.png';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+import { eur, eurDec, type Locale } from '../lib/estimate';
+interface Props { locale: Locale; id?: string; headingId?: string; compact?: boolean; }
+const { locale, id = 'premium-app', headingId = 'premium-h', compact = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const fr = locale === 'fr-be';
+const k = fr ? 'fr' : 'nl';
+const pr = facts.plans.find(p => p.slug === 'premium')!;
+const feats = pr.features.filter(f => f.source !== 'derived').slice(1).map(f => f[k]);
+const phone = fr ? phoneFr : phoneNl;
+const t = fr ? {
+  eyebrow: 'Premium · pour les compteurs numériques', h2: 'Voyez ce que consomme votre maison.',
+  body: facts.dongle.description.fr, price: `${eur(198, locale)} par an`, sub: `${eurDec(16.5, locale)} par mois, facturé annuellement, dongle inclus`,
+  cta: 'Choisir Premium', compare: 'Comparer les abonnements', altPhone: 'Écran Consommation de l’app June actuelle, en français : graphique de la semaine, prélèvement et injection', altDongle: 'Le June Dongle, boîtier blanc avec câble en forme de feuille, à brancher sur le port P1',
+  shot: 'App June actuelle', note: 'Suivi du pic de puissance : utile pour le tarif capacitaire en Flandre uniquement.',
+} : {
+  eyebrow: 'Premium · voor digitale meters', h2: 'Zie wat je huis verbruikt.',
+  body: facts.dongle.description.nl, price: `${eur(198, locale)} per jaar`, sub: `${eurDec(16.5, locale)} per maand, jaarlijks gefactureerd, dongle inbegrepen`,
+  cta: 'Kies Premium', compare: 'Vergelijk de abonnementen', altPhone: 'Verbruiksscherm van de huidige June-app: weekgrafiek met afname en injectie', altDongle: 'De June Dongle: wit toestel met een kabel in de vorm van een blad, voor de P1-poort',
+  shot: 'Huidige June-app', note: '',
+};
+---
+<section class:list={['section prem', { 'prem--compact': compact }]} id={id} aria-labelledby={headingId}>
+  <div class="wrap prem-in">
+    <div class="prem-copy reveal">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h2 id={headingId}>{t.h2}</h2>
+      <p class="prem-body">{t.body}</p>
+      <ul role="list" class="prem-feat">
+        {feats.map(f => <li><svg class="i" aria-hidden="true"><use href="#i-check" /></svg><span>{f}</span></li>)}
+      </ul>
+      <p class="prem-req"><svg class="i" aria-hidden="true"><use href="#i-meter" /></svg>{pr.requirements[k]}</p>
+      <p class="prem-price"><span class="num">{t.price}</span><span class="prem-sub">{t.sub}<Fn n={5} fr={fr} /></span></p>
+      <div class="prem-acts">
+        <a class="btn btn--ghost" href={`${href('signup', locale, base)}?plan=premium`} data-cta="premium">{t.cta}</a>
+        <a class="link-arrow" href={`${href('plans', locale, base)}#premium`}>{t.compare}<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+      </div>
+    </div>
+    <figure class="prem-art" aria-label={t.shot}>
+      <div class="blob" aria-hidden="true"></div>
+      <Picture src={phone} formats={['avif', 'webp']} fallbackFormat="webp" widths={[240, 299]} sizes="(max-width: 640px) 46vw, 240px" alt={t.altPhone} class="prem-phone" loading="lazy" />
+      <Picture src={dongle} formats={['avif', 'webp']} fallbackFormat="webp" widths={[200, 360]} sizes="(max-width: 640px) 36vw, 190px" alt={t.altDongle} class="prem-dongle" loading="lazy" />
+      <figcaption class="prem-cap">{t.shot}</figcaption>
+    </figure>
+  </div>
+</section>
+<style>
+  .prem { background: var(--canvas-mint); overflow: hidden; }
+  .prem-in { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--s-16); align-items: center; }
+  .prem-copy { display: grid; gap: var(--s-4); justify-items: start; }
+  .prem-body { color: var(--ink-700); max-width: 52ch; }
+  .prem-feat { display: grid; gap: 10px; font-size: var(--fs-16); }
+  .prem-feat li { display: flex; gap: 10px; }
+  .prem-feat .i { width: 20px; height: 20px; flex: none; color: var(--accent-strong); margin-top: 2px; }
+  .prem-req { display: flex; gap: 8px; align-items: center; font-size: var(--fs-14); color: var(--ink-700); padding: 8px 12px; border-radius: var(--r-sm); background: var(--surface); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .prem-req .i { width: 18px; height: 18px; color: var(--accent-strong); flex: none; }
+  .prem-price { display: grid; gap: 2px; margin-top: var(--s-2); }
+  .prem-price .num { font-size: var(--fs-32); font-weight: 700; line-height: 1.1; }
+  .prem-sub { font-size: var(--fs-14); color: var(--ink-700); }
+  .prem-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-6); margin-top: var(--s-2); }
+  .prem-acts .btn { background: var(--surface); }
+  .prem-art { position: relative; margin: 0; min-height: 520px; display: grid; place-items: center; }
+  .blob { position: absolute; width: 440px; height: 440px; border-radius: 46% 54% 42% 58% / 52% 44% 56% 48%; background: var(--ambient); opacity: .55; }
+  .prem-art :global(.prem-phone) { position: relative; width: 240px; height: auto; transform: translateX(46px) rotate(3deg); filter: drop-shadow(0 30px 40px rgba(20,35,42,.25)); }
+  .prem-art :global(.prem-dongle) { position: absolute; left: calc(50% - 205px); bottom: 10px; width: 190px; height: auto; transform: rotate(-8deg); filter: drop-shadow(0 20px 24px rgba(20,35,42,.25)); }
+  .prem-art picture { display: contents; }
+  .prem-cap { position: absolute; right: 0; bottom: 0; font-size: var(--fs-12); color: var(--ink-500); }
+  @media (max-width: 900px) {
+    .prem-in { grid-template-columns: 1fr; gap: var(--s-10); }
+    .prem-art { min-height: 440px; }
+    .blob { width: 340px; height: 340px; }
+    .prem-art :global(.prem-phone) { width: 200px; transform: translateX(40px) rotate(3deg); }
+    .prem-art :global(.prem-dongle) { width: 150px; left: calc(50% - 160px); }
+    .prem-cap { position: static; grid-row: 2; justify-self: end; margin-top: var(--s-2); }
+    .prem-art { min-height: 0; padding-top: var(--s-4); }
+  }
+</style>

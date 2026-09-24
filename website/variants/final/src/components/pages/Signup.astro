@@ -1,0 +1,310 @@
+---
+// Aanmelden / Inscription — funnel with its own minimal header (logo · "Hulp nodig?" · NL|FR that keeps the answers).
+// Three steps, each with its own URL (hash state, back/reload safe): 1 Je woning → 2 Je schatting (indicative, NET of
+// the plan fee first) → 3 Je abonnement (plan, how to switch, e-mail, separate unticked marketing consent) → confirmation.
+// Without JS every question is one plain GET form, top to bottom (estimate and confirmation panels stay hidden).
+// All maths and plan advice: src/lib/estimate.js (getEstimate). Answers/query/storage contract: src/lib/funnel-state.js.
+// Client logic: src/lib/signup-client.js. The side panel "Wat we van je weten" mirrors every answer.
+import { Image } from 'astro:assets';
+import Page from '../../layouts/Page.astro';
+import '../../styles/funnel.css';
+import Logo from '../Logo.astro';
+import Footer from '../Footer.astro';
+import Icon from '../Icon.astro';
+import Stars from '../Stars.astro';
+import { signupCopy } from '../../i18n/signup.js';
+import { href, LOCALES } from '@shared/routes.mjs';
+import cheering from '@shared/assets/character/june-character-cheering.png';
+interface Props { locale: 'nl-be' | 'fr-be'; }
+const { locale } = Astro.props;
+const c = signupCopy(locale);
+const L = c.L;
+const base = import.meta.env.BASE_URL;
+const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+const s1 = c.s1, s2 = c.s2;
+const energyIcon: Record<string, string> = { elec: 'bolt', both: 'flame' };
+const extraIcon: Record<string, string> = { solar: 'sun', ev: 'car', heatpump: 'heat' };
+const signupUrl = href('signup', locale, base);
+const client = {
+  L, locale, errors: c.errors, est: c.est, s1: { pcLine: s1.pcLine }, s2: { premAnalog: s2.premAnalog, plan: { net: s2.plan.net, perYear: s2.plan.perYear } }, done: c.done, side: c.side, progress: c.progress,
+  plans: c.plans, energy: s1.energy.opts, meter: s1.meter.opts, extras: s1.extras.opts, household: s1.household,
+  pref: s2.pref.opts, signupUrl: `https://www.june.energy/${locale}/${locale === 'nl-be' ? 'aanmelden' : 'inscription'}/`,
+  langBase: href('signup', other, base),
+};
+---
+<Page locale={locale} routeKey="signup" title={c.meta.title} description={c.meta.description} noindex>
+  <a class="skip" href="#inhoud">{c.ui.skip}</a>
+  <header class="masthead masthead--minimal fhead">
+    <div class="wrap masthead-in">
+      <Logo href={href('home', locale, base)} label={c.ui.homeLabel} />
+      <div class="fhead-util">
+        <a class="fhead-help" href={href('faq', locale, base)} data-help>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.7"/><path d="M12 17.2h.01"/></svg>
+          <span>{c.help.label}</span><span class="fhead-more"><span aria-hidden="true">·</span> {c.help.more}</span>
+        </a>
+        <span class="fhead-lang">
+          <span class="lang-cur">{LOCALES[locale].label}</span>
+          <span aria-hidden="true">|</span>
+          <a href={href('signup', other, base)} hreflang={LOCALES[other].html} lang={LOCALES[other].html} aria-label={c.ui.langOtherLabel} data-lang-link>{c.ui.langOther}</a>
+        </span>
+      </div>
+    </div>
+  </header>
+  <script is:inline>
+    // Returning to a step (hash), arriving with answers (?postcode=…) or with saved answers: keep the form invisible
+    // (not collapsed) until the script has restored it, so nothing visibly jumps. Safety net: reveal after 1.5 s.
+    (function () { var d = document.documentElement, s = false; try { s = !!sessionStorage.getItem('june-signup'); } catch (e) {}
+      if (location.hash || location.search || s) { d.classList.add('su-restoring'); setTimeout(function () { d.classList.remove('su-restoring'); }, 1500); } })();
+  </script>
+  <main id="inhoud" class="funnel" tabindex="-1">
+    <div class="wrap funnel-grid">
+      <div class="funnel-main">
+        <ol class="progress" aria-label={c.progress.label}>
+          {c.progress.steps.map((s: string, i: number) => <li data-p={i} aria-current={i === 0 ? 'step' : undefined}><span class="pn" aria-hidden="true">{i + 1}</span><span>{s}</span></li>)}
+        </ol>
+        <p class="progress-meta" id="progress-meta">{c.progress.meta[0]}</p>
+        <h1 class="funnel-h1">{c.h1}</h1>
+        <p class="funnel-intro">{c.intro}</p>
+        <p class="plan-chip" id="plan-chip" hidden><Icon name="check-circle" /><span><strong>{c.planChip.label}:</strong> <span data-chip-name></span></span><span class="note">{c.planChip.change}</span></p>
+        <noscript><p class="note noscript">{c.noscript}</p></noscript>
+
+        <form id="su" class="su" action={signupUrl} method="get">
+          <div class="err-sum" id="err-sum" tabindex="-1" aria-labelledby="err-sum-h" hidden>
+            <p class="err-sum-h" id="err-sum-h"></p>
+            <ul></ul>
+          </div>
+          <p class="sr-only" id="su-live" aria-live="polite"></p>
+
+          <!-- ── STEP 1 · Je woning ─────────────────── -->
+          <section class="panel is-active" data-panel="home" aria-labelledby="s1-h">
+            <h2 id="s1-h" tabindex="-1" class="panel-h">{s1.h2}</h2>
+
+            <div class="q q--pc">
+              <label for="su-pc" class="q-label">{s1.postcode.label}</label>
+              <p class="why" id="su-pc-why">{s1.postcode.why}</p>
+              <div class="pc-line">
+                <input class="input input--pc" id="su-pc" name="postcode" inputmode="numeric" autocomplete="postal-code" maxlength="4" pattern="[1-9][0-9]{3}" required placeholder={s1.postcode.ph} aria-describedby="su-pc-why su-pc-region su-pc-err" />
+                <p class="pc-region" id="su-pc-region" aria-live="polite"></p>
+              </div>
+              <p class="err" id="su-pc-err" hidden></p>
+            </div>
+
+            <fieldset class="q" id="q-energy">
+              <legend class="q-label">{s1.energy.legend}</legend>
+              <div class="choices choices--2">
+                {s1.energy.opts.map(([v, l]: string[]) => (
+                  <label class="choice"><input type="radio" id={`su-energy-${v}`} name="energy" value={v} checked={v === 'both'} /><span class="choice-in"><Icon name={energyIcon[v]} />{l}</span></label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset class="q" id="q-household" aria-describedby="household-why household-err">
+              <legend class="q-label">{s1.household.legend}</legend>
+              <p class="why" id="household-why">{s1.household.why}</p>
+              <div class="choices choices--4">
+                {s1.household.opts.map(([v, l]: string[]) => (
+                  <label class="choice choice--num"><input type="radio" id={`su-hh-${v}`} name="household" value={v} /><span class="choice-in"><span class="choice-big">{l}</span><span class="choice-sub">{v === '1' ? s1.household.unit[0] : s1.household.unit[1]}</span></span></label>
+                ))}
+              </div>
+              <details class="kwh" id="kwh">
+                <summary><Icon name="plus" /><span>{s1.kwh.summary} <span class="note">{s1.kwh.optional}</span></span></summary>
+                <div class="kwh-in">
+                  <p class="why">{s1.kwh.note}</p>
+                  <div class="kwh-fields">
+                    <div class="field"><label for="su-kwh-e">{s1.kwh.elec}</label><input class="input" id="su-kwh-e" name="kwh_elec" inputmode="numeric" autocomplete="off" aria-describedby="kwh-err" /></div>
+                    <div class="field" id="kwh-gas-field"><label for="su-kwh-g">{s1.kwh.gas}</label><input class="input" id="su-kwh-g" name="kwh_gas" inputmode="numeric" autocomplete="off" aria-describedby="kwh-err" /></div>
+                  </div>
+                  <p class="err" id="kwh-err" hidden></p>
+                </div>
+              </details>
+              <p class="err" id="household-err" hidden></p>
+            </fieldset>
+
+            <fieldset class="q" id="q-meter" aria-describedby="meter-why meter-err">
+              <legend class="q-label">{s1.meter.legend}</legend>
+              <p class="why" id="meter-why">{s1.meter.why} {s1.meter.help}</p>
+              <div class="choices choices--3">
+                {s1.meter.opts.map(([v, l]: string[]) => (
+                  <label class="choice"><input type="radio" id={`su-meter-${v}`} name="meter" value={v} required={v === 'digital'} /><span class="choice-in"><Icon name={v === 'unknown' ? 'info' : 'meter'} />{l}</span></label>
+                ))}
+              </div>
+              <p class="err" id="meter-err" hidden></p>
+            </fieldset>
+
+            <fieldset class="q" id="q-extras">
+              <legend class="q-label">{s1.extras.legend} <span class="note">{s1.extras.optional}</span></legend>
+              <div class="choices choices--3">
+                {s1.extras.opts.map(([v, l]: string[]) => (
+                  <label class="choice"><input type="checkbox" id={`su-${v}`} name={v} value="1" /><span class="choice-in"><Icon name={extraIcon[v]} />{l}</span></label>
+                ))}
+              </div>
+            </fieldset>
+
+            <div class="panel-foot">
+              <button class="btn btn--lg" type="submit" data-next="home">{s1.next}<Icon name="arrow-r" /></button>
+              <p class="note">{s1.reassure}</p>
+              <p class="cta-trust"><Stars value={c.rating} id="su-cta-1" /> <strong>{c.trust.rating}</strong></p>
+            </div>
+          </section>
+
+          <!-- ── STEP 2 · Je schatting ─────────────── -->
+          <section class="panel" data-panel="est" aria-labelledby="est-h" hidden>
+            <div class="panel-h-row">
+              <h2 id="est-h" tabindex="-1" class="panel-h">{c.est.h2}</h2>
+              <span class="tag">{c.est.tag}</span>
+            </div>
+            <div class="est-card">
+              <p class="est-label" data-est-label></p>
+              <p class="est-range"><span class="num" data-est-net></span> <span class="est-unit">{c.est.perYear}</span></p>
+              <dl class="est-ledger">
+                <div><dt>{c.est.ledger.gross}</dt><dd class="num" data-est-gross></dd></div>
+                <div><dt data-est-fee-label></dt><dd class="num" data-est-fee></dd></div>
+                <div class="is-total"><dt>{c.est.ledger.net}</dt><dd class="num" data-est-net2></dd></div>
+              </dl>
+              <p class="est-alt" data-est-alt hidden></p>
+              <p class="note est-basis" data-est-basis></p>
+            </div>
+            <p class="note est-fn">{c.est.footnote}</p>
+            <div class="est-notice" data-est-notice hidden>
+              <Icon name="info" />
+              <div>
+                <h3 class="est-notice-h" data-est-notice-h hidden></h3>
+                <p data-est-notice-p></p>
+                <p data-est-g-link hidden><a class="link-arrow" href={href('switchPlus', locale, base)}>{c.est.guaranteeLink}<Icon name="arrow-r" /></a></p>
+              </div>
+            </div>
+            <div class="est-rec" data-est-rec-box>
+              <h3>{c.est.recH}</h3>
+              <p data-est-rec></p>
+              <p class="note" data-est-g hidden>{s2.guaranteeNote}</p>
+            </div>
+            <details class="method" id="est-method">
+              <summary><Icon name="plus" />{c.est.methodH}</summary>
+              <ol>{c.est.method.map((m: string) => <li>{m}</li>)}</ol>
+            </details>
+            <div class="panel-foot panel-foot--split">
+              <div class="est-actions">
+                <button class="btn btn--lg" type="button" data-go-plan><span data-est-next></span><Icon name="arrow-r" /></button>
+                <button class="btn btn--ghost btn--keep" type="button" data-keep-prem hidden>{c.est.keep}</button>
+              </div>
+              <button class="btn btn--text" type="button" data-back="home"><Icon name="arrow-l" />{c.est.back}</button>
+            </div>
+            <p class="est-share"><a class="link-arrow" href="mailto:" data-share><Icon name="mail" />{c.est.share.label}</a></p>
+          </section>
+
+          <!-- ── STEP 3 · Je abonnement ────────────── -->
+          <section class="panel" data-panel="plan" aria-labelledby="s2-h">
+            <h2 id="s2-h" tabindex="-1" class="panel-h">{s2.h2}</h2>
+
+            <fieldset class="q" id="q-plan" aria-describedby="su-plan-g plan-warn plan-err">
+              <legend class="q-label">{s2.plan.legend}</legend>
+              <div class="plan-opts">
+                {c.plans.map((p: any) => (
+                  <label class:list={['plan-opt', `plan-opt--${p.slug}`]}>
+                    <input type="radio" id={`su-plan-${p.slug}`} name="plan" value={p.slug} checked={p.slug === 'switch-plus'} />
+                    <span class="plan-opt-in">
+                      <span class="plan-opt-badge" data-rec-badge={p.slug} hidden={p.slug !== 'switch-plus'}>{s2.plan.rec}</span>
+                      <span class="plan-opt-name">{p.name}</span>
+                      <span class="plan-opt-price"><strong class="num">{p.yearly}</strong> {L === 'fr' ? 'par an' : 'per jaar'}</span>
+                      <span class="plan-opt-mo">{p.monthly}, {s2.plan.billed}</span>
+                      <span class="plan-opt-net" data-net-for={p.slug} hidden></span>
+                      <span class="plan-opt-g">{p.slug === 'switch' ? s2.plan.noGuarantee : `${s2.plan.guarantee} (${c.guaranteeAmount})`}{p.slug === 'premium' && ` · ${s2.plan.dongle} · ${s2.plan.digital}`}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p class="note su-plan-g" id="su-plan-g">{s2.guaranteeNote}</p>
+              <p class="warn" id="plan-warn" aria-live="polite" hidden></p>
+              <p class="err" id="plan-err" hidden></p>
+            </fieldset>
+
+            <fieldset class="q" id="q-pref" aria-describedby="pref-why pref-err">
+              <legend class="q-label">{s2.pref.legend}</legend>
+              <p class="why" id="pref-why">{s2.pref.why}</p>
+              <div class="choices choices--2 choices--tall">
+                {s2.pref.opts.map(([v, l, d]: string[], i: number) => (
+                  <label class="choice choice--text"><input type="radio" id={`su-pref-${v}`} name="pref" value={v} required={i === 0} /><span class="choice-in"><strong>{l}</strong><span>{d}</span></span></label>
+                ))}
+              </div>
+              <p class="err" id="pref-err" hidden></p>
+              <label class="check"><input type="checkbox" id="su-green" name="green" value="1" /><span>{s2.green}</span></label>
+            </fieldset>
+
+            <div class="q">
+              <label for="su-email" class="q-label">{s2.email.label}</label>
+              <p class="why" id="su-email-why">{s2.email.why}</p>
+              <input class="input input--email" id="su-email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder={s2.email.ph} aria-describedby="su-email-why su-email-err" />
+              <p class="err" id="su-email-err" hidden></p>
+            </div>
+
+            <div class="q q--consent">
+              <label class="check"><input type="checkbox" id="su-terms" name="terms" value="1" required aria-describedby="su-terms-err" /><span>{s2.terms}</span></label>
+              <p class="err" id="su-terms-err" hidden></p>
+              <label class="check"><input type="checkbox" id="su-marketing" name="marketing" value="1" /><span>{s2.marketing}</span></label>
+            </div>
+
+            <div class="next-box">
+              <h3>{s2.nextH}</h3>
+              <ol>{s2.nextSteps.map((s: string) => <li>{s}</li>)}</ol>
+            </div>
+
+            <div class="panel-foot panel-foot--split">
+              <div>
+                <button class="btn btn--lg" type="submit" data-next="plan">{s2.submit}<Icon name="arrow-r" /></button>
+                <p class="note">{s2.under}</p>
+                <p class="cta-trust"><Stars value={c.rating} id="su-cta-3" /> <strong>{c.trust.rating}</strong></p>
+              </div>
+              <button class="btn btn--text" type="button" data-back="est"><Icon name="arrow-l" />{s2.back}</button>
+            </div>
+          </section>
+
+          <!-- ── DONE ───────────────────────────────── -->
+          <section class="panel panel--done" data-panel="done" aria-labelledby="done-h" hidden>
+            <Image src={cheering} alt="" widths={[160, 320]} sizes="160px" class="done-char" loading="lazy" />
+            <h2 id="done-h" tabindex="-1" class="panel-h">{c.done.h2}</h2>
+            <p class="done-body" data-done-body></p>
+            <dl class="done-recap" aria-label={c.done.recap}>
+              <div><dt>{c.done.planL}</dt><dd data-done-plan></dd></div>
+              <div><dt>{c.done.prefL}</dt><dd data-done-pref></dd></div>
+              <div><dt>{c.done.greenL}</dt><dd data-done-green></dd></div>
+            </dl>
+            <div class="next-box">
+              <h3>{s2.nextH}</h3>
+              <ol>{s2.nextSteps.map((s: string) => <li>{s}</li>)}</ol>
+            </div>
+            <p class="note">{c.done.notReceived}</p>
+            <p class="done-links">
+              <a class="link-arrow" href={href('howItWorks', locale, base)}>{c.done.how}<Icon name="arrow-r" /></a>
+              <a class="link-arrow" href={href('home', locale, base)}>{c.done.home}</a>
+            </p>
+            <p class="tag">{c.done.proto}</p>
+          </section>
+        </form>
+      </div>
+
+      <aside class="funnel-side" aria-labelledby="side-h">
+        <div class="side-card">
+          <h2 id="side-h" class="side-h"><Icon name="eye-off" />{c.side.h2}</h2>
+          <p class="note">{c.side.intro}</p>
+          <dl class="side-list" id="side-list">
+            {Object.entries(c.side.rows).map(([k, label]) => (
+              <div data-row={k}><dt>{label as string}</dt><dd class="is-empty">{k === 'email' ? c.side.notAsked : c.side.empty}</dd></div>
+            ))}
+          </dl>
+          <p class="side-never"><Icon name="lock" />{c.side.never}</p>
+        </div>
+        <div class="side-trust">
+          <p><Stars value={c.rating} id="su" /> <strong>{c.trust.rating}</strong></p>
+          <p class="note">{c.trust.customers} · {c.side.trust}</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <Footer locale={locale} routeKey="signup" c={c} minimal />
+  <script type="application/json" id="su-copy" set:html={JSON.stringify(client)} />
+</Page>
+
+<script>
+  import { initSignup } from '../../lib/signup-client.js';
+  initSignup();
+</script>

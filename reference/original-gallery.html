@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insights tabs — mockup gallery</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin:0; background:#1c1c1c; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .shell { max-width:1000px; margin:0 auto; padding:28px 20px 60px; }
+  h1 { color:#eee; font-size:20px; margin:0 0 4px; }
+  .sub { color:#999; font-size:13px; margin:0 0 20px; }
+  .tabbar { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .tabbtn { border:none; cursor:pointer; font-size:12.5px; padding:8px 14px; border-radius:8px; background:#2c2c2c; color:#aaa; display:flex; align-items:center; gap:6px; }
+  .tabbtn.active { background:#3bada9; color:#fff; }
+  .tabbtn .dot { width:6px; height:6px; border-radius:50%; }
+  .tabbtn .dot.done { background:#3bada9; }
+  .tabbtn.active .dot.done { background:#fff; }
+  .tabbtn .dot.pending { background:#666; }
+  .tabbtn .dot.live { background:#7fd1cd; }
+
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .placeholder { background:#262626; border:1px dashed #444; border-radius:12px; padding:40px; text-align:center; color:#888; font-size:13px; }
+  .placeholder b { display:block; color:#ccc; font-size:15px; margin-bottom:6px; }
+
+  /* --- Breakdown mockup styles (approved v3) --- */
+  .bd-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .bd-grid { display:grid; grid-template-columns: 280px 1fr; grid-template-rows: auto auto; gap:20px; }
+  .bd-glance-cell { grid-column:1; grid-row:1; }
+  .bd-cta-cell { grid-column:1; grid-row:2; }
+  .bd-list-cell { grid-column:2; grid-row:1; }
+  .bd-seasonal-cell { grid-column:2; grid-row:2; }
+  .cta-title { font-size:12px; font-weight:600; color:#333 !important; margin-bottom:6px; }
+  .cta-track { height:7px; border-radius:4px; background:#eee; overflow:hidden; margin-bottom:8px; }
+  .cta-fill { height:100%; border-radius:4px; background:#3bada9; }
+  .cta-pct { font-size:11px; color:#3bada9 !important; font-weight:600; margin-bottom:6px; display:block; }
+  .cta-body { font-size:11.5px; color:#666 !important; margin-bottom:10px; line-height:1.4; }
+  .cta-btn { display:inline-block; font-size:12px; padding:6px 14px; border-radius:7px; background:#172429; color:#fff !important; }
+  .edge-states { display:flex; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .block-card { background:#fff; border-radius:12px; padding:22px 18px; text-align:center; flex:1; min-width:260px; }
+  .block-card * { color:#222; }
+  .block-icon { font-size:22px; margin-bottom:8px; }
+  .block-title { font-size:13.5px; font-weight:600; margin-bottom:6px; }
+  .block-body { font-size:11.5px; color:#666 !important; margin:0 auto 10px; line-height:1.5; }
+  .block-track { height:6px; border-radius:4px; background:#eee; overflow:hidden; max-width:180px; margin:0 auto 5px; }
+  .block-fill { height:100%; border-radius:4px; background:#3bada9; }
+  .block-pct { font-size:10.5px; color:#888 !important; margin-bottom:10px; }
+  .block-btn { display:inline-block; font-size:12px; padding:6px 14px; border-radius:7px; background:#3bada9; color:#fff !important; }
+  .block-sub { font-size:10.5px; color:#999 !important; margin-top:8px; }
+  .edge-label { font-size:11px; color:#7fd1cd; text-transform:uppercase; letter-spacing:.03em; margin-bottom:20px; }
+  .bd-card { background:#fff; border-radius:12px; padding:18px; color:#222; }
+  .bd-card * { color:#222; }
+  .bd-card-title { font-size:13px; font-weight:600; color:#555 !important; margin-bottom:12px; text-transform:uppercase; letter-spacing:.02em; }
+  .bd-donut { width:110px; height:110px; border-radius:50%; margin:6px auto 12px; background: conic-gradient(#3bada9 0 38%, #eef0f0 38% 100%); position:relative; }
+  .bd-donut::after { content:""; position:absolute; inset:16px; border-radius:50%; background:#fff; }
+  .bd-donut-label { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; font-size:10px; color:#555 !important; }
+  .bd-donut-label b { font-size:16px; color:#222 !important; }
+  .bd-glance-foot { font-size:11px; color:#888 !important; text-align:center; margin-top:6px; }
+  .bd-list-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .bd-unit-toggle { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .bd-unit-toggle span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .bd-unit-toggle span.active { background:#172429; color:#fff !important; }
+  .bd-est-note { font-size:11px; color:#8a6100 !important; background:#fff3d6; border-radius:6px; padding:6px 10px; margin-bottom:14px; }
+  .bd-bar-row { margin-bottom:11px; }
+  .bd-bar-head { display:flex; justify-content:space-between; align-items:center; font-size:13px; margin-bottom:4px; }
+  .bd-bar-track { height:9px; border-radius:5px; background:#eee; overflow:hidden; }
+  .bd-bar-fill { height:100%; border-radius:5px; background:#3bada9; }
+  .bd-badge-low { display:inline-block; font-size:10px; padding:1px 7px; border-radius:8px; background:#fff3d6; color:#8a6100 !important; margin-left:6px; }
+  .bd-cat-icon { display:inline-flex; width:20px; height:20px; border-radius:6px; background:#e6f5f5; align-items:center; justify-content:center; font-size:11px; margin-right:7px; }
+  .bd-insight { display:flex; gap:10px; align-items:flex-start; background:#e6f5f5; border-radius:8px; padding:10px 12px; margin-bottom:14px; }
+  .bd-insight p { font-size:12px; color:#172429 !important; margin:0; line-height:1.4; }
+  .bd-insight .bd-caveat { display:block; font-size:10.5px; color:#3f7d78 !important; margin-top:2px; }
+  .bd-chart { display:flex; align-items:flex-end; gap:5px; height:100px; margin-bottom:6px; }
+  .bd-month { flex:1; display:flex; flex-direction:column-reverse; height:100%; border-radius:2px 2px 0 0; overflow:hidden; }
+  .bd-month div { width:100%; }
+  .bd-axis { display:flex; gap:5px; font-size:9px; color:#999 !important; margin-bottom:12px; }
+  .bd-axis span { flex:1; text-align:center; }
+  .bd-legend { display:flex; flex-wrap:wrap; gap:10px; font-size:10.5px; }
+  .bd-legend-row { display:flex; align-items:center; gap:5px; }
+  .bd-swatch { width:8px; height:8px; border-radius:3px; flex:none; }
+  .status-line { font-size:12px; color:#7fd1cd; margin:14px 0 0; }
+
+  /* --- Peak mockup styles (approved v2) --- */
+  .pk-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .pk-card { background:#fff; border-radius:12px; padding:18px; color:#222; }
+  .pk-card * { color:#222; }
+  .pk-card-title { font-size:13px; font-weight:600; color:#555 !important; margin-bottom:4px; text-transform:uppercase; letter-spacing:.02em; }
+  .pk-card-sub { font-size:11.5px; color:#888 !important; margin-bottom:14px; }
+  .pk-section { margin-bottom:16px; }
+  .pk-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .pk-toggle { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .pk-toggle span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .pk-toggle span.active { background:#3bada9; color:#fff !important; }
+  .pk-nav { font-size:12px; color:#555 !important; display:flex; align-items:center; gap:8px; }
+  .pk-chart { position:relative; height:170px; display:flex; align-items:flex-end; gap:6px; margin-bottom:6px; }
+  .pk-chart .bar { flex:1; border-radius:3px 3px 0 0; background:#3bada9; }
+  .pk-chart .bar.peak { background:#FF5630; }
+  .pk-threshold { position:absolute; left:0; right:0; border-top:2px dashed; font-size:9px; padding:1px 4px; }
+  .pk-threshold.month { border-color:#FF5630; color:#FF5630 !important; top:22%; }
+  .pk-threshold.avg { border-color:#00B8D9; color:#00B8D9 !important; top:48%; }
+  .pk-axis { display:flex; gap:6px; font-size:9.5px; color:#999 !important; margin-bottom:4px; }
+  .pk-axis span { flex:1; text-align:center; }
+  .pk-legend { display:flex; gap:14px; font-size:11px; flex-wrap:wrap; }
+  .pk-legend-row { display:flex; align-items:center; gap:5px; }
+  .pk-swatch { width:9px; height:9px; border-radius:3px; }
+  .pk-line { width:14px; height:0; border-top:2px dashed; }
+  .pk-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }
+  .pk-stat { background:#fff; border-radius:12px; padding:16px; border-left:3px solid transparent; }
+  .pk-stat * { color:#222; }
+  .pk-stat.peak-today { border-color:#ddd; }
+  .pk-stat.peak-month { border-color:#FF5630; }
+  .pk-stat.rolling-avg { border-color:#00B8D9; }
+  .pk-stat-label { font-size:11px; color:#888 !important; margin-bottom:4px; }
+  .pk-stat-value { font-size:22px; font-weight:700; }
+  .pk-stat-meta { font-size:10.5px; color:#999 !important; margin-top:4px; }
+  .pk-lower-grid { display:grid; grid-template-columns: 2fr 1fr; gap:16px; align-items:start; }
+  .rv-count-row { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+  .rv-count-icon { width:40px; height:40px; border-radius:10px; background:#ffe9e0; display:flex; align-items:center; justify-content:center; font-size:18px; flex:none; }
+  .rv-count-title { font-size:13px; font-weight:600; color:#222 !important; }
+  .rv-count-sub { font-size:11.5px; color:#888 !important; }
+  .rv-count-track { height:8px; border-radius:4px; background:#eee; overflow:hidden; margin-bottom:6px; }
+  .rv-count-fill { height:100%; border-radius:4px; background:#FF5630; }
+  .rv-count-foot { font-size:11px; color:#666 !important; margin-bottom:12px; }
+  .tb-link { font-size:12px; color:#3bada9 !important; font-weight:600; cursor:pointer; margin-bottom:10px; display:inline-block; border-top:1px solid #f2f2f2; padding-top:12px; width:100%; }
+  table.tb-table { width:100%; border-collapse:collapse; font-size:11.5px; }
+  .tb-table th { text-align:left; font-size:10px; color:#888 !important; text-transform:uppercase; letter-spacing:.02em; padding:0 8px 6px 0; border-bottom:1px solid #eee; }
+  .tb-table th.num, .tb-table td.num { text-align:right; }
+  .tb-table td { padding:6px 8px 6px 0; border-bottom:1px solid #f7f7f7; }
+  .tb-table tr.peak-row td { color:#FF5630 !important; font-weight:600; }
+  .tb-tag { font-size:9px; padding:1px 5px; border-radius:6px; margin-left:5px; }
+  .tb-tag.max { background:#ffe9e0; color:#c8391f !important; }
+  .tb-tag.rolling-off { background:#f2f2f2; color:#999 !important; }
+  .tb-tag.added { background:#e6f5f5; color:#1c6d68 !important; }
+  .tb-foot-row td { border-bottom:none; padding-top:8px; font-weight:700; }
+  .pk-side-stack { display:flex; flex-direction:column; gap:16px; }
+  .pk-bench { display:flex; align-items:center; gap:12px; }
+  .pk-bench-icon { width:34px; height:34px; border-radius:50%; background:#e9f9e5; display:flex; align-items:center; justify-content:center; font-size:14px; flex:none; }
+  .pk-bench-body { font-size:12px; color:#444 !important; line-height:1.5; }
+  .pk-bench-body b { color:#172429 !important; }
+  .pk-new-badge { display:inline-block; font-size:9.5px; padding:2px 7px; border-radius:8px; background:#e6f5f5; color:#1c6d68 !important; margin-left:6px; vertical-align:middle; }
+  .pk-cost-value { font-size:20px; font-weight:700; color:#172429 !important; }
+  .pk-cost-note { font-size:10.5px; color:#8a6100 !important; background:#fff3d6; border-radius:6px; padding:6px 9px; margin-top:8px; }
+
+  /* --- Peak: insufficient-history edge case --- */
+  .build-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .build-icon { width:40px; height:40px; border-radius:10px; background:#e6f5f5; display:flex; align-items:center; justify-content:center; font-size:18px; flex:none; }
+  .build-title { font-size:13px; font-weight:600; color:#222 !important; }
+  .build-sub { font-size:11.5px; color:#888 !important; }
+  .build-segments { display:flex; gap:4px; margin-bottom:8px; }
+  .seg { flex:1; height:10px; border-radius:3px; background:#eee; }
+  .seg.filled { background:#3bada9; }
+  .seg-labels { display:flex; gap:4px; font-size:8.5px; color:#aaa !important; margin-bottom:14px; }
+  .seg-labels span { flex:1; text-align:center; }
+  .build-foot { font-size:11.5px; color:#666 !important; margin-bottom:4px; }
+  .build-floor-note { font-size:10.5px; color:#8a6100 !important; background:#fff3d6; border-radius:6px; padding:6px 9px; margin-top:10px; }
+  .pk-bench-caveat { font-size:10.5px; color:#999 !important; margin-top:4px; display:block; }
+
+  /* --- Overview --- */
+  .ov2-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .ov2-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .ov2-tile { background:#fff; border-radius:12px; padding:16px; color:#222; }
+  .ov2-tile * { color:#222; }
+  .ov2-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .ov2-icon { width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; flex:none; }
+  .ov2-name { font-size:11px; font-weight:600; color:#888 !important; text-transform:uppercase; letter-spacing:.02em; }
+  .ov2-stat { font-size:19px; font-weight:700; color:#172429 !important; margin-bottom:4px; }
+  .ov2-insight { font-size:11px; color:#666 !important; line-height:1.4; margin-bottom:10px; }
+  .ov2-link { font-size:10.5px; color:#3bada9 !important; font-weight:600; }
+  .ov2-hero { width:100%; border-radius:14px; margin-bottom:20px; display:block; }
+
+  /* --- Budgets --- */
+  .bg-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .bg-card { background:#fff; border-radius:12px; padding:18px; color:#222; margin-bottom:16px; }
+  .bg-card * { color:#222; }
+  .bg-title { font-size:13px; font-weight:600; color:#555 !important; margin-bottom:14px; text-transform:uppercase; letter-spacing:.02em; }
+  .bg-fuel-tabs { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; margin-bottom:14px; }
+  .bg-fuel-tabs span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .bg-fuel-tabs span.active { background:#3bada9; color:#fff !important; }
+  .bg-status { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:14px; margin-bottom:12px; }
+  .bg-status.below { background:#e9f9e5; color:#2e7d32 !important; }
+  .bg-dot { width:7px; height:7px; border-radius:50%; background:#2e7d32; }
+  .bg-chart { position:relative; height:110px; display:flex; align-items:flex-end; gap:2px; margin-bottom:2px; }
+  .bg-chart .col { flex:1; position:relative; height:100%; }
+  .bg-chart .col .fill { position:absolute; bottom:0; left:15%; right:15%; border-radius:1px 1px 0 0; background:#3bada9; }
+  .bg-chart .col.forecast .fill { background:#d8d8d8; }
+  .bg-limit-line { position:absolute; left:0; right:0; top:22%; border-top:2px dashed #FF5630; font-size:9px; color:#FF5630 !important; padding:1px 4px; z-index:2; }
+  .bg-axis { display:flex; gap:2px; font-size:7.5px; color:#aaa !important; margin-bottom:10px; }
+  .bg-axis span { flex:1; text-align:center; }
+  .bg-legend { display:flex; gap:14px; font-size:10.5px; margin-bottom:14px; flex-wrap:wrap; }
+  .bg-legend-row { display:flex; align-items:center; gap:5px; }
+  .bg-sw { width:9px; height:9px; border-radius:2px; }
+  .bg-line-sw { width:14px; height:0; border-top:2px dashed #FF5630; }
+  .bg-nums { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
+  .bg-nums b { font-size:15px; }
+  .bg-period { font-size:10.5px; color:#999 !important; margin-bottom:14px; }
+
+  .pc-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .pc-icon { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; flex:none; background:#fff3d6; }
+  .pc-title { font-size:12.5px; font-weight:600; }
+  .pc-value { font-size:19px; font-weight:700; margin:4px 0 4px; color:#8a6100 !important; }
+  .pc-body { font-size:11.5px; color:#666 !important; line-height:1.5; }
+  .pc-context { font-size:10.5px; color:#999 !important; margin-top:6px; }
+  .pc-variants { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .pc-variant { background:#fff; border-radius:12px; padding:14px; }
+  .pc-variant * { color:#222; }
+  .pc-variant.on-track .pc-icon { background:#e9f9e5; }
+  .pc-variant.on-track .pc-value { color:#2e7d32 !important; }
+  .pc-variant.cut-back .pc-icon { background:#fff3d6; }
+  .pc-variant.cut-back .pc-value { color:#8a6100 !important; }
+  .pc-variant.already-over .pc-icon { background:#ffe0db; }
+  .pc-variant.already-over .pc-value { color:#c8391f !important; }
+
+  .streak-row { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  .streak-flame { font-size:24px; }
+  .streak-value { font-size:20px; font-weight:700; color:#172429 !important; }
+  .streak-label { font-size:11.5px; color:#888 !important; }
+  .streak-best { margin-left:auto; text-align:right; font-size:11px; color:#999 !important; }
+  .streak-best b { color:#555 !important; }
+  .hist-strip { display:flex; gap:4px; margin-bottom:6px; }
+  .hist-chip { flex:1; height:34px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  .hist-chip.under { background:#e9f9e5; }
+  .hist-chip.over { background:#ffe0db; }
+  .hist-chip.gap { background:repeating-linear-gradient(45deg,#f2f2f2,#f2f2f2 4px,#e8e8e8 4px,#e8e8e8 8px); }
+  .hist-chip.current { background:#fff; border:1.5px dashed #3bada9; color:#3bada9 !important; font-size:11px; font-weight:600; }
+  .hist-labels { display:flex; gap:4px; font-size:9px; color:#999 !important; margin-bottom:0; }
+  .hist-labels span { flex:1; text-align:center; }
+
+  .setup-mode-row { display:flex; gap:10px; }
+  .setup-mode { flex:1; border:1.5px solid #eee; border-radius:10px; padding:12px; }
+  .setup-mode.recommended { border-color:#3bada9; background:#f3fbfa; }
+  .setup-mode-title { font-size:12.5px; font-weight:600; margin-bottom:4px; }
+  .setup-mode-badge { font-size:9px; background:#3bada9; color:#fff !important; padding:1px 6px; border-radius:6px; margin-left:6px; vertical-align:middle; }
+  .setup-mode-body { font-size:11px; color:#666 !important; line-height:1.4; }
+  .setup-suggest { font-size:11px; color:#3bada9 !important; margin-top:8px; }
+
+  .wait-status { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:14px; margin-bottom:16px; background:#f2f2f2; color:#777 !important; }
+  .wait-dot { width:7px; height:7px; border-radius:50%; background:#aaa; }
+  .wait-body { display:flex; align-items:center; gap:14px; padding:18px 4px; }
+  .wait-icon { width:44px; height:44px; border-radius:12px; background:#f2f2f2; display:flex; align-items:center; justify-content:center; font-size:20px; flex:none; }
+  .wait-title { font-size:13.5px; font-weight:600; margin-bottom:4px; }
+  .wait-copy { font-size:12px; color:#666 !important; line-height:1.5; }
+  .wait-config { display:flex; gap:20px; font-size:11.5px; color:#555 !important; border-top:1px solid #f2f2f2; padding-top:12px; margin-top:6px; }
+  .wait-config b { display:block; font-size:14px; color:#222 !important; margin-top:2px; }
+
+  /* --- Solar --- */
+  .sf-card { background:#fff; border-radius:12px; padding:18px; color:#222; margin-bottom:16px; }
+  .sf-card * { color:#222; }
+  .sf-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .sf-toggle { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .sf-toggle span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .sf-toggle span.active { background:#3bada9; color:#fff !important; }
+  .sf-nav { font-size:12px; color:#555 !important; }
+  .sf-chips { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .sf-chip { font-size:11px; padding:5px 12px; border-radius:16px; border:1.5px solid #eee; color:#888 !important; display:flex; align-items:center; gap:5px; }
+  .sf-chip.on { border-color:#3bada9; background:#f3fbfa; color:#1c6d68 !important; }
+  .sf-chip .dot { width:7px; height:7px; border-radius:50%; }
+  .sf-balance { display:flex; align-items:center; gap:10px; background:#e9f9e5; border-radius:10px; padding:10px 14px; margin-bottom:14px; }
+  .sf-balance-icon { font-size:16px; }
+  .sf-balance b { color:#2e7d32 !important; }
+  .sf-chart { position:relative; height:130px; overflow:hidden; margin-bottom:4px; }
+  .sf-zero { position:absolute; left:0; right:0; top:50%; border-top:1px solid #ddd; z-index:1; }
+  .sf-bars { position:absolute; inset:0; display:flex; gap:3px; }
+  .sf-col { flex:1; position:relative; }
+  .sf-col .imp { position:absolute; left:22%; right:22%; bottom:50%; background:#f4b942; opacity:.28; border-radius:2px 2px 0 0; }
+  .sf-col .exp { position:absolute; left:22%; right:22%; top:50%; background:#3bada9; opacity:.28; border-radius:0 0 2px 2px; }
+  .sf-axis { display:flex; gap:3px; font-size:8.5px; color:#999 !important; margin-bottom:12px; }
+  .sf-axis span { flex:1; text-align:center; }
+  .sf-legend { display:flex; gap:14px; font-size:10.5px; flex-wrap:wrap; }
+  .sf-legend-row { display:flex; align-items:center; gap:5px; }
+  .sf-line-sw { width:14px; height:0; border-top:2.5px solid #3bada9; }
+  .sf-detail-toggle { font-size:12px; color:#3bada9 !important; font-weight:600; cursor:pointer; border-top:1px solid #f2f2f2; padding-top:12px; margin-top:14px; display:block; }
+  .sf-detail-chart { position:relative; height:90px; overflow:hidden; margin:14px 0 4px; background:linear-gradient(to top,#fdf3e0,transparent 70%); border-radius:6px; }
+  .sf-badge-est { font-size:8.5px; padding:1px 5px; border-radius:6px; background:#e6f5f5; color:#1c6d68 !important; margin-left:4px; }
+  .sf-kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:16px; }
+  .sf-kpi { background:#fff; border-radius:12px; padding:16px; }
+  .sf-kpi * { color:#222; }
+  .sf-kpi-label { font-size:11px; color:#888 !important; margin-bottom:4px; display:flex; align-items:center; gap:5px; }
+  .sf-kpi-value { font-size:24px; font-weight:700; color:#172429 !important; }
+  .sf-kpi-body { font-size:11px; color:#666 !important; margin-top:6px; line-height:1.4; }
+  .sf-info-btn { width:14px; height:14px; border-radius:50%; background:#eee; color:#777 !important; font-size:9px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+  .sf-popup { background:#f7f8f8; border-radius:8px; padding:10px 12px; margin-top:10px; font-size:11px; color:#555 !important; line-height:1.6; }
+  .sf-popup code { font-family:ui-monospace,monospace; color:#3bada9 !important; }
+  .sf-formula { font-family:ui-monospace,monospace; font-size:12.5px; background:#f7f8f8; border-radius:8px; padding:10px 14px; margin-bottom:8px; text-align:center; }
+  .sf-formula b { color:#3bada9 !important; }
+  .se-title { font-size:13px; font-weight:600; color:#555 !important; margin-bottom:4px; text-transform:uppercase; letter-spacing:.02em; }
+  .se-insight { display:flex; gap:10px; align-items:flex-start; background:#e6f5f5; border-radius:8px; padding:10px 12px; margin:12px 0 14px; }
+  .se-insight p { font-size:12px; color:#172429 !important; margin:0; line-height:1.4; }
+  .se-chart { display:flex; align-items:flex-end; gap:5px; height:100px; margin-bottom:6px; }
+  .se-month { flex:1; display:flex; flex-direction:column-reverse; height:100%; border-radius:2px 2px 0 0; overflow:hidden; }
+  .se-month div { width:100%; }
+  .se-axis { display:flex; gap:5px; font-size:9px; color:#999 !important; margin-bottom:12px; }
+  .se-axis span { flex:1; text-align:center; }
+  .se-legend { display:flex; gap:14px; font-size:10.5px; }
+  .se-legend-row { display:flex; align-items:center; gap:5px; }
+  .se-sw { width:9px; height:9px; border-radius:3px; }
+  .sf-grid { display:grid; grid-template-columns:2fr 1fr; gap:16px; align-items:start; }
+  .sf-side-stack { display:flex; flex-direction:column; gap:16px; }
+  .fd-card { background:#fff; border-radius:14px; padding:20px; color:#222; }
+  .fd-card * { color:#222; }
+  .fd-top { display:flex; flex-direction:column; align-items:center; margin-bottom:8px; }
+  .fd-sun { width:40px; height:40px; border-radius:50%; background:radial-gradient(circle,#ffe9b0,#f4b942); display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:6px; }
+  .fd-top-label { font-size:11px; color:#888 !important; }
+  .fd-top-value { font-size:14px; font-weight:700; color:#172429 !important; }
+  .fd-arrows { position:relative; height:50px; margin:0 -6px; }
+  .fd-pill { position:absolute; font-size:10px; font-weight:600; padding:2px 6px; border-radius:10px; background:#fff; border:1.5px solid #eee; }
+  .fd-pill.exp { left:16%; top:18px; color:#3bada9 !important; border-color:#3bada9; }
+  .fd-pill.sc { right:12%; top:18px; color:#f4b942 !important; border-color:#f4b942; }
+  .fd-nodes { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .fd-node { display:flex; flex-direction:column; align-items:center; width:88px; }
+  .fd-node-icon { width:36px; height:36px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:15px; margin-bottom:6px; }
+  .fd-node.grid .fd-node-icon { background:#e6f5f5; }
+  .fd-node.home .fd-node-icon { background:#fdf3e0; }
+  .fd-node-label { font-size:10.5px; color:#888 !important; }
+  .fd-node-value { font-size:14.5px; font-weight:700; color:#172429 !important; }
+  .fd-mid-arrow { flex:1; display:flex; flex-direction:column; align-items:center; margin-top:-18px; }
+  .fd-mid-arrow-line { width:100%; height:0; border-top:2px solid #3bada9; position:relative; }
+  .fd-mid-arrow-line::after { content:"▶"; position:absolute; right:-2px; top:-7px; color:#3bada9; font-size:10px; }
+  .fd-mid-value { font-size:10.5px; font-weight:600; color:#3bada9 !important; margin-top:4px; }
+  .fd-summary { border-top:1px solid #f2f2f2; padding-top:12px; display:flex; flex-direction:column; gap:8px; }
+  .fd-summary-row { display:flex; justify-content:space-between; align-items:center; font-size:12px; }
+  .fd-summary-row .label { display:flex; align-items:center; gap:6px; color:#666 !important; }
+  .fd-summary-row .value { font-weight:600; color:#222 !important; }
+
+  /* --- Forecast --- */
+  .fc-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .fc-card { background:#fff; border-radius:12px; padding:18px; color:#222; margin-bottom:16px; }
+  .fc-card * { color:#222; }
+  .fc-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .fc-toggle { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .fc-toggle span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .fc-toggle span.active { background:#3bada9; color:#fff !important; }
+  .fc-ahead { font-size:11px; color:#777 !important; }
+  .fc-headline { display:flex; align-items:center; gap:12px; background:#e6f5f5; border-radius:10px; padding:12px 14px; margin-bottom:16px; }
+  .fc-headline-icon { font-size:18px; }
+  .fc-headline b { color:#172429 !important; }
+  .fc-chart { position:relative; height:150px; overflow:hidden; margin-bottom:6px; }
+  .fc-axis { display:flex; gap:4px; font-size:9px; color:#999 !important; margin-bottom:12px; }
+  .fc-axis span { flex:1; text-align:center; }
+  .fc-legend { display:flex; gap:14px; font-size:10.5px; flex-wrap:wrap; }
+  .fc-legend-row { display:flex; align-items:center; gap:5px; }
+  .fc-line-sw { width:14px; height:0; border-top:2.5px solid #3bada9; }
+  .fc-line-sw.hist { border-top:2px dashed #999; }
+  .fc-cost-note { font-size:11px; color:#8a6100 !important; background:#fff3d6; border-radius:6px; padding:6px 10px; margin-top:10px; }
+  .fc-grid { display:grid; grid-template-columns:2fr 1fr; gap:16px; align-items:start; }
+
+  .gl-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .gl-cell { border-radius:10px; padding:14px 12px; background:#f7f8f8; }
+  .gl-cell.ready { background:#f3fbfa; }
+  .gl-label { font-size:11px; color:#888 !important; margin-bottom:6px; }
+  .gl-value { font-size:19px; font-weight:700; color:#172429 !important; }
+  .gl-split { font-size:10px; color:#999 !important; margin-top:4px; }
+  .gl-not-ready { text-align:center; padding-top:6px; }
+  .gl-not-ready-icon { font-size:16px; margin-bottom:4px; }
+  .gl-not-ready-text { font-size:10.5px; color:#999 !important; line-height:1.4; }
+
+  .hf-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .hf-toggle { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .hf-toggle span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .hf-toggle span.active { background:#3bada9; color:#fff !important; }
+  .hf-now { font-size:11px; color:#555 !important; }
+  .hf-chart { position:relative; height:150px; overflow:hidden; margin-bottom:4px; }
+  .hf-axis { display:flex; gap:3px; font-size:8.5px; color:#999 !important; margin-bottom:12px; }
+  .hf-axis span { flex:1; text-align:center; }
+  .hf-legend { display:flex; gap:14px; font-size:10.5px; flex-wrap:wrap; margin-bottom:12px; }
+  .hf-legend-row { display:flex; align-items:center; gap:5px; }
+  .hf-line-sw { width:14px; height:0; border-top:2.5px solid #3bada9; }
+  .hf-band-sw { width:14px; height:9px; background:rgba(59,173,169,.22); border-radius:2px; }
+  .hf-explain { display:flex; gap:10px; align-items:flex-start; background:#f7f8f8; border-radius:8px; padding:10px 12px; }
+  .hf-explain p { font-size:11.5px; color:#555 !important; margin:0; line-height:1.5; }
+
+  .bl-card { background:#fff; border-radius:12px; padding:18px; color:#222; }
+  .bl-card * { color:#222; }
+  .bl-status { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:14px; margin-bottom:10px; }
+  .bl-status.below { background:#e9f9e5; color:#2e7d32 !important; }
+  .bl-status.above { background:#fff3d6; color:#8a6100 !important; }
+  .bl-dot { width:7px; height:7px; border-radius:50%; }
+  .bl-status.below .bl-dot { background:#2e7d32; }
+  .bl-status.above .bl-dot { background:#8a6100; }
+  .bl-body { font-size:12.5px; color:#444 !important; line-height:1.5; margin-bottom:10px; }
+  .bl-body b { color:#172429 !important; }
+  .bl-link { font-size:12px; color:#3bada9 !important; font-weight:600; }
+  .bl-empty-icon { font-size:20px; margin-bottom:6px; }
+  .bl-empty-title { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .bl-empty-body { font-size:11.5px; color:#666 !important; margin-bottom:10px; }
+
+  .ac-card { background:#fff; border-radius:12px; padding:18px; color:#222; }
+  .ac-card * { color:#222; }
+  .ac-headline { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .ac-icon { width:40px; height:40px; border-radius:10px; background:#e6f5f5; display:flex; align-items:center; justify-content:center; font-size:18px; flex:none; }
+  .ac-title { font-size:13px; font-weight:600; color:#222 !important; }
+  .ac-sub { font-size:11.5px; color:#888 !important; }
+  .ac-compare { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+  .ac-figure { flex:1; text-align:center; background:#f7f8f8; border-radius:10px; padding:12px; }
+  .ac-figure-label { font-size:10.5px; color:#888 !important; margin-bottom:4px; }
+  .ac-figure-value { font-size:18px; font-weight:700; color:#172429 !important; }
+  .ac-arrow { font-size:16px; color:#aaa !important; }
+  .ac-diff { text-align:center; font-size:12.5px; color:#555 !important; margin-bottom:14px; }
+  .ac-diff b { color:#2e7d32 !important; }
+  .ac-link { font-size:12px; color:#3bada9 !important; font-weight:600; cursor:pointer; display:block; border-top:1px solid #f2f2f2; padding-top:12px; }
+  table.ac-table { width:100%; border-collapse:collapse; font-size:11.5px; margin-top:10px; }
+  .ac-table th { text-align:left; font-size:10px; color:#888 !important; text-transform:uppercase; letter-spacing:.02em; padding:0 8px 6px 0; border-bottom:1px solid #eee; }
+  .ac-table th.num, .ac-table td.num { text-align:right; }
+  .ac-table td { padding:6px 8px 6px 0; border-bottom:1px solid #f7f7f7; }
+
+  /* --- Compare --- */
+  .cp-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .cp-grid { display:grid; grid-template-columns:2fr 1fr; gap:16px; align-items:start; }
+  .cp-side-stack { display:flex; flex-direction:column; gap:16px; }
+
+  .tr-card { background:#fff; border-radius:12px; padding:18px; color:#222; margin-bottom:16px; }
+  .tr-card * { color:#222; }
+  .tr-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .tr-toggle { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .tr-toggle span { padding:4px 12px; border-radius:16px; color:#777 !important; }
+  .tr-toggle span.active { background:#3bada9; color:#fff !important; }
+  .tr-fuel { display:inline-flex; background:#f2f2f2; border-radius:20px; padding:3px; font-size:11px; }
+  .tr-fuel span { padding:4px 10px; border-radius:16px; color:#777 !important; }
+  .tr-fuel span.active { background:#172429; color:#fff !important; }
+  .tr-chart { position:relative; height:160px; overflow:hidden; margin-bottom:2px; }
+  .tr-band { position:absolute; left:0; right:0; }
+  .tr-band.high { top:0; height:20%; background:#ffe0db; opacity:.5; }
+  .tr-band.low { bottom:0; height:20%; background:#e9f9e5; opacity:.5; }
+  .tr-band-label { position:absolute; font-size:8.5px; color:#999 !important; left:4px; }
+  .tr-axis { display:flex; gap:4px; font-size:9.5px; color:#999 !important; margin-bottom:6px; margin-top:14px; }
+  .tr-axis span { flex:1; text-align:center; }
+  .tr-values { display:flex; gap:4px; font-size:9px; color:#e05a9c !important; font-weight:700; margin-bottom:18px; }
+  .tr-values span { flex:1; text-align:center; }
+  .tr-legend { display:flex; gap:14px; font-size:10.5px; flex-wrap:wrap; }
+  .tr-legend-row { display:flex; align-items:center; gap:5px; }
+  .tr-line-sw { width:14px; height:0; border-top:2.5px solid; }
+  .tr-real-badge { font-size:9px; padding:1px 6px; border-radius:6px; background:#e6f5f5; color:#1c6d68 !important; margin-left:6px; }
+  .tr-note { font-size:11.5px; color:#444 !important; background:#f7f8f8; border-radius:6px; padding:8px 10px; margin-top:10px; line-height:1.5; }
+
+  .cb-card { background:#fff; border-radius:14px; padding:20px; color:#222; }
+  .cb-card * { color:#222; }
+  .cb-title { font-size:13px; font-weight:600; color:#555 !important; margin-bottom:10px; }
+  .cb-headline { font-size:13px; color:#444 !important; margin-bottom:20px; line-height:1.4; }
+  .cb-headline b { color:#172429 !important; }
+  .cb-headline.good { color:#2e7d32 !important; }
+  .cb-bars { display:flex; align-items:flex-end; gap:14px; height:130px; margin-bottom:8px; }
+  .cb-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; }
+  .cb-bar { width:100%; border-radius:8px 8px 0 0; }
+  .cb-bar.efficient { background:#3bada9; }
+  .cb-bar.you { background:#f4b942; }
+  .cb-bar.similar { background:#e05a9c; }
+  .cb-bar-value { font-size:13px; font-weight:700; color:#172429 !important; margin-top:8px; }
+  .cb-bar-label { font-size:10.5px; color:#888 !important; margin-top:2px; text-align:center; }
+  .cb-profile { border-top:1px solid #f2f2f2; padding-top:14px; margin-top:6px; }
+  .cb-profile-label { font-size:10.5px; color:#888 !important; margin-bottom:3px; }
+  .cb-profile-value { font-size:12px; color:#444 !important; margin-bottom:8px; }
+  .cb-profile-link { font-size:12px; color:#3bada9 !important; font-weight:600; }
+
+  .pb-card { background:#fff; border-radius:14px; padding:20px; color:#222; }
+  .pb-card * { color:#222; }
+  .pb-row { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .pb-icon { width:40px; height:40px; border-radius:12px; background:#fff3d6; display:flex; align-items:center; justify-content:center; font-size:18px; flex:none; }
+  .pb-title { font-size:13px; font-weight:600; color:#222 !important; }
+  .pb-sub { font-size:11px; color:#888 !important; }
+  .pb-best { background:#f7f8f8; border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+  .pb-best-label { font-size:10.5px; color:#888 !important; margin-bottom:3px; }
+  .pb-best-value { font-size:15px; font-weight:700; color:#172429 !important; }
+  .pb-trend { display:flex; align-items:center; gap:8px; font-size:12px; color:#8a6100 !important; background:#fff3d6; border-radius:8px; padding:8px 12px; margin-bottom:14px; }
+  .pb-goal { border-top:1px solid #f2f2f2; padding-top:14px; }
+  .pb-goal-label { font-size:11px; color:#888 !important; margin-bottom:6px; }
+  .pb-goal-track { height:8px; border-radius:4px; background:#eee; overflow:hidden; margin-bottom:6px; position:relative; }
+  .pb-goal-fill { height:100%; border-radius:4px; background:linear-gradient(to right,#3bada9,#f4b942); }
+  .pb-goal-marker { position:absolute; top:-3px; width:2px; height:14px; background:#172429; }
+  .pb-goal-note { font-size:11px; color:#555 !important; }
+
+  .es-card { background:#fff; border-radius:14px; padding:22px 20px; color:#222; text-align:center; }
+  .es-card * { color:#222; }
+  .es-title { font-size:13px; font-weight:600; color:#333 !important; margin-bottom:10px; }
+  .es-body { font-size:12px; color:#666 !important; line-height:1.5; margin-bottom:16px; }
+  .es-btn { display:inline-block; font-size:12.5px; font-weight:600; padding:8px 20px; border-radius:20px; background:#3bada9; color:#fff !important; }
+  .es-icon { font-size:22px; margin-bottom:8px; }
+  .es-sub { font-size:10.5px; color:#999 !important; margin-top:10px; }
+  .es-bars { display:flex; align-items:flex-end; justify-content:center; gap:14px; height:90px; margin-bottom:10px; }
+  .es-bar-col { display:flex; flex-direction:column; align-items:center; }
+  .es-bar { width:50px; border-radius:8px 8px 0 0; }
+  .es-bar.efficient { background:#3bada9; }
+  .es-bar.you { background:#f4b942; }
+  .es-bar.similar { background:#e05a9c; }
+  .es-bar-label { font-size:10px; color:#888 !important; margin-top:5px; }
+  .es-nudge { display:flex; gap:8px; align-items:flex-start; background:#f3fbfa; border-radius:8px; padding:9px 11px; margin-top:10px; text-align:left; }
+  .es-nudge p { font-size:10.5px; color:#1c6d68 !important; margin:0; line-height:1.4; }
+  .cp-edge-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+
+  /* --- Advice --- */
+  .ad-page { background:#f7f8f8; border-radius:12px; padding:24px; }
+  .ad-card { background:#fff; border-radius:12px; padding:18px; color:#222; }
+  .ad-card * { color:#222; }
+  .ad-tabs { display:flex; gap:6px; margin-bottom:4px; }
+  .ad-tab { font-size:12.5px; font-weight:600; padding:7px 16px; border-radius:20px; background:#f2f2f2; color:#777 !important; }
+  .ad-tab.active { background:#3bada9; color:#fff !important; }
+  .ad-discarded-link { font-size:11px; color:#999 !important; margin-left:auto; align-self:center; }
+  .ad-tabs-row { display:flex; align-items:center; margin-bottom:16px; }
+  .ad-item { border:1px solid #f0f0f0; border-radius:10px; padding:14px; margin-bottom:10px; }
+  .ad-item.unverified { border-style:dashed; border-color:#3bada9; background:#fff; }
+  .ad-item-top { display:flex; gap:10px; align-items:flex-start; }
+  .ad-icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:15px; flex:none; }
+  .ad-icon.tip { background:#e6f5f5; }
+  .ad-icon.upgrade { background:#fff3d6; }
+  .ad-title { font-size:13px; font-weight:600; color:#222 !important; margin-bottom:3px; }
+  .ad-content { font-size:11.5px; color:#666 !important; line-height:1.45; }
+  .ad-euc-tag { display:inline-block; font-size:9.5px; padding:2px 8px; border-radius:8px; background:#f2f2f2; color:#666 !important; margin-top:6px; }
+  .ad-key { font-size:9px; color:#aaa !important; font-family:ui-monospace,monospace; margin-top:4px; }
+  .ad-savings-row { display:flex; gap:16px; margin-top:10px; padding-top:10px; border-top:1px solid #f7f7f7; }
+  .ad-savings-item { font-size:11.5px; }
+  .ad-savings-item b { color:#2e7d32 !important; }
+  .ad-savings-source { font-size:9.5px; color:#999 !important; }
+  .ad-upgrade-row { display:flex; gap:16px; margin-top:8px; font-size:11px; color:#555 !important; }
+  .ad-upgrade-row b { color:#172429 !important; }
+  .ad-financing-badge { font-size:9.5px; padding:2px 7px; border-radius:6px; background:#e6f5f5; color:#1c6d68 !important; margin-left:6px; }
+  .ad-unverified-badge { font-size:9px; padding:2px 8px; border-radius:8px; background:#e6f5f5; color:#1c6d68 !important; margin-left:6px; }
+  .ad-actions { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .ad-btn { font-size:11px; font-weight:600; padding:5px 12px; border-radius:14px; display:flex; align-items:center; gap:4px; }
+  .ad-btn.save { background:#3bada9; color:#fff !important; }
+  .ad-btn.discard { background:#f2f2f2; color:#777 !important; }
+  .ad-btn.already { background:#fff; color:#555 !important; border:1px solid #ddd; }
+  .ad-btn.done { background:#2e7d32; color:#fff !important; }
+  .ad-todo-badge { font-size:9.5px; padding:2px 8px; border-radius:8px; background:#e6f5f5; color:#1c6d68 !important; margin-left:6px; }
+
+  .ov-card { background:#fff; border-radius:12px; padding:18px; color:#222; }
+  .ov-card * { color:#222; }
+  .ov-section-title { font-size:12px; font-weight:700; color:#3bada9 !important; text-transform:uppercase; letter-spacing:.03em; margin:0 0 10px; }
+  .ov-item { border:1px solid #f0f0f0; border-radius:10px; padding:12px; margin-bottom:8px; }
+  .ov-item.upgrade { border-style:dashed; border-color:#3bada9; }
+  .ov-item-top { display:flex; gap:9px; align-items:flex-start; }
+  .ov-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex:none; background:#e6f5f5; }
+  .ov-title { font-size:12px; font-weight:600; color:#222 !important; }
+  .ov-tag { display:inline-block; font-size:9px; padding:1px 7px; border-radius:7px; background:#f2f2f2; color:#666 !important; margin-top:4px; }
+  .ov-savings { font-size:10.5px; color:#666 !important; margin-top:6px; }
+  .ov-savings b { color:#2e7d32 !important; }
+  .ov-meta { font-size:9.5px; color:#999 !important; margin-top:4px; }
+  .ov-actions { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+  .ov-btn { font-size:10px; font-weight:600; padding:4px 9px; border-radius:12px; }
+  .ov-btn.save { background:#3bada9; color:#fff !important; }
+  .ov-btn.neutral { background:#f2f2f2; color:#777 !important; }
+  .ov-btn.done { background:#2e7d32; color:#fff !important; }
+  .ov-badge { font-size:9px; padding:1px 7px; border-radius:7px; margin-left:5px; }
+  .ov-badge.new-badge { background:#e6f5f5; color:#1c6d68 !important; }
+  .ov-badge.done-badge { background:#e9f9e5; color:#2e7d32 !important; }
+  .ov-badge.already-badge { background:#f2f2f2; color:#888 !important; }
+
+  .ae-card { background:#fff; border-radius:14px; padding:32px 24px; color:#222; text-align:center; }
+  .ae-card * { color:#222; }
+  .ae-icon { font-size:26px; margin-bottom:10px; }
+  .ae-title { font-size:14px; font-weight:600; margin-bottom:8px; }
+  .ae-body { font-size:12.5px; color:#666 !important; line-height:1.6; max-width:340px; margin:0 auto 16px; }
+  .ae-nudge { display:flex; gap:8px; align-items:flex-start; background:#f3fbfa; border-radius:8px; padding:10px 12px; text-align:left; max-width:340px; margin:0 auto; }
+  .ae-nudge p { font-size:11.5px; color:#1c6d68 !important; margin:0; line-height:1.4; }
+
+  .sc-card { background:#fff; border-radius:14px; padding:32px 24px; color:#222; text-align:center; }
+  .sc-card * { color:#222; }
+  .sc-icon { font-size:26px; margin-bottom:10px; }
+  .sc-title { font-size:14px; font-weight:600; margin-bottom:8px; }
+  .sc-body { font-size:12.5px; color:#666 !important; line-height:1.6; max-width:340px; margin:0 auto 16px; }
+  .sc-progress { display:flex; gap:4px; justify-content:center; margin-bottom:8px; }
+  .sc-seg { width:24px; height:8px; border-radius:4px; background:#eee; }
+  .sc-seg.filled { background:#3bada9; }
+  .sc-progress-label { font-size:11px; color:#888 !important; }
+
+  .fn-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .fn-cell { border-radius:10px; padding:14px 12px; text-align:center; background:#f7f8f8; }
+  .fn-cell-icon { font-size:15px; margin-bottom:4px; color:#aaa; }
+  .fn-cell-text { font-size:10px; color:#999 !important; line-height:1.3; }
+  .fn-block-card { background:#fff; border-radius:14px; padding:32px 24px; color:#222; text-align:center; margin-bottom:16px; }
+  .fn-block-card * { color:#222; }
+  .fn-icon { font-size:26px; margin-bottom:10px; }
+  .fn-title { font-size:14px; font-weight:600; margin-bottom:8px; }
+  .fn-body { font-size:12.5px; color:#666 !important; line-height:1.6; max-width:380px; margin:0 auto 16px; }
+  .fn-progress { display:flex; gap:4px; justify-content:center; margin-bottom:8px; }
+  .fn-seg { width:20px; height:8px; border-radius:4px; background:#eee; }
+  .fn-seg.filled { background:#3bada9; }
+  .fn-progress-label { font-size:11px; color:#888 !important; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <h1>Insights tabs — mockup gallery</h1>
+  <p class="sub">ELIQ-579. One tab per Insights topic. Click to switch — this page persists as we work through the rest.</p>
+
+  <div class="tabbar" id="tabbar">
+    <button class="tabbtn" data-tab="consumption">Overview</button>
+    <button class="tabbtn active" data-tab="compare">Compare</button>
+    <button class="tabbtn" data-tab="solar">Solar</button>
+    <button class="tabbtn" data-tab="breakdown">Breakdown</button>
+    <button class="tabbtn" data-tab="peak">Peak</button>
+    <button class="tabbtn" data-tab="forecast">Forecast</button>
+    <button class="tabbtn" data-tab="advice">Advice</button>
+    <button class="tabbtn" data-tab="budgets">Budgets</button>
+  </div>
+
+  <div class="panel" id="panel-consumption">
+    <div class="ov2-page">
+      <img class="ov2-hero" src="overview-hero-v2.jpg" alt="" />
+      <div class="ov2-grid">
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#e6f5f5">🥧</div><div class="ov2-name">Breakdown</div></div>
+          <div class="ov2-stat">Heating — 38%</div>
+          <div class="ov2-insight">Your biggest category this month.</div>
+          <span class="ov2-link">See full breakdown →</span>
+        </div>
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#fff3d6">📈</div><div class="ov2-name">Peak</div></div>
+          <div class="ov2-stat">4.0 kW</div>
+          <div class="ov2-insight">12-month rolling average — sets your capacity tariff.</div>
+          <span class="ov2-link">See peak details →</span>
+        </div>
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#e9f9e5">👛</div><div class="ov2-name">Budgets</div></div>
+          <div class="ov2-stat">On track</div>
+          <div class="ov2-insight">187 of 300 kWh used, 13 days left this month.</div>
+          <span class="ov2-link">See your budget →</span>
+        </div>
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#fdf3e0">☀️</div><div class="ov2-name">Solar</div></div>
+          <div class="ov2-stat">62% self-consumed</div>
+          <div class="ov2-insight">Net exporter today: +3.2 kWh sent to the grid.</div>
+          <span class="ov2-link">See solar flow →</span>
+        </div>
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#e6f5f5">📊</div><div class="ov2-name">Forecast</div></div>
+          <div class="ov2-stat">412 kWh</div>
+          <div class="ov2-insight">Projected this month — 8% more than last year.</div>
+          <span class="ov2-link">See forecast →</span>
+        </div>
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#fde8f0">👥</div><div class="ov2-name">Compare</div></div>
+          <div class="ov2-stat">+73%</div>
+          <div class="ov2-insight">More than similar homes this month.</div>
+          <span class="ov2-link">See comparison →</span>
+        </div>
+        <div class="ov2-tile">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#e6f5f5">💡</div><div class="ov2-name">Advice</div></div>
+          <div class="ov2-stat">3 new tips</div>
+          <div class="ov2-insight">Save up to 540 kWh/year with the top one.</div>
+          <span class="ov2-link">See all advice →</span>
+        </div>
+        <div class="ov2-tile" style="opacity:.5">
+          <div class="ov2-head"><div class="ov2-icon" style="background:#f2f2f2">⚡</div><div class="ov2-name">Consumption</div></div>
+          <div class="ov2-stat">—</div>
+          <div class="ov2-insight">Already the full built tab — may not need a tile here at all.</div>
+          <span class="ov2-link">See consumption →</span>
+        </div>
+      </div>
+    </div>
+    <p class="status-line" style="margin-top:16px;">
+      Open questions: does Consumption get a tile too (8 tiles, for completeness) or stay the default "next" click since it's already the built, most-used tab (7 tiles, cleaner grid)? Does Overview replace the default landing topic entirely, or sit alongside Consumption as an optional extra view?
+    </p>
+  </div>
+
+  <div class="panel active" id="panel-compare">
+    <div class="cp-page">
+      <div class="cp-grid">
+        <div class="cp-main-col">
+
+          <div class="tr-card">
+            <div class="tr-toolbar">
+              <span class="tr-toggle"><span class="active">Consumption</span><span>Ranking</span></span>
+              <span class="tr-fuel"><span class="active">⚡ Elec</span><span>🔥 Gas</span></span>
+            </div>
+            <div class="tr-chart">
+              <svg width="100%" height="100%" viewBox="0 0 300 100" preserveAspectRatio="none" style="display:block">
+                <polyline points="0,34 60,40 120,17 180,8 240,16 300,29" fill="none" stroke="#f4b942" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+                <polyline points="0,62 60,65 120,62 180,59 240,58 300,59" fill="none" stroke="#3bada9" stroke-width="2.5" stroke-dasharray="4,3" vector-effect="non-scaling-stroke"/>
+              </svg>
+            </div>
+            <div class="tr-axis"><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span></div>
+            <div class="tr-legend" style="margin-bottom:14px">
+              <div class="tr-legend-row"><span class="tr-line-sw" style="border-color:#f4b942"></span>Your home <span class="tr-real-badge">Real UAT data</span></div>
+              <div class="tr-legend-row"><span class="tr-line-sw" style="border-color:#3bada9;border-top-style:dashed"></span>Similar homes average <span class="tr-real-badge">Real UAT data</span></div>
+            </div>
+            <div class="tr-note">You used 408→569 kWh over these months while similar homes stayed flat at 218-262 kWh — the gap widens most in June (569 vs 255, more than double). Both lines are real numbers from a live UAT probe, not invented for the mockup.</div>
+          </div>
+
+          <div class="tr-card">
+            <div class="tr-toolbar">
+              <span class="tr-toggle"><span>Consumption</span><span class="active">Ranking <span class="tr-real-badge">All 6 real</span></span></span>
+              <span class="tr-fuel"><span class="active">⚡ Elec</span><span>🔥 Gas</span></span>
+            </div>
+            <div class="tr-chart">
+              <div class="tr-band high"><span class="tr-band-label">Highest users</span></div>
+              <div class="tr-band low"><span class="tr-band-label">Most efficient</span></div>
+              <svg width="100%" height="100%" viewBox="0 0 300 100" preserveAspectRatio="none" style="display:block">
+                <polyline points="0,4.5 60,0 120,0 180,0 240,0 300,0.2" fill="none" stroke="#e05a9c" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <circle cx="0" cy="4.5" r="1.3" fill="#e05a9c"/>
+                <circle cx="60" cy="1" r="1.3" fill="#e05a9c"/>
+                <circle cx="120" cy="1" r="1.3" fill="#e05a9c"/>
+                <circle cx="180" cy="1" r="1.3" fill="#e05a9c"/>
+                <circle cx="240" cy="1" r="1.3" fill="#e05a9c"/>
+                <circle cx="300" cy="1.2" r="1.3" fill="#e05a9c"/>
+              </svg>
+            </div>
+            <div class="tr-axis"><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span></div>
+            <div class="tr-values"><span>95.5</span><span>100</span><span>100</span><span>100</span><span>100</span><span>99.8</span></div>
+            <div class="tr-note">Apr–Jul: you used <b>more than every home</b> in your comparison group — above even the highest (10th decile). Every point here is a real /similarhomes/report call for that month, not an estimate.</div>
+          </div>
+
+        </div>
+
+        <div class="cp-side-stack">
+          <div class="cb-card">
+            <div class="cb-title">Compared to similar homes</div>
+            <div class="cb-headline">You've used <b>73% more energy</b> than similar homes this month — the most efficient 10% use about 179 kWh.</div>
+            <div class="cb-bars">
+              <div class="cb-bar-col"><div class="cb-bar efficient" style="height:41%"></div><div class="cb-bar-value">179 kWh</div><div class="cb-bar-label">Most efficient<br>homes</div></div>
+              <div class="cb-bar-col"><div class="cb-bar you" style="height:100%"></div><div class="cb-bar-value">442 kWh</div><div class="cb-bar-label">Your home</div></div>
+              <div class="cb-bar-col"><div class="cb-bar similar" style="height:58%"></div><div class="cb-bar-value">255 kWh</div><div class="cb-bar-label">Similar homes</div></div>
+            </div>
+            <div class="cb-profile">
+              <div class="cb-profile-label">Compared using</div>
+              <div class="cb-profile-value">Detached house, 1–2 bedrooms, 1–2 persons, no electric cars</div>
+              <span class="cb-profile-link">Update home profile →</span>
+            </div>
+          </div>
+
+          <div class="pb-card">
+            <div class="pb-row">
+              <div class="pb-icon">🏆</div>
+              <div>
+                <div class="pb-title">Beat your personal best</div>
+                <div class="pb-sub">Compared to your own last 6 months</div>
+              </div>
+            </div>
+            <div class="pb-best">
+              <div class="pb-best-label">Your most efficient month tracked</div>
+              <div class="pb-best-value">March — 95.5th percentile</div>
+            </div>
+            <div class="pb-trend">↗ Currently 99.8th percentile — a bit above where you've been</div>
+            <div class="pb-goal">
+              <div class="pb-goal-label">This month vs. your best</div>
+              <div class="pb-goal-track">
+                <div class="pb-goal-fill" style="width:78%"></div>
+                <div class="pb-goal-marker" style="left:82%"></div>
+              </div>
+              <div class="pb-goal-note">Get under the <b>95.5th percentile</b> mark to set a new personal best.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line">✅ Approved — Consumption + Ranking trend charts (both real UAT data, all 6 months of Ranking individually verified via live /similarhomes/report calls), bar comparison with real 73%-more figure, fuel toggle (elec/gas, param confirmed but not live-tested for gas), and a "Beat your personal best" gamification widget chosen over a Budgets-style streak since this real data rarely shows consecutive improvement. Layout: two stacked charts wide, bar comparison + personal-best narrow, same pattern as Breakdown/Peak/Solar/Forecast.</p>
+
+    <div class="edge-label">Also designed — profile completeness (corrected) &amp; other empty states</div>
+    <div class="cp-edge-grid">
+      <div class="es-card">
+        <div class="es-title">Compared to similar homes</div>
+        <div class="es-body">No house type set yet — this is the one field we genuinely can't compare without.</div>
+        <div style="padding:20px 0;color:#aaa;font-size:22px">🏠</div>
+        <span class="es-btn">Set house type</span>
+        <div class="es-sub">sh_home_profile_insufficent — the true minimum</div>
+      </div>
+
+      <div class="es-card">
+        <div class="es-title">Compared to similar homes</div>
+        <div class="es-body" style="margin-bottom:10px">You've used <b>9% more energy</b> than similar homes.</div>
+        <div class="es-bars">
+          <div class="es-bar-col"><div class="es-bar efficient" style="height:44px"></div><div class="es-bar-label">Efficient</div></div>
+          <div class="es-bar-col"><div class="es-bar you" style="height:80px"></div><div class="es-bar-label">You</div></div>
+          <div class="es-bar-col"><div class="es-bar similar" style="height:73px"></div><div class="es-bar-label">Similar</div></div>
+        </div>
+        <div class="es-nudge"><span>💡</span><p>Comparing on house type only — add living area and household size for a tighter match.</p></div>
+        <div class="es-sub">Not an error code — a normal response, just loose</div>
+      </div>
+
+      <div class="es-card">
+        <div class="es-icon">🏘️</div>
+        <div class="es-title">No matching group found</div>
+        <div class="es-body">Your home's profile is unique enough that we can't find a comparable group right now. This isn't something completing your profile further usually fixes.</div>
+        <div class="es-sub">sh_no_matching_group</div>
+      </div>
+
+      <div class="es-card">
+        <div class="es-icon">📊</div>
+        <div class="es-title">Still gathering the group</div>
+        <div class="es-body">Not enough similar homes have reported data for this period yet. Check back in a few days.</div>
+        <div class="es-sub">sh_not_enough_contributers</div>
+      </div>
+
+      <div class="es-card">
+        <div class="es-icon">€</div>
+        <div class="es-title">€ view unavailable</div>
+        <div class="es-body">Cost comparison needs a price formula for your contract — the kWh view above still works fine.</div>
+        <div class="es-sub">sh_no_price_information — only affects the € toggle</div>
+      </div>
+
+      <div class="cb-card">
+        <div class="cb-title">Compared to similar homes</div>
+        <div class="cb-headline good">Nice — you've used <b>16% less energy</b> than similar homes this month.</div>
+        <div class="cb-bars">
+          <div class="cb-bar-col"><div class="cb-bar efficient" style="height:54%"></div><div class="cb-bar-value">180 kWh</div><div class="cb-bar-label">Most efficient<br>homes</div></div>
+          <div class="cb-bar-col"><div class="cb-bar you" style="height:76%"></div><div class="cb-bar-value">250 kWh</div><div class="cb-bar-label">Your home</div></div>
+          <div class="cb-bar-col"><div class="cb-bar similar" style="height:100%"></div><div class="cb-bar-value">298 kWh</div><div class="cb-bar-label">Similar homes</div></div>
+        </div>
+        <div class="cb-profile">
+          <div class="cb-profile-label">Compared using</div>
+          <div class="cb-profile-value" style="font-size:11px">Illustrative — good-news framing</div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">Corrected mid-session: sh_home_profile_insufficent only fires when house_type itself is missing (the guide's real minimum) — a partial profile (house_type set, other fields missing) is a normal successful response with a soft nudge, not a block. Also corrected: Belgium's groups filter on bedrooms, not living_area (m²) — confirmed live. Both logged in june-integration-notes.md §2.</p>
+  </div>
+
+  <div class="panel" id="panel-solar">
+    <div class="sf-grid">
+    <div class="sf-main-col">
+    <div class="sf-card">
+      <div class="sf-toolbar">
+        <span class="sf-toggle"><span class="active">Day</span><span>Week</span><span>Month</span><span>Year</span></span>
+        <span class="sf-nav">‹ &nbsp; 18 May &nbsp; ›</span>
+      </div>
+
+      <div class="sf-chips">
+        <div class="sf-chip on"><span class="dot" style="background:#f4b942"></span>Import</div>
+        <div class="sf-chip on"><span class="dot" style="background:#3bada9"></span>Export</div>
+      </div>
+
+      <div class="sf-balance">
+        <span class="sf-balance-icon">🔆</span>
+        <span>Net exporter today: <b>+3.2 kWh</b> sent to the grid</span>
+      </div>
+
+      <div class="sf-chart">
+        <div class="sf-zero"></div>
+        <div class="sf-bars">
+          <div class="sf-col"><div class="imp" style="height:8%"></div></div>
+          <div class="sf-col"><div class="imp" style="height:5%"></div></div>
+          <div class="sf-col"><div class="exp" style="height:20%"></div></div>
+          <div class="sf-col"><div class="exp" style="height:55%"></div></div>
+          <div class="sf-col"><div class="exp" style="height:60%"></div></div>
+          <div class="sf-col"><div class="exp" style="height:30%"></div></div>
+          <div class="sf-col"><div class="imp" style="height:12%"></div></div>
+          <div class="sf-col"><div class="imp" style="height:18%"></div></div>
+        </div>
+        <svg width="100%" height="100%" viewBox="0 0 160 100" preserveAspectRatio="none" style="position:relative;z-index:2">
+          <polyline points="0,58 20,62 40,30 60,10 80,8 100,25 120,55 140,64 160,60" fill="none" stroke="#3bada9" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+      <div class="sf-axis"><span>00</span><span></span><span>06</span><span></span><span>10</span><span>12</span><span>14</span><span></span><span>18</span><span></span><span>21</span><span>23</span></div>
+      <div class="sf-legend">
+        <div class="sf-legend-row"><span class="sf-line-sw"></span>Net (Production − Consumption) — above zero = exporting surplus, below = importing a deficit</div>
+      </div>
+
+      <span class="sf-detail-toggle">▾ Show raw production &amp; consumption</span>
+      <div class="sf-detail-chart">
+        <svg width="100%" height="100%" viewBox="0 0 160 100" preserveAspectRatio="none" style="display:block">
+          <polyline points="0,90 20,70 40,30 60,10 80,8 100,28 120,68 140,88 160,92" fill="none" stroke="#f4b942" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          <polyline points="0,65 20,63 40,58 60,54 80,53 100,56 120,60 140,64 160,66" fill="none" stroke="#999" stroke-dasharray="3,2" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+      <div class="sf-legend">
+        <div class="sf-legend-row"><span class="sf-line-sw" style="border-color:#f4b942"></span>Production<span class="sf-badge-est">Estimated</span></div>
+        <div class="sf-legend-row"><span class="sf-line-sw" style="border-color:#999;border-top-style:dashed"></span>Consumption<span class="sf-badge-est">Estimated</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <div class="se-title">Seasonal production — last 12 months</div>
+      <div class="se-insight">
+        <p>Production peaks in July at 620 kWh — over 9× December's 68 kWh, your quietest month.</p>
+      </div>
+      <div class="se-chart">
+        <div class="se-month"><div style="height:65%;background:#3bada9"></div><div style="height:35%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:60%;background:#3bada9"></div><div style="height:40%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:50%;background:#3bada9"></div><div style="height:38%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:38%;background:#3bada9"></div><div style="height:44%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:28%;background:#3bada9"></div><div style="height:60%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:20%;background:#3bada9"></div><div style="height:75%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:18%;background:#3bada9"></div><div style="height:82%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:20%;background:#3bada9"></div><div style="height:78%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:26%;background:#3bada9"></div><div style="height:62%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:36%;background:#3bada9"></div><div style="height:46%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:55%;background:#3bada9"></div><div style="height:33%;background:#f4b942"></div></div>
+        <div class="se-month"><div style="height:68%;background:#3bada9"></div><div style="height:22%;background:#f4b942"></div></div>
+      </div>
+      <div class="se-axis"><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span></div>
+      <div class="se-legend">
+        <div class="se-legend-row"><span class="se-sw" style="background:#3bada9"></span>Self-consumed</div>
+        <div class="se-legend-row"><span class="se-sw" style="background:#f4b942"></span>Exported</div>
+      </div>
+    </div>
+    </div>
+
+    <div class="sf-side-stack">
+      <div class="fd-card">
+        <div class="fd-top">
+          <div class="fd-sun">☀️</div>
+          <div class="fd-top-label">Production</div>
+          <div class="fd-top-value">8.4 kWh</div>
+        </div>
+        <svg width="100%" height="50" viewBox="0 0 300 50" style="display:block">
+          <path d="M150,0 C90,10 70,26 55,44" fill="none" stroke="#3bada9" stroke-width="2"/>
+          <polygon points="55,44 62,36 48,38" fill="#3bada9"/>
+          <path d="M150,0 C210,10 230,26 245,44" fill="none" stroke="#f4b942" stroke-width="2"/>
+          <polygon points="245,44 238,36 252,38" fill="#f4b942"/>
+        </svg>
+        <div class="fd-arrows">
+          <div class="fd-pill exp">3.2</div>
+          <div class="fd-pill sc">5.2</div>
+        </div>
+        <div class="fd-nodes">
+          <div class="fd-node grid">
+            <div class="fd-node-icon">⚡</div>
+            <div class="fd-node-label">Grid</div>
+            <div class="fd-node-value">4.4 kWh</div>
+          </div>
+          <div class="fd-mid-arrow">
+            <div class="fd-mid-arrow-line"></div>
+            <div class="fd-mid-value">4.4</div>
+          </div>
+          <div class="fd-node home">
+            <div class="fd-node-icon">🏠</div>
+            <div class="fd-node-label">Home</div>
+            <div class="fd-node-value">9.6 kWh</div>
+          </div>
+        </div>
+        <div class="fd-summary">
+          <div class="fd-summary-row"><span class="label">↓ Import</span><span class="value">4.4 kWh</span></div>
+          <div class="fd-summary-row"><span class="label">↑ Export</span><span class="value">3.2 kWh</span></div>
+          <div class="fd-summary-row"><span class="label">🔄 Self-consumed</span><span class="value">5.2 kWh</span></div>
+        </div>
+      </div>
+
+      <div class="sf-kpi">
+        <div class="sf-kpi-label">Self-consumption <span class="sf-info-btn">i</span> <span class="sf-badge-est">Estimated</span></div>
+        <div class="sf-kpi-value">62%</div>
+        <div class="sf-kpi-body">Of the power your panels made today, 62% was used in the home — the rest went to the grid.</div>
+        <div class="sf-popup"><code>(Production − Export) / Production</code><br>Today: (8.4 − 3.2) / 8.4 = <code>62%</code></div>
+      </div>
+      <div class="sf-kpi">
+        <div class="sf-kpi-label">Self-sufficiency <span class="sf-info-btn">i</span> <span class="sf-badge-est">Estimated</span></div>
+        <div class="sf-kpi-value">54%</div>
+        <div class="sf-kpi-body">54% of today's usage came from your own panels — the rest was drawn from the grid.</div>
+        <div class="sf-popup"><code>(Consumption − Import) / Consumption</code><br>Today: (6.9 − 3.2) / 6.9 = <code>54%</code></div>
+      </div>
+      <div class="sf-card">
+        <div class="sf-formula">Consumption = Import + <b>Production</b> − Export</div>
+        <div style="font-size:11px;color:#888;text-align:center">How the four streams relate — Import/Export are metered, Production/Consumption are Eliq's estimate.</div>
+      </div>
+    </div>
+    </div>
+    <p class="status-line">✅ Approved — net-line chart (Production − Consumption, resolves the zero-axis mismatch a raw overlay would have), Import/Export toggle chips + Net Balance stat (adapted from the POC's Module 7), collapsible raw-detail panel, self-consumption/self-sufficiency KPIs with worked-example popups (matches Eliq's own x-core-sufficiency-card-v1 pattern), a seasonal production chart stacked into self-consumed vs. exported, and a snapshot flow diagram (inspired by a reference competitor screenshot) as the "at a glance" companion summary, first in the side column. Layout: two time-series charts in the wide column, the flow diagram + explanatory widgets (KPIs + formula) in a 1/3 side column.</p>
+    <p class="status-line" style="color:#999">This tab has requiredCapability: "solar" — invisible to non-solar users entirely, so unlike every other tab, no teaser state is needed here.</p>
+
+    <div class="edge-label">Also designed — still calibrating (a real gap caught in a later sweep)</div>
+    <div class="sc-card">
+      <div class="sc-icon">☀️</div>
+      <div class="sc-title">Still calibrating your solar setup</div>
+      <div class="sc-body">We need at least 7 days of import/export data to estimate your panels' production — after that, we can start showing your full solar picture. Import and Export themselves are already tracking fine; it's just Production and Consumption still calibrating.</div>
+      <div class="sc-progress">
+        <div class="sc-seg filled"></div><div class="sc-seg filled"></div><div class="sc-seg filled"></div><div class="sc-seg filled"></div>
+        <div class="sc-seg"></div><div class="sc-seg"></div><div class="sc-seg"></div>
+      </div>
+      <div class="sc-progress-label">4 of 7 days</div>
+    </div>
+    <p class="status-line" style="color:#999">Grounded in Get Location's per-stream sync_status (ok vs. waiting_for_data) and the PV disaggregation guide's explicit 7-day minimum — identified in the very first Solar research pass but never actually designed until a later sweep for missing empty/not-enough-data states caught it.</p>
+  </div>
+
+  <div class="panel" id="panel-breakdown">
+    <div class="bd-page">
+      <div class="bd-grid">
+        <div class="bd-glance-cell">
+          <div class="bd-card">
+            <div class="bd-card-title">At a glance</div>
+            <div class="bd-donut"><div class="bd-donut-label"><b>38%</b>Heating</div></div>
+            <div class="bd-glance-foot">Biggest category this month →</div>
+          </div>
+        </div>
+        <div class="bd-cta-cell">
+          <div class="bd-card">
+            <div class="cta-title">🏠 Home profile</div>
+            <span class="cta-pct">70% complete</span>
+            <div class="cta-track"><div class="cta-fill" style="width:70%"></div></div>
+            <div class="cta-body">A few more details (heating type, home size) sharpen your category breakdown.</div>
+            <span class="cta-btn">Complete profile →</span>
+          </div>
+        </div>
+        <div class="bd-list-cell">
+          <div class="bd-card">
+            <div class="bd-list-head">
+              <span style="font-size:13px;font-weight:600;color:#555">This month</span>
+              <span class="bd-unit-toggle"><span class="active">kWh</span><span>€</span></span>
+            </div>
+            <div class="bd-est-note">€ values use an average Belgian price estimate — not your actual tariff.</div>
+            <div class="bd-bar-row"><div class="bd-bar-head"><span><span class="bd-cat-icon">🔥</span>Heating</span><span>312 kWh · 38%</span></div><div class="bd-bar-track"><div class="bd-bar-fill" style="width:38%"></div></div></div>
+            <div class="bd-bar-row"><div class="bd-bar-head"><span><span class="bd-cat-icon">🚿</span>Water heating <span class="bd-badge-low">Estimated</span></span><span>164 kWh · 20%</span></div><div class="bd-bar-track"><div class="bd-bar-fill" style="width:20%;background:#5cc0bc"></div></div></div>
+            <div class="bd-bar-row"><div class="bd-bar-head"><span><span class="bd-cat-icon">🔌</span>Always on</span><span>115 kWh · 14%</span></div><div class="bd-bar-track"><div class="bd-bar-fill" style="width:14%;background:#7fd1cd"></div></div></div>
+            <div class="bd-bar-row"><div class="bd-bar-head"><span><span class="bd-cat-icon">🍳</span>Cooking</span><span>98 kWh · 12%</span></div><div class="bd-bar-track"><div class="bd-bar-fill" style="width:12%;background:#a6e0dd"></div></div></div>
+            <div class="bd-bar-row"><div class="bd-bar-head"><span><span class="bd-cat-icon">🧊</span>Fridge &amp; freezer</span><span>74 kWh · 9%</span></div><div class="bd-bar-track"><div class="bd-bar-fill" style="width:9%;background:#cfeceb"></div></div></div>
+            <div class="bd-bar-row"><div class="bd-bar-head"><span><span class="bd-cat-icon">•••</span>Other</span><span>57 kWh · 7%</span></div><div class="bd-bar-track"><div class="bd-bar-fill" style="width:7%;background:#e6f5f5"></div></div></div>
+          </div>
+        </div>
+        <div class="bd-seasonal-cell">
+          <div class="bd-card">
+            <div class="bd-card-title">Seasonal trend — last 12 months</div>
+            <div class="bd-insight">
+              <p>Heating went from 9% of your usage in July to 54% in January — your biggest seasonal swing.
+                <span class="bd-caveat">Patterns vary by home.</span>
+              </p>
+            </div>
+            <div class="bd-chart">
+              <div class="bd-month"><div style="height:54%;background:#3bada9"></div><div style="height:10%;background:#5cc0bc"></div><div style="height:8%;background:#7fd1cd"></div><div style="height:9%;background:#a6e0dd"></div><div style="height:19%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:48%;background:#3bada9"></div><div style="height:10%;background:#5cc0bc"></div><div style="height:8%;background:#7fd1cd"></div><div style="height:9%;background:#a6e0dd"></div><div style="height:25%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:38%;background:#3bada9"></div><div style="height:11%;background:#5cc0bc"></div><div style="height:9%;background:#7fd1cd"></div><div style="height:10%;background:#a6e0dd"></div><div style="height:32%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:24%;background:#3bada9"></div><div style="height:12%;background:#5cc0bc"></div><div style="height:9%;background:#7fd1cd"></div><div style="height:11%;background:#a6e0dd"></div><div style="height:44%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:14%;background:#3bada9"></div><div style="height:12%;background:#5cc0bc"></div><div style="height:10%;background:#7fd1cd"></div><div style="height:12%;background:#a6e0dd"></div><div style="height:52%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:9%;background:#3bada9"></div><div style="height:12%;background:#5cc0bc"></div><div style="height:12%;background:#7fd1cd"></div><div style="height:13%;background:#a6e0dd"></div><div style="height:54%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:9%;background:#3bada9"></div><div style="height:12%;background:#5cc0bc"></div><div style="height:13%;background:#7fd1cd"></div><div style="height:13%;background:#a6e0dd"></div><div style="height:53%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:11%;background:#3bada9"></div><div style="height:12%;background:#5cc0bc"></div><div style="height:12%;background:#7fd1cd"></div><div style="height:12%;background:#a6e0dd"></div><div style="height:53%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:20%;background:#3bada9"></div><div style="height:11%;background:#5cc0bc"></div><div style="height:10%;background:#7fd1cd"></div><div style="height:11%;background:#a6e0dd"></div><div style="height:48%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:33%;background:#3bada9"></div><div style="height:11%;background:#5cc0bc"></div><div style="height:9%;background:#7fd1cd"></div><div style="height:10%;background:#a6e0dd"></div><div style="height:37%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:45%;background:#3bada9"></div><div style="height:10%;background:#5cc0bc"></div><div style="height:8%;background:#7fd1cd"></div><div style="height:9%;background:#a6e0dd"></div><div style="height:28%;background:#e6f5f5"></div></div>
+              <div class="bd-month"><div style="height:52%;background:#3bada9"></div><div style="height:10%;background:#5cc0bc"></div><div style="height:8%;background:#7fd1cd"></div><div style="height:9%;background:#a6e0dd"></div><div style="height:21%;background:#e6f5f5"></div></div>
+            </div>
+            <div class="bd-axis"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+            <div class="bd-legend">
+              <div class="bd-legend-row"><span class="bd-swatch" style="background:#3bada9"></span>Heating</div>
+              <div class="bd-legend-row"><span class="bd-swatch" style="background:#5cc0bc"></span>Water heating</div>
+              <div class="bd-legend-row"><span class="bd-swatch" style="background:#7fd1cd"></span>Always on</div>
+              <div class="bd-legend-row"><span class="bd-swatch" style="background:#a6e0dd"></span>Cooking</div>
+              <div class="bd-legend-row"><span class="bd-swatch" style="background:#e6f5f5"></span>Fridge, freezer &amp; other</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line">✅ Approved — glance + full list + seasonal trend, profile-completion nudge, no time toggle, € via average-price fallback.</p>
+
+    <div class="edge-label">Edge cases — also approved</div>
+    <div class="edge-states">
+      <div class="block-card">
+        <div class="block-icon">🏠</div>
+        <div class="block-title">Hard block: required profile field missing</div>
+        <div class="block-body">We need a couple of basics — home type and heating source — before we can break your energy down into categories.</div>
+        <div class="block-track"><div class="block-fill" style="width:30%"></div></div>
+        <div class="block-pct">30% complete</div>
+        <span class="block-btn">Complete profile</span>
+      </div>
+      <div class="block-card">
+        <div class="block-icon">📊</div>
+        <div class="block-title">Data not ready yet</div>
+        <div class="block-body">We need about 3 more weeks of daily readings before we can reliably split your usage into categories. Check back soon.</div>
+        <div class="block-sub">Nothing to complete here — just needs time.</div>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">⚠️ Exact required-field names are placeholder copy — tracked as ask #36 in june-integration-notes.md §3 pending Hani's config confirmation.</p>
+  </div>
+
+  <div class="panel" id="panel-peak">
+    <div class="pk-page">
+      <div class="pk-card pk-section">
+        <div class="pk-toolbar">
+          <span class="pk-toggle"><span>Day</span><span>Week</span><span class="active">Month</span><span>Year</span></span>
+          <span class="pk-nav">‹ &nbsp; May 2026 &nbsp; ›</span>
+        </div>
+        <div class="pk-chart">
+          <div class="pk-threshold month">Month peak 4.2 kW</div>
+          <div class="pk-threshold avg">12-month avg 4.0 kW</div>
+          <div class="bar" style="height:55%"></div><div class="bar" style="height:40%"></div><div class="bar" style="height:60%"></div>
+          <div class="bar peak" style="height:92%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:35%"></div>
+          <div class="bar" style="height:65%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:58%"></div>
+          <div class="bar" style="height:38%"></div><div class="bar" style="height:52%"></div><div class="bar" style="height:44%"></div>
+          <div class="bar" style="height:30%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:36%"></div>
+        </div>
+        <div class="pk-axis"><span>1</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span></div>
+        <div class="pk-legend">
+          <div class="pk-legend-row"><span class="pk-swatch" style="background:#3bada9"></span>Daily peak (kW)</div>
+          <div class="pk-legend-row"><span class="pk-swatch" style="background:#FF5630"></span>This month's peak</div>
+          <div class="pk-legend-row"><span class="pk-line" style="border-color:#00B8D9"></span>12-month average</div>
+        </div>
+      </div>
+
+      <div class="pk-stats">
+        <div class="pk-stat peak-today">
+          <div class="pk-stat-label">Latest peak</div>
+          <div class="pk-stat-value">3.8 kW</div>
+          <div class="pk-stat-meta">Today, 14:30–14:45</div>
+        </div>
+        <div class="pk-stat peak-month">
+          <div class="pk-stat-label">Month peak</div>
+          <div class="pk-stat-value">4.2 kW</div>
+          <div class="pk-stat-meta">18 May, 18:30</div>
+        </div>
+        <div class="pk-stat rolling-avg">
+          <div class="pk-stat-label">12-month rolling average</div>
+          <div class="pk-stat-value">4.0 kW</div>
+          <div class="pk-stat-meta">This sets your capacity tariff</div>
+        </div>
+      </div>
+
+      <div class="pk-lower-grid">
+        <div class="pk-card">
+          <div class="pk-card-title">Your rolling average, explained</div>
+          <div class="rv-count-row">
+            <div class="rv-count-icon">⏳</div>
+            <div>
+              <div class="rv-count-title">Your biggest peak is still counting</div>
+              <div class="rv-count-sub">5.8 kW in June 2025 — the highest of your last 12 months</div>
+            </div>
+          </div>
+          <div class="rv-count-track"><div class="rv-count-fill" style="width:92%"></div></div>
+          <div class="rv-count-foot">Counts toward your average for <b>1 more month</b>, then it rolls off and your average may drop.</div>
+
+          <span class="tb-link">▾ See the full calculation</span>
+          <table class="tb-table">
+            <thead><tr><th>Month</th><th class="num">Peak</th><th>When</th></tr></thead>
+            <tbody>
+              <tr class="peak-row"><td>Jun 2025 <span class="tb-tag rolling-off">rolls off next</span> <span class="tb-tag max">highest</span></td><td class="num">5.8 kW</td><td>12 Jun, 19:00</td></tr>
+              <tr><td>Jul 2025</td><td class="num">3.2 kW</td><td>28 Jul, 20:15</td></tr>
+              <tr><td>Aug 2025</td><td class="num">3.8 kW</td><td>14 Aug, 18:30</td></tr>
+              <tr><td>Sep 2025</td><td class="num">4.0 kW</td><td>3 Sep, 19:45</td></tr>
+              <tr><td>Oct 2025</td><td class="num">3.5 kW</td><td>21 Oct, 07:15</td></tr>
+              <tr><td>Nov 2025</td><td class="num">4.4 kW</td><td>9 Nov, 18:00</td></tr>
+              <tr><td>Dec 2025</td><td class="num">3.3 kW</td><td>24 Dec, 20:30</td></tr>
+              <tr><td>Jan 2026</td><td class="num">2.9 kW</td><td>15 Jan, 07:00</td></tr>
+              <tr><td>Feb 2026</td><td class="num">4.0 kW</td><td>2 Feb, 19:15</td></tr>
+              <tr><td>Mar 2026</td><td class="num">4.9 kW</td><td>18 Mar, 18:45</td></tr>
+              <tr><td>Apr 2026</td><td class="num">4.2 kW</td><td>7 Apr, 19:00</td></tr>
+              <tr><td>May 2026 <span class="tb-tag added">just added</span></td><td class="num">4.2 kW</td><td>18 May, 18:30</td></tr>
+            </tbody>
+            <tfoot><tr class="tb-foot-row"><td>Average of 12 months</td><td class="num">4.0 kW</td><td></td></tr></tfoot>
+          </table>
+        </div>
+
+        <div class="pk-side-stack">
+          <div class="pk-card">
+            <div class="pk-bench">
+              <div class="pk-bench-icon">📉</div>
+              <div class="pk-bench-body">Your rolling average is <b>4.0 kW</b> — the Flemish average is <b>4.24 kW</b>. You're just under average!</div>
+            </div>
+          </div>
+
+          <div class="pk-card">
+            <div class="pk-card-title">Estimated capacity charge <span class="pk-new-badge">New idea</span></div>
+            <div class="pk-card-sub">Translating the kW number into a rough € figure</div>
+            <div class="pk-cost-value">≈ €7.40 / month</div>
+            <div class="pk-cost-note">Rough estimate, fixed regional €/kW rate — not your grid operator's exact rate. Eliq's price formulas can't compute this component.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line">✅ Approved — chart + stats + rolling-average explainer (with calc table) + benchmark + capacity-charge estimate idea. Combines the built /peak-insights page's concepts with Eliq's peakpower endpoint.</p>
+
+    <div class="edge-label">Edge case — also approved: insufficient history</div>
+    <div class="pk-page">
+      <p style="font-size:11px;color:#999;margin:0 0 14px">Chart, Latest peak, and Month peak stay the same as above — only the rolling-average pieces change shape:</p>
+      <div class="pk-stats">
+        <div class="pk-stat peak-today">
+          <div class="pk-stat-label">Latest peak</div>
+          <div class="pk-stat-value">3.1 kW</div>
+          <div class="pk-stat-meta">Today, 08:15–08:30</div>
+        </div>
+        <div class="pk-stat peak-month">
+          <div class="pk-stat-label">Month peak</div>
+          <div class="pk-stat-value">3.4 kW</div>
+          <div class="pk-stat-meta">6 Sep, 19:00</div>
+        </div>
+        <div class="pk-stat rolling-avg">
+          <div class="pk-stat-label">Average so far</div>
+          <div class="pk-stat-value">3.0 kW</div>
+          <div class="pk-stat-meta">Based on 3 months, not 12 yet</div>
+        </div>
+      </div>
+
+      <div class="pk-card">
+        <div class="build-row">
+          <div class="build-icon">📈</div>
+          <div>
+            <div class="build-title">Still building your 12-month average</div>
+            <div class="build-sub">3 of 12 months collected so far</div>
+          </div>
+        </div>
+        <div class="build-segments">
+          <div class="seg filled"></div><div class="seg filled"></div><div class="seg filled"></div>
+          <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+          <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+        </div>
+        <div class="seg-labels"><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+        <div class="build-foot">Nothing "rolls off" yet — every month you have still counts. The full picture (and your real capacity-tariff number) needs a complete 12 months.</div>
+        <div class="build-floor-note">Belgium sets a 2.5 kW regulatory floor — if your average lands below that, 2.5 kW is what actually gets billed, not your raw number.</div>
+      </div>
+
+      <div class="pk-card">
+        <div class="pk-bench">
+          <div class="pk-bench-icon">📉</div>
+          <div class="pk-bench-body">
+            Your average so far is <b>3.0 kW</b> — the Flemish average is <b>4.24 kW</b>.
+            <span class="pk-bench-caveat">Take this comparison lightly — it's based on 3 months, not your full year.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">No calc table or cost-estimate card in this state — both assume a settled 12-month figure that doesn't exist yet.</p>
+  </div>
+
+  <div class="panel" id="panel-forecast">
+    <div class="fc-page">
+
+      <div class="fc-card">
+        <div class="gl-row">
+          <div class="gl-cell ready">
+            <div class="gl-label">Today</div>
+            <div class="gl-value">14.2 kWh</div>
+            <div class="gl-split">9.1 so far + 5.1 forecast</div>
+          </div>
+          <div class="gl-cell ready">
+            <div class="gl-label">This week</div>
+            <div class="gl-value">92 kWh</div>
+            <div class="gl-split">58 so far + 34 forecast</div>
+          </div>
+          <div class="gl-cell ready">
+            <div class="gl-label">This month</div>
+            <div class="gl-value">412 kWh</div>
+            <div class="gl-split">240 so far + 172 forecast</div>
+          </div>
+          <div class="gl-cell">
+            <div class="gl-not-ready">
+              <div class="gl-not-ready-icon">📊</div>
+              <div class="gl-not-ready-text">This year — needs a bit more history yet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fc-grid">
+        <div class="fc-main-col">
+
+          <div class="fc-card">
+            <div class="fc-toolbar">
+              <span class="fc-toggle"><span class="active">Month</span><span>Year</span></span>
+              <span class="fc-ahead">Forecasting the next 6 months</span>
+            </div>
+            <div class="fc-headline">
+              <span class="fc-headline-icon">📅</span>
+              <span>You're projected to use <b>412 kWh</b> this month — <b>8% more</b> than the same month last year.</span>
+            </div>
+            <div class="fc-chart">
+              <svg width="100%" height="100%" viewBox="0 0 300 100" preserveAspectRatio="none" style="display:block">
+                <polyline points="0,60 50,50 100,35 150,20 200,15 250,25 300,45" fill="none" stroke="#999" stroke-dasharray="4,3" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+                <polyline points="0,55 50,42 100,28 150,12 200,8 250,20 300,38" fill="none" stroke="#3bada9" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+              </svg>
+            </div>
+            <div class="fc-axis"><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+            <div class="fc-legend">
+              <div class="fc-legend-row"><span class="fc-line-sw"></span>Forecast</div>
+              <div class="fc-legend-row"><span class="fc-line-sw hist"></span>Same months last year</div>
+            </div>
+            <div class="fc-cost-note">€ view unavailable — no price formula set up for this contract yet. Verified live: Eliq doesn't error here like its docs claim, it silently returns €0 — the app must detect and hide that, never show a literal "€0 projected" as if it were real.</div>
+          </div>
+
+          <div class="fc-card">
+            <div class="hf-toolbar">
+              <span class="hf-toggle"><span class="active">Next 24h</span><span>Next 48h</span></span>
+              <span class="hf-now">Now: 18 May, 14:30</span>
+            </div>
+            <div class="hf-chart">
+              <svg width="100%" height="100%" viewBox="0 0 300 100" preserveAspectRatio="none" style="display:block">
+                <polygon points="
+                  0,61 20,58 40,52 60,40 80,46 100,58 120,67 140,72 160,70 180,62 200,45 220,54 240,64 260,65 280,63 300,59
+                  300,41 280,49 260,55 240,52 220,26 200,5 180,38 160,60 140,64 120,57 100,38 80,14 60,4 40,24 20,46 0,49
+                " fill="rgba(59,173,169,.22)" stroke="none"/>
+                <polyline points="0,55 20,52 40,38 60,22 80,30 100,48 120,62 140,68 160,65 180,50 200,25 220,40 240,58 260,60 280,56 300,50"
+                  fill="none" stroke="#3bada9" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+                <line x1="0" y1="0" x2="0" y2="100" stroke="#999" stroke-width="1" stroke-dasharray="2,2"/>
+              </svg>
+            </div>
+            <div class="hf-axis"><span>Now</span><span>16h</span><span>18h</span><span>20h</span><span>22h</span><span>00h</span><span>02h</span><span>04h</span><span>06h</span><span>08h</span><span>10h</span><span>12h</span><span>14h</span></div>
+            <div class="hf-legend">
+              <div class="hf-legend-row"><span class="hf-line-sw"></span>Best estimate</div>
+              <div class="hf-legend-row"><span class="hf-band-sw"></span>Likely range (95% confidence)</div>
+            </div>
+            <div class="hf-explain">
+              <p>Eliq is 95% confident your actual usage each hour will fall inside the shaded band. The band is wider around your usual morning and evening routine — those hours vary more day to day — and narrower overnight and midday, when your usage is more consistent.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="fc-side-stack sf-side-stack">
+          <div class="bl-card">
+            <div class="bl-status below"><span class="bl-dot"></span>On track for budget</div>
+            <div class="bl-body">Your forecast projects <b>412 kWh</b> this month — under your <b>450 kWh</b> electricity budget.</div>
+            <span class="bl-link">View budget →</span>
+          </div>
+
+          <div class="ac-card">
+            <div class="ac-headline">
+              <div class="ac-icon">🎯</div>
+              <div>
+                <div class="ac-title">How good was last month's forecast?</div>
+                <div class="ac-sub">Replaying what we predicted on 1 May</div>
+              </div>
+            </div>
+            <div class="ac-compare">
+              <div class="ac-figure">
+                <div class="ac-figure-label">Forecasted</div>
+                <div class="ac-figure-value">380 kWh</div>
+              </div>
+              <span class="ac-arrow">→</span>
+              <div class="ac-figure">
+                <div class="ac-figure-label">Actual</div>
+                <div class="ac-figure-value">402 kWh</div>
+              </div>
+            </div>
+            <div class="ac-diff">That's <b>6% higher</b> than predicted — pretty close.</div>
+            <span class="ac-link">▾ See the last 6 months</span>
+            <table class="ac-table">
+              <thead><tr><th>Month</th><th class="num">Forecast</th><th class="num">Actual</th><th class="num">Off by</th></tr></thead>
+              <tbody>
+                <tr><td>May</td><td class="num">380 kWh</td><td class="num">402 kWh</td><td class="num">+6%</td></tr>
+                <tr><td>Apr</td><td class="num">410 kWh</td><td class="num">395 kWh</td><td class="num">-4%</td></tr>
+                <tr><td>Mar</td><td class="num">455 kWh</td><td class="num">448 kWh</td><td class="num">-2%</td></tr>
+                <tr><td>Feb</td><td class="num">470 kWh</td><td class="num">512 kWh</td><td class="num">+9%</td></tr>
+                <tr><td>Jan</td><td class="num">520 kWh</td><td class="num">505 kWh</td><td class="num">-3%</td></tr>
+                <tr><td>Dec</td><td class="num">498 kWh</td><td class="num">470 kWh</td><td class="num">-6%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="status-line">✅ Approved — at-a-glance Today/Week/Month/Year row (each cell independently gated on its own data-readiness threshold), Month/Year forecast chart with last-year comparison, near-term 24-48h chart with a real (verified-live) confidence band, "on track for budget" cross-reference to the Budgets tab, and a retrospective accuracy check using the allow_historic param. Layout: two charts wide, budget-link + accuracy narrow, same pattern as Breakdown/Peak/Solar.</p>
+
+    <div class="edge-label">Also designed — budget-link edge states</div>
+    <div class="split">
+      <div class="bl-card">
+        <div class="bl-status above"><span class="bl-dot"></span>Forecast to exceed budget</div>
+        <div class="bl-body">Your forecast projects <b>412 kWh</b> this month — over your <b>380 kWh</b> electricity budget by about 8%.</div>
+        <span class="bl-link">View budget →</span>
+      </div>
+      <div class="bl-card">
+        <div class="bl-empty-icon">🎯</div>
+        <div class="bl-empty-title">No budget set up yet</div>
+        <div class="bl-empty-body">Set a monthly budget and we'll tell you here whether this forecast keeps you under it.</div>
+        <span class="bl-link">Set up a budget →</span>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">Verified live against UAT (scripts/investigate-forecast-hourly-band.mjs, investigate-forecast-cost-and-shape.mjs): confidence bands are hourly-only (day/month forecast has no bound fields, confirmed on real data not just the schema); unit=cost silently returns zeros instead of erroring as documented — logged in june-integration-notes.md §2 as resolved findings, not open questions.</p>
+
+    <div class="edge-label">Also designed — "not enough data yet" (whole-tab state, caught in the sweep)</div>
+    <div class="fn-block-card">
+      <div class="fn-icon">📈</div>
+      <div class="fn-title">Building toward your first forecast</div>
+      <div class="fn-body">Forecasting needs at least 7 days of energy data before it can predict anything — daily and short-term forecasts unlock first, monthly forecasts need a full month.</div>
+      <div class="fn-progress">
+        <div class="fn-seg filled"></div><div class="fn-seg filled"></div><div class="fn-seg filled"></div>
+        <div class="fn-seg"></div><div class="fn-seg"></div><div class="fn-seg"></div><div class="fn-seg"></div>
+      </div>
+      <div class="fn-progress-label">3 of 7 days toward your first forecast</div>
+    </div>
+    <div class="fc-card">
+      <div class="fn-row">
+        <div class="fn-cell"><div class="fn-cell-icon">📊</div><div class="fn-cell-text">Today<br>not ready</div></div>
+        <div class="fn-cell"><div class="fn-cell-icon">📊</div><div class="fn-cell-text">This week<br>not ready</div></div>
+        <div class="fn-cell"><div class="fn-cell-icon">📊</div><div class="fn-cell-text">This month<br>not ready</div></div>
+        <div class="fn-cell"><div class="fn-cell-icon">📊</div><div class="fn-cell-text">This year<br>not ready</div></div>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">Below 7 days of data, nothing in this tab can compute — not the main chart, not the hourly band, not even Today/This week in the glance row. Same real-day-count honesty as Solar's calibrating state, applied at the whole-tab level since everything is unavailable together here, not staggered like the earlier per-cell example. Like Advice, /forecast has no distinct "not enough data" error code — this uses the guide's documented thresholds directly, not an API reason code.</p>
+  </div>
+
+  <div class="panel" id="panel-advice">
+    <div class="ad-page">
+      <div class="ad-card">
+        <div class="ad-tabs-row">
+          <div class="ad-tabs">
+            <span class="ad-tab active">New (4)</span>
+            <span class="ad-tab">To do (0)</span>
+            <span class="ad-tab">Done (0)</span>
+          </div>
+          <span class="ad-discarded-link">Discarded (0)</span>
+        </div>
+
+        <div class="ad-item">
+          <div class="ad-item-top">
+            <div class="ad-icon tip">💡</div>
+            <div>
+              <div class="ad-title">Adjust your indoor temperature</div>
+              <div class="ad-content">Lowering your indoor temperature slightly can meaningfully cut heating energy use without a noticeable comfort difference.</div>
+              <span class="ad-euc-tag">🔥 Heating</span>
+              <div class="ad-key">adjust_the_indoor_temperature · relevance 0.32</div>
+            </div>
+          </div>
+          <div class="ad-savings-row">
+            <div class="ad-savings-item">Save <b>540 kWh</b>/year</div>
+            <div class="ad-savings-item">≈ <b>€150</b>/year <span class="ad-savings-source">(average, €0.27/kWh)</span></div>
+          </div>
+          <div class="ad-actions">
+            <span class="ad-btn save">+ Save for later</span>
+            <span class="ad-btn already">✓ Already do this</span>
+            <span class="ad-btn discard">✕ Not relevant</span>
+          </div>
+        </div>
+
+        <div class="ad-item">
+          <div class="ad-item-top">
+            <div class="ad-icon tip">💡</div>
+            <div>
+              <div class="ad-title">Carpets help insulate your floor</div>
+              <div class="ad-content">Carpets aren't just comfortable underfoot — they also help insulate the floor, reducing heat loss.</div>
+              <span class="ad-euc-tag">🔥 Heating</span>
+              <div class="ad-key">carpets_do_insulate · relevance 0.19</div>
+            </div>
+          </div>
+          <div class="ad-savings-row">
+            <div class="ad-savings-item">Save <b>650 kWh</b>/year</div>
+            <div class="ad-savings-item">≈ <b>€180</b>/year <span class="ad-savings-source">(average, €0.27/kWh)</span></div>
+          </div>
+          <div class="ad-actions">
+            <span class="ad-btn save">+ Save for later</span>
+            <span class="ad-btn already">✓ Already do this</span>
+            <span class="ad-btn discard">✕ Not relevant</span>
+          </div>
+        </div>
+
+        <div class="ad-item">
+          <div class="ad-item-top">
+            <div class="ad-icon tip">💡</div>
+            <div>
+              <div class="ad-title">Wash clothes at a lower temperature</div>
+              <div class="ad-content">Most laundry gets just as clean at a lower wash temperature, using noticeably less energy per load.</div>
+              <span class="ad-euc-tag">🧺 Washing</span>
+              <div class="ad-key">temperature_washing_machine · relevance 0.21</div>
+            </div>
+          </div>
+          <div class="ad-savings-row">
+            <div class="ad-savings-item">Save <b>240 kWh</b>/year</div>
+            <div class="ad-savings-item">≈ <b>€65</b>/year <span class="ad-savings-source">(average, €0.27/kWh)</span></div>
+          </div>
+          <div class="ad-actions">
+            <span class="ad-btn save">+ Save for later</span>
+            <span class="ad-btn already">✓ Already do this</span>
+            <span class="ad-btn discard">✕ Not relevant</span>
+          </div>
+        </div>
+
+        <div class="ad-item unverified">
+          <div class="ad-item-top">
+            <div class="ad-icon upgrade">🏠</div>
+            <div>
+              <div class="ad-title">Upgrade to a heat pump <span class="ad-unverified-badge">Upgrade example — once financing is configured</span></div>
+              <div class="ad-content">Replacing gas heating with a heat pump can substantially cut your heating energy use over time.</div>
+              <span class="ad-euc-tag">🔥 Heating</span>
+              <div class="ad-key">Included proactively — schema supports investment_cost/financing_options, not yet configured for our tenant (ask #39/#20)</div>
+            </div>
+          </div>
+          <div class="ad-savings-row">
+            <div class="ad-savings-item">Save <b>~4,200 kWh</b>/year</div>
+            <div class="ad-savings-item">≈ <b>€1,134</b>/year <span class="ad-savings-source">(illustrative)</span></div>
+          </div>
+          <div class="ad-upgrade-row">
+            <div>Investment: <b>€8,000–12,000</b></div>
+            <div>Pays off in: <b>~9–11 years</b></div>
+            <span class="ad-financing-badge">💳 Financing available</span>
+          </div>
+          <div class="ad-actions">
+            <span class="ad-btn save">+ Save for later</span>
+            <span class="ad-btn discard">✕ Not relevant</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line">✅ Approved — New tab with 3 real energy_tip items (own translation, since language_code=en didn't work — ask #39) + 1 illustrative upgrade item, 3-action model (Save for later / Already do this / Not relevant), EUC tags matching Breakdown's category icons, savings honestly labeled "(average, €0.27/kWh)" confirmed live. Relevance scores shown as observed (0.19-0.32), not inflated.</p>
+
+    <div class="edge-label">Also designed — To do, Done &amp; Discarded (corrected status mapping)</div>
+    <div class="cp-edge-grid" style="grid-template-columns:1fr 1fr">
+      <div class="ov-card">
+        <div class="ov-section-title">To do (1)</div>
+        <div class="ov-item">
+          <div class="ov-item-top"><div class="ov-icon">🧺</div><div><div class="ov-title">Wash clothes at a lower temperature</div><span class="ov-tag">🧺 Washing</span></div></div>
+          <div class="ov-savings">Save <b>240 kWh</b> / ≈<b>€65</b>/yr</div>
+          <div class="ov-meta">Saved 3 days ago</div>
+          <div class="ov-actions"><span class="ov-btn done">✓ Mark as done</span><span class="ov-btn neutral">Move back to New</span></div>
+        </div>
+        <div class="ov-section-title" style="margin-top:20px">Done (1) — implemented only</div>
+        <div class="ov-item">
+          <div class="ov-item-top"><div class="ov-icon" style="background:#e9f9e5">✓</div><div><div class="ov-title">Replace old lamps with LED lighting <span class="ov-badge done-badge">Completed</span></div><span class="ov-tag">💡 Lighting</span></div></div>
+          <div class="ov-savings">Saved <b>730 kWh</b> / ≈<b>€200</b>/yr</div>
+          <div class="ov-meta">Marked done 2 weeks ago — was on your To-do list first</div>
+        </div>
+      </div>
+
+      <div class="ov-card">
+        <div class="ov-section-title">Discarded (3) — skipped, not_relevant, already_implemented, all three</div>
+        <div class="ov-item">
+          <div class="ov-item-top"><div class="ov-icon" style="background:#f2f2f2">💡</div><div><div class="ov-title">Optimize outdoor lighting <span class="ov-badge already-badge">Already doing this</span></div><span class="ov-tag">💡 Lighting</span></div></div>
+        </div>
+        <div class="ov-item">
+          <div class="ov-item-top"><div class="ov-icon" style="background:#f2f2f2">💡</div><div><div class="ov-title">Draught-proof your windows <span class="ov-badge already-badge">Not relevant</span></div><span class="ov-tag">🔥 Heating</span></div></div>
+        </div>
+        <div class="ov-item">
+          <div class="ov-item-top"><div class="ov-icon" style="background:#f2f2f2">💡</div><div><div class="ov-title">Use a smart power strip <span class="ov-badge already-badge">Skipped</span></div><span class="ov-tag">🔌 Always on</span></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">Corrected mid-session: already_implemented moved from Done to Discarded, matching the guide's own explicit grouping ("discard status include: skipped, not_relevant, already_implemented") — Done now only ever shows real implemented items. PATCH /advice/{id} confirmed as a JSON-Patch array body ([{op:"replace",path:"/status",value:"..."}]), not a plain object. "Came from To-do first" on Done cards is a UX guarantee from our own action design, not something Eliq reports — worth being precise about that distinction. Findings logged in june-integration-notes.md §2, ask #39.</p>
+
+    <div class="edge-label">Also designed — the one honest empty state</div>
+    <div class="ae-card">
+      <div class="ae-icon">💡</div>
+      <div class="ae-title">Nothing to suggest yet</div>
+      <div class="ae-body">We don't have any personalized energy-saving tips for your home right now. This is normal early on, and usually resolves itself as more of your energy data comes in.</div>
+      <div class="ae-nudge">
+        <span>💡</span>
+        <p>A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.</p>
+      </div>
+    </div>
+    <p class="status-line" style="color:#999">Not several differentiated states like Budgets/Compare — unlike those, GET /advice has no reason-code equivalent (no not_enough_data-style action). The only documented non-200 cases are location-not-found and a 404 whose description literally reads "No advices found," which per this project's own history meant "feature not provisioned for the client," not "this home doesn't qualify yet." One honest, generic empty state instead of inventing distinctions the API doesn't support. Logged as ask #40.</p>
+  </div>
+
+  <div class="panel" id="panel-budgets">
+    <div class="bg-page">
+      <div class="bg-card">
+        <div class="bg-fuel-tabs"><span class="active">⚡ Electricity · Monthly</span><span>🔥 Gas · Weekly</span></div>
+        <div class="bg-status below"><span class="bg-dot"></span>On track</div>
+        <div class="bg-chart">
+          <div class="bg-limit-line">Limit 300 kWh</div>
+          <div class="col"><div class="fill" style="height:11%"></div></div><div class="col"><div class="fill" style="height:14%"></div></div><div class="col"><div class="fill" style="height:18%"></div></div><div class="col"><div class="fill" style="height:22%"></div></div><div class="col"><div class="fill" style="height:25%"></div></div><div class="col"><div class="fill" style="height:30%"></div></div><div class="col"><div class="fill" style="height:33%"></div></div><div class="col"><div class="fill" style="height:35%"></div></div><div class="col"><div class="fill" style="height:39%"></div></div><div class="col"><div class="fill" style="height:42%"></div></div><div class="col"><div class="fill" style="height:44%"></div></div><div class="col"><div class="fill" style="height:47%"></div></div><div class="col"><div class="fill" style="height:49%"></div></div><div class="col"><div class="fill" style="height:52%"></div></div><div class="col"><div class="fill" style="height:55%"></div></div><div class="col"><div class="fill" style="height:57%"></div></div><div class="col"><div class="fill" style="height:60%"></div></div><div class="col"><div class="fill" style="height:62%"></div></div>
+          <div class="col forecast"><div class="fill" style="height:64%"></div></div><div class="col forecast"><div class="fill" style="height:66%"></div></div><div class="col forecast"><div class="fill" style="height:68%"></div></div><div class="col forecast"><div class="fill" style="height:70%"></div></div><div class="col forecast"><div class="fill" style="height:72%"></div></div><div class="col forecast"><div class="fill" style="height:74%"></div></div><div class="col forecast"><div class="fill" style="height:76%"></div></div><div class="col forecast"><div class="fill" style="height:78%"></div></div><div class="col forecast"><div class="fill" style="height:80%"></div></div><div class="col forecast"><div class="fill" style="height:82%"></div></div><div class="col forecast"><div class="fill" style="height:84%"></div></div><div class="col forecast"><div class="fill" style="height:86%"></div></div><div class="col forecast"><div class="fill" style="height:88%"></div></div>
+        </div>
+        <div class="bg-axis"><span>1</span><span></span><span></span><span></span><span>5</span><span></span><span></span><span></span><span></span><span>10</span><span></span><span></span><span></span><span></span><span>15</span><span></span><span></span><span>18</span><span></span><span></span><span></span><span></span><span>22</span><span></span><span></span><span></span><span></span><span>27</span><span></span><span>31</span></div>
+        <div class="bg-legend">
+          <div class="bg-legend-row"><span class="bg-sw" style="background:#3bada9"></span>Used (daily)</div>
+          <div class="bg-legend-row"><span class="bg-sw" style="background:#d8d8d8"></span>Forecast (daily)</div>
+          <div class="bg-legend-row"><span class="bg-line-sw"></span>Limit</div>
+        </div>
+        <div class="bg-nums">
+          <div>Used so far<br><b>187 kWh</b></div>
+          <div style="text-align:center">Forecast<br><b>265 kWh</b></div>
+          <div style="text-align:right">Limit<br><b>300 kWh</b></div>
+        </div>
+        <div class="bg-period">1–31 May · day 18, 13 days left</div>
+
+        <div class="pc-row">
+          <div class="pc-icon">✅</div>
+          <div class="pc-title">On track</div>
+        </div>
+        <div class="pc-value" style="color:#2e7d32 !important">≤ 8.7 kWh/day</div>
+        <div class="pc-body">Keep usage under this for the remaining 13 days and you'll stay within budget.</div>
+        <div class="pc-context">You're averaging 10.4 kWh/day so far — ease off slightly and you'll land under your 300 kWh limit. Assumes fairly even usage the rest of the period.</div>
+      </div>
+
+      <div class="bg-card">
+        <div class="bg-title">History &amp; streak</div>
+        <div class="streak-row">
+          <div class="streak-flame">🔥</div>
+          <div>
+            <div class="streak-value">3-month streak</div>
+            <div class="streak-label">Under budget since March</div>
+          </div>
+          <div class="streak-best">Best ever (last 24mo)<br><b>5 months</b></div>
+        </div>
+        <div class="hist-strip">
+          <div class="hist-chip over">✕</div>
+          <div class="hist-chip gap"></div>
+          <div class="hist-chip under">✓</div>
+          <div class="hist-chip under">✓</div>
+          <div class="hist-chip current">So far</div>
+        </div>
+        <div class="hist-labels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span></div>
+      </div>
+    </div>
+    <p class="status-line">✅ Approved — budget progress chart (daily bars, month/week resolutions) + pacing tip + history/streak widget. All derived from the real Budget and BudgetHistory schemas (oas/eliq-insights-api.yaml), no invented fields.</p>
+
+    <div class="edge-label">Also designed — setup state &amp; pacing tip variants</div>
+    <div class="bg-page">
+      <div class="bg-card">
+        <div class="bg-title">Setting up a new budget</div>
+        <div class="setup-mode-row">
+          <div class="setup-mode recommended">
+            <div class="setup-mode-title">Auto <span class="setup-mode-badge">Recommended</span></div>
+            <div class="setup-mode-body">We set your limit each period from your own forecast, +20% margin. No number to guess — it adapts as your usage changes.</div>
+          </div>
+          <div class="setup-mode">
+            <div class="setup-mode-title">Manual</div>
+            <div class="setup-mode-body">Pick your own fixed limit. Stays the same every period until you change it.</div>
+            <div class="setup-suggest">Suggested: 265 kWh, based on your forecast</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-card">
+        <div class="bg-title">Pacing tip — all three states</div>
+        <div class="pc-variants">
+          <div class="pc-variant on-track">
+            <div class="pc-row"><div class="pc-icon">✅</div><div class="pc-title">On track</div></div>
+            <div class="pc-value">≤ 8.7 kWh/day</div>
+            <div class="pc-body">Keep usage under this for the remaining 13 days.</div>
+          </div>
+          <div class="pc-variant cut-back">
+            <div class="pc-row"><div class="pc-icon">⚠️</div><div class="pc-title">Cut back to stay under</div></div>
+            <div class="pc-value">≤ 6.5 kWh/day</div>
+            <div class="pc-body">Forecast to go over — drop to this for the rest of the period.</div>
+          </div>
+          <div class="pc-variant already-over">
+            <div class="pc-row"><div class="pc-icon">✕</div><div class="pc-title">Already over</div></div>
+            <div class="pc-value">+42 kWh over</div>
+            <div class="pc-body">Nothing to pace now — a fresh budget starts in 6 days.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="edge-label">Also designed — Eliq's own waiting states (status.action)</div>
+    <div class="split">
+      <div class="bg-card">
+        <div class="bg-fuel-tabs"><span class="active">⚡ Electricity · Monthly</span><span>🔥 Gas · Weekly</span></div>
+        <div class="wait-status"><span class="wait-dot"></span>Setting up</div>
+        <div class="wait-body">
+          <div class="wait-icon">⏳</div>
+          <div>
+            <div class="wait-title">Your budget is set</div>
+            <div class="wait-copy">First calculation is on its way — check back shortly and we'll show you where you stand.</div>
+          </div>
+        </div>
+        <div class="wait-config">
+          <div>Mode<br><b>Auto (20% margin)</b></div>
+          <div>Period<br><b>1–31 May</b></div>
+        </div>
+      </div>
+      <div class="bg-card">
+        <div class="bg-fuel-tabs"><span class="active">⚡ Electricity · Monthly</span><span>🔥 Gas · Weekly</span></div>
+        <div class="wait-status"><span class="wait-dot"></span>Setting up</div>
+        <div class="wait-body">
+          <div class="wait-icon">📊</div>
+          <div>
+            <div class="wait-title">Still collecting your data</div>
+            <div class="wait-copy">Your meter hasn't reported enough recent readings yet to track this budget. Nothing wrong with your setup — this should resolve once fresh data comes in.</div>
+          </div>
+        </div>
+        <div class="wait-config">
+          <div>Mode<br><b>Auto (20% margin)</b></div>
+          <div>Period<br><b>1–31 May</b></div>
+        </div>
+      </div>
+    </div>
+    <p class="status-line">✅ Approved — budget_awaiting_first_run and budget_not_enough_data, both from the real Budget.status.action field. Deliberately no specific timeframe in the copy (ask #38: Eliq's own guide is truncated at exactly the sentence that would answer this).</p>
+    <p class="status-line" style="color:#999">Open: ask #37 (series step granularity, chart assumes daily) and ask #38 (budget_not_enough_data duration) in june-integration-notes.md §3 — both need Hani, confirmed unreachable via the API reference page itself (auth-walled) or Firecrawl.</p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('tabbar').addEventListener('click', function (e) {
+    var btn = e.target.closest('.tabbtn');
+    if (!btn) return;
+    document.querySelectorAll('.tabbtn').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+</script>
+</body>
+</html>

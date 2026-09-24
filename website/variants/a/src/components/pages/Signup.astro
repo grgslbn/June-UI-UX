@@ -1,0 +1,272 @@
+---
+// Sign-up step 1 → estimate → step 2 → confirmation (ux-research §4.4, conversion-strategy §2).
+// Minimal chrome (logo, help, language), noindex (routes NOINDEX). Each step is a real <form>;
+// the island (scripts/signup.ts) validates, persists answers in sessionStorage, and fires dataLayer events.
+import { Picture } from 'astro:assets';
+import { href } from '@shared/routes.mjs';
+import { copy, eur, planBySlug, to, type Locale } from '../../content/i18n';
+import { signupCopy, postcodeData, estimateModel } from '../../content/signup';
+import Site from '../../layouts/Site.astro';
+import Logo from '../Logo.astro';
+import Icon from '../Icon.astro';
+import Stars from '../Stars.astro';
+import AnimIcon from '../AnimIcon.astro';
+import cheer from '@shared/assets/character/june-character-cheering.png';
+import { graph } from '../../lib/schema';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = copy[locale];
+const t = signupCopy[locale];
+const nl = locale === 'nl-be';
+const other = nl ? 'fr-be' : 'nl-be';
+const plans = ['switch', 'switch-plus', 'premium'].map(s => planBySlug(s) as any);
+const link = (s: string) => s.replace(/\[([^\]]+)\]/g, '<a href="#" data-todo="legal page">$1</a>');
+const jsonld = graph({ locale, routeKey: 'signup', title: t.title });
+// Strings the island needs (templates with {placeholders}; functions evaluated here).
+const client = {
+  lang: nl ? 'nl' : 'fr',
+  err: t.err,
+  town: t.town('{pc}', '{town}', '{region}', '{dso}'),
+  regionOnly: t.regionOnly('{pc}', '{prov}', '{region}', '{dso}'),
+  regionVL: t.regionVL,
+  estFor: t.est.for('{hh}', '{place}', '{energy}'),
+  energyWord: t.est.energyWord, hhWord: t.est.hhWord,
+  after: t.est.after('{plan}', '{price}'),
+  cta: t.est.cta('{plan}'),
+  recPlus: t.est.recPlus, recPremium: t.est.recPremium,
+  doneBody: t.done.body('{email}'),
+  stepOf: [1, 2, 3].map(n => t.stepOf(n)),
+  names: { switch: 'Switch', 'switch-plus': 'Switch Plus', premium: 'Premium' },
+  eur: nl ? '€ {v}' : '{v} €',
+  pc: postcodeData, model: estimateModel,
+};
+---
+<Site locale={locale} routeKey="signup" title={t.title} description={t.description} jsonld={jsonld} bodyClass="funnel">
+  <a class="skip" href="#main">{c.skip}</a>
+  <header class="fhdr">
+    <div class="wrap fhdr__inner">
+      <Logo href={to('home', locale)} label={c.home} width={72} />
+      <div class="fhdr__util">
+        <a class="fhdr__help" href={to('faq', locale)}><Icon name="i-info" size="sm" />{t.help}</a>
+        <div class="lang">
+          <span class="lang__cur">{c.langCurrent}</span>
+          <a class="lang__alt" href={href('signup', other, import.meta.env.BASE_URL)} hreflang={nl ? 'fr-BE' : 'nl-BE'} lang={nl ? 'fr' : 'nl'} aria-label={c.langOther.aria} data-keep-query>{c.langOther.label}</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="funnel__main">
+    <div class="wrap funnel__grid">
+      <div class="funnel__col">
+        <h1 class="funnel__h1">{t.h1}</h1>
+        <div class="progress" data-progress>
+          <p class="progress__txt"><span data-step-of>{t.stepOf(1)}</span> · {t.time}</p>
+          <ol class="progress__list" aria-label={t.progressLabel}>
+            {t.progress.map((p, i) => <li class:list={['progress__item', i === 0 && 'is-current']} aria-current={i === 0 ? 'step' : undefined}><span class="progress__dot" aria-hidden="true">{i + 1}</span><span class="progress__l">{p}</span></li>)}
+          </ol>
+        </div>
+        <p class="planchip" data-planchip hidden><Icon name="i-check-circle" size="sm" /><span>{t.planChip} <strong data-planchip-name></strong></span><span class="planchip__sub">{t.planChange}</span></p>
+        <noscript><p class="notice">{t.noscript}</p></noscript>
+
+        <!-- STEP 1 · your home -->
+        <form class="fstep surface" id="s1" data-step="1" action="" method="get" aria-labelledby="s1-title">
+          <h2 id="s1-title" class="fstep__t" tabindex="-1">{t.s1.title}</h2>
+          <p class="fstep__intro">{t.s1.intro}</p>
+          <div class="errsum" data-errsum tabindex="-1" hidden><p class="errsum__t">{t.errTitle}</p><ul></ul></div>
+
+          <div class="field" data-field="postcode">
+            <label class="field__l" for="f-pc">{t.s1.postcode}</label>
+            <p class="field__h" id="f-pc-h">{t.s1.postcodeHelp}</p>
+            <input class="input input--pc" id="f-pc" name="postcode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="4"
+              pattern="[1-9][0-9]{3}" required placeholder={t.s1.postcodePh} aria-describedby="f-pc-h f-pc-e f-pc-town" />
+            <p class="field__e" id="f-pc-e"></p>
+            <p class="field__ok" id="f-pc-town" aria-live="polite"></p>
+            <p class="field__region" data-region-note hidden><Icon name="i-info" size="sm" /><span></span></p>
+          </div>
+
+          <fieldset class="field" data-field="energy" aria-describedby="f-energy-e">
+            <legend class="field__l">{t.s1.energy}</legend>
+            <p class="field__e" id="f-energy-e"></p>
+            <div class="chips">{t.s1.energyOpts.map(([v, l], i) => <label class="chipopt"><input type="radio" name="energy" value={v} checked={i === 0} required /><span>{l}</span></label>)}</div>
+          </fieldset>
+
+          <fieldset class="field" data-field="household" aria-describedby="f-hh-e">
+            <legend class="field__l">{t.s1.household}</legend>
+            <p class="field__e" id="f-hh-e"></p>
+            <div class="chips chips--4">{t.s1.householdOpts.map(([v, l]) => <label class="chipopt"><input type="radio" name="household" value={v} /><span>{l}</span></label>)}</div>
+            <details class="usage" data-usage>
+              <summary><Icon name="i-plus" size="sm" />{t.s1.usageToggle}</summary>
+              <p class="field__h">{t.s1.usageHelp}</p>
+              <div class="usage__row">
+                <div><label class="field__l field__l--sm" for="f-kwh">{t.s1.usageElec}</label><input class="input" id="f-kwh" name="kwh" type="text" inputmode="numeric" autocomplete="off" aria-describedby="f-kwh-e" /><p class="field__e" id="f-kwh-e"></p></div>
+                <div data-gas-field><label class="field__l field__l--sm" for="f-gas">{t.s1.usageGas}</label><input class="input" id="f-gas" name="gas" type="text" inputmode="numeric" autocomplete="off" aria-describedby="f-gas-e" /><p class="field__e" id="f-gas-e"></p></div>
+              </div>
+            </details>
+          </fieldset>
+
+          <fieldset class="field" data-field="meter" aria-describedby="f-meter-h f-meter-e">
+            <legend class="field__l">{t.s1.meter}</legend>
+            <p class="field__h" id="f-meter-h">{t.s1.meterHelp}</p>
+            <p class="field__e" id="f-meter-e"></p>
+            <div class="chips">{t.s1.meterOpts.map(([v, l]) => <label class="chipopt"><input type="radio" name="meter" value={v} required /><span>{l}</span></label>)}</div>
+          </fieldset>
+
+          <fieldset class="field" data-field="solar" aria-describedby="f-solar-e">
+            <legend class="field__l">{t.s1.solar}</legend>
+            <p class="field__e" id="f-solar-e"></p>
+            <div class="chips">{t.s1.solarOpts.map(([v, l]) => <label class="chipopt"><input type="radio" name="solar" value={v} required /><span>{l}</span></label>)}</div>
+          </fieldset>
+
+          <fieldset class="field field--opt">
+            <legend class="field__l">{t.s1.extras}</legend>
+            <div class="chips">{t.s1.extrasOpts.map(([v, l]) => <label class="chipopt chipopt--check"><input type="checkbox" name="extras" value={v} /><span>{l}</span></label>)}</div>
+          </fieldset>
+
+          <p class="fstep__edge"><Icon name="i-info" size="sm" />{t.s1.edge}</p>
+          <div class="fstep__actions">
+            <button class="btn btn--primary btn--lg fstep__submit" type="submit">{t.s1.submit}<Icon name="i-arrow-r" size="sm" class="nudge" /></button>
+            <p class="fstep__micro">{t.s1.micro}</p>
+          </div>
+        </form>
+
+        <!-- ESTIMATE -->
+        <section class="fstep surface est" id="s-est" data-step="est" aria-labelledby="est-title" hidden>
+          <div class="est__head">
+            <AnimIcon name="calculator" size={72} />
+            <div>
+              <h2 id="est-title" class="fstep__t" tabindex="-1">{t.est.title}</h2>
+              <p class="est__for" data-est-for></p>
+            </div>
+          </div>
+          <div class="est__figure">
+            <p class="est__range"><span data-est-range></span> <span class="est__per">{t.est.perYear}</span></p>
+            <span class="tag">{t.est.tag}</span>
+          </div>
+          <dl class="est__rows">
+            <div class="row"><dt data-est-after></dt><dd class="row__num mid-num" data-est-net></dd><dd class="row__sub">{t.est.afterNote}</dd></div>
+          </dl>
+          <p class="est__solar" data-est-solar hidden><Icon name="i-sun" size="sm" />{t.est.solarNote}</p>
+          <div class="est__rec">
+            <p class="est__rec-t"><Icon name="i-shield" size="sm" />{t.est.recTitle}</p>
+            <p data-est-rec></p>
+          </div>
+          <details class="est__method" open>
+            <summary><Icon name="i-info" size="sm" />{t.est.method}</summary>
+            <p>{t.est.methodBody}</p>
+          </details>
+          <div class="fstep__actions">
+            <button class="btn btn--primary btn--lg" type="button" data-go="2"><span data-est-cta></span><Icon name="i-arrow-r" size="sm" class="nudge" /></button>
+            <div class="est__sec">
+              <button class="btn-link" type="button" data-go="1"><Icon name="i-arrow-l" size="sm" />{t.est.edit}</button>
+              <a class="btn-link" href={to('plans', locale)} target="_blank" rel="noopener">{t.est.compare}<Icon name="i-arrow-up-r" size="sm" /></a>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 2 · plan + preference + email -->
+        <form class="fstep surface" id="s2" data-step="2" action="" method="post" aria-labelledby="s2-title" hidden>
+          <h2 id="s2-title" class="fstep__t" tabindex="-1">{t.s2.title}</h2>
+          <div class="errsum" data-errsum tabindex="-1" hidden><p class="errsum__t">{t.errTitle}</p><ul></ul></div>
+
+          <fieldset class="field" data-field="plan">
+            <legend class="field__l">{t.s2.plan}</legend>
+            <div class="pcards">
+              {plans.map(p => (
+                <label class:list={['pcard', `pcard--${p.slug}`]}>
+                  <input type="radio" name="plan" value={p.slug} checked={p.slug === 'switch-plus'} />
+                  <span class="pcard__body">
+                    {p.slug === 'switch-plus' && <span class="pcard__badge">{t.s2.recBadge}</span>}
+                    <span class="pcard__fit" data-fit={p.slug}>{t.s2.forYou}</span>
+                    <span class="pcard__name">{p.shortName}</span>
+                    <span class="pcard__price"><strong>{eur(p.priceYearly, locale)}</strong> {t.s2.perYear}</span>
+                    <span class="pcard__month">{t.s2.perMonth(eur(p.priceMonthly, locale))}</span>
+                    <span class="pcard__line">{t.s2.planLines[p.slug]}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            <p class="notice notice--warn" data-premium-analog hidden><Icon name="i-info" size="sm" />{t.s2.premiumAnalog}</p>
+          </fieldset>
+
+          <fieldset class="field" data-field="mode">
+            <legend class="field__l">{t.s2.mode}</legend>
+            <div class="modeopts">
+              {t.s2.modeOpts.map(([v, l, d], i) => <label class="modeopt"><input type="radio" name="mode" value={v} checked={i === 0} /><span><strong>{l}</strong><small>{d}</small></span></label>)}
+            </div>
+            <label class="check"><input type="checkbox" name="green" value="yes" /><span>{t.s2.green}<small>{t.s2.greenHelp}</small></span></label>
+          </fieldset>
+
+          <div class="field field--2">
+            <div>
+              <label class="field__l" for="f-name">{t.s2.name}</label>
+              <input class="input" id="f-name" name="firstname" type="text" autocomplete="given-name" />
+            </div>
+            <div data-field="email">
+              <label class="field__l" for="f-email">{t.s2.email}</label>
+              <input class="input" id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="f-email-h f-email-e" />
+              <p class="field__e" id="f-email-e"></p>
+            </div>
+            <p class="field__h field__h--full" id="f-email-h"><Icon name="i-lock" size="sm" />{t.s2.emailHelp}</p>
+          </div>
+
+          <div class="field" data-field="terms">
+            <label class="check"><input type="checkbox" name="terms" value="yes" required aria-describedby="f-terms-e" /><span set:html={link(t.s2.terms)} /></label>
+            <p class="field__e" id="f-terms-e"></p>
+            <label class="check"><input type="checkbox" name="marketing" value="yes" /><span>{t.s2.marketing}</span></label>
+          </div>
+
+          <details class="usage">
+            <summary><Icon name="i-plus" size="sm" />{t.s2.code}</summary>
+            <label class="field__l field__l--sm" for="f-code">{t.s2.codeLabel}</label>
+            <input class="input input--code" id="f-code" name="code" type="text" autocomplete="off" />
+          </details>
+
+          <div class="fstep__actions">
+            <button class="btn btn--primary btn--lg fstep__submit" type="submit">{t.s2.submit}<Icon name="i-arrow-r" size="sm" class="nudge" /></button>
+            <p class="fstep__micro">{t.s2.micro}</p>
+            <p class="fstep__micro">{t.s2.next}</p>
+            <button class="btn-link" type="button" data-go="est"><Icon name="i-arrow-l" size="sm" />{t.s2.prev}</button>
+          </div>
+        </form>
+
+        <!-- CONFIRMATION -->
+        <section class="fstep surface done" id="s-done" data-step="done" aria-labelledby="done-title" hidden>
+          <Picture src={cheer} formats={['avif', 'webp']} widths={[160, 320]} sizes="160px" alt="" loading="lazy" decoding="async" class="done__char" />
+          <h2 id="done-title" class="fstep__t" tabindex="-1">{t.done.title}</h2>
+          <p class="done__body" data-done-body></p>
+          <p class="tag">{t.done.demo}</p>
+          <h3 class="h4 done__h">{t.done.summary}</h3>
+          <ul class="done__sum" data-done-sum role="list"></ul>
+          <h3 class="h4 done__h">{t.done.nextTitle}</h3>
+          <ol class="done__next" role="list">{t.done.next.map((n, i) => <li><span aria-hidden="true">{i + 1}</span>{n}</li>)}</ol>
+          <p class="fstep__micro">{t.done.resend}</p>
+          <a class="link" href={to('home', locale)}>{t.done.home}<Icon name="i-arrow-r" size="sm" /></a>
+        </section>
+      </div>
+
+      <aside class="funnel__aside" aria-labelledby="why-title">
+        <div class="why surface">
+          <p class="why__rating"><Stars value={4.3} label={c.trust.stars} size={18} /><span><strong>{c.trust.rating}</strong> · {c.trust.reviews}</span></p>
+          <h2 id="why-title" class="h4">{t.aside.title}</h2>
+          <ul role="list">{t.aside.items.map(i => <li><Icon name="i-check" size="sm" />{i}</li>)}</ul>
+          <p class="why__privacy"><Icon name="i-lock" size="sm" />{t.aside.privacy}</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="ffoot">
+    <div class="wrap ffoot__inner">
+      <span>© 2026 June Energy</span>
+      <a href="#" data-todo="privacy">{nl ? 'Privacy' : 'Confidentialité'}</a>
+      <a href="#" data-todo="terms">{nl ? 'Algemene voorwaarden' : 'Conditions générales'}</a>
+      <a href={to('faq', locale)}>{nl ? 'Veelgestelde vragen' : 'Questions fréquentes'}</a>
+    </div>
+  </footer>
+  <script type="application/json" id="signup-data" set:html={JSON.stringify(client)} />
+</Site>
+
+<script>
+  import '../../scripts/signup.ts';
+</script>

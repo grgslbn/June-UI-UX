@@ -1,0 +1,31 @@
+---
+import { href } from '@shared/routes.mjs';
+import Wordmark from './Wordmark.astro';
+interface Props { c: any }
+const { c } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const other = c.nl ? 'fr-be' : 'nl-be';
+const n = c.nav;
+---
+<header class="site-header">
+  <div class="wrap header-inner">
+    <Wordmark href={href('home', c.loc, base)} />
+    <nav class="nav-desktop" aria-label={n.label}>
+      <ul>{n.items.map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+    </nav>
+    <div class="header-tools">
+      <a class="lang-link" href={href('home', other, base)} hreflang={n.langHtml} lang={n.langHtml}><span aria-hidden="true">{n.langLabel}</span><span class="sr-only">{n.langAria}</span></a>
+      <a class="login-link" href="#login" data-placeholder="login-url">{n.login}<svg class="icon" width="14" height="14" aria-hidden="true"><use href="#i-arrow-up-r" /></svg><span class="sr-only">{n.loginNote}</span></a>
+      <a class="btn btn-primary btn-sm header-cta" href="#bereken" data-cta>{n.cta}</a>
+      <details class="nav-mobile">
+        <summary><svg class="icon" width="20" height="20" aria-hidden="true"><use href="#i-menu" /></svg><span>{n.menu}</span></summary>
+        <div class="nav-sheet">
+          <nav aria-label={n.label}>
+            <ul>{n.items.map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+          </nav>
+          <a class="login-link login-link--sheet" href="#login" data-placeholder="login-url">{n.login}<svg class="icon" width="14" height="14" aria-hidden="true"><use href="#i-arrow-up-r" /></svg><span class="sr-only">{n.loginNote}</span></a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

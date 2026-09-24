@@ -1,0 +1,6 @@
+---
+// Footnote marker → #fn-n in the footer note list.
+interface Props { n: number; fr?: boolean; }
+const { n, fr = false } = Astro.props;
+---
+<sup class="fn"><a href={`#fn-${n}`} aria-label={fr ? `Note ${n}` : `Voetnoot ${n}`}>{n}</a></sup>

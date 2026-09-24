@@ -1,0 +1,125 @@
+---
+// Plans & pricing (ux-research §4.4): H1 + billing facts → meter helper + 3 cards → comparison table →
+// Premium / June Dongle story (#dongle) → June vs doing it yourself → how we earn money → pricing FAQ → final CTA.
+import { copy, eur, planBySlug, to, type Locale } from '../../content/i18n';
+import { pages } from '../../content/pages';
+import Site from '../../layouts/Site.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageHero from '../PageHero.astro';
+import PlanCards from '../PlanCards.astro';
+import PremiumStory from '../PremiumStory.astro';
+import FaqList from '../FaqList.astro';
+import FinalCta from '../FinalCta.astro';
+import StickyCta from '../StickyCta.astro';
+import Icon from '../Icon.astro';
+import Fn from '../Fn.astro';
+import { graph, productNode } from '../../lib/schema';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = copy[locale];
+const P = pages[locale];
+const p = P.plans;
+const cmp = p.compare;
+const plans = ['switch', 'switch-plus', 'premium'].map(s => planBySlug(s) as any);
+const jsonld = graph({ locale, routeKey: 'plans', title: p.title, crumbs: [{ name: P.crumbsHome, key: 'home' }, { name: p.crumb, key: 'plans' }],
+  extra: ['switch', 'switch-plus', 'premium'].map(s => productNode(s, locale)) });
+---
+<Site locale={locale} routeKey="plans" title={p.title} description={p.description} jsonld={jsonld}>
+  <Header locale={locale} routeKey="plans" />
+  <main id="main">
+    <PageHero locale={locale} crumb={p.crumb} eyebrow={p.eyebrow} h1={p.h1} intro={p.intro}>
+      <ul class="factline" role="list">{p.facts.map(f => <li><Icon name="i-check" size="sm" />{f}</li>)}</ul>
+    </PageHero>
+
+    <section class="section section--canvas section--flush-top" aria-label={p.eyebrow}>
+      <div class="wrap" data-sticky-sentinel>
+        <PlanCards locale={locale} mode="full" chooser entry="plans-card" />
+        <div class="plans-fine">
+          <p><Icon name="i-shield" size="sm" /><span>{p.guaranteeLine}<Fn n={4} locale={locale} /> <a href={to('faq', locale, { hash: 'guarantee' })}>{p.conditions}</a></span></p>
+          <p class="footnote">{c.plans.footnote}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison table -->
+    <section class="section section--white" aria-labelledby="cmp-title">
+      <div class="wrap">
+        <header class="sec-head sec-head--center">
+          <p class="eyebrow">{cmp.eyebrow}</p>
+          <h2 id="cmp-title" class="h2">{cmp.title}</h2>
+        </header>
+        <div class="cmp-wrap">
+          <table class="cmp">
+            <caption class="sr-only">{cmp.caption}</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="cmp__feat">{cmp.feature}</th>
+                {plans.map(pl => <th scope="col" class:list={[pl.slug === 'switch-plus' && 'is-rec']}>{pl.shortName}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="cmp__price">
+                <th scope="row">{cmp.price}</th>
+                {plans.map(pl => <td class:list={[pl.slug === 'switch-plus' && 'is-rec']}><strong>{eur(pl.priceYearly, locale)}</strong><span>{eur(pl.priceMonthly, locale)}/{locale === 'nl-be' ? 'mnd' : 'mois'}</span></td>)}
+              </tr>
+              {cmp.rows.map(([label, ...vals]) => (
+                <tr>
+                  <th scope="row">{label}</th>
+                  {vals.map((v, i) => (
+                    <td class:list={[i === 1 && 'is-rec']}>
+                      {v === 1 ? <><Icon name="i-check" class="cmp__yes" /><span class="sr-only">{cmp.yes}</span></>
+                        : v === 0 ? <><Icon name="i-minus" class="cmp__no" /><span class="sr-only">{cmp.no}</span></>
+                        : <span class="cmp__txt">{v}</span>}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote cmp__foot">{c.plans.footnote}</p>
+      </div>
+    </section>
+
+    <PremiumStory locale={locale} id="dongle" entry="plans-premium" headingId="dongle-title" />
+
+    <!-- June vs doing it yourself + how we earn money -->
+    <section class="section section--white" aria-labelledby="diy-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="eyebrow">{p.diy.eyebrow}</p>
+          <h2 id="diy-title" class="h2">{p.diy.title}</h2>
+        </header>
+        <div class="diy">
+          <div class="diy__col surface diy__col--self">
+            <h3 class="h3">{p.diy.selfTitle}</h3>
+            <ul role="list">{p.diy.self.map(s => <li><Icon name="i-minus" size="sm" />{s}</li>)}</ul>
+          </div>
+          <div class="diy__col surface diy__col--june">
+            <h3 class="h3">{p.diy.juneTitle}</h3>
+            <ul role="list">{p.diy.june.map(s => <li><Icon name="i-check" size="sm" />{s}</li>)}</ul>
+          </div>
+          <aside class="earn surface" aria-labelledby="earn-title">
+            <h3 id="earn-title" class="h3">{p.earn.title}</h3>
+            <p>{p.earn.body}</p>
+            <a class="link" href={to('faq', locale, { hash: 'independence' })}>{p.earn.link}<Icon name="i-arrow-r" size="sm" /></a>
+          </aside>
+        </div>
+        <p class="diy__note"><Icon name="i-info" size="sm" />{p.diy.note}</p>
+      </div>
+    </section>
+
+    <section class="section section--canvas" aria-labelledby="pfaq-title">
+      <div class="wrap narrow">
+        <h2 id="pfaq-title" class="h2">{p.faqTitle}</h2>
+        <FaqList locale={locale} ids={p.faqIds} />
+        <a class="link rf__all" href={to('faq', locale)}>{c.faq.all}<Icon name="i-arrow-r" size="sm" /></a>
+      </div>
+    </section>
+
+    <FinalCta locale={locale} title={p.final.title} sub={p.final.sub} entry="plans-final" />
+  </main>
+  <Footer locale={locale} routeKey="plans" />
+  <StickyCta lead={p.sticky.lead} label={p.sticky.label} href={to('signup', locale, { query: 'plan=switch-plus&entry=plans-sticky' })} proof={c.sticky} />
+</Site>

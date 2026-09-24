@@ -1,0 +1,14 @@
+---
+// 4,3/5 rendered as partially filled stars (never five full stars — claims register C3).
+interface Props { value?: number; label: string; size?: number }
+const { value = 4.3, label, size = 16 } = Astro.props;
+const star = 'M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z';
+const id = `st${Math.round(value * 10)}-${size}`;
+---
+<span class="stars" role="img" aria-label={label}>
+  <svg width={size * 5 + 8} height={size} viewBox="0 0 128 24" aria-hidden="true">
+    <defs><clipPath id={id}><rect width={value * 25.6} height="24" /></clipPath></defs>
+    {[0, 1, 2, 3, 4].map(i => <path d={star} transform={`translate(${i * 26} 0)`} class="star-empty" />)}
+    <g clip-path={`url(#${id})`}>{[0, 1, 2, 3, 4].map(i => <path d={star} transform={`translate(${i * 26} 0)`} class="star-full" />)}</g>
+  </svg>
+</span>

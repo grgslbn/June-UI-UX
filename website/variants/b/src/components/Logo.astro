@@ -1,0 +1,16 @@
+---
+// Official June script logo (vector trace, shared/assets/logo/june-logo.svg), inlined so it inherits `color`.
+// Green = logo green #1CA498 (exempt from text contrast: it's a logo). Min width 72px; header uses 84px.
+import raw from '@shared/assets/logo/june-logo.svg?raw';
+interface Props { href: string; tone?: 'green' | 'white' | 'ink'; width?: number; label?: string; }
+const { href, tone = 'green', width = 84, label = 'June, home' } = Astro.props;
+const svg = raw.replace(/role="img"\s*aria-label="June"/, 'aria-hidden="true" focusable="false"')
+  .replace('<svg ', `<svg width="${width}" height="${Math.round(width * 662 / 1069)}" `);
+---
+<a class:list={['logo', tone]} href={href} aria-label={label} set:html={svg} />
+<style>
+  .logo { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent); view-transition-name: logo; flex: none; }
+  .logo :global(svg) { display: block; height: auto; }
+  .logo.white { color: #fff; }
+  .logo.ink { color: var(--ink-900); }
+</style>

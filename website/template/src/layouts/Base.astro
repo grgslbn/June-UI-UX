@@ -1,0 +1,20 @@
+---
+// Base layout: lang, title, description, canonical, hreflang, robots. Variants extend or replace the body.
+import { LOCALES, abs, alternates, NOINDEX } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; title: string; description: string; }
+const { locale, routeKey, title, description } = Astro.props;
+---
+<!doctype html>
+<html lang={LOCALES[locale].html}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={abs(routeKey, locale)} />
+    {alternates(routeKey).map(a => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {NOINDEX.has(routeKey) && <meta name="robots" content="noindex, follow" />}
+    <slot name="head" />
+  </head>
+  <body><slot /></body>
+</html>

@@ -1,0 +1,10 @@
+---
+// Official June script logo (vector trace from shared/assets/logo), inlined so it inherits `color` (logo green #1CA498).
+import raw from '@shared/assets/logo/june-logo.svg?raw';
+interface Props { href?: string; label: string; size?: 'md' | 'lg'; }
+const { href, label, size = 'md' } = Astro.props;
+const svg = raw.replace(/\s(role|aria-label)="[^"]*"/g, '').replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
+---
+{href
+  ? <a class={`logo logo--${size}`} href={href} aria-label={label}><Fragment set:html={svg} /></a>
+  : <span class={`logo logo--${size}`} role="img" aria-label={label}><Fragment set:html={svg} /></span>}

@@ -1,0 +1,172 @@
+/* ==========================================================================
+   June Insights — Direction C · "Soft Native" — design tokens
+   Light theme is primary. Dark theme via prefers-color-scheme (unless the
+   page forces [data-theme="light"]) and via [data-theme="dark"].
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ── Type ───────────────────────────────────────────────────────────── */
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif; /* numerals + display */
+  --font-ui: "Inter", "Open Sans", ui-sans-serif, system-ui, sans-serif; /* all UI text */
+  /* six sizes, nothing below 12px (chart ticks are 12px too) */
+  --fs-xs: 12px;    /* captions, chips, axis labels */
+  --fs-sm: 14px;    /* secondary copy, table cells, buttons */
+  --fs-md: 16px;    /* body, card titles */
+  --fs-lg: 20px;    /* stat values, € line, units next to hero */
+  --fs-xl: 28px;    /* hero sentence / KPI numerals */
+  --fs-hero: 52px;  /* one hero numeral per view */
+  --lh-tight: 1.1;
+  --lh-snug: 1.3;
+  --lh-body: 1.5;
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+  --tracking-display: -0.02em;
+  --tracking-caps: 0.06em;
+
+  /* ── Canvas & surfaces (mint-tinted) ────────────────────────────────── */
+  --canvas: #edf4f3;          /* page: very light mint */
+  --surface: #ffffff;         /* tiles */
+  --surface-sunken: #f2f7f6;  /* tracks, inset areas, icon wells */
+  --surface-track: #e2ebea;   /* tab bar / segmented track on canvas */
+  --surface-raised: #ffffff;  /* popovers, thumbs */
+  --hairline: #e3eaea;
+
+  /* ── Ink (ink-tinted neutrals) ──────────────────────────────────────── */
+  --ink-900: #14232a;  /* primary text        15.6:1 on white */
+  --ink-700: #435359;  /* secondary text       7.9:1 */
+  --ink-500: #56666d;  /* muted/meta text      5.9:1 on white, 5.0:1 on track */
+  --ink-400: #8c999e;  /* icons, non-text marks */
+  --ink-200: #c9d3d5;  /* chart baseline, strong borders */
+  --ink-100: #e4eaeb;  /* gridlines, tracks */
+
+  /* ── Accent: June Green (single interactive hue) ────────────────────── */
+  --accent: #3bada8;          /* fills: bars, gauge arc, meters */
+  --accent-strong: #19736f;   /* text, links, buttons (5.6:1 on white) */
+  --accent-soft: #e2f3f1;     /* selected / subtle highlight */
+  --on-accent: #ffffff;       /* text on --accent-strong */
+  --accent-stripe: #9fd9d5;   /* forecast hatch */
+
+  /* ── Semantic ───────────────────────────────────────────────────────── */
+  --alert: #c4383e;           /* June Red, darkened for text (5.3:1) */
+  --alert-graphic: #e85257;   /* peak bar, peak marker */
+  --alert-soft: #fdeced;
+  --positive: #23744a;
+  --positive-soft: #e4f3ea;
+  --warn: #7a5600;
+  --warn-soft: #fbf1d6;
+
+  /* ── Ambient brand depth (behind surfaces only) ─────────────────────── */
+  --ambient: #b6e3df;         /* blurred mint blob */
+  --ambient-2: #d4efe9;
+  --ambient-opacity: 0.9;
+  --halftone: rgba(59, 173, 168, 0.28);
+
+  /* ── Spacing: 4px scale ─────────────────────────────────────────────── */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --tile-pad: 28px;
+  --gap: 20px;
+
+  /* ── Radii (4 values) ───────────────────────────────────────────────── */
+  --r-sm: 10px;    /* buttons, inner controls, icon wells */
+  --r-md: 14px;    /* inset panels, popovers, table wrap */
+  --r-lg: 24px;    /* surfaces / tiles */
+  --r-pill: 999px; /* chips, meters, segmented thumbs */
+
+  /* ── Elevation (2 levels) ───────────────────────────────────────────── */
+  --shadow-1: 0 1px 2px rgba(18, 52, 50, 0.04), 0 6px 20px -10px rgba(18, 52, 50, 0.10);
+  --shadow-2: 0 2px 4px rgba(18, 52, 50, 0.05), 0 18px 40px -16px rgba(18, 52, 50, 0.22);
+  --edge: inset 0 0 0 1px rgba(18, 52, 50, 0.03);
+
+  /* ── Motion ─────────────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-emphasis: cubic-bezier(.3, 1.25, .5, 1); /* segmented thumbs only */
+  --dur-instant: 90ms;
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slide: 320ms;
+  --dur-slow: 480ms;
+  --dur-sweep: 900ms;   /* gauge sweep (signature motion) */
+  --dur-count: 800ms;
+  --stagger: 16ms;
+
+  --focus-ring: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent-strong);
+}
+
+/* ── Dark theme (auto) ─────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --canvas: #0a1315;
+    --surface: #121e21;
+    --surface-sunken: #0e181b;
+    --surface-track: #152326;
+    --surface-raised: #1a292d;
+    --hairline: #1f2f33;
+    --ink-900: #e8f0f0;
+    --ink-700: #adbcbf;
+    --ink-500: #8d9da1;
+    --ink-400: #5f7075;
+    --ink-200: #2e3f44;
+    --ink-100: #1d2c31;
+    --accent: #45bdb7;
+    --accent-strong: #62d3cc;
+    --accent-soft: #143331;
+    --on-accent: #06201e;
+    --accent-stripe: #1f5c59;
+    --alert: #ff8589;
+    --alert-graphic: #ff6b70;
+    --alert-soft: #3a1b1f;
+    --positive: #6ad49a;
+    --positive-soft: #11301f;
+    --warn: #f2c14e;
+    --warn-soft: #33290f;
+    --ambient: #1f8f89;
+    --ambient-2: #135c58;
+    --ambient-opacity: 0.55;
+    --halftone: rgba(98, 211, 204, 0.22);
+    --shadow-1: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+    --shadow-2: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 48px -18px rgba(0, 0, 0, 0.85);
+    --edge: inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+  }
+}
+
+/* ── Dark theme (forced) ───────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #0a1315;
+  --surface: #121e21;
+  --surface-sunken: #0e181b;
+  --surface-track: #152326;
+  --surface-raised: #1a292d;
+  --hairline: #1f2f33;
+  --ink-900: #e8f0f0;
+  --ink-700: #adbcbf;
+  --ink-500: #8d9da1;
+  --ink-400: #5f7075;
+  --ink-200: #2e3f44;
+  --ink-100: #1d2c31;
+  --accent: #45bdb7;
+  --accent-strong: #62d3cc;
+  --accent-soft: #143331;
+  --on-accent: #06201e;
+  --accent-stripe: #1f5c59;
+  --alert: #ff8589;
+  --alert-graphic: #ff6b70;
+  --alert-soft: #3a1b1f;
+  --positive: #6ad49a;
+  --positive-soft: #11301f;
+  --warn: #f2c14e;
+  --warn-soft: #33290f;
+  --ambient: #1f8f89;
+  --ambient-2: #135c58;
+  --ambient-opacity: 0.55;
+  --halftone: rgba(98, 211, 204, 0.22);
+  --shadow-1: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+  --shadow-2: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 48px -18px rgba(0, 0, 0, 0.85);
+  --edge: inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+}

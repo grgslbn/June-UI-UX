@@ -1,0 +1,28 @@
+---
+// Hero value/status tile (borrowed from A): recommended plan, yearly price first, guarantee WITH its condition,
+// the monthly check as a 12-dot strip, and the control choice ("automatisch, of pas na jouw akkoord").
+import Icon from './Icon.astro';
+import Fn from './Fn.astro';
+interface Props { c: any; plansUrl: string; }
+const { c, plansUrl } = Astro.props;
+const t = c.tile;
+// Month strip: past months filled, this month dark with a check, future months as outlines. Rendered for the build
+// month; a one-line script in Page.astro moves the marker to the visitor's real month.
+const now = new Date().getMonth();
+---
+<aside class="hero-tile" aria-label={`${t.label}: ${t.plan}`}>
+  <div class="ht-top">
+    <p class="ht-plan"><span class="ht-chip">{t.label}</span><strong>{t.plan}</strong></p>
+    <p class="ht-price"><span class="num">{t.price}</span> <span>{t.per}</span></p>
+  </div>
+  <p class="ht-mo">{t.monthly}<Fn n={6} L={c.L} /></p>
+  <p class="ht-g"><Icon name="shield" /><span>{t.guarantee}<Fn n={4} L={c.L} /></span></p>
+  <div class="ht-check">
+    <ol class="ht-months" aria-label={t.monthsLabel} data-month-strip>
+      {t.months.map((m: string, i: number) => <li style={`--i:${i}`} class:list={{ 'is-past': i < now, 'is-now': i === now }} aria-hidden="true"><span class="ht-dot"></span><span class="ht-m">{m}</span></li>)}
+    </ol>
+    <p><Icon name="check-circle" />{t.checked}</p>
+    <p><Icon name="repeat" />{t.control}</p>
+  </div>
+  <a class="link-arrow ht-link" href={plansUrl}>{t.link}<Icon name="arrow-r" /></a>
+</aside>

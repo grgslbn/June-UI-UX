@@ -1,0 +1,10 @@
+---
+import { to, type Locale } from '../content/i18n';
+interface Props { locale: Locale; trail: { label: string; key?: string }[] }
+const { locale, trail } = Astro.props;
+---
+<nav class="crumbs" aria-label={locale === 'nl-be' ? 'Kruimelpad' : "Fil d'Ariane"}>
+  <ol>
+    {trail.map((t, i) => <li>{i < trail.length - 1 && t.key ? <a href={to(t.key, locale)}>{t.label}</a> : <span aria-current="page">{t.label}</span>}</li>)}
+  </ol>
+</nav>

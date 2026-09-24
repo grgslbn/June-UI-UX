@@ -1,0 +1,40 @@
+panel-overview: Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.
+panel-overview-new: 3 of 7 days of readings: 16, 17 and 18 May 2026. Your first forecast and solar view arrive on 23 May.
+panel-compare: Line chart, November 2025 to April 2026. Your home used between 372 and 569 kWh a month; similar homes stayed between 218 and 262 kWh. The biggest gap is February: 569 against 255 kWh. In April you used 442 kWh against 2
+panel-compare: Line chart of your monthly ranking among similar homes, November 2025 to April 2026: 95.5, 100, 100, 100, 100 and 99.8 percent of similar homes used less than you. Every month sits in the highest-users tenth.
+panel-solar: Energy flow today, 18 May so far. Your panels produced 8.4 kWh: 5.2 kWh was used at home and 3.2 kWh went to the grid. Your home also drew 4.4 kWh from the grid, for 9.6 kWh in total.
+panel-solar: Diverging bar chart for 18 May, 00:00 to 20:00. Export above zero, import below. You exported 3.2 kWh, mostly between 10:00 and 15:00, peaking at 0.62 kWh around 12:00. You imported 4.4 kWh, mostly in the morning and aft
+panel-solar: Diverging bar chart for 12 to 18 May. You exported 24.3 kWh and imported 28.9 kWh this week. Thursday 14 May exported the most, 5.0 kWh; Saturday 16 May imported the most, 5.6 kWh.
+panel-solar: Diverging bar chart for 1 to 18 May 2026; the rest of the month has not happened yet. So far you exported 57.6 kWh and imported 75.0 kWh. Most days import a little more than they export.
+panel-solar: Diverging bar chart for June 2025 to May 2026 (May so far). From June to September you exported more than you imported, most in July (372 kWh exported). From October on you imported more, most in February (454 kWh import
+panel-solar: Stacked bar chart of monthly solar production, June 2025 to May 2026 (May so far: 170 kWh), split into used at home and exported. July is highest at 620 kWh; December is lowest at 68 kWh, over 9 times less. Summer months
+panel-solar: Line chart of estimated production and consumption per hour on 18 May, 00:00 to 20:00. Production rises from 06:00 to a peak of 1.1 kWh at 12:00 and fades by 19:00: 8.4 kWh in total. Consumption stays around 0.2 to 0.7 k
+panel-solar-calibrating: 4 of 7 days of readings: Friday 15 to Monday 18 May. Ready on Friday 22 May.
+panel-breakdown: Heating used 168 of 442 kWh in April. Everything else together used 274 kWh.
+panel-breakdown: Bar chart of heating's share of your use per month, May 2025 to April 2026: 14, 9, 9, 11, 20, 33, 45, 52, 54, 48, 38 and 38 percent. Lowest in June and July (9%), highest in January (54%). April 2026, your last full mont
+panel-breakdown: Stacked 100% bars per month, May 2025 to April 2026, with five categories. Heating swings from 9% in summer to 54% in January. Water heating (10–20%), always on (8–14%) and cooking (9–13%) stay fairly flat; fridge, freez
+panel-breakdown: Home profile 70% complete
+panel-breakdown-profile: Home profile 30% complete
+panel-breakdown-not-ready: 3 of 28 days of daily readings collected, since 16 May 2026. Your breakdown is ready on 13 June 2026.
+panel-peak: Comparison on a 0 to 5 kW scale: your rolling average 4.0 kW is 0.24 kW below the Flemish average of 4.24 kW.
+panel-peak: Bar chart of daily peaks, 1 to 18 May 2026; 19 to 31 May have not happened yet. Most days sit between 1.9 and 3.4 kW. The month peak is 4.2 kW on 12 May at 18:30, shown in red. Today, highlighted, reached 3.8 kW. A line 
+panel-peak: Bar chart of your 12 monthly peaks, June 2025 to May 2026: 5.8, 3.2, 3.8, 4.0, 3.5, 4.4, 3.3, 2.9, 4.0, 4.9, 4.2 and 4.2 kW. Their average is 4.0 kW. June 2025 is the highest and drops out on 1 June 2026.
+panel-peak: The June 2025 peak has counted for 11 of its 12 months. It drops out of your average on 1 June 2026.
+panel-peak-history: 3 of 12 months collected: July, August and September 2025. Complete after June 2026.
+panel-peak-history: Comparison on a 0 to 5 kW scale: your average so far, 3.0 kW, is above the 2.5 kW regulatory floor and below the Flemish average of 4.24 kW. Based on 3 months only.
+panel-peak-history: Bar chart of daily peaks, 1 to 15 September 2025; the rest of the month has not happened yet. The month peak is 3.4 kW on 6 September at 19:00, shown in red. Today, highlighted, reached 3.1 kW. A line marks your average 
+panel-forecast: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.
+panel-forecast: Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to 290 kWh on 31 May. Budget line at 300 kWh; the forecast stays 10 kWh under it.
+panel-forecast: Line chart of monthly use from November 2025 to October 2026. Actual use falls from 512 kWh in January to 442 kWh in April. The dashed forecast continues from 290 kWh in May to a low of 240 kWh in July, rising to 350 kWh
+panel-forecast: Line chart of your expected use per hour for the next 24 hours from 18 May, 20:00, with a shaded likely range. Use stays low overnight at about 0.2 kWh an hour, rises to a morning peak of about 0.45 kWh around 06:30 and 
+panel-forecast: Line chart of your expected use per hour for the next 48 hours from 18 May, 20:00, with a shaded likely range. The same daily rhythm repeats: peaks in the morning around 06:30 and the evening around 19:00, lows overnight
+panel-forecast-over-budget: 187 kWh used so far, 290 kWh forecast for May, budget 270 kWh. The forecast goes 20 kWh past the budget.
+panel-forecast-over-budget: Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to 290 kWh on 31 May. Budget line at 270 kWh in red; the forecast crosses it around 29 May and ends 20 kW
+panel-forecast-no-budget: Line chart of your cumulative use in May 2026: 187 kWh used by today, 18 May at 20:00, then a dashed forecast line to 290 kWh on 31 May.
+panel-forecast-partly-ready: Line chart of your expected use per hour for the next 24 hours from 18 May, 20:00, with a shaded likely range. Use stays low overnight, peaks around 06:30 and 19:00 at about 0.4 kWh, and the range is widest around those 
+panel-forecast-not-enough-data: 3 of 7 days toward your first forecast: 16, 17 and 18 May 2026. First forecast on 23 May 2026.
+panel-budgets: Budget meter: 187 kWh used so far, 290 kWh forecast for May, budget 300 kWh.
+panel-budgets: Bar chart of daily electricity use, 1 to 18 May 2026; 19 to 31 May have not happened yet. The first 11 days were between 10.8 and 13.4 kWh. Since 12 May every day has been under 8.7 kWh, averaging 7.9 kWh. For the remain
+panel-budgets: Bar chart of daily electricity use for the last 7 days, 12 to 18 May 2026: 8.4, 7.6, 8.1, 7.2, 7.9, 8.3 and 7.8 kWh. All are under the 8.7 kWh a day line; the average is 7.9 kWh.
+panel-budgets-close: Budget meter: 215 kWh used so far, 318 kWh forecast for May, budget 300 kWh. The forecast goes past the budget.
+panel-budgets-over: Budget meter: 342 kWh used so far, 42 kWh over the 300 kWh budget.

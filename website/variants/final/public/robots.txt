@@ -1,0 +1,6 @@
+# june.energy — everything may be crawled. Sign-up pages carry <meta name="robots" content="noindex">,
+# so they are deliberately NOT blocked here (a block would hide the noindex from crawlers).
+User-agent: *
+Allow: /
+
+Sitemap: https://www.june.energy/sitemap-index.xml

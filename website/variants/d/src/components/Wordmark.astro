@@ -1,0 +1,9 @@
+---
+// The app's wordmark: hand-set "june" in Montserrat italic + the brand bolt (placeholder until logo files arrive).
+interface Props { href?: string; label?: string; class?: string }
+const { href, label = 'June', class: cls = '' } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+<Tag class:list={['wordmark', cls]} href={href} aria-label={href ? `${label}, home` : undefined}>
+  <span class="wordmark-text" aria-hidden={href ? 'true' : undefined}>june</span><svg class="wordmark-bolt" viewBox="0 0 16 24" aria-hidden="true"><use href="#brand-bolt" /></svg>
+</Tag>

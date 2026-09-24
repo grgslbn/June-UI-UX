@@ -1,0 +1,29 @@
+---
+// Localised 404 (NL + FR on one page, since the host serves one 404 for every path). noindex, links to both homes.
+import Page from '../layouts/Page.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import { Image } from 'astro:assets';
+import pointing from '@shared/assets/character/june-character-pointing.png';
+import { href } from '@shared/routes.mjs';
+const base = import.meta.env.BASE_URL;
+const blocks = [
+  { lang: 'nl-BE', loc: 'nl-be' as const, h: 'Deze pagina bestaat niet (meer).', p: 'Misschien is de link verouderd of zit er een typfout in. Geen zorg: je stroom blijft gewoon lopen.', links: [['home', 'Naar de startpagina'], ['plans', 'Abonnementen en prijzen'], ['faq', 'Veelgestelde vragen']], cta: 'Bereken je besparing' },
+  { lang: 'fr-BE', loc: 'fr-be' as const, h: 'Cette page n’existe pas (ou plus).', p: 'Le lien est peut-être ancien ou contient une faute de frappe. Rassurez-vous : votre électricité continue d’arriver.', links: [['home', 'Vers la page d’accueil'], ['plans', 'Abonnements et prix'], ['faq', 'Questions fréquentes']], cta: 'Calculez votre économie' },
+];
+---
+<Page locale="nl-be" routeKey="404" title="Pagina niet gevonden · Page introuvable | June" description="Deze pagina bestaat niet. Cette page n’existe pas." noindex>
+  <header class="masthead masthead--minimal"><div class="wrap masthead-in"><Logo href={href('home', 'nl-be', base)} label="June, naar de startpagina" /></div></header>
+  <main id="inhoud" class="wrap nf404">
+    <Image src={pointing} alt="" widths={[140, 280]} sizes="140px" class="nf404-char" loading="eager" />
+    <p class="kicker"><span>404</span></p>
+    {blocks.map((b, i) => (
+      <section lang={b.lang} aria-labelledby={`nf-${i}`} class="nf404-b">
+        {i === 0 ? <h1 id={`nf-${i}`}>{b.h}</h1> : <h2 id={`nf-${i}`}>{b.h}</h2>}
+        <p>{b.p}</p>
+        <ul>{b.links.map(([k, l]) => <li><a class="link-arrow" href={href(k, b.loc, base)}>{l}<Icon name="arrow-r" /></a></li>)}</ul>
+        <a class="btn" href={href('signup', b.loc, base)}>{b.cta}<Icon name="arrow-r" /></a>
+      </section>
+    ))}
+  </main>
+</Page>

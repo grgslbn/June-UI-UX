@@ -1,0 +1,18 @@
+---
+// Step 1 of sign-up starts here: a valid Belgian postcode (4 digits, 1000–9999) submitted = "sign-up started".
+import { href } from '@shared/routes.mjs';
+interface Props { c: any; id: string; tone?: 'stage' | 'light' }
+const { c, id, tone = 'stage' } = Astro.props;
+const action = href('signup', c.loc, import.meta.env.BASE_URL);
+---
+<form class:list={['pc-form', `pc-form--${tone}`]} action={action} method="get" id={id} data-pc-form novalidate>
+  <label class="pc-label" for={`${id}-postcode`}>{c.form.label}</label>
+  <div class="pc-row">
+    <input class="pc-input" id={`${id}-postcode`} name="postcode" type="text" inputmode="numeric" autocomplete="postal-code"
+      pattern="[1-9][0-9]{3}" maxlength="4" required placeholder={c.form.placeholder} aria-describedby={`${id}-hint ${id}-err`} />
+    <input type="hidden" name="plan" value="" data-plan-field />
+    <button class="btn btn-primary pc-btn" type="submit">{c.form.cta}<svg class="icon" width="18" height="18" aria-hidden="true"><use href="#i-arrow-r" /></svg></button>
+  </div>
+  <p class="pc-hint" id={`${id}-hint`}>{c.form.hint}</p>
+  <p class="pc-err" id={`${id}-err`} data-msg={c.form.error} aria-live="polite"></p>
+</form>

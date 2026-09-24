@@ -1,0 +1,130 @@
+---
+// Veelgestelde vragen / Questions fréquentes — ux-research §4.4 FAQ. Native <details>, deep links, FAQPage JSON-LD,
+// search = progressive enhancement (hidden without JS). Character once, in "Niet gevonden?".
+import Site from '../../layouts/Site.astro';
+import PageHero from '../PageHero.astro';
+import Footer from '../Footer.astro';
+import Character from '../Character.astro';
+import Faq from '../Faq.astro';
+import Sticky from '../Sticky.astro';
+import PostcodeForm from '../PostcodeForm.astro';
+import { href, abs } from '@shared/routes.mjs';
+import { copy, deep, tp, lang, faqById, faqSlug, rich, type Locale } from '../../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const nl = locale === 'nl-be';
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const C = deep(nl ? {
+  title: 'Veelgestelde vragen over June',
+  description: 'Is June een energieleverancier? Wat met je opzegtermijn, je meter en de winstgarantie? Antwoorden op alle vragen over automatisch wisselen met June.',
+  crumb: 'Veelgestelde vragen', eyebrow: 'FAQ',
+  h1: 'Veelgestelde vragen', mark: 'vragen',
+  lede: 'Korte antwoorden op wat mensen ons het vaakst vragen. Staat jouw vraag er niet bij? Laat het ons weten.',
+  search: 'Zoek een vraag', searchPh: 'bv. opzeggen, meter, garantie', none: 'Geen vragen gevonden. Probeer een ander woord.', found: '{n} vragen gevonden',
+  cats: 'Onderwerpen',
+  groups: [
+    { id: 'over-june', t: 'Over June', ids: ['not-a-supplier', 'independence', 'which-suppliers', 'how-so-much'] },
+    { id: 'kosten', t: 'Kosten & garantie', ids: ['cost', 'guarantee'] },
+    { id: 'overstappen', t: 'Overstappen & contracten', ids: ['approval', 'no-interruption', 'exit-fee', 'green'] },
+    { id: 'meters-data', t: 'Meters & gegevens', ids: ['meters', 'data', 'regions'] },
+    { id: 'account', t: 'Abonnement & opzeggen', ids: ['cancel'] },
+  ],
+  miss: { h2: 'Niet gevonden wat je zocht?', b: 'Onze klantendienst helpt je verder in het Nederlands en het Frans.', contact: 'Contact: [telefoonnummer, e-mail en openingsuren]', or: 'Of bereken meteen wat je kan besparen:' },
+} : {
+  title: 'Questions fréquentes sur June',
+  description: 'June est-elle un fournisseur ? Préavis, compteur, garantie de gain : toutes les réponses sur le changement automatique de fournisseur avec June.',
+  crumb: 'Questions fréquentes', eyebrow: 'FAQ',
+  h1: 'Questions fréquentes', mark: 'fréquentes',
+  lede: 'Des réponses courtes aux questions qu’on nous pose le plus souvent. Votre question n’y figure pas ? Dites-le-nous.',
+  search: 'Rechercher une question', searchPh: 'p. ex. résilier, compteur, garantie', none: 'Aucune question trouvée. Essayez un autre mot.', found: '{n} question(s) trouvée(s)',
+  cats: 'Thèmes',
+  groups: [
+    { id: 'a-propos', t: 'À propos de June', ids: ['not-a-supplier', 'independence', 'which-suppliers', 'how-so-much'] },
+    { id: 'prix', t: 'Prix & garantie', ids: ['cost', 'guarantee'] },
+    { id: 'changement', t: 'Changement & contrats', ids: ['approval', 'no-interruption', 'exit-fee', 'green'] },
+    { id: 'compteurs', t: 'Compteurs & données', ids: ['meters', 'data', 'regions'] },
+    { id: 'abonnement', t: 'Abonnement & résiliation', ids: ['cancel'] },
+  ],
+  miss: { h2: 'Vous n’avez pas trouvé votre réponse ?', b: 'Notre service clients vous aide en français et en néerlandais.', contact: 'Contact : [numéro de téléphone, e-mail et horaires]', or: 'Ou calculez tout de suite votre économie :' },
+}, locale);
+const all = C.groups.flatMap((g: any) => g.ids);
+const strip = (s: string) => s.replace(/\[([^\]]+)\]/g, '$1');
+const graph = [{ '@type': 'FAQPage', '@id': `${abs('faq', locale)}#faq`, inLanguage: nl ? 'nl-BE' : 'fr-BE',
+  mainEntity: all.map((id: string) => { const q = faqById(id); return { '@type': 'Question', name: tp(q.q[L], locale), acceptedAnswer: { '@type': 'Answer', text: strip(tp(q.a[L], locale)) } }; }) }];
+---
+<Site locale={locale} routeKey="faq" title={C.title} description={C.description} crumbs={[{ key: 'faq', name: C.crumb }]} graph={graph}>
+  <PageHero locale={locale} routeKey="faq" crumbs={[{ key: 'faq', name: C.crumb }]} eyebrow={C.eyebrow} h1={C.h1} mark={C.mark} lede={C.lede} blob="pink" compact>
+    <div class="fsearch" data-fsearch hidden>
+      <label class="pc__label" for="fsearch-in">{C.search}</label>
+      <div class="pc__row"><input class="pc__input fsearch__in" id="fsearch-in" type="search" placeholder={C.searchPh} autocomplete="off" /></div>
+    </div>
+    <p class="fsearch__status sr-only" aria-live="polite" data-fsearch-status data-none={C.none} data-found={C.found}></p>
+    <div data-sticky-trigger></div>
+  </PageHero>
+
+  <main id="main">
+    <section class="sec faqp" aria-label={C.crumb}>
+      <div class="wrap faqp__in">
+        <nav class="faqp__cats" aria-label={C.cats}>
+          <p class="faqp__catsh">{C.cats}</p>
+          <ul role="list">{C.groups.map((g: any) => <li><a href={`#${g.id}`}>{g.t}<span>{g.ids.length}</span></a></li>)}</ul>
+        </nav>
+        <div class="faqp__groups">
+          {C.groups.map((g: any) => (
+            <section class="faqp__group" id={g.id} aria-labelledby={`h-${g.id}`} data-fgroup>
+              <h2 id={`h-${g.id}`} class="faqp__h2">{g.t}</h2>
+              <Faq locale={locale} ids={g.ids} group={`g-${g.id}`} slugs={faqSlug[locale]} />
+            </section>
+          ))}
+          <p class="faqp__none" data-fnone hidden>{C.none}</p>
+          <p class="faqp__tbc">{t.tbcNote}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec miss" aria-labelledby="h-miss" data-sticky-hide>
+      <div class="wrap miss__in">
+        <div class="miss__art" aria-hidden="true"><Character pose="pointing" class="miss__char" sizes="(max-width: 860px) 180px, 300px" /></div>
+        <div>
+          <h2 id="h-miss" class="display-3">{C.miss.h2}</h2>
+          <p class="miss__b">{C.miss.b}</p>
+          <p class="miss__contact" set:html={rich(C.miss.contact)} />
+          <p class="miss__or">{C.miss.or}</p>
+          <PostcodeForm locale={locale} id="pc-miss" tone="light" loc="faq" />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} routeKey="faq" />
+  <Sticky locale={locale} />
+</Site>
+<script>
+  // FAQ search (≈0.7 KB): filters questions + answers, opens matches, announces the count.
+  const box = document.querySelector<HTMLElement>('[data-fsearch]');
+  const input = document.getElementById('fsearch-in') as HTMLInputElement | null;
+  const status = document.querySelector<HTMLElement>('[data-fsearch-status]');
+  const none = document.querySelector<HTMLElement>('[data-fnone]');
+  if (box && input) {
+    box.hidden = false;
+    const items = [...document.querySelectorAll<HTMLDetailsElement>('.faqp .qa')];
+    const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const text = items.map(d => norm(d.textContent || ''));
+    let tmr: number | undefined;
+    input.addEventListener('input', () => {
+      const q = norm(input.value.trim());
+      let n = 0;
+      items.forEach((d, i) => { const hit = !q || text[i].includes(q); d.hidden = !hit; if (hit) n++; });
+      document.querySelectorAll<HTMLElement>('[data-fgroup]').forEach(g => { g.hidden = !g.querySelector('.qa:not([hidden])'); });
+      if (none) none.hidden = n > 0;
+      clearTimeout(tmr);
+      tmr = window.setTimeout(() => { if (status) status.textContent = q ? (n ? (status.dataset.found || '').replace('{n}', String(n)) : status.dataset.none || '') : ''; }, 400);
+    });
+  }
+  // Deep link (#winstgarantie) opens the answer.
+  const openHash = () => { const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (el instanceof HTMLDetailsElement) el.open = true; };
+  openHash(); addEventListener('hashchange', openHash);
+</script>

@@ -1,0 +1,6 @@
+---
+import type { Locale } from '../content/i18n';
+interface Props { n: number; locale: Locale }
+const { n, locale } = Astro.props;
+---
+<sup class="fn"><a href={`#fn-${n}`} aria-label={locale === 'nl-be' ? `voetnoot ${n}` : `note ${n}`}>{n}</a></sup>

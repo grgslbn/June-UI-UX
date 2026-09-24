@@ -1,0 +1,243 @@
+---
+import Base from '../layouts/Base.astro';
+import Icons from './Icons.astro';
+import Icon from './Icon.astro';
+import Header from './Header.astro';
+import Wordmark from './Wordmark.astro';
+import PostcodeForm from './PostcodeForm.astro';
+import Stars from './Stars.astro';
+import Stage from './product/Stage.astro';
+import SwitchTile from './product/SwitchTile.astro';
+import LiveTile from './product/LiveTile.astro';
+import SolarTile from './product/SolarTile.astro';
+import { copy } from '../i18n/copy.js';
+import { href, SITE } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be' }
+const { locale } = Astro.props;
+const c = copy(locale);
+const base = import.meta.env.BASE_URL;
+const fnLabel = n => (c.nl ? `Voetnoot ${n}` : `Note ${n}`);
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': `${SITE}#org`, name: 'June', legalName: 'June Energy', url: SITE, description: c.nl ? 'Onafhankelijke dienst die je automatisch naar een voordeliger energiecontract laat overstappen.' : 'Service indépendant qui vous fait passer automatiquement à un contrat d’énergie plus avantageux.' },
+    { '@type': 'WebSite', '@id': `${SITE}#site`, url: SITE, name: 'June', inLanguage: c.nl ? 'nl-BE' : 'fr-BE', publisher: { '@id': `${SITE}#org` } },
+  ],
+};
+const [f1, f2, f3] = c.features.rows;
+---
+<Base locale={locale} routeKey="home" title={c.meta.title} description={c.meta.description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonld)} />
+  <Icons />
+  <a class="skip-link" href="#main">{c.skip}</a>
+  <Header c={c} />
+
+  <main id="main" tabindex="-1">
+    <!-- ═══ HERO: dark stage ═══ -->
+    <section class="hero" aria-labelledby="hero-h1">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="chip chip--stage"><span class="live-dot" aria-hidden="true"></span>{c.hero.chip}</p>
+          <h1 id="hero-h1" class="hero-h1"><span class="h1-a">{c.hero.h1a}</span> <span class="h1-b">{c.hero.h1b}</span></h1>
+          <p class="hero-sub">{c.hero.sub}<sup><a href="#fn-1" aria-label={fnLabel(1)}>1</a></sup></p>
+          <PostcodeForm c={c} id="bereken" tone="stage" />
+          <ul class="trust-row">
+            <li><Stars label={c.trust.ratingAria} size={15} /><span>{c.trust.rating}<sup><a href="#fn-2" aria-label={fnLabel(2)}>2</a></sup></span></li>
+            <li><Icon name="home" size={18} /><span>{c.trust.customers}<sup><a href="#fn-3" aria-label={fnLabel(3)}>3</a></sup></span></li>
+            <li><Icon name="shield" size={18} /><span>{c.trust.guarantee}<sup><a href="#fn-4" aria-label={fnLabel(4)}>4</a></sup></span></li>
+          </ul>
+          <ul class="hero-micro">
+            {c.hero.micro.map(m => <li><Icon name="check" size={16} />{m}</li>)}
+          </ul>
+          <p class="hero-links">
+            <a class="link-stage" href="#premium">{c.hero.premium}<Icon name="arrow-r" size={16} /></a>
+            <a class="link-stage link-stage--quiet" href="#switch-plus">{c.hero.analog}<Icon name="arrow-r" size={16} /></a>
+          </p>
+        </div>
+        <Stage c={c} />
+      </div>
+    </section>
+
+    <!-- ═══ FEATURE SCROLL: switching engine → live data → solar ═══ -->
+    <section id="hoe-werkt-het" class="section features" aria-labelledby="features-h2">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">{c.features.eyebrow}</p>
+          <h2 id="features-h2">{c.features.h2}</h2>
+          <p class="lede">{c.features.intro}</p>
+        </header>
+
+        <div class="feature" id={f1.id}>
+          <div class="feature-copy">
+            <p class="feature-tag"><span class="feature-n">{f1.n}</span>{f1.tag}</p>
+            <h3>{f1.h3}</h3>
+            <ol class="steps">
+              {f1.steps.map((s, i) => <li><span class="step-n" aria-hidden="true">{i + 1}</span><div><strong>{s.t}</strong><p>{s.b}</p></div></li>)}
+            </ol>
+            <ul class="chips" aria-label={c.nl ? 'Wat hetzelfde blijft' : 'Ce qui ne change pas'}>
+              {f1.chips.map(ch => <li class="chip chip--soft"><Icon name="check" size={14} />{ch}</li>)}
+            </ul>
+          </div>
+          <div class="feature-visual" aria-hidden="true"><SwitchTile c={c} /></div>
+        </div>
+
+        <div class="feature feature--flip" id={f2.id}>
+          <div class="feature-copy">
+            <p class="feature-tag"><span class="feature-n">{f2.n}</span>{f2.tag}</p>
+            <h3>{f2.h3}</h3>
+            <p>{f2.body}</p>
+            <p class="feature-note"><Icon name="plug" size={18} /><span>{f2.note}</span></p>
+          </div>
+          <div class="feature-visual" aria-hidden="true"><LiveTile c={c} /></div>
+        </div>
+
+        <div class="feature" id={f3.id}>
+          <div class="feature-copy">
+            <p class="feature-tag"><span class="feature-n">{f3.n}</span>{f3.tag}</p>
+            <h3>{f3.h3}</h3>
+            <p>{f3.body}</p>
+            <a class="link-arrow" href="#premium">{c.hero.premium}<Icon name="arrow-r" size={16} /></a>
+          </div>
+          <div class="feature-visual" aria-hidden="true"><SolarTile c={c} /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PLANS ═══ -->
+    <section id="prijzen" class="section plans" aria-labelledby="plans-h2">
+      <div class="wrap">
+        <header class="section-head section-head--center">
+          <p class="eyebrow">{c.plans.eyebrow}</p>
+          <h2 id="plans-h2">{c.plans.h2}</h2>
+          <p class="lede">{c.plans.intro}</p>
+        </header>
+        <fieldset class="meter-pick">
+          <legend>{c.plans.legend}</legend>
+          <div class="seg" role="presentation">
+            {c.plans.meters.map(([v, l], i) => (
+              <label class="seg-opt"><input type="radio" name="meter" id={`m-${v}`} value={v} checked={i === 0} /><span>{l}</span></label>
+            ))}
+          </div>
+          <p class="meter-help">{c.plans.meterHelp}</p>
+        </fieldset>
+
+        <div class="plan-grid">
+          {c.plans.list.map(p => (
+            <article class:list={['plan', `plan--${p.slug}`]} id={p.slug} aria-labelledby={`plan-${p.slug}`}>
+              {p.slug === 'switch-plus' && <p class="plan-badge"><Icon name="shield" size={15} />{c.plans.recommended}</p>}
+              {p.slug === 'premium' && <p class="plan-fit plan-fit--solar"><Icon name="sun" size={15} />{c.plans.premiumFit}</p>}
+              {p.slug === 'premium' && <p class="plan-fit plan-fit--digital"><Icon name="check" size={15} />{c.plans.premiumDigital}</p>}
+              <h3 id={`plan-${p.slug}`} class="plan-name">{p.name}</h3>
+              <p class="plan-tagline">{p.tagline}</p>
+              <p class="plan-price"><span class="plan-yearly">{p.yearly}</span> <span class="plan-per">{c.plans.perYear}</span></p>
+              <p class="plan-monthly">{c.plans.perMonth(p.monthly)}</p>
+              {p.slug === 'premium' && <p class="plan-dongle"><Icon name="plug" size={16} />{c.plans.dongle}</p>}
+              <ul class="plan-feats">
+                {p.features.map(f => <li><Icon name="check" size={16} />{f}</li>)}
+              </ul>
+              {p.slug === 'premium' && <p class="plan-analog-note">{c.plans.premiumAnalog}</p>}
+              <a class:list={['btn', p.slug === 'switch-plus' ? 'btn-primary' : 'btn-secondary', 'plan-cta']} href="#bereken" data-cta data-plan={p.slug}>{c.plans.choose(p.name)}</a>
+            </article>
+          ))}
+        </div>
+        <div class="plans-fine">
+          <p><Icon name="shield" size={16} /><span><strong>{c.trust.guarantee}.</strong> {c.plans.guaranteeLine} {c.plans.terms}.<sup><a href="#fn-4" aria-label={fnLabel(4)}>4</a></sup></span></p>
+          <p>{c.plans.vat}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PROOF: dark band ═══ -->
+    <section id="reviews" class="section proof" aria-labelledby="proof-h2">
+      <div class="wrap proof-grid">
+        <div class="proof-head">
+          <p class="eyebrow eyebrow--stage">{c.proof.eyebrow}</p>
+          <h2 id="proof-h2">{c.proof.h2}<sup><a href="#fn-3" aria-label={fnLabel(3)}>3</a></sup></h2>
+          <div class="rating">
+            <p class="rating-big">{c.proof.ratingBig}</p>
+            <div>
+              <Stars label={c.trust.ratingAria} size={20} />
+              <p class="rating-sub">{c.proof.ratingOf} · {c.proof.ratingSub}<sup><a href="#fn-2" aria-label={fnLabel(2)}>2</a></sup></p>
+            </div>
+          </div>
+          <div class="review-ph" data-placeholder="google-reviews">
+            <p class="review-ph-label"><span class="tag-placeholder">placeholder</span>{c.proof.reviewsLabel}</p>
+            <p>{c.proof.reviewsPlaceholder}</p>
+          </div>
+        </div>
+        <ul class="proof-cards">
+          {c.proof.cards.map(k => (
+            <li class="proof-card">
+              <span class="proof-ic"><Icon name={k.icon} size={20} /></span>
+              <h3>{k.t}</h3>
+              <p>{k.b}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══ FAQ + closing CTA ═══ -->
+    <section id="faq" class="section faq" aria-labelledby="faq-h2">
+      <div class="wrap faq-grid">
+        <div>
+          <p class="eyebrow">{c.faq.eyebrow}</p>
+          <h2 id="faq-h2">{c.faq.h2}</h2>
+        </div>
+        <div class="faq-list">
+          {c.faq.items.map(q => (
+            <details name="faq" id={`faq-${q.id}`}>
+              <summary><span>{q.q}</span><Icon name="chev-d" size={20} class="faq-chev" /></summary>
+              <p>{q.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="closing" id="start-cta">
+          <div class="closing-copy">
+            <h2>{c.closing.h2}</h2>
+            <p>{c.closing.body}</p>
+            <p class="closing-proof"><Stars label={c.trust.ratingAria} size={14} /><span>{c.sticky.proof}</span></p>
+          </div>
+          <PostcodeForm c={c} id="start" tone="stage" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <Wordmark />
+        <p class="footer-tagline">{c.footer.tagline}</p>
+        <p>{c.footer.about}</p>
+        <p>{c.footer.mission}</p>
+      </div>
+      <nav aria-label={c.footer.navLabel} class="footer-nav">
+        <ul>
+          {c.nav.items.map(([h, l]) => <li><a href={h}>{l}</a></li>)}
+          <li><a href={href('home', c.nl ? 'fr-be' : 'nl-be', base)} hreflang={c.nav.langHtml} lang={c.nav.langHtml}>{c.nl ? 'Français' : 'Nederlands'}</a></li>
+        </ul>
+        <p id="login" class="footer-login">{c.nav.login}: <span class="tag-placeholder">placeholder</span> {c.nl ? 'link naar het klantenportaal volgt' : 'lien vers l’espace client à venir'}</p>
+      </nav>
+      <div class="footer-notes">
+        <h2 class="footer-h">{c.footer.notesTitle}</h2>
+        <ol>
+          {c.footer.notes.map((n, i) => <li id={`fn-${i + 1}`}>{n}</li>)}
+        </ol>
+      </div>
+    </div>
+    <div class="wrap footer-legal">
+      <p>{c.footer.copyright}</p>
+      <p>{c.footer.legal.join(' · ')} <span>{c.footer.legalNote}</span></p>
+    </div>
+  </footer>
+
+  <div class="sticky-cta" data-sticky hidden>
+    <span class="sticky-proof">{c.sticky.proof}</span>
+    <a class="btn btn-primary" href="#bereken" data-cta>{c.nav.cta}</a>
+  </div>
+
+  <script src="../scripts/site.js"></script>
+</Base>

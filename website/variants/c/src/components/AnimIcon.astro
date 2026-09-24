@@ -1,0 +1,14 @@
+---
+// Animated brand icon (4-s loop, animated WebP) with the static PNG frame for prefers-reduced-motion.
+// Served as-is (not re-encoded, to keep the animation); lazy by default. Decorative: the adjacent text carries meaning.
+const files = import.meta.glob('@shared/assets/icons/*.{webp,png}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+interface Props { name: 'compare' | 'calculator' | 'home-analysis' | 'home-automatic' | 'home-switch' | 'celebrate' | 'relax'; size?: number; eager?: boolean; class?: string; }
+const { name, size = 88, eager = false, class: cls } = Astro.props;
+const pick = (suffix: string) => Object.entries(files).find(([k]) => k.endsWith(`/icon-${name}${suffix}`))?.[1];
+const anim = pick('.webp');
+const still = pick('-static.png');
+---
+<picture class:list={['anim-icon', cls]}>
+  <source srcset={still} media="(prefers-reduced-motion: reduce)" />
+  <img src={anim} alt="" width={size} height={size} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'low' : undefined} decoding="async" />
+</picture>

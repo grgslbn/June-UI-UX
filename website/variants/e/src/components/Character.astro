@@ -1,0 +1,12 @@
+---
+// The real June character (teal mascot). Max once per page, never next to prices or legal copy.
+// Backgrounds were removed by flood fill (hard alpha edge) → always placed on light or pink, never on the dark field.
+import { Picture } from 'astro:assets';
+import pointing from '@shared/assets/character/june-character-pointing.png';
+import cheering from '@shared/assets/character/june-character-cheering.png';
+interface Props { pose: 'pointing' | 'cheering'; class?: string; sizes?: string; eager?: boolean; alt?: string }
+const { pose, class: cls = '', sizes = '(max-width: 640px) 60vw, 360px', eager = false, alt = '' } = Astro.props;
+const src = pose === 'pointing' ? pointing : cheering;
+---
+<Picture src={src} formats={['avif', 'webp']} widths={[240, 360, 540, 720]} sizes={sizes} alt={alt}
+  class={`character character--${pose} ${cls}`} loading="eager" decoding="async" quality={72} fallbackFormat="webp" />

@@ -1,0 +1,235 @@
+---
+// Variant E · Bold June — homepage. Section order per ux-research §4.4 (Home), E volume 8/10.
+import Site from '../../layouts/Site.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PostcodeForm from '../PostcodeForm.astro';
+import Trust from '../Trust.astro';
+import Character from '../Character.astro';
+import AnimIcon from '../AnimIcon.astro';
+import Blob from '../Blob.astro';
+import Stars from '../Stars.astro';
+import Fn from '../Fn.astro';
+import PlanCards from '../PlanCards.astro';
+import Faq from '../Faq.astro';
+import Closing from '../Closing.astro';
+import Sticky from '../Sticky.astro';
+import { Picture } from 'astro:assets';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+import dongle from '@shared/assets/dongle/dongle-leaf-closeup.png';
+import { markWord } from '../squiggle';
+import { href } from '@shared/routes.mjs';
+import { copy, deep, money, tp, lang, stepsShort, f, faqSlug, type Locale } from '../../content/copy';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = copy[locale];
+const L = lang(locale);
+const nl = locale === 'nl-be';
+const base = import.meta.env.BASE_URL;
+const h = (k: string) => href(k, locale, base);
+const C = deep(nl ? {
+  title: 'June: automatisch wisselen naar een voordeliger energiecontract',
+  description: 'June is geen leverancier: we vergelijken elke maand 17+ energieleveranciers voor jouw verbruik en regelen de overstap. Klanten besparen gemiddeld € 326 per jaar.',
+  eyebrow: 'Automatisch wisselen van energieleverancier',
+  h1: 'Je had energie. Nu heb je power.', mark: 'power',
+  sub: 'June is geen leverancier. Elke maand vergelijken we 17+ leveranciers voor jouw verbruik en regelen we de overstap: automatisch, of pas na jouw akkoord. Je stroom blijft gewoon lopen. Klanten besparen gemiddeld € 326 per jaar.',
+  charAlt: '',
+  proof: [
+    { big: '20.000+', label: 'klanten gingen je voor', fn: 3 },
+    { big: money(326, locale), label: 'gemiddelde besparing per jaar', fn: 1 },
+    { big: '17+', label: 'energieleveranciers vergeleken' },
+    { big: money(99, locale), label: 'terug met de winstgarantie als je niet meer bespaart dan je abonnement', fn: 4 },
+  ],
+  steps: { eyebrow: 'Hoe werkt het?', h2a: 'Jij de power,', h2b: 'wij het werk.', intro: 'Eén keer aanmelden. Daarna houden wij je contract elke maand scherp.', more: 'Zo werkt June, stap voor stap' },
+  same: { eyebrow: 'Wat blijft hetzelfde', h2: 'Alleen je factuur verandert.', items: ['Dezelfde meter', 'Dezelfde netbeheerder en aansluiting', 'Geen onderbreking van je stroom of gas', 'Geen opzegvergoeding bij je oude leverancier'], note: 'Als particulier kan je in België altijd van energieleverancier veranderen, met een opzegtermijn van een maand. June houdt daar rekening mee.' },
+  app: { eyebrow: 'Premium · June Dongle', h2: 'Zie wat je huis verbruikt. Live.', body: 'Heb je een digitale meter? Met Premium steek je de June Dongle in de P1-poort en volg je je verbruik live in de June-app, met je historiek per kwartier. Heb je zonnepanelen, dan zie je ook wat je zelf verbruikt en wat je injecteert.', link: 'Bekijk Premium', cap: 'Het verbruiksscherm in de June-app en de June Dongle.', phoneAlt: 'June-app op een smartphone: het verbruiksscherm met een staafgrafiek per dag.', dongleAlt: 'De June Dongle: een wit toestel met een groene kabel in de vorm van een blad.' },
+  plans: { eyebrow: 'Prijzen', h2: 'Kies hoeveel June voor je doet', intro: 'Drie abonnementen, één jaarprijs. Je energie zelf betaal je gewoon aan je leverancier.', all: 'Vergelijk alle abonnementen' },
+  guar: { eyebrow: 'Winstgarantie · bij Switch Plus en Premium', h2pre: 'Bespaar je niet meer dan je abonnement kost? Dan krijg je ', h2post: ' terug.', body: 'Na elk abonnementsjaar maken we de rekening in je besparingsrapport. Zo verdient je abonnement zichzelf terug, of je krijgt je geld terug.', link: 'Zo werkt de winstgarantie', terms: 'Voorwaarden', label: 'Rekenvoorbeeld · illustratief', rows: [['Je kiest Switch Plus', `${money(99, locale)} per jaar`], ['Je besparing na een jaar is lager dan je abonnement', `bv. ${money(80, locale)}`], ['Wij betalen je terug', money(99, locale)]] },
+  rev: { eyebrow: 'Reviews', h2: 'Wat klanten zeggen', of: 'op 5', count: 'op basis van 1.200+ reviews op Google', label: 'Uit onze Google-reviews', ph: 'Hier komt een echte Google-review: woordelijk, met voornaam en datum.', phTag: 'Placeholder' },
+  sup: { eyebrow: 'Onafhankelijk', h2: 'Leveranciers die we vergelijken', body: 'We vergelijken de contracten van 17+ energieleveranciers in België, waaronder:', more: 'en meer', note: 'June is geen energieleverancier en kiest je contract op basis van jouw verbruik. Deze leveranciers zijn geen partners van June.' },
+  faq: { eyebrow: 'FAQ', h2: 'Nog vragen?' },
+} : {
+  title: 'June : passez automatiquement à un contrat d’énergie plus avantageux',
+  description: 'June n’est pas un fournisseur : chaque mois, nous comparons plus de 17 fournisseurs pour votre consommation et gérons le changement. En moyenne 326 € d’économie par an.',
+  eyebrow: 'Changer automatiquement de fournisseur d’énergie',
+  h1: 'Vous aviez de l’énergie. Maintenant, vous avez le pouvoir.', mark: 'pouvoir',
+  sub: 'June n’est pas un fournisseur. Chaque mois, nous comparons plus de 17 fournisseurs selon votre consommation et nous gérons le changement : automatiquement, ou seulement après votre accord. Votre électricité continue de fonctionner. Nos clients économisent en moyenne 326 € par an.',
+  charAlt: '',
+  proof: [
+    { big: '20\u202f000+', label: 'clients nous font déjà confiance', fn: 3 },
+    { big: money(326, locale), label: 'd’économie moyenne par an', fn: 1 },
+    { big: '17+', label: 'fournisseurs d’énergie comparés' },
+    { big: money(99, locale), label: 'remboursés avec la garantie de gain si vous n’économisez pas plus que votre abonnement', fn: 4 },
+  ],
+  steps: { eyebrow: 'Comment ça marche ?', h2a: 'À vous le pouvoir,', h2b: 'à nous le travail.', intro: 'Une seule inscription. Ensuite, nous vérifions votre contrat chaque mois.', more: 'Le fonctionnement de June, étape par étape' },
+  same: { eyebrow: 'Ce qui ne change pas', h2: 'Seule votre facture change.', items: ['Le même compteur', 'Le même gestionnaire de réseau et raccordement', 'Aucune coupure d’électricité ni de gaz', 'Aucune indemnité de rupture chez votre ancien fournisseur'], note: 'En Belgique, un particulier peut toujours changer de fournisseur d’énergie, moyennant un préavis d’un mois. June en tient compte.' },
+  app: { eyebrow: 'Premium · June Dongle', h2: 'Voyez ce que votre maison consomme. En direct.', body: 'Vous avez un compteur numérique ? Avec Premium, vous branchez le June Dongle sur le port P1 et suivez votre consommation en direct dans l’app June, avec votre historique par quart d’heure. Avec des panneaux solaires, vous voyez aussi ce que vous autoconsommez et ce que vous injectez.', link: 'Découvrir Premium', cap: 'L’écran de consommation de l’app June et le June Dongle.', phoneAlt: 'App June sur un smartphone : l’écran Consommation avec un graphique en barres par jour.', dongleAlt: 'Le June Dongle : un boîtier blanc avec un câble vert en forme de feuille.' },
+  plans: { eyebrow: 'Prix', h2: 'Choisissez ce que June fait pour vous', intro: 'Trois abonnements, un prix annuel. Votre énergie, vous la payez normalement à votre fournisseur.', all: 'Comparer tous les abonnements' },
+  guar: { eyebrow: 'Garantie de gain · avec Switch Plus et Premium', h2pre: 'Vous n’économisez pas plus que le prix de votre abonnement ? Vous récupérez ', h2post: '.', body: 'Après chaque année d’abonnement, nous faisons le compte dans votre rapport d’économies. Votre abonnement se rembourse, ou vous êtes remboursé.', link: 'Comment fonctionne la garantie', terms: 'Conditions', label: 'Exemple de calcul · illustratif', rows: [['Vous choisissez Switch Plus', `${money(99, locale)} par an`], ['Votre économie après un an est inférieure à votre abonnement', `p. ex. ${money(80, locale)}`], ['Nous vous remboursons', money(99, locale)]] },
+  rev: { eyebrow: 'Avis', h2: 'Ce que disent nos clients', of: 'sur 5', count: 'sur la base de plus de 1 200 avis Google', label: 'Extraits de nos avis Google', ph: 'Ici, un véritable avis Google : mot pour mot, avec prénom et date.', phTag: 'Placeholder' },
+  sup: { eyebrow: 'Indépendant', h2: 'Fournisseurs que nous comparons', body: 'Nous comparons les contrats de plus de 17 fournisseurs d’énergie en Belgique, dont :', more: 'et d’autres', note: 'June n’est pas fournisseur d’énergie et choisit votre contrat sur la base de votre consommation. Ces fournisseurs ne sont pas des partenaires de June.' },
+  faq: { eyebrow: 'FAQ', h2: 'Encore des questions ?' },
+}, locale);
+const icons = ['home-analysis', 'compare', 'home-switch'] as const;
+const phone = nl ? phoneNl : phoneFr;
+const planSlug = faqSlug[locale];
+---
+<Site locale={locale} routeKey="home" title={C.title} description={C.description}>
+  <div class="field-top">
+    <Header locale={locale} routeKey="home" />
+    <section class="hero" aria-labelledby="h1">
+      <div class="hero__in wrap">
+        <div class="hero__head">
+          <p class="eyebrow eyebrow--field">{C.eyebrow}</p>
+          <h1 id="h1" class={`hero__h1 ${nl ? '' : 'hero__h1--fr'}`} set:html={C.h1.split(/(?<=\.) /).map((l: string) => `<span class="hero__line">${markWord(l, C.mark)}</span>`).join(' ')} />
+        </div>
+        <div class="hero__copy">
+          <p class="hero__sub">{C.sub}<Fn n={1} locale={locale} /></p>
+          <div data-sticky-trigger><PostcodeForm locale={locale} id="pc-hero" loc="hero" /></div>
+          <p class="hero__reassure">{t.reassure}</p>
+          <Trust locale={locale} id="hero" />
+        </div>
+        <div class="hero__art" aria-hidden="true">
+          <Blob shape={4} class="hero__blob" />
+          <Character pose="pointing" class="hero__char" eager sizes="(max-width: 900px) 240px, 380px" />
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main id="main">
+    <section class="proof" aria-label={nl ? 'June in cijfers' : 'June en chiffres'}>
+      <ul class="wrap proof__list" role="list">
+        {C.proof.map((p: any) => <li class="proof__item"><span class="proof__big">{p.big}</span><span class="proof__label">{p.label}{p.fn && <Fn n={p.fn} locale={locale} />}</span></li>)}
+      </ul>
+    </section>
+
+    <section class="steps sec" aria-labelledby="h-steps">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="eyebrow">{C.steps.eyebrow}</p>
+          <h2 id="h-steps" class="display-2">{C.steps.h2a}<br />{C.steps.h2b}</h2>
+          <p class="lede">{C.steps.intro}</p>
+        </header>
+        <ol class="steps__list" role="list">
+          {stepsShort.map((s, i) => (
+            <li class="step">
+              <div class="step__top"><span class="step__num" aria-hidden="true">{s.n}</span><AnimIcon name={icons[i]} class="step__icon" /></div>
+              <h3 class="step__title">{tp(s.title[L], locale)}</h3>
+              <p class="step__body">{tp(s.body[L], locale)}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="sec__more"><a class="link-arrow" href={h('howItWorks')}>{C.steps.more}</a></p>
+      </div>
+    </section>
+
+    <section class="same sec sec--tight" aria-labelledby="h-same">
+      <div class="wrap same__in">
+        <div>
+          <p class="eyebrow">{C.same.eyebrow}</p>
+          <h2 id="h-same" class="display-3">{C.same.h2}</h2>
+          <p class="same__note">{C.same.note}</p>
+        </div>
+        <ul class="checks" role="list">{C.same.items.map((x: string) => <li>{x}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="plans sec" aria-labelledby="h-plans">
+      <div class="wrap">
+        <header class="sec__head sec__head--center">
+          <p class="eyebrow">{C.plans.eyebrow}</p>
+          <h2 id="h-plans" class="display-2">{C.plans.h2}</h2>
+          <p class="lede">{C.plans.intro}</p>
+        </header>
+        <PlanCards locale={locale} mode="teaser" />
+        <p class="plans__fn">{t.fn.prices} <a class="link-arrow" href={h('plans')}>{C.plans.all}</a></p>
+      </div>
+    </section>
+
+    <section class="guar sec" aria-labelledby="h-guar">
+      <div class="wrap guar__in">
+        <div>
+          <p class="eyebrow eyebrow--ink">{C.guar.eyebrow}</p>
+          <h2 id="h-guar" class="guar__h2">{C.guar.h2pre}<span class="hl">{money(99, locale)}</span>{C.guar.h2post}<Fn n={4} locale={locale} /></h2>
+          <p class="guar__body">{C.guar.body}</p>
+          <p class="guar__links"><a class="link-arrow link-arrow--white" href={h('switchPlus')}>{C.guar.link}</a> <a href={`${h('faq')}#${planSlug.guarantee}`}>{C.guar.terms}</a></p>
+        </div>
+        <figure class="receipt">
+          <figcaption class="receipt__label">{C.guar.label}</figcaption>
+          <dl>{C.guar.rows.map(([k, v]: string[], i: number) => <div class={`receipt__row ${i === 2 ? 'receipt__row--total' : ''}`}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+        </figure>
+      </div>
+    </section>
+
+    <section class="app sec" aria-labelledby="h-app">
+      <div class="wrap app__in">
+        <figure class="app__art">
+          <Blob shape={2} class="app__blob" />
+          <Picture src={phone} formats={['avif', 'webp']} widths={[200, 300, 450]} sizes="(max-width: 640px) 42vw, 260px" alt={C.app.phoneAlt} class="app__phone" loading="eager" decoding="async" fallbackFormat="webp" />
+          <Picture src={dongle} formats={['avif', 'webp']} widths={[160, 240, 360]} sizes="(max-width: 640px) 30vw, 200px" alt={C.app.dongleAlt} class="app__dongle" loading="eager" decoding="async" fallbackFormat="webp" />
+          <figcaption class="sr-only">{C.app.cap}</figcaption>
+        </figure>
+        <div>
+          <p class="eyebrow">{C.app.eyebrow}</p>
+          <h2 id="h-app" class="display-3">{C.app.h2}</h2>
+          <p class="app__body">{C.app.body}</p>
+          <p><a class="link-arrow" href={`${h('plans')}#premium`}>{C.app.link}</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews sec" id={t.reviewsId} aria-labelledby="h-rev">
+      <div class="wrap reviews__in">
+        <div class="reviews__score">
+          <p class="eyebrow">{C.rev.eyebrow}</p>
+          <h2 id="h-rev" class="display-2">{C.rev.h2}</h2>
+          <p class="score"><span class="score__num">4,3</span> <span class="score__of">{C.rev.of}</span></p>
+          <Stars id="st-rev" label={t.trust.ratingAria} class="score__stars" />
+          <p class="score__meta">{C.rev.count}<Fn n={2} locale={locale} /></p>
+        </div>
+        <div class="reviews__cards">
+          <p class="reviews__label">{C.rev.label}</p>
+          {[0, 1].map(i => (
+            <figure class={`rcard rcard--${i}`} data-placeholder="google-review">
+              <Stars id={`st-c${i}`} label={t.trust.ratingAria} class="rcard__stars" />
+              <div class="rcard__lines" aria-hidden="true"><span></span><span></span><span></span></div>
+              <figcaption class="rcard__ph"><strong>{C.rev.phTag}</strong> · {C.rev.ph}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="suppliers sec sec--tight" aria-labelledby="h-sup">
+      <div class="wrap suppliers__in">
+        <div>
+          <p class="eyebrow">{C.sup.eyebrow}</p>
+          <h2 id="h-sup" class="display-3">{C.sup.h2}</h2>
+          <p class="suppliers__body">{C.sup.body}</p>
+        </div>
+        <div>
+          <ul class="chips" role="list">{f.suppliers.logos.map((s: any) => <li>{s.name}</li>)}<li class="chips__more">{C.sup.more}</li></ul>
+          <p class="suppliers__note">{C.sup.note}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq sec" aria-labelledby="h-faq">
+      <div class="wrap faq__in">
+        <header>
+          <p class="eyebrow">{C.faq.eyebrow}</p>
+          <h2 id="h-faq" class="display-2">{C.faq.h2}</h2>
+          <p class="sec__more"><a class="link-arrow" href={h('faq')}>{t.allFaq}</a></p>
+        </header>
+        <Faq locale={locale} ids={['not-a-supplier', 'independence', 'exit-fee', 'meters', 'cancel']} group="home-faq" />
+      </div>
+    </section>
+
+    <Closing locale={locale} />
+  </main>
+  <Footer locale={locale} routeKey="home" />
+  <Sticky locale={locale} />
+</Site>

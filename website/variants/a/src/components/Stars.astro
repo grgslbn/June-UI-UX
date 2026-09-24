@@ -1,0 +1,14 @@
+---
+// Partial stars: 4,3 → 4 full + 30%. Never five full stars (claims register C3).
+interface Props { value: number; label: string; size?: number }
+const { value, label, size = 16 } = Astro.props;
+const pct = (value / 5) * 100;
+const star = 'M12 2.8l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1L3.2 9.3l6.1-.9z';
+const xs = [0, 1, 2, 3, 4];
+---
+<span class="stars" role="img" aria-label={label}>
+  <svg width={size * 5 + 8} height={size} viewBox="0 0 128 24" aria-hidden="true" focusable="false">
+    <g class="stars__track">{xs.map(i => <path d={star} transform={`translate(${i * 26} 0)`} />)}</g>
+    <g class="stars__fill" style={`clip-path: inset(0 ${100 - pct}% 0 0)`}>{xs.map(i => <path d={star} transform={`translate(${i * 26} 0)`} />)}</g>
+  </svg>
+</span>

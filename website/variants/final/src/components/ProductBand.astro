@@ -1,0 +1,115 @@
+---
+// Premium product band (borrowed from variant A): the REAL leaf dongle + the real current June app on a phone,
+// localised (NL phone on NL pages, FR phone on FR pages — the NL-only composite shots are never used on FR).
+// Reusable: Plans uses variant="full" (with the three product steps); Home can use variant="compact".
+// Price block follows rule C8 (yearly first, monthly + billing beside it); guarantee always with its condition;
+// the P1 requirement is always shown next to the CTA. Only confirmed Premium features (freeze §2.2).
+// Styles are scoped here, so the band looks the same wherever it is dropped in. Images are lazy (below the fold)
+// with fixed width/height, so no layout shift; the soft brand field behind them avoids an empty pop-in.
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import Fn from './Fn.astro';
+import CtaProof from './CtaProof.astro';
+import { productBandCopy } from '../i18n/pages.js';
+import { href } from '@shared/routes.mjs';
+import dongle from '@shared/assets/dongle/dongle-leaf-closeup.png';
+import phoneNl from '@shared/assets/app/app-phone-nl.png';
+import phoneFr from '@shared/assets/app/app-phone-fr.png';
+interface Props {
+  locale: 'nl-be' | 'fr-be';
+  variant?: 'full' | 'compact';
+  id?: string;
+  headingId?: string;
+  entry?: string;               // analytics location for data-cta
+  tone?: 'paper' | 'deep';      // band background: page paper or the alternate deep band
+  compareLink?: boolean;        // show "Analoge meter? Kies Switch Plus" (to #switch-plus on the plans page)
+}
+const { locale, variant = 'full', id = 'dongle', headingId = `${id}-h`, entry = 'band', tone = 'paper', compareLink = true } = Astro.props;
+const c = productBandCopy(locale);
+const b = c.band;
+const L = c.L;
+const base = import.meta.env.BASE_URL;
+const signup = href('signup', locale, base);
+---
+<section class:list={['section', 'pb', `pb--${variant}`, { 'section--deep': tone === 'deep' }]} id={id} aria-labelledby={headingId}>
+  <div class="wrap">
+    <div class="pb-top">
+      <div class="pb-copy">
+        <p class="kicker"><span>{b.kicker}</span></p>
+        <h2 id={headingId}>{b.h2}</h2>
+        <p class="pb-intro">{b.intro}</p>
+        <div class="pb-price">
+          <p><span class="pb-yr num">{b.price}</span> <span class="pb-per">{b.per}</span></p>
+          <p class="pb-sub">{b.sub}<Fn n={6} L={L} /></p>
+          <p class="pb-g"><Icon name="shield" /><span>{b.guarantee}<Fn n={4} L={L} /></span></p>
+        </div>
+        <div class="pb-cta">
+          <a class="btn" href={`${signup}?plan=premium&meter=digital`} data-cta={`${entry}-premium`}>{b.cta}<Icon name="arrow-r" /></a>
+          {compareLink && <a class="link-arrow" href={`${href('plans', locale, base)}#switch-plus`}>{b.alt}<Icon name="arrow-r" /></a>}
+        </div>
+        <CtaProof c={c} id={`${id}-pb`} reducer={c.proof.risk} />
+        <p class="pb-req"><Icon name="meter" /><span>{b.req}</span></p>
+      </div>
+      <figure class="pb-stage">
+        <div class="pb-field" aria-hidden="true"></div>
+        <Picture src={L === 'fr' ? phoneFr : phoneNl} formats={['avif', 'webp']} widths={[220, 299]} sizes="(max-width: 860px) 44vw, 220px" alt={b.stageAlt} loading="lazy" decoding="async" pictureAttributes={{ class: 'pb-phone' }} />
+        <Picture src={dongle} formats={['avif', 'webp']} widths={[200, 400]} sizes="(max-width: 860px) 36vw, 200px" alt="" loading="lazy" decoding="async" pictureAttributes={{ class: 'pb-dongle' }} />
+        <figcaption class="pb-tag">{b.tag}</figcaption>
+      </figure>
+    </div>
+    {variant === 'full' && (
+      <ol class="pb-steps">
+        {b.steps.map((s: any, i: number) => (
+          <li>
+            <span class="pb-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <Icon name={s.icon} />
+            <h3>{s.h}</h3>
+            <p>{s.p}</p>
+          </li>
+        ))}
+      </ol>
+    )}
+  </div>
+</section>
+
+<style>
+  .pb-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .pb-copy { display: grid; gap: var(--s-4); justify-items: start; }
+  .pb-copy .kicker { width: 100%; }
+  .pb-copy h2 { font-size: var(--fs-h2); max-width: 20ch; }
+  .pb-intro { color: var(--ink-700); max-width: 52ch; }
+  .pb-price { display: grid; gap: 6px; padding: var(--s-4) 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); width: 100%; }
+  .pb-yr { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 2vw + 22px, 48px); letter-spacing: -0.03em; line-height: 1; }
+  .pb-per { font-weight: 600; }
+  .pb-sub { font-size: var(--fs-ui); color: var(--ink-700); }
+  .pb-g { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; font-size: var(--fs-ui); line-height: 1.45; margin-top: 6px; }
+  .pb-g :global(svg), .pb-req :global(svg) { width: 20px; height: 20px; color: var(--accent-strong); margin-top: 1px; }
+  .pb-cta { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-6); align-items: center; margin-top: var(--s-2); }
+  .pb-copy :global(.cta-proof) { margin-top: calc(-1 * var(--s-2)); column-gap: 12px; }
+  .pb-copy :global(.cta-proof > span[aria-hidden]:not(.stars)) { display: none; }
+  .pb-req { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; font-size: var(--fs-note); color: var(--ink-700); max-width: 52ch; }
+  .pb-req :global(svg) { color: var(--ink-700); }
+
+  /* Stage: soft brand field + halftone dots, phone standing, leaf dongle leaning in front (bottom-left). */
+  .pb-stage { position: relative; margin: 0; aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; display: grid; place-items: center; }
+  .pb-field { position: absolute; inset: 6% 4%; border-radius: 48% 52% 46% 54% / 52% 44% 56% 48%; background: var(--accent-soft); overflow: hidden; }
+  .pb-field::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(var(--accent) 1.3px, transparent 1.8px); background-size: 11px 11px; opacity: 0.35;
+    -webkit-mask-image: radial-gradient(circle at 78% 22%, #000 0, transparent 55%); mask-image: radial-gradient(circle at 78% 22%, #000 0, transparent 55%); }
+  .pb-stage :global(.pb-phone img), .pb-stage :global(.pb-dongle img) { display: block; width: 100%; height: auto; }
+  .pb-stage :global(.pb-phone) { position: relative; display: block; width: 40%; height: auto; transform: translateX(18%) rotate(3deg); filter: drop-shadow(0 24px 30px rgba(18, 52, 50, 0.22)); }
+  .pb-stage :global(.pb-dongle) { position: absolute; display: block; width: 36%; height: auto; left: 12%; bottom: 8%; transform: rotate(-8deg); filter: drop-shadow(0 16px 20px rgba(18, 52, 50, 0.2)); }
+  .pb-tag { position: absolute; top: 10%; left: 10%; background: var(--surface); color: var(--ink-900); border: 1px solid var(--rule); border-radius: var(--r-pill); padding: 6px 12px; font-size: var(--fs-note); font-weight: 600; box-shadow: var(--shadow-1); }
+
+  .pb-steps { list-style: none; margin: var(--s-12) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+  .pb-steps li { position: relative; display: grid; gap: var(--s-2); align-content: start; padding: var(--s-5); background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r-md); }
+  .pb-steps :global(svg) { width: 28px; height: 28px; color: var(--accent-strong); }
+  .pb-n { position: absolute; top: var(--s-5); right: var(--s-5); font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink-500); }
+  .pb-steps h3 { font-size: 19px; line-height: 1.25; }
+  .pb-steps p { color: var(--ink-700); font-size: 16px; }
+
+  @media (max-width: 860px) {
+    .pb-top { grid-template-columns: minmax(0, 1fr); }
+    .pb-stage { max-width: 400px; order: -1; }
+    .pb-steps { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+  }
+</style>

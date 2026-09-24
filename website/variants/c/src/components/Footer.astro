@@ -1,0 +1,60 @@
+---
+import Logo from './Logo.astro';
+import { href, LOCALES } from '@shared/routes.mjs';
+interface Props { locale: 'nl-be' | 'fr-be'; routeKey: string; c: any; minimal?: boolean; }
+const { locale, routeKey, c, minimal = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const other = locale === 'nl-be' ? 'fr-be' : 'nl-be';
+const h = (k: string, frag = '') => href(k, locale, base) + frag;
+const f = c.footer;
+const colJune = [
+  [c.pageNames.howItWorks, h('howItWorks')],
+  [c.pageNames.plans, h('plans')],
+  [f.links.switch, h('plans', '#switch')],
+  [c.pageNames.switchPlus, h('switchPlus')],
+  [f.links.premium, h('plans', '#premium')],
+  [f.links.dongle, h('plans', '#dongle')],
+];
+const colHelp = [
+  [c.pageNames.faq, h('faq')],
+  [f.links.earn, h('plans', '#verdienmodel')],
+  [f.links.data, h('howItWorks', '#gegevens')],
+  [c.nav.reviews, h('home', '#reviews')],
+];
+---
+<footer class:list={['footer', { 'footer--minimal': minimal }]} data-sticky-hide>
+  <div class="wrap">
+    {!minimal && (
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <Logo href={h('home')} label={c.ui.homeLabel} size="lg" />
+          <p class="tagline">{f.tagline}</p>
+          <p>{f.about}</p>
+          <p><strong>{f.mission}</strong></p>
+        </div>
+        <nav aria-labelledby="ft-june">
+          <h2 id="ft-june">{f.colJune}</h2>
+          <ul>{colJune.map(([l, u]) => <li><a href={u}>{l}</a></li>)}</ul>
+        </nav>
+        <nav aria-labelledby="ft-help">
+          <h2 id="ft-help">{f.colHelp}</h2>
+          <ul>
+            {colHelp.map(([l, u]) => <li><a href={u}>{l}</a></li>)}
+            <li><a href="https://www.june.energy/" rel="noopener">{c.ui.login} ↗</a></li>
+            <li><a href={href(routeKey, other, base)} hreflang={LOCALES[other].html} lang={LOCALES[other].html}>{c.ui.langOtherName}</a></li>
+          </ul>
+        </nav>
+        <div class="footer-notes">
+          <h2 id="ft-notes">{f.notesTitle}</h2>
+          <ol class="footnotes" aria-labelledby="ft-notes">
+            {c.footnotes.map((n: any) => <li id={n.id}>{n.text}</li>)}
+          </ol>
+        </div>
+      </div>
+    )}
+    <div class="legal">
+      <span>{f.legal}</span>
+      <span class="legal-links" title={f.legalNote}>{f.legalLinks.join(' · ')}</span>
+    </div>
+  </div>
+</footer>

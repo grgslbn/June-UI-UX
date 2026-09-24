@@ -1,0 +1,255 @@
+---
+// Style tile — concept B · Savings First. noindex, not linked from the site.
+import Base from '../layouts/Base.astro';
+import Icons from '../components/Icons.astro';
+import Logo from '../components/Logo.astro';
+import Stars from '../components/Stars.astro';
+import { estimate, eurRange, eur } from '../lib/estimate';
+const base = import.meta.env.BASE_URL;
+
+// contrast ratios computed at build time (WCAG relative luminance)
+const lum = (hex: string) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+const cr = (a: string, b: string) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return ((x + 0.05) / (y + 0.05)).toFixed(1); };
+const W = '#ffffff', INK = '#14232a';
+const palette = [
+  { name: 'Ink 900', token: '--ink-900', hex: INK, role: 'Text · result card · trust band · footer', vs: [[W, 'on white']] },
+  { name: 'White', token: '--canvas', hex: W, role: 'B canvas: white, never grey', vs: [[INK, 'ink on it']] },
+  { name: 'Canvas mint', token: '--canvas-mint', hex: '#edf4f3', role: 'Alternate sections', vs: [[INK, 'ink'], ['#56666d', 'ink-500']] },
+  { name: 'Accent strong', token: '--accent-strong', hex: '#19736f', role: 'THE CTA colour · links · focus', vs: [[W, 'white label'], ['#edf4f3', 'on mint']] },
+  { name: 'June Green', token: '--accent', hex: '#3bada8', role: 'Fills, bar, underline · text only on ink', vs: [[INK, 'on ink / ink label'], [W, 'on white: fill only']] },
+  { name: 'Accent soft', token: '--accent-soft', hex: '#e2f3f1', role: 'Example box, icon wells', vs: [['#19736f', 'accent-strong text']] },
+  { name: 'Ink 500', token: '--ink-500', hex: '#56666d', role: 'Meta text, helpers', vs: [[W, 'on white']] },
+  { name: 'Electricity', token: '--elec', hex: '#f0b429', role: 'Only: energy toggle + breakdown', vs: [[INK, 'on ink (legend)']] },
+  { name: 'Gas', token: '--gas', hex: '#1f86c4', role: 'Only: energy toggle + breakdown', vs: [[W, 'on white: fill only']] },
+  { name: 'June Red', token: '--red', hex: '#e85257', role: 'One ≤ 8px dot in the ring motif. Never a CTA', vs: [[INK, 'mark on ink']] },
+];
+const types = [
+  { n: 'Result numeral', spec: 'Montserrat 700 · 80–88px · −0.035em · tabular', cls: 't-num', s: '€ 220 – 540' },
+  { n: 'H1', spec: 'Montserrat 700 · 64px (34 mobile) · lh 1.06', cls: 't-h1', s: 'Hoeveel betaal jij te veel?' },
+  { n: 'H2', spec: 'Montserrat 700 · 48px (32 mobile)', cls: 't-h2', s: 'Geen trucs. Gewoon rekenen.' },
+  { n: 'H3 / price', spec: 'Montserrat 700 · 22–32px', cls: 't-h3', s: 'Switch Plus · € 99 per jaar' },
+  { n: 'Lead', spec: 'Inter 400 · 22px · ink-700', cls: 't-lead', s: 'Je betaalt June één keer per jaar.' },
+  { n: 'Body', spec: 'Inter 400 · 18px · lh 1.55 · ≤ 68ch', cls: 't-body', s: 'We vergelijken elke maand de contracten van 17+ leveranciers voor jouw verbruik en regelen de overstap.' },
+  { n: 'UI / label', spec: 'Inter 600 · 16px', cls: 't-ui', s: 'Type woning' },
+  { n: 'Helper', spec: 'Inter 400 · 14px · ink-500', cls: 't-help', s: 'Netkosten verschillen per regio.' },
+  { n: 'Footnote', spec: 'Inter 400 · 12px (floor)', cls: 't-fine', s: 'Alle prijzen incl. 21% btw.' },
+];
+const e = estimate({ housing: 'detached', energy: 'both' });
+const icons = ['gauge', 'scale', 'wallet', 'repeat', 'shield', 'plug', 'check', 'hand', 'pin', 'info', 'zap', 'flame'];
+---
+<Base locale="nl-be" routeKey="style-tile" title="Style tile · concept B Savings First | June" description="Style tile voor concept B (Savings First): palet, typografie, componenten, resultaatkaart, iconen, motief en motion." noindex>
+  <Icons />
+  <main id="main" class="st">
+    <header class="st-head">
+      <div class="wrap st-head-in">
+        <Logo href={`${base}nl-be/`} tone="white" />
+        <div>
+          <p class="eyebrow">Style tile · concept B</p>
+          <h1>Savings First. <span>Your number, in 30 seconds.</span></h1>
+        </div>
+        <p class="st-intro">The hero is the tool. White canvas, one ink result card, June Green as the only action colour. Brand volume 4/10: the number is the hero, the ring motif frames only the result.</p>
+      </div>
+    </header>
+
+    <section class="wrap st-sec" aria-labelledby="p-h">
+      <h2 id="p-h">Palette</h2>
+      <ul role="list" class="swatches">
+        {palette.map(p => (
+          <li class="sw">
+            <span class="sw-chip" style={`background:${p.hex}`}></span>
+            <div class="sw-body">
+              <p class="sw-n">{p.name} <code>{p.hex}</code></p>
+              <p class="sw-t"><code>{p.token}</code></p>
+              <p class="sw-r">{p.role}</p>
+              <ul role="list" class="sw-cr">{p.vs.map(([b, l]) => <li><span>{cr(p.hex, b as string)}:1</span> {l}</li>)}</ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="note">Rules: accent-strong is the only CTA colour on light; on the ink card the CTA flips to June Green with an ink label ({cr('#3bada8', INK)}:1). Energy colours never become backgrounds. Red is a spark, not a warning (errors use #c4383e + icon + text).</p>
+    </section>
+
+    <section class="wrap st-sec" aria-labelledby="t-h">
+      <h2 id="t-h">Type</h2>
+      <ul role="list" class="types">
+        {types.map(t => <li><p class="ty-meta"><strong>{t.n}</strong> {t.spec}</p><p class={t.cls}>{t.s}</p></li>)}
+      </ul>
+      <p class="note">Montserrat = display + every numeral (tabular). Inter = everything else. Self-hosted variable WOFF2, Montserrat preloaded (LCP H1), metric-matched Arial fallbacks. FR runs ~15% longer: headlines use text-wrap: balance, cards have no fixed heights.</p>
+    </section>
+
+    <section class="wrap st-sec" aria-labelledby="c-h">
+      <h2 id="c-h">Controls</h2>
+      <div class="ctl-grid">
+        <div class="ctl">
+          <p class="ctl-l">Buttons</p>
+          <div class="row">
+            <a class="btn btn--lg" href="#c-h">Bereken je besparing<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+            <a class="btn btn--ghost" href="#c-h">Kies Switch</a>
+            <a class="link-arrow" href="#c-h">Meer over hoe June werkt<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+          </div>
+          <div class="row ink-row on-ink">
+            <a class="btn btn--on-ink" href="#c-h">Start met June<svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+          </div>
+        </div>
+        <div class="ctl">
+          <p class="ctl-l">Input · postcode</p>
+          <div class="fake-pc"><svg class="i" aria-hidden="true"><use href="#i-pin" /></svg><label class="sr-only" for="st-pc">Postcode</label><input id="st-pc" value="9000" inputmode="numeric" /><span class="ok">✓ Vlaanderen</span></div>
+          <div class="fake-pc err"><svg class="i" aria-hidden="true"><use href="#i-pin" /></svg><label class="sr-only" for="st-pc2">Postcode</label><input id="st-pc2" value="0123" aria-invalid="true" /><span class="bad">Vul een Belgische postcode in (4 cijfers).</span></div>
+        </div>
+        <div class="ctl">
+          <p class="ctl-l">Segmented control (radio group)</p>
+          <div class="seg4" role="radiogroup" aria-label="Type woning (voorbeeld)">
+            {[['apartment', 'Appartement'], ['terraced', 'Rijwoning'], ['semi', 'Halfopen'], ['detached', 'Open']].map(([k, l], i) => (
+              <span class:list={['sg', { on: i === 3 }]}><svg class="i" aria-hidden="true"><use href={`#h-${k}`} /></svg>{l}</span>
+            ))}
+          </div>
+          <p class="ctl-l">Chips</p>
+          <div class="row">
+            <span class="chip"><svg class="i" aria-hidden="true"><use href="#i-shield" /></svg>Met Winstgarantie</span>
+            <span class="chip chip--ink">Aanbevolen</span>
+            <span class="chip chip--placeholder">placeholder</span>
+            <Stars label="4,3 op 5 sterren" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap st-sec st-split" aria-labelledby="r-h">
+      <div>
+        <h2 id="r-h">Result card</h2>
+        <p class="note">The signature object. Ink tile, white Montserrat numeral always a <strong>range</strong>, always <strong>net of the subscription</strong>, with the ≈ marker opening the method. The ledger shows the maths (energy parts − fee). Fallback below € 50: “Je zit al goed. June houdt het zo.”</p>
+        <h3 class="st-h3">Motion · “the number resolves”</h3>
+        <ul class="motion">
+          <li>Nothing moves before the visitor interacts. H1 is never faded.</li>
+          <li>On input change: numeral counts from the old to the new range in 480ms (ease-out, no overshoot), rounded to € 5 while moving.</li>
+          <li>The bar splits (transform: scaleX only) into subscription (hatched) vs “voor jou” (June Green).</li>
+          <li>The accent underline redraws; on a valid postcode the rings turn once (700ms).</li>
+          <li>Screen readers get one polite announcement 500ms after it settles.</li>
+          <li>prefers-reduced-motion: final value instantly, no underline or ring motion.</li>
+        </ul>
+      </div>
+      <div class="mini on-ink">
+        <svg class="mini-rings" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="118" /><circle cx="120" cy="120" r="88" /><circle cx="120" cy="120" r="58" /><circle class="d" cx="18" cy="179" r="4" /><circle class="d r" cx="90" cy="203" r="4.5" /></svg>
+        <p class="mini-l">Jouw geschatte besparing</p>
+        <p class="mini-s">Open bebouwing, elektriciteit + gas · 9000 Vlaanderen</p>
+        <p class="mini-n num"><span class="mini-a">≈</span>{eurRange(e.net[0], e.net[1], 'nl-be')}</p>
+        <p class="mini-s">per jaar, na je abonnement</p>
+        <div class="mini-bar" aria-hidden="true"><span style={`transform:scaleX(${(99 / ((e.gross[0] + e.gross[1]) / 2)).toFixed(3)})`}></span></div>
+        <dl class="mini-led">
+          <div><dt>Elektriciteit</dt><dd>{eurRange(e.elec[0], e.elec[1], 'nl-be')}</dd></div>
+          <div><dt>Gas</dt><dd>{eurRange(e.gas[0], e.gas[1], 'nl-be')}</dd></div>
+          <div><dt>Abonnement Switch Plus</dt><dd>− {eur(99, 'nl-be')}</dd></div>
+        </dl>
+        <span class="btn btn--on-ink btn--block">Start met June</span>
+      </div>
+    </section>
+
+    <section class="wrap st-sec" aria-labelledby="i-h">
+      <h2 id="i-h">Icons & motif</h2>
+      <div class="st-split">
+        <div>
+          <ul role="list" class="icons">{icons.map(i => <li><span class="well"><svg class="i" aria-hidden="true"><use href={`#i-${i}`} /></svg></span><span>{i}</span></li>)}</ul>
+          <ul role="list" class="icons">{['apartment', 'terraced', 'semi', 'detached'].map(i => <li><span class="well"><svg class="i" aria-hidden="true"><use href={`#h-${i}`} /></svg></span><span>{i}</span></li>)}</ul>
+          <p class="note">24px line icons, 1.75 stroke, round joins, in mint wells. Housing icons differ by the number of shared walls. The bolt lives in the logo only.</p>
+        </div>
+        <div>
+          <p class="note"><strong>Motif: rings + dots</strong>, only around the result (and on the “what you keep” tile). Max one per viewport, aria-hidden SVG, one red dot ≤ 9px. No blobs, halftones or squiggles in B; imagery = one placeholder photo in the reviews band.</p>
+          <img class="ph" src={`${base}img/placeholder-photo-home.svg`} alt="Placeholder: foto van een Belgische woning (volgt)" width="400" height="500" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="st-sample" aria-labelledby="s-h">
+      <div class="wrap">
+        <p class="eyebrow">Voorbeeldsectie</p>
+        <h2 id="s-h">Eén jaarprijs. Geen verrassingen.</h2>
+        <div class="sample">
+          <div class="s-price"><span class="num">€ 99</span> per jaar</div>
+          <p>€ 8,25 per maand, jaarlijks gefactureerd. Bespaar je in een abonnementsjaar niet meer dan je abonnement kost? Dan krijg je € 99 terug.</p>
+          <a class="btn" href="#s-h">Kies Switch Plus</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .st-head { background: var(--ink-900); color: #fff; padding-block: var(--s-16); }
+  .st-head-in { display: grid; gap: var(--s-6); }
+  .st-head .eyebrow { color: var(--accent); }
+  .st-head h1 { font-size: var(--fs-72); margin-top: 8px; }
+  .st-head h1 span { color: var(--accent); display: block; }
+  .st-intro { max-width: 62ch; color: var(--on-ink-muted); }
+  .st-sec { padding-block: var(--s-16); border-bottom: 1px solid var(--hairline); }
+  .st-sec h2 { font-size: var(--fs-32); margin-bottom: var(--s-8); }
+  .note { margin-top: var(--s-6); font-size: var(--fs-16); color: var(--ink-700); max-width: 70ch; }
+  code { font: 500 .85em ui-monospace, monospace; color: var(--ink-500); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: var(--s-4); }
+  .sw { border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--hairline-strong); overflow: hidden; }
+  .sw-chip { display: block; height: 84px; border-bottom: 1px solid var(--hairline); }
+  .sw-body { padding: var(--s-4); display: grid; gap: 4px; font-size: var(--fs-14); }
+  .sw-n { font-weight: 700; }
+  .sw-r { color: var(--ink-700); }
+  .sw-cr { display: grid; gap: 2px; margin-top: 4px; color: var(--ink-500); }
+  .sw-cr span { font-weight: 700; color: var(--ink-900); }
+  .types { display: grid; gap: var(--s-5); }
+  .types li { display: grid; grid-template-columns: 280px 1fr; gap: var(--s-6); align-items: baseline; border-bottom: 1px solid var(--hairline); padding-bottom: var(--s-4); }
+  .ty-meta { font-size: var(--fs-14); color: var(--ink-500); }
+  .ty-meta strong { display: block; color: var(--ink-900); }
+  .t-num { font: 700 5.25rem/1 var(--font-display); letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+  .t-h1 { font: 700 4rem/1.06 var(--font-display); letter-spacing: -0.02em; }
+  .t-h2 { font: 700 3rem/1.06 var(--font-display); letter-spacing: -0.02em; }
+  .t-h3 { font: 700 1.75rem/1.2 var(--font-display); }
+  .t-lead { font-size: var(--fs-22); color: var(--ink-700); }
+  .t-body { font-size: var(--fs-18); max-width: 60ch; }
+  .t-ui { font-weight: 600; font-size: var(--fs-16); }
+  .t-help { font-size: var(--fs-14); color: var(--ink-500); }
+  .t-fine { font-size: var(--fs-12); color: var(--ink-500); }
+  .ctl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-8); }
+  .ctl { display: grid; gap: var(--s-4); align-content: start; }
+  .ctl-l { font-size: var(--fs-12); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-500); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+  .ink-row { background: var(--ink-900); padding: var(--s-4); border-radius: var(--r-lg); }
+  .fake-pc { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .fake-pc .i { color: var(--ink-400); }
+  .fake-pc input { width: 120px; height: 52px; padding: 0 14px; border-radius: var(--r-md); border: 1.5px solid var(--accent-strong); font: 600 1.25rem var(--font-display); letter-spacing: .12em; }
+  .fake-pc.err input { border-color: var(--red-text); }
+  .ok { color: var(--accent-strong); font-weight: 600; font-size: var(--fs-14); }
+  .bad { color: var(--red-text); font-weight: 600; font-size: var(--fs-14); }
+  .seg4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 5px; border-radius: var(--r-md); background: var(--surface-sunken); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .sg { display: grid; justify-items: center; gap: 4px; padding: 10px 2px; border-radius: var(--r-sm); font-size: var(--fs-12); font-weight: 600; color: var(--ink-700); }
+  .sg .i { color: var(--ink-400); }
+  .sg.on { background: #fff; color: var(--ink-900); box-shadow: var(--shadow-1), inset 0 0 0 1.5px var(--ink-900); }
+  .sg.on .i { color: var(--accent-strong); }
+  .st-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-12); align-items: start; }
+  .st-h3 { margin-top: var(--s-8); }
+  .motion { margin-top: var(--s-3); padding-left: 1.1em; display: grid; gap: 6px; font-size: var(--fs-16); color: var(--ink-700); }
+  .mini { position: relative; overflow: hidden; padding: var(--s-8); border-radius: var(--r-lg); background: var(--ink-900); color: #fff; box-shadow: var(--shadow-ink); display: grid; gap: 8px; }
+  .mini-rings { position: absolute; width: 300px; height: 300px; right: -150px; top: -160px; max-width: none; }
+  .mini-rings circle { fill: none; stroke: rgba(255,255,255,.16); }
+  .mini-rings .d { fill: var(--accent); stroke: none; } .mini-rings .r { fill: var(--red); }
+  .mini-l { font-size: var(--fs-14); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--accent); }
+  .mini-s { font-size: var(--fs-14); color: var(--on-ink-muted); }
+  .mini-n { font-size: 4.5rem; font-weight: 700; line-height: 1; display: flex; gap: 12px; align-items: center; white-space: nowrap; padding-bottom: 12px; border-bottom: 4px solid var(--accent); }
+  .mini-a { font-size: 2rem; color: var(--accent); }
+  .mini-bar { position: relative; height: 10px; border-radius: 99px; background: var(--accent); overflow: hidden; margin-top: 8px; }
+  .mini-bar span { position: absolute; inset: 0; transform-origin: left; background: repeating-linear-gradient(-45deg, #5c6a70 0 3px, #34454c 3px 6px); }
+  .mini-led { display: grid; font-size: var(--fs-14); margin-bottom: 8px; }
+  .mini-led div { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.16); }
+  .mini-led dt { color: var(--on-ink-muted); } .mini-led dd { font-weight: 600; }
+  .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: var(--s-4); margin-bottom: var(--s-4); }
+  .icons li { display: grid; justify-items: center; gap: 6px; font-size: var(--fs-12); color: var(--ink-500); }
+  .ph { width: 240px; height: auto; border-radius: var(--r-lg); margin-top: var(--s-4); }
+  .st-sample { background: var(--canvas-mint); padding-block: var(--s-16); }
+  .st-sample h2 { margin: 8px 0 var(--s-6); }
+  .sample { display: grid; gap: var(--s-3); justify-items: start; max-width: 520px; padding: var(--s-8); border-radius: var(--r-lg); background: #fff; box-shadow: inset 0 0 0 2px var(--ink-900), var(--shadow-2); }
+  .s-price { font-weight: 600; color: var(--ink-700); }
+  .s-price .num { font-size: 3.5rem; font-weight: 700; color: var(--ink-900); }
+  .sample p { color: var(--ink-700); font-size: var(--fs-16); }
+  @media (max-width: 900px) {
+    .ctl-grid, .st-split { grid-template-columns: 1fr; }
+    .types li { grid-template-columns: 1fr; gap: 4px; }
+    .t-num { font-size: 3.25rem; } .t-h1 { font-size: 2.25rem; } .t-h2 { font-size: 2rem; }
+    .mini-n { font-size: 2.75rem; }
+  }
+</style>

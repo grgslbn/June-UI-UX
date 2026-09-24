@@ -1,0 +1,708 @@
+<style>
+/* Advice — tab-specific layout only (components come from components.css) */
+[data-tab="advice"] .ad-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; flex-wrap: wrap; margin-bottom: var(--gap); }
+[data-tab="advice"] .ad-seg .badge { min-width: 20px; height: 20px; padding: 0 6px; }
+[data-tab="advice"] .ad-sort { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="advice"] .ad-sort .icon { color: var(--ink-400); }
+[data-tab="advice"] .tag .icon { width: 14px; height: 14px; }
+
+/* One estimate marker: the inline ≈ in the value's own type, as a popover trigger (24px target) */
+[data-tab="advice"] button.approx { display: inline-grid; place-items: center; min-width: 24px; min-height: 24px; margin: 0 -2px; padding: 0 2px; font-size: inherit; line-height: 1; border-radius: var(--r-sm); vertical-align: baseline; transition: background-color var(--dur-fast) var(--ease-out); }
+[data-tab="advice"] button.approx:hover, [data-tab="advice"] button.approx[aria-expanded="true"] { background: var(--accent-soft); }
+[data-tab="advice"] .hero-num button.approx { align-self: center; padding: 0 6px; margin-right: 2px; }
+
+/* Hero: featured top tip */
+[data-tab="advice"] .ad-why { margin-top: var(--s-3); color: var(--ink-700); max-width: 56ch; }
+[data-tab="advice"] .ad-hero .hero__sentence { max-width: 22ch; }
+[data-tab="advice"] .ad-pick { margin-top: var(--s-4); max-width: 60ch; }
+[data-tab="advice"] .ad-fig { margin-top: var(--s-3); }
+[data-tab="advice"] .ad-hero-actions { margin-top: var(--s-6); }
+[data-tab="advice"] .ad-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 4px; }
+[data-tab="advice"] .ad-actions .btn--primary, [data-tab="advice"] .ad-actions .btn--secondary { margin-right: 8px; }
+
+/* Cards with the title inside */
+[data-tab="advice"] .ad-card { padding: 0; }
+[data-tab="advice"] .ad-card__head { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: var(--tile-pad) var(--tile-pad) 4px; }
+[data-tab="advice"] .ad-list { padding: 8px 12px 12px; }
+[data-tab="advice"] .ad-list > li + li { box-shadow: 0 -1px 0 var(--hairline); }
+[data-tab="advice"] .ad-tip { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "icon body save" "icon actions actions"; column-gap: 16px; row-gap: 14px; padding: 20px 16px; }
+[data-tab="advice"] .ad-tip > .well { grid-area: icon; }
+[data-tab="advice"] .ad-tip__body { grid-area: body; min-width: 0; }
+[data-tab="advice"] .ad-tip__title { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); line-height: var(--lh-snug); }
+[data-tab="advice"] .ad-tip__text { margin-top: 4px; font-size: var(--fs-sm); color: var(--ink-700); max-width: 62ch; }
+[data-tab="advice"] .ad-tip__meta { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: var(--fs-xs); color: var(--ink-500); }
+[data-tab="advice"] .ad-tip__meta .icon.sm { display: inline; vertical-align: -3px; }
+[data-tab="advice"] .ad-tip__save { grid-area: save; text-align: right; }
+[data-tab="advice"] .ad-tip__save .xs { display: block; margin-top: 2px; color: var(--ink-500); }
+[data-tab="advice"] .ad-tip__actions { grid-area: actions; }
+[data-tab="advice"] .ad-tip__actions:empty { display: none; }
+
+/* Row move: the row folds away and a one-line confirmation (with Undo) folds in */
+[data-tab="advice"] .ad-fold { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows var(--dur-base) var(--ease-in-out), opacity var(--dur-fast) var(--ease-out); }
+[data-tab="advice"] .ad-fold > div { overflow: hidden; min-height: 0; }
+[data-tab="advice"] .ad-fold--note { grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows var(--dur-base) var(--ease-in-out), opacity var(--dur-base) var(--ease-out) 80ms, visibility 0s linear var(--dur-base); }
+[data-tab="advice"] .is-moved .ad-fold--main { grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows var(--dur-base) var(--ease-in-out), opacity var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-base); }
+[data-tab="advice"] .is-moved .ad-fold--note { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition: grid-template-rows var(--dur-base) var(--ease-in-out), opacity var(--dur-base) var(--ease-out) 80ms; }
+[data-tab="advice"] .ad-note { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 16px; font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="advice"] .ad-note > .icon { color: var(--accent-strong); }
+[data-tab="advice"] .ad-note .btn--quiet { margin-left: auto; }
+[data-tab="advice"] .ad-hero .ad-note { padding: 10px 0; font-size: var(--fs-md); }
+
+/* Bigger investments */
+[data-tab="advice"] .ad-invest { display: flex; flex-direction: column; gap: var(--s-4); }
+[data-tab="advice"] .ad-invest__head { display: flex; gap: 14px; align-items: flex-start; }
+[data-tab="advice"] .ad-kv { margin: 0; border-top: 1px solid var(--hairline); }
+[data-tab="advice"] .ad-kv > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hairline); font-size: var(--fs-sm); }
+[data-tab="advice"] .ad-kv dt { color: var(--ink-700); }
+[data-tab="advice"] .ad-kv dd { margin: 0; font-family: var(--font-display); font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--ink-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
+[data-tab="advice"] .ad-invest .ad-tip__actions { margin-top: auto; padding-top: var(--s-2); }
+[data-tab="advice"] .ad-invest .ad-actions .btn--secondary { margin-right: 0; }
+[data-tab="advice"] .ad-invest .ad-fold--note .ad-note { padding: 12px 0 0; }
+[data-tab="advice"] .ad-calc { max-width: 720px; display: flex; flex-direction: column; gap: var(--s-4); }
+[data-tab="advice"] .ad-calc h3 { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--ink-900); }
+[data-tab="advice"] .ad-calc p { font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="advice"] .ad-empty-nudge { margin-top: var(--s-5); max-width: 60ch; }
+[data-tab="advice"] .ad-when { margin-top: var(--s-4); display: grid; gap: 10px; max-width: 60ch; }
+[data-tab="advice"] .ad-when li { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-sm); color: var(--ink-700); }
+[data-tab="advice"] .ad-when li .icon { color: var(--ink-400); margin-top: 2px; }
+
+@media (min-width: 961px) { [data-tab="advice"] .grid.stretch > .surface { height: 100%; } }
+@media (max-width: 600px) {
+  [data-tab="advice"] .ad-bar { flex-direction: column; align-items: stretch; }
+  /* Four statuses fit 390px: label over its count */
+  [data-tab="advice"] .ad-seg { display: grid; width: 100%; }
+  [data-tab="advice"] .ad-seg button { flex-direction: column; gap: 0; padding: 4px 2px; min-height: 48px; line-height: 1.2; }
+  [data-tab="advice"] .ad-seg .badge { min-width: 0; height: auto; padding: 0; background: none; font-weight: var(--w-medium); color: var(--ink-700); }
+  [data-tab="advice"] .ad-tip { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "icon body" "save save" "actions actions"; column-gap: 12px; row-gap: 12px; padding: 18px 8px; }
+  [data-tab="advice"] .ad-list { padding: 4px 12px 8px; }
+  [data-tab="advice"] .ad-tip__save { text-align: left; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+  [data-tab="advice"] .ad-tip__save .xs { display: inline; margin: 0; }
+  [data-tab="advice"] .ad-actions .btn--primary, [data-tab="advice"] .ad-actions .btn--secondary { margin-right: 0; }
+  [data-tab="advice"] .ad-note .btn--quiet { margin-left: 0; }
+}
+/* Mobile: the two dismissals sit behind one "More options" toggle so "Add to my plan" stands alone */
+[data-tab="advice"] .ad-more-btn { display: none; }
+[data-tab="advice"] .ad-more-btn .icon { transition: transform var(--dur-fast) var(--ease-out); }
+[data-tab="advice"] .ad-more-btn[aria-expanded="true"] .icon { transform: rotate(180deg); }
+[data-tab="advice"] .ad-more { display: contents; }
+@media (max-width: 600px) {
+  [data-tab="advice"] .ad-more-btn { display: inline-flex; }
+  [data-tab="advice"] .ad-more { display: none; flex-basis: 100%; gap: 4px; flex-wrap: wrap; }
+  [data-tab="advice"] .ad-more.open { display: flex; }
+}
+/* Reduced motion: no fold transition at all, so the Undo button is focusable immediately */
+@media (prefers-reduced-motion: reduce) {
+  [data-tab="advice"] .ad-fold, [data-tab="advice"] .ad-fold--note,
+  [data-tab="advice"] .is-moved .ad-fold--main, [data-tab="advice"] .is-moved .ad-fold--note,
+  [data-tab="advice"] .ad-fold * { transition: none !important; } /* descendants too: the global 1ms rule would otherwise delay their inherited visibility */
+}
+</style>
+
+<!-- ════════════════════════════ ADVICE · New (main) ════════════════════════════ -->
+<section class="panel" id="panel-advice" data-tab="advice" data-label="Advice · New tips" aria-labelledby="ad-title">
+  <div class="ad-bar">
+    <div class="seg ad-seg" role="radiogroup" aria-label="Show tips" data-ad-nav data-own="new">
+      <button type="button" data-value="new" aria-checked="true">New <span class="badge" data-ad-count="new">3</span></button>
+      <button type="button" data-value="plan" aria-checked="false">My plan <span class="badge" data-ad-count="plan" hidden>0</span></button>
+      <button type="button" data-value="done" aria-checked="false">Done <span class="badge" data-ad-count="done">1</span></button>
+      <button type="button" data-value="dismissed" aria-checked="false">Dismissed <span class="badge" data-ad-count="dismissed">3</span></button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Hero: the single best thing to do, € first -->
+    <div class="span-12 ambient">
+      <article class="surface hero ad-hero" data-ad-item data-status="new" data-name="Adjust your indoor temperature">
+        <div class="hero__split">
+          <div>
+            <div class="hero__status">
+              <span class="chip accent"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"/></svg>Top tip for you</span>
+              <span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>Heating</span>
+            </div>
+            <h1 class="hero__sentence" id="ad-title">Adjust your indoor temperature</h1>
+            <p class="ad-why">Lowering your indoor temperature slightly can meaningfully cut heating energy use without a noticeable comfort difference.</p>
+            <p class="callout ad-pick"><svg class="icon sm" aria-hidden="true"><use href="#i-target"/></svg><span><b>Why this one first:</b> it fits your home best — heating is your biggest category. The carpet tip further down saves more (<span class="approx">≈</span>&nbsp;€180 a year) but fits your home less closely.</span></p>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">You could save</p>
+            <p class="hero__figure hero-num ad-fig"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button><span>€<span class="num" data-count="150">150</span></span><span class="unit">a year</span></p>
+            <p class="hero__caption">540&nbsp;kWh less electricity a year</p>
+          </div>
+        </div>
+        <div class="ad-hero-actions">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-actions">
+              <button class="btn btn--primary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
+              <button class="btn btn--quiet ad-more-btn" type="button" aria-expanded="false" aria-controls="ad-more-1">More options<svg class="icon sm" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+              <div class="ad-more" id="ad-more-1">
+                <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
+                <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+              </div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Added to your plan.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Supporting: the other new tips, compact rows, quiet dismissals -->
+    <article class="surface ad-card span-8" aria-labelledby="ad-more">
+      <div class="ad-card__head">
+        <h2 class="card-title" id="ad-more">More tips for you</h2>
+        <span class="ad-sort"><svg class="icon sm" aria-hidden="true"><use href="#i-sliders"/></svg>Most relevant for you first</span>
+      </div>
+      <ul class="ad-list">
+        <li data-ad-item data-status="new" data-name="Wash clothes at a lower temperature">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-tip">
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-washer"/></svg></span>
+              <div class="ad-tip__body">
+                <h3 class="ad-tip__title">Wash clothes at a lower temperature</h3>
+                <p class="ad-tip__text">Most laundry gets just as clean at a lower wash temperature, using noticeably less energy per load.</p>
+                <p class="ad-tip__meta"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-washer"/></svg>Washing</span></p>
+              </div>
+              <p class="ad-tip__save"><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button>&nbsp;€65<span class="unit">a year</span></span><span class="xs">240&nbsp;kWh a year</span></p>
+              <div class="ad-tip__actions ad-actions">
+                <button class="btn btn--secondary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
+                <button class="btn btn--quiet ad-more-btn" type="button" aria-expanded="false" aria-controls="ad-more-3">More options<svg class="icon sm" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+                <div class="ad-more" id="ad-more-3">
+                  <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
+                  <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+                </div>
+              </div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Added to your plan.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </li>
+        <li data-ad-item data-status="new" data-name="Carpets help insulate your floor">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-tip">
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
+              <div class="ad-tip__body">
+                <h3 class="ad-tip__title">Carpets help insulate your floor</h3>
+                <p class="ad-tip__text">Carpets aren't just comfortable underfoot — they also help insulate the floor, reducing heat loss.</p>
+                <p class="ad-tip__meta"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>Heating</span></p>
+              </div>
+              <p class="ad-tip__save"><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button>&nbsp;€180<span class="unit">a year</span></span><span class="xs">650&nbsp;kWh a year</span></p>
+              <div class="ad-tip__actions ad-actions">
+                <button class="btn btn--secondary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
+                <button class="btn btn--quiet ad-more-btn" type="button" aria-expanded="false" aria-controls="ad-more-4">More options<svg class="icon sm" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+                <div class="ad-more" id="ad-more-4">
+                  <button class="btn btn--quiet" type="button" data-ad-move="already"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Already do this</button>
+                  <button class="btn btn--quiet" type="button" data-ad-move="notrel"><svg class="icon sm" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</button>
+                </div>
+              </div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Added to your plan.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </li>
+      </ul>
+    </article>
+
+    <!-- Bigger investments: the heat pump, illustrative, separate from the 3 new tips -->
+    <article class="surface span-4 ad-invest" data-ad-item data-status="invest" data-name="Upgrade to a heat pump" aria-labelledby="ad-invest-title">
+      <h2 class="card-title" id="ad-invest-title">Bigger investments</h2>
+      <div class="ad-invest__head">
+        <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-thermo"/></svg></span>
+        <div>
+          <h3 class="ad-tip__title">Upgrade to a heat pump</h3>
+          <p class="ad-tip__meta" style="margin-top:6px"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>Heating</span><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg>Financing available</span></p>
+        </div>
+      </div>
+      <p class="ad-tip__text" style="margin-top:0">Replacing your current electric heating with a heat pump can substantially cut your heating energy use over time.</p>
+      <div>
+        <p><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est-hp" aria-label="About this estimate">≈</button>&nbsp;€1,134<span class="unit">a year (illustrative)</span></span></p>
+        <p class="xs muted mt-2"><span class="approx">≈</span>&nbsp;4,200&nbsp;kWh less electricity a year, at the average price</p>
+      </div>
+      <dl class="ad-kv">
+        <div><dt>Investment</dt><dd>€8,000–12,000</dd></div>
+        <div><dt>Pays off in</dt><dd><span class="approx">≈</span>&nbsp;9–11 years</dd></div>
+      </dl>
+      <div class="ad-tip__actions">
+        <div class="ad-fold ad-fold--main"><div>
+          <div class="ad-actions">
+            <button class="btn btn--secondary" type="button" data-ad-move="plan"><svg class="icon sm" aria-hidden="true"><use href="#i-plus"/></svg>Add to my plan</button>
+            <button class="btn btn--quiet" type="button" data-ad-move="notrel">Not relevant</button>
+          </div>
+        </div></div>
+        <div class="ad-fold ad-fold--note"><div>
+          <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Added to your plan.</span>
+            <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+        </div></div>
+      </div>
+    </article>
+
+    <!-- Detail: how tips are picked and how € is estimated -->
+    <article class="surface span-12 disclosure">
+      <button class="disc-btn" type="button" aria-expanded="false" aria-controls="ad-calc-body">
+        <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+        <span><span class="t">How we pick and price your tips</span><span class="s">Why this order, and where the € figures come from</span></span>
+        <span class="chev" aria-hidden="true"><svg class="icon sm"><use href="#i-chev-d"/></svg></span>
+      </button>
+      <div class="disc-body" id="ad-calc-body">
+        <div><div class="disc-inner">
+          <div class="ad-calc">
+            <div>
+              <h3>Most relevant for you first</h3>
+              <p class="mt-2">Tips are ordered by how well they fit your home and the way you use energy, not by the size of the saving. That's why carpets (<span class="approx">≈</span>&nbsp;€180 a year) comes after your top tip (<span class="approx">≈</span>&nbsp;€150 a year): it fits your home a little less closely.</p>
+            </div>
+            <div>
+              <h3>From kWh to €</h3>
+              <p class="mt-2">Each tip's yearly saving in kWh is multiplied by an average electricity price, then rounded: <span class="formula">540&nbsp;kWh × €0.27 ≈ €150</span></p>
+              <p class="mt-2">It's a guide to the size of the saving, not a promise on your bill — your own tariff may be higher or lower.</p>
+            </div>
+            <div>
+              <h3>Bigger investments</h3>
+              <p class="mt-2">Upgrades like a heat pump are shown separately because they cost money up front. Their figures are an illustrative example, not a quote for your home.</p>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </article>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-ad-live></p>
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. Savings in € use an average electricity price (average, €0.27/kWh), not your own tariff. The heat pump figures are illustrative.</span></p>
+
+  <div class="popover" id="ad-pop-est" aria-label="How we estimate savings" hidden>
+    <h3>Estimated saving</h3>
+    <p>We turn the yearly energy saving into euros with an average electricity price, so you can compare tips at a glance.</p>
+    <p><span class="formula">540 kWh × €0.27/kWh ≈ €150 a year</span></p>
+    <p class="note">(average, €0.27/kWh) — not your own tariff.</p>
+  </div>
+  <div class="popover" id="ad-pop-est-hp" aria-label="Heat pump estimate" hidden>
+    <h3>Heat pump saving</h3>
+    <p>An illustrative example, not a quote for your home: the electricity a heat pump would save compared with your current heating, at the average price.</p>
+    <p><span class="formula">4,200 kWh × €0.27/kWh = €1,134 a year</span></p>
+    <p class="note">(illustrative) · (average, €0.27/kWh) — not your own tariff. Investment and payback are typical ranges.</p>
+  </div>
+
+  <details class="meta">
+    <summary>Spec notes · Advice</summary>
+    <h4>Approval &amp; structure</h4>
+    <ul>
+      <li>✓ Approved: 3 real <code>energy_tip</code> items + 1 illustrative upgrade; 3-action model; EUC tags match Breakdown; "(average, €0.27/kWh)" confirmed live. IA per ux-audit §3.8: hero top tip → compact rows → Bigger investments → detail disclosure.</li>
+      <li>Hero = top tip by relevance (0.32). € is the hero numeral (≈ €150 a year), kWh secondary. ONE primary action per view ("Add to my plan"); rows use a secondary "Add to my plan" and quiet text buttons for the two dismissals.</li>
+      <li>Round 2: "Why this one first" callout sits in the hero, directly under the tip (visible above the fold on mobile), naming the bigger ≈ €180 carpet tip "further down". Rows stay in strict relevance order (0.21 → 0.19).</li>
+      <li>Heat pump moved to its own "Bigger investments" card, so "New 3" matches Overview "3 new tips" (demo-data change log #8). Honesty label "(illustrative)" kept on its € line. No "Already do this" on the upgrade (as source).</li>
+      <li>Callout "Why this one first: it fits your home best — heating is your biggest category…" is <b>derived copy</b> (Breakdown: Heating 38%) — needs copy sign-off.</li>
+    </ul>
+    <h4>Round 2 changes</h4>
+    <ul>
+      <li>One estimate marker: inline ≈ in the value's own type (a 24px popover trigger); pill ≈ badge and "~" removed ("~4,200 kWh" → "≈ 4,200 kWh", "~9–11 years" → "≈ 9–11 years").</li>
+      <li>⚠ Heat pump copy changed for an electrically heated home: "Replacing gas heating with a heat pump…" → "Replacing your current electric heating with a heat pump…"; pricing basis stated ("≈ 4,200 kWh less electricity a year, at the average price"; popover 4,200 × €0.27 = €1,134). Confirm the household's heating fuel (Compare has a gas toggle) — open question.</li>
+      <li>Headings: card titles now sit inside their cards (no floating section heads). Status control fits 390px (label over count).</li>
+      <li>Reduced motion: fold transitions removed and focus moves to Undo after two animation frames — focus no longer drops to &lt;body&gt;.</li>
+    </ul>
+    <h4>Renamed labels (verbatim originals)</h4>
+    <ul>
+      <li>"+ Save for later" → "Add to my plan"; "✓ Already do this" / "✕ Not relevant" kept (icons replace glyphs). Status tabs "New · To do · Done" + link "Discarded" → segmented "New · My plan · Done · Dismissed" (ux-audit §3.8). Zero counts are hidden.</li>
+      <li>Status counts on this snapshot: New 3 · My plan 0 · Done 1 · Dismissed 3 (one household world, so the Done and Dismissed views have their items). The source showed To do (0) / Done (0) / Discarded (0) — flag for product review.</li>
+    </ul>
+    <h4>Interaction</h4>
+    <ul>
+      <li>Round 4: on phones (≤ 600px) "Already do this" / "Not relevant" sit behind one quiet "More options" toggle (<code>aria-expanded</code>/<code>aria-controls</code>), so "Add to my plan" stands alone; desktop unchanged. Undo re-opens the overflow before returning focus to the dismissal button.</li>
+      <li>Row actions fold the tip away (grid-rows 1fr→0fr, 240ms, ease-in-out) and fold in a one-line confirmation with Undo; focus moves to Undo and back. Counts update live. The status control opens the matching status view.</li>
+      <li>API: status change = <code>PATCH /advice/{id}</code> with JSON-Patch <code>[{op:"replace",path:"/status",value:"…"}]</code>. Add to my plan → <code>todo</code>; Already do this → <code>already_implemented</code> (goes to Dismissed, never Done); Not relevant → <code>not_relevant</code>.</li>
+    </ul>
+    <h4>Debug lines removed from UI</h4>
+    <ul>
+      <li><code>adjust_the_indoor_temperature · relevance 0.32</code> · <code>temperature_washing_machine · relevance 0.21</code> · <code>carpets_do_insulate · relevance 0.19</code></li>
+      <li>Heat pump: "Included proactively — schema supports investment_cost/financing_options, not yet configured for our tenant (ask #39/#20)". Badge "Upgrade example — once financing is configured" (mockup label).</li>
+      <li>Tips are our own translation (<code>language_code=en</code> failed; ask #39).</li>
+    </ul>
+    <h4>Data / open</h4>
+    <ul>
+      <li>€ rounding is uneven: 540 × 0.27 = €145.80 → €150; 650 → €175.50 → €180; 240 → €64.80 → €65; 730 → €197 → €200; 4,200 → €1,134 (exact). Confirm the rounding rule.</li>
+      <li>Icons: Heating = flame, Washing = washer, Lighting = bulb, Always on = plug (Breakdown category icons). Carpets row well = home (tag stays Heating).</li>
+    </ul>
+    <h4>Reason codes</h4>
+    <ul><li>Empty list or 404 "No advices found" → "Advice · No advice available". No reason code; no differentiated states (ask #40).</li></ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ ADVICE · My plan ════════════════════════════ -->
+<section class="panel" id="panel-advice-plan" data-tab="advice" data-label="Advice · My plan" aria-labelledby="adp-title">
+  <div class="ad-bar">
+    <div class="seg ad-seg" role="radiogroup" aria-label="Show tips" data-ad-nav data-own="plan">
+      <button type="button" data-value="new" aria-checked="false">New <span class="badge" data-ad-count="new">2</span></button>
+      <button type="button" data-value="plan" aria-checked="true">My plan <span class="badge" data-ad-count="plan">1</span></button>
+      <button type="button" data-value="done" aria-checked="false">Done <span class="badge" data-ad-count="done">1</span></button>
+      <button type="button" data-value="dismissed" aria-checked="false">Dismissed <span class="badge" data-ad-count="dismissed">3</span></button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <div class="hero__status"><span class="chip accent"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>1 tip in your plan</span></div>
+            <h1 class="hero__sentence" id="adp-title">One step left to start saving: mark your tip as done.</h1>
+            <p class="ad-why">Once it's part of your routine, mark it done — it moves to Done and counts toward your savings.</p>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">When you've done it</p>
+            <p class="hero__figure hero-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button><span>€<span class="num" data-count="65">65</span></span><span class="unit">a year</span></p>
+            <p class="hero__caption">240&nbsp;kWh less electricity a year</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="surface ad-card span-12" aria-labelledby="adp-list">
+      <div class="ad-card__head"><h2 class="card-title" id="adp-list">In your plan</h2></div>
+      <ul class="ad-list">
+        <li data-ad-item data-status="plan" data-name="Wash clothes at a lower temperature">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-tip">
+              <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-washer"/></svg></span>
+              <div class="ad-tip__body">
+                <h3 class="ad-tip__title">Wash clothes at a lower temperature</h3>
+                <p class="ad-tip__text">Most laundry gets just as clean at a lower wash temperature, using noticeably less energy per load.</p>
+                <p class="ad-tip__meta"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-washer"/></svg>Washing</span><span><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg> Added 3 days ago</span></p>
+              </div>
+              <p class="ad-tip__save"><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button>&nbsp;€65<span class="unit">a year</span></span><span class="xs">240&nbsp;kWh a year</span></p>
+              <div class="ad-tip__actions ad-actions">
+                <button class="btn btn--primary" type="button" data-ad-move="done"><svg class="icon sm" aria-hidden="true"><use href="#i-check"/></svg>Mark as done</button>
+                <button class="btn btn--quiet" type="button" data-ad-move="new"><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Move back to New</button>
+              </div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Marked as done.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </li>
+      </ul>
+    </article>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-ad-live></p>
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. Savings in € use an average electricity price (average, €0.27/kWh), not your own tariff.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Advice · My plan</summary>
+    <ul>
+      <li>Source view "To do (1)". Renamed "My plan" (matches the "Add to my plan" action). Counts on this snapshot: New 2 · My plan 1 · Done 1 · Dismissed 3 (washing tip moved from New).</li>
+      <li>Round 2: hero sentence no longer repeats the numeral (≈ €65 only in the figure). Sentence and "Once it's part of your routine…" line are <b>derived copy</b>.</li>
+      <li>"Save 240 kWh / ≈ €65/yr" split into € (numeral) + kWh (secondary). Meta "Saved 3 days ago" → "Added 3 days ago" (follows the action rename) — copy sign-off.</li>
+      <li>Actions "✓ Mark as done" (primary: the one next step here) and "Move back to New" (quiet).</li>
+      <li>API: Mark as done → <code>PATCH /advice/{id}</code> status <code>implemented</code>; Move back to New → <code>new</code>. "Came from To-do first" is our UX guarantee, not Eliq data.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ ADVICE · My plan (empty) ════════════════════════════ -->
+<section class="panel" id="panel-advice-plan-empty" data-tab="advice" data-label="Advice · My plan (empty)" aria-labelledby="adpe-title">
+  <div class="ad-bar">
+    <div class="seg ad-seg" role="radiogroup" aria-label="Show tips" data-ad-nav data-own="plan">
+      <button type="button" data-value="new" aria-checked="false">New <span class="badge" data-ad-count="new">3</span></button>
+      <button type="button" data-value="plan" aria-checked="true">My plan <span class="badge" data-ad-count="plan" hidden>0</span></button>
+      <button type="button" data-value="done" aria-checked="false">Done <span class="badge" data-ad-count="done">1</span></button>
+      <button type="button" data-value="dismissed" aria-checked="false">Dismissed <span class="badge" data-ad-count="dismissed">3</span></button>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="surface span-12 empty">
+      <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></span>
+      <div>
+        <h1 class="empty__title" id="adpe-title">Your plan is empty</h1>
+        <p class="empty__body">Pick the tips you want to try and they'll wait here until you've done them. You have 3 new tips ready now.</p>
+        <div class="empty__actions">
+          <a class="btn btn--secondary" href="#panel-advice">See your 3 new tips <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        </div>
+      </div>
+    </article>
+  </div>
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: tips you add stay in your plan until you mark them done or move them back.</span></p>
+  <details class="meta">
+    <summary>Spec notes · Advice · My plan (empty)</summary>
+    <ul>
+      <li>New in round 2 (evaluator 1: no empty "My plan" state designed). Not in the source inventory — all copy is <b>derived</b>. Shown when the <code>todo</code> list is empty but other statuses have items (this snapshot: New 3 · Done 1 · Dismissed 3).</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ ADVICE · Done ════════════════════════════ -->
+<section class="panel" id="panel-advice-done" data-tab="advice" data-label="Advice · Done" aria-labelledby="add-title">
+  <div class="ad-bar">
+    <div class="seg ad-seg" role="radiogroup" aria-label="Show tips" data-ad-nav data-own="done">
+      <button type="button" data-value="new" aria-checked="false">New <span class="badge" data-ad-count="new">3</span></button>
+      <button type="button" data-value="plan" aria-checked="false">My plan <span class="badge" data-ad-count="plan" hidden>0</span></button>
+      <button type="button" data-value="done" aria-checked="true">Done <span class="badge" data-ad-count="done">1</span></button>
+      <button type="button" data-value="dismissed" aria-checked="false">Dismissed <span class="badge" data-ad-count="dismissed">3</span></button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="span-12 ambient">
+      <article class="surface hero">
+        <div class="hero__split">
+          <div>
+            <div class="hero__status"><span class="chip positive"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>1 tip done</span></div>
+            <h1 class="hero__sentence" id="add-title">You've put a tip into practice — and it keeps paying back.</h1>
+            <p class="ad-why">Only tips you've actually done are counted here. Tips you already did before we suggested them sit under Dismissed.</p>
+          </div>
+          <div class="hero__aside">
+            <p class="overline">Saving you</p>
+            <p class="hero__figure hero-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button><span>€<span class="num" data-count="200">200</span></span><span class="unit">a year</span></p>
+            <p class="hero__caption">730&nbsp;kWh less electricity a year</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="surface ad-card span-12" aria-labelledby="add-list">
+      <div class="ad-card__head"><h2 class="card-title" id="add-list">Done</h2></div>
+      <ul class="ad-list">
+        <li>
+          <div class="ad-tip">
+            <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+            <div class="ad-tip__body">
+              <h3 class="ad-tip__title">Replace old lamps with LED lighting</h3>
+              <p class="ad-tip__meta"><span class="tag positive"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Completed</span><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg>Lighting</span></p>
+              <p class="ad-tip__meta">Marked done 2 weeks ago — was on your plan first</p>
+            </div>
+            <p class="ad-tip__save"><span class="mid-num"><button class="approx" type="button" data-pop="ad-pop-est" aria-label="About this estimate">≈</button>&nbsp;€200<span class="unit">a year</span></span><span class="xs">Saved 730&nbsp;kWh a year</span></p>
+            <div class="ad-tip__actions"></div>
+          </div>
+        </li>
+      </ul>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these numbers: ≈ marks an estimate. Savings in € use an average electricity price (average, €0.27/kWh), not your own tariff.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Advice · Done</summary>
+    <ul>
+      <li>Source section "Done (1) — implemented only" (suffix is a designer annotation, removed). Done shows only <code>implemented</code> items; <code>already_implemented</code> goes to Dismissed (explained in the hero line — <b>derived copy</b>).</li>
+      <li>Round 2: hero sentence no longer repeats the numeral (≈ €200 only in the figure) — <b>derived copy</b>.</li>
+      <li>"Completed" badge carries a check icon (not colour only). Meta "Marked done 2 weeks ago — was on your To-do list first" → "… was on your plan first" (follows the My plan rename).</li>
+      <li>"Saved 730 kWh / ≈ €200/yr" → € numeral + "Saved 730 kWh a year".</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ ADVICE · Dismissed ════════════════════════════ -->
+<section class="panel" id="panel-advice-dismissed" data-tab="advice" data-label="Advice · Dismissed" aria-labelledby="adx-title">
+  <div class="ad-bar">
+    <div class="seg ad-seg" role="radiogroup" aria-label="Show tips" data-ad-nav data-own="dismissed">
+      <button type="button" data-value="new" aria-checked="false">New <span class="badge" data-ad-count="new">3</span></button>
+      <button type="button" data-value="plan" aria-checked="false">My plan <span class="badge" data-ad-count="plan" hidden>0</span></button>
+      <button type="button" data-value="done" aria-checked="false">Done <span class="badge" data-ad-count="done">1</span></button>
+      <button type="button" data-value="dismissed" aria-checked="true">Dismissed <span class="badge" data-ad-count="dismissed">3</span></button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <article class="surface ad-card span-12">
+      <div class="ad-card__head" style="display:block">
+        <h1 class="hero__sentence" id="adx-title" style="margin-top:0">Tips you've set aside</h1>
+        <p class="ad-why">Things you already do, didn't fit your home, or skipped. Bring any of them back if something changes.</p>
+      </div>
+
+      <ul class="ad-list">
+        <li data-ad-item data-status="dismissed" data-name="Optimize outdoor lighting">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-tip">
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+              <div class="ad-tip__body">
+                <h2 class="ad-tip__title">Optimize outdoor lighting</h2>
+                <p class="ad-tip__meta"><span class="tag positive"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Already doing this</span><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg>Lighting</span></p>
+              </div>
+              <p class="ad-tip__save"><button class="btn btn--quiet" type="button" data-ad-move="new"><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Move back to New</button></p>
+              <div class="ad-tip__actions"></div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Moved back to New.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </li>
+        <li data-ad-item data-status="dismissed" data-name="Draught-proof your windows">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-tip">
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
+              <div class="ad-tip__body">
+                <h2 class="ad-tip__title">Draught-proof your windows</h2>
+                <p class="ad-tip__meta"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Not relevant</span><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>Heating</span></p>
+              </div>
+              <p class="ad-tip__save"><button class="btn btn--quiet" type="button" data-ad-move="new"><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Move back to New</button></p>
+              <div class="ad-tip__actions"></div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Moved back to New.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </li>
+        <li data-ad-item data-status="dismissed" data-name="Use a smart power strip">
+          <div class="ad-fold ad-fold--main"><div>
+            <div class="ad-tip">
+              <span class="well"><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg></span>
+              <div class="ad-tip__body">
+                <h2 class="ad-tip__title">Use a smart power strip</h2>
+                <p class="ad-tip__meta"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg>Skipped</span><span class="tag"><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg>Always on</span></p>
+              </div>
+              <p class="ad-tip__save"><button class="btn btn--quiet" type="button" data-ad-move="new"><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Move back to New</button></p>
+              <div class="ad-tip__actions"></div>
+            </div>
+          </div></div>
+          <div class="ad-fold ad-fold--note"><div>
+            <p class="ad-note"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span data-ad-msg>Moved back to New.</span>
+              <button class="btn btn--quiet" type="button" data-ad-undo><svg class="icon sm" aria-hidden="true"><use href="#i-undo"/></svg>Undo</button></p>
+          </div></div>
+        </li>
+      </ul>
+    </article>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-ad-live></p>
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About these tips: set-aside tips don't count toward your savings. Moving one back puts it with your new tips again.</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Advice · Dismissed</summary>
+    <ul>
+      <li>Source "Discarded (3) — skipped, not_relevant, already_implemented, all three" (suffix = designer annotation). Renamed "Dismissed" (ux-audit §3.8).</li>
+      <li>Reason badges carry an icon + word, never colour alone: "Already doing this" (<code>already_implemented</code>, check), "Not relevant" (<code>not_relevant</code>, x), "Skipped" (<code>skipped</code>, arrow).</li>
+      <li>"Move back to New" per row is a quiet action (derived: the source shows no restore action in Discarded; the PATCH endpoint supports it) — confirm with product. Intro line and footnote (added round 2) are <b>derived copy</b>.</li>
+      <li>No € shown: the source gives no savings for dismissed items.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ════════════════════════════ ADVICE · empty ════════════════════════════ -->
+<section class="panel" id="panel-advice-empty" data-tab="advice" data-label="Advice · No advice available" aria-labelledby="ade-title">
+  <div class="grid">
+    <article class="surface span-12 empty">
+      <span class="well accent"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+      <div>
+        <h1 class="empty__title" id="ade-title">Nothing to suggest yet</h1>
+        <p class="empty__body">We don't have any personalized energy-saving tips for your home right now. This is normal early on, and usually resolves itself as more of your energy data comes in.</p>
+        <p class="empty__when"><svg class="icon sm" aria-hidden="true"><use href="#i-clock"/></svg><span><b>No date yet</b> — tips appear as soon as your readings match one, and you'll see a count on this tab.</span></p>
+        <p class="callout accent ad-empty-nudge"><svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg><span>A fuller home profile also helps us find more relevant advice for you — worth checking it's up to date.</span></p>
+        <div class="empty__actions">
+          <a class="btn btn--secondary" href="#panel-breakdown">Check your home profile <svg class="icon sm" data-nudge aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <p class="footnote"><svg class="icon sm" aria-hidden="true"><use href="#i-info"/></svg><span>About tips: they're picked from your own readings and home profile. Savings are shown in € with an average electricity price (average, €0.27/kWh).</span></p>
+
+  <details class="meta">
+    <summary>Spec notes · Advice · No advice available</summary>
+    <ul>
+      <li>The only empty state. Reason: <code>GET /advice</code> returns no items, or 404 "No advices found" (historically "not provisioned"). No reason code — do <b>not</b> invent differentiated states (ask #40).</li>
+      <li>Round 3: <code>.empty__when</code> "No date yet — …" matches the Overview-new Advice chip ("No date yet").</li>
+      <li>Round 2 edge-state rule (what's missing · when · what to do · footnote): the "When" line states timing is unknown and why (<b>derived</b>, no date invented — ask #40); the verbatim nudge became the "What you can do" line; halftone motif removed so it never sits behind text; footnote added (<b>derived</b>).</li>
+      <li>Status control hidden (all lists empty). Button "Check your home profile" → Breakdown (where the home profile lives) is a <b>derived</b> action — confirm target with product.</li>
+    </ul>
+  </details>
+</section>
+
+<script>
+/* Advice — status navigation + tip moves (fold away / fold in with Undo) */
+(() => {
+  const PANEL = { new: 'panel-advice', plan: 'panel-advice-plan', done: 'panel-advice-done', dismissed: 'panel-advice-dismissed' };
+  const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let resetting = false;
+
+  // Focus once the target is actually visible (reduced motion: next frames, no transition wait)
+  function focusWhenVisible(el) {
+    if (!el) return;
+    const go = (tries) => {
+      el.focus({ preventScroll: true });
+      if (document.activeElement !== el && tries > 0) setTimeout(() => go(tries - 1), 40);
+    };
+    if (reduce()) { void el.offsetHeight; go(8); } // no transitions under reduced motion: style is final after a reflow
+    else setTimeout(() => go(5), 260);
+  }
+
+  // Status control: show the matching status view, then put this control back on its own value
+  document.addEventListener('seg-change', e => {
+    const seg = e.target.closest('[data-ad-nav]');
+    if (!seg || resetting) return;
+    const target = PANEL[e.detail.value];
+    if (!target || !window.JuneApp || seg.closest('.panel')?.id === target) return;
+    setTimeout(() => {
+      window.JuneApp.show(target);
+      resetting = true;
+      seg.querySelector(`[data-value="${seg.dataset.own}"]`)?.click();
+      resetting = false;
+      document.querySelector(`#${target} .ad-seg [aria-checked="true"]`)?.focus({ preventScroll: true });
+    }, reduce() ? 0 : 200);
+  });
+
+  const MSG = {
+    plan: 'Added to your plan.',
+    already: 'Moved to Dismissed — you already do this.',
+    notrel: 'Moved to Dismissed — not relevant for you.',
+    done: 'Marked as done. Nice work.',
+    new: 'Moved back to New.'
+  };
+  const DEST = { plan: 'plan', already: 'dismissed', notrel: 'dismissed', done: 'done', new: 'new' };
+
+  function bump(panel, key, d) {
+    const b = panel.querySelector(`[data-ad-count="${key}"]`);
+    if (!b) return;
+    const v = Math.max(0, (parseInt(b.textContent, 10) || 0) + d);
+    b.textContent = v; b.hidden = v === 0;
+  }
+
+  // Mobile overflow: "More options" shows the two dismissals
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.ad-more-btn');
+    if (!t) return;
+    const box = document.getElementById(t.getAttribute('aria-controls'));
+    const open = t.getAttribute('aria-expanded') !== 'true';
+    t.setAttribute('aria-expanded', String(open));
+    box?.classList.toggle('open', open);
+  });
+
+  document.addEventListener('click', e => {
+    const move = e.target.closest('[data-ad-move]');
+    const undo = e.target.closest('[data-ad-undo]');
+    if (!move && !undo) return;
+    const btn = move || undo;
+    const item = btn.closest('[data-ad-item]');
+    const panel = btn.closest('.panel');
+    if (!item || !panel) return;
+    const live = panel.querySelector('[data-ad-live]');
+    const from = item.dataset.status;
+    if (move) {
+      const act = move.dataset.adMove, to = DEST[act];
+      item.dataset.moved = act;
+      item.querySelector('[data-ad-msg]').textContent = MSG[act];
+      item.classList.add('is-moved');
+      bump(panel, from, -1); bump(panel, to, +1);
+      if (live) live.textContent = `${item.dataset.name}: ${MSG[act]}`;
+      focusWhenVisible(item.querySelector('[data-ad-undo]'));
+    } else {
+      const act = item.dataset.moved; if (!act) return;
+      item.classList.remove('is-moved');
+      bump(panel, from, +1); bump(panel, DEST[act], -1);
+      if (live) live.textContent = `${item.dataset.name}: undone.`;
+      const back = item.querySelector(`[data-ad-move="${act}"]`);
+      const box = back?.closest('.ad-more');
+      if (box && getComputedStyle(box).display === 'none') {
+        box.classList.add('open');
+        document.querySelector(`[aria-controls="${box.id}"]`)?.setAttribute('aria-expanded', 'true');
+      }
+      focusWhenVisible(back);
+      delete item.dataset.moved;
+    }
+  });
+})();
+</script>
