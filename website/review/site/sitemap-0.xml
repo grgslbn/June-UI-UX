@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.june.energy/nl-be/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/fr-be/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/nl-be/abonnementen/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/abonnementen/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/abonnements/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/abonnementen/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/fr-be/abonnements/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/abonnementen/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/abonnements/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/abonnementen/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/nl-be/switch-plus/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/switch-plus/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/switch-plus/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/switch-plus/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/fr-be/switch-plus/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/switch-plus/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/switch-plus/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/switch-plus/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/nl-be/hoe-werkt-het/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/hoe-werkt-het/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/comment-ca-marche/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/hoe-werkt-het/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/fr-be/comment-ca-marche/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/hoe-werkt-het/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/comment-ca-marche/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/hoe-werkt-het/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/nl-be/veelgestelde-vragen/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/veelgestelde-vragen/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/questions-frequentes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/veelgestelde-vragen/"/>
+  </url>
+  <url>
+    <loc>https://www.june.energy/fr-be/questions-frequentes/</loc>
+    <xhtml:link rel="alternate" hreflang="nl-BE" href="https://www.june.energy/nl-be/veelgestelde-vragen/"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="https://www.june.energy/fr-be/questions-frequentes/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.june.energy/nl-be/veelgestelde-vragen/"/>
+  </url>
+</urlset>
